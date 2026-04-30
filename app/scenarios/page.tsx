@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { scenarios } from '../../src/data/scenarios';
+import AiCoachPanel from '../../src/components/ai/AiCoachPanel';
 import {
   addPdEntry,
   getInitialProgressSnapshot,
@@ -253,6 +254,21 @@ export default function ScenariosPage() {
                 onChange={(event) => setEscalationNote(event.target.value)}
                 className="min-h-40 rounded-3xl border border-slate-200 px-4 py-3 text-sm text-slate-800 outline-none focus:border-slate-900"
                 placeholder="Write the Jira-style escalation note here."
+              />
+
+              <AiCoachPanel
+                input={{
+                  contextType: 'ticket-note',
+                  scenarioId: scenario.id,
+                  moduleId: scenario.recommendedModuleIds?.[0],
+                  prompt: scenario.jiraNotePrompt,
+                  userAnswer: escalationNote,
+                  modelAnswer: scenario.ticketNoteExample,
+                  rubric: scenario.noteRubric.map((item) => `${item.label}: ${item.description}`),
+                  extraContext: `Scenario: ${scenario.title}\nRisk note: ${scenario.riskNote}`
+                }}
+                debounceMs={900}
+                minChars={120}
               />
 
               <div className="grid gap-4 md:grid-cols-2">

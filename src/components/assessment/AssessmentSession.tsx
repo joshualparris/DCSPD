@@ -9,6 +9,7 @@ import type {
   AssessmentSelfRating,
   ConfidenceLevel
 } from '../../types/assessment';
+import AiCoachPanel from '../ai/AiCoachPanel';
 
 type AssessmentSessionProps = {
   questions: AssessmentQuestion[];
@@ -34,6 +35,10 @@ function buildInitialDraft(question: AssessmentQuestion): DraftResponse {
     answerText: '',
     selectedOptionId: undefined,
     orderedStepIds: question.type === 'order-steps' ? shuffle(question.steps.map((step) => step.id)) : [],
+    categorizedItems:
+      question.type === 'categorization'
+        ? Object.fromEntries(question.items.map((item) => [item.id, '']))
+        : undefined,
     reasoning: '',
     judgement: '',
     selfRating: getDefaultSelfRating(question)
@@ -167,6 +172,8 @@ export default function AssessmentSession({
     Boolean(draft.confidence) &&
     (question.type === 'mcq'
       ? Boolean(draft.selectedOptionId)
+      : question.type === 'categorization'
+      ? question.items.every((item) => Boolean(draft.categorizedItems?.[item.id]))
       : question.type === 'order-steps'
       ? Boolean(draft.orderedStepIds?.length)
       : Boolean(draft.answerText?.trim())) &&
@@ -280,6 +287,40 @@ export default function AssessmentSession({
           </div>
         ) : null}
 
+        {question.type === 'categorization' ? (
+          <div className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <div className="text-sm text-slate-700">
+              Sort each item into the best category. This is auto-marked, then you still self-rate the reasoning and
+              judgement behind your choices.
+            </div>
+            {question.items.map((item) => (
+              <label key={item.id} className="grid gap-2 rounded-2xl bg-white p-4 text-sm text-slate-800 md:grid-cols-[1fr_220px]">
+                <span>{item.label}</span>
+                <select
+                  value={draft.categorizedItems?.[item.id] || ''}
+                  onChange={(event) =>
+                    setDraft({
+                      ...draft,
+                      categorizedItems: {
+                        ...draft.categorizedItems,
+                        [item.id]: event.target.value
+                      }
+                    })
+                  }
+                  className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800"
+                >
+                  <option value="">Select a category</option>
+                  {question.categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+        ) : null}
+
         {question.type === 'short-answer' || question.type === 'scenario-response' ? (
           <textarea
             value={draft.answerText}
@@ -341,6 +382,28 @@ export default function AssessmentSession({
         />
       </div>
 
+      <AiCoachPanel
+        input={{
+          contextType: question.type === 'scenario-response' ? 'scenario' : 'short-answer',
+          moduleId: question.recommendedModuleId,
+          prompt: question.prompt,
+          userAnswer: [
+            draft.answerText?.trim() ? `Answer:\n${draft.answerText.trim()}\n` : '',
+            draft.reasoning.trim() ? `Reasoning:\n${draft.reasoning.trim()}\n` : '',
+            draft.judgement.trim() ? `Judgement:\n${draft.judgement.trim()}\n` : ''
+          ]
+            .filter(Boolean)
+            .join('\n')
+            .trim(),
+          modelAnswer: question.modelAnswer,
+          rubric: 'rubric' in question ? question.rubric : undefined,
+          weakTopic: question.weakTopic,
+          extraContext: `DCS context: ${question.dcsContext}`
+        }}
+        debounceMs={1000}
+        minChars={80}
+      />
+
       {!reviewMode ? (
         <div className="flex justify-end">
           <button
@@ -375,7 +438,11 @@ export default function AssessmentSession({
           <div className="grid gap-4 md:grid-cols-3">
             {(
               [
-                ['correctness', 'Correctness', question.type === 'mcq' || question.type === 'order-steps'],
+                [
+                  'correctness',
+                  'Correctness',
+                  question.type === 'mcq' || question.type === 'order-steps' || question.type === 'categorization'
+                ],
                 ['reasoning', 'Reasoning', false],
                 ['judgement', 'Judgement', false]
               ] as const

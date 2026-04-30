@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { weakTopicLabels } from '../../src/data/skillDomains';
 import { generateMonthlyPdSummary } from '../../src/lib/pdSummary';
 import { getCurrentWeakFocus } from '../../src/lib/readinessMath';
+import AiCoachPanel from '../../src/components/ai/AiCoachPanel';
 import {
   addPdEntry,
   getInitialProgressSnapshot,
@@ -368,6 +369,25 @@ export default function PdLogPage() {
           <button onClick={submitEntry} className="mt-5 rounded-full bg-slate-900 px-4 py-2 text-sm text-white">
             Save PD entry
           </button>
+
+          <div className="mt-6">
+            <AiCoachPanel
+              input={{
+                contextType: 'freeform',
+                prompt: 'Give feedback on a PD log entry. Ensure it is privacy-safe and evidence-based.',
+                userAnswer: `Title: ${form.title}\nEvidence: ${form.evidenceSummary}\nNext: ${form.reflection}`.trim(),
+                rubric: [
+                  'Privacy-safe wording',
+                  'Clear evidence of learning or practice',
+                  'Concrete next step',
+                  'Avoids copying live operational details'
+                ],
+                extraContext: `Entry type: ${form.type}`
+              }}
+              debounceMs={1200}
+              minChars={120}
+            />
+          </div>
         </div>
 
         <div className="space-y-6">
