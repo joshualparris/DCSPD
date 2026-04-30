@@ -17,6 +17,7 @@ describe('moduleMath', () => {
               flashcard.id,
               {
                 state: 'new',
+                leitnerBox: 1,
                 dueDateIso: getNextReviewDate('again'),
                 reviewCount: 0
               }
@@ -30,8 +31,10 @@ describe('moduleMath', () => {
       },
       assessmentAttempts: [],
       scenarioRuns: [],
+      pdEntries: [],
       pdLogEntries: [],
-      weakTopicReviews: {}
+      weakTopicReviews: {},
+      focusSessions: []
     };
 
     expect(getModuleCompletion(trainingModule.id, progress, trainingModule)).toBe(0);
@@ -49,6 +52,7 @@ describe('moduleMath', () => {
               flashcard.id,
               {
                 state: index < 2 ? 'learning' : 'new',
+                leitnerBox: index < 2 ? 2 : 1,
                 dueDateIso: getNextReviewDate('good'),
                 reviewCount: index < 2 ? 1 : 0
               }
@@ -69,8 +73,10 @@ describe('moduleMath', () => {
       },
       assessmentAttempts: [],
       scenarioRuns: [],
+      pdEntries: [],
       pdLogEntries: [],
-      weakTopicReviews: {}
+      weakTopicReviews: {},
+      focusSessions: []
     };
 
     const completion = getModuleCompletion(trainingModule.id, progress, trainingModule);

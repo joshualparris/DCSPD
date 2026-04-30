@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { weakTopicLabels } from '../../src/data/skillDomains';
-import { buildMonthlyPdMarkdown } from '../../src/lib/exportMarkdown';
+import { generateMonthlyPdSummary } from '../../src/lib/pdSummary';
 import { getCurrentWeakFocus } from '../../src/lib/readinessMath';
 import {
+  addPdEntry,
   getInitialProgressSnapshot,
   getStoredProgressSnapshot,
-  savePdLogEntry,
   saveProgress,
-  type PDLogEntry,
+  type PdEntry,
+  type PdEntryType,
   type UserProgress
 } from '../../src/lib/progress';
 
@@ -17,44 +18,44 @@ const templates = [
   {
     id: 'a-plus-video',
     label: 'A+ video watched',
-    resource: 'A+ video',
-    topic: 'A+ concept review',
-    learned: 'I reviewed one support concept and linked it to a DCS classroom or device situation.'
+    type: 'module-study' as const,
+    title: 'A+ concept review',
+    evidenceSummary: 'I reviewed one support concept and linked it to a DCS classroom or device situation.'
   },
   {
     id: 'cisco-lesson',
     label: 'Cisco Networking lesson',
-    resource: 'Cisco Networking Basics',
-    topic: 'Networking concepts',
-    learned: 'I clarified a networking idea and documented where it would appear during school support.'
+    type: 'module-study' as const,
+    title: 'Networking concepts',
+    evidenceSummary: 'I clarified a networking idea and documented where it would appear during school support.'
   },
   {
     id: 'microsoft-learn',
     label: 'Microsoft Learn lesson',
-    resource: 'Microsoft Learn',
-    topic: 'M365 or identity concept',
-    learned: 'I mapped a Microsoft concept to a DCS support scenario within operational boundaries.'
+    type: 'module-study' as const,
+    title: 'M365 or identity concept',
+    evidenceSummary: 'I mapped a Microsoft concept to a DCS support scenario within operational boundaries.'
   },
   {
     id: 'scenario-practice',
     label: 'DCS scenario practice',
-    resource: 'DCSPrep Scenario Lab',
-    topic: 'Scenario practice',
-    learned: 'I completed a multi-step support scenario and identified an area for further review.'
+    type: 'scenario' as const,
+    title: 'Scenario practice',
+    evidenceSummary: 'I completed a multi-step support scenario and identified an area for further review.'
   },
   {
     id: 'ticket-reflection',
     label: 'Ticket reflection, no private details',
-    resource: 'Personal reflection',
-    topic: 'Support reflection',
-    learned: 'I reflected on the support pattern without copying private operational details.'
+    type: 'reflection' as const,
+    title: 'Support reflection',
+    evidenceSummary: 'I reflected on the support pattern without copying private operational details.'
   },
   {
     id: 'sop-created',
     label: 'SOP or checklist created',
-    resource: 'Personal SOP drafting',
-    topic: 'Process improvement',
-    learned: 'I converted an unclear support area into a cleaner checklist or quick-reference document.'
+    type: 'practical-output' as const,
+    title: 'Process improvement output',
+    evidenceSummary: 'I converted an unclear support area into a cleaner checklist or quick-reference document.'
   }
 ];
 
@@ -71,17 +72,30 @@ export default function PdLogPage() {
   const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
   const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [form, setForm] = useState<Omit<PDLogEntry, 'id'>>({
+  const [form, setForm] = useState<{
+    date: string;
+    minutes: number;
+    type: PdEntryType;
+    title: string;
+    evidenceSummary: string;
+    reflection: string;
+    moduleIds: string;
+    scenarioIds: string;
+    practicalOutputIds: string;
+    templateId?: string;
+    privacyChecked: boolean;
+  }>({
     date: '',
     minutes: 20,
-    resource: '',
-    topic: '',
-    dcsRelevance: '',
-    learned: '',
-    nextStep: '',
-    evidenceLink: '',
+    type: 'reflection',
+    title: '',
+    evidenceSummary: '',
+    reflection: '',
+    moduleIds: '',
+    scenarioIds: '',
+    practicalOutputIds: '',
     templateId: undefined,
-    sensitiveConfirmed: false
+    privacyChecked: false
   });
 
   useEffect(() => {
@@ -102,16 +116,36 @@ export default function PdLogPage() {
   }, [hasHydratedProgress, progress]);
 
   const monthKey = getMonthKey(new Date());
-  const monthlyEntries = progress.pdLogEntries.filter((entry) => entry.date.startsWith(monthKey));
+  const monthlyEntries = progress.pdEntries.filter((entry) => entry.createdAtIso.startsWith(monthKey));
   const monthlyMinutes = monthlyEntries.reduce((sum, entry) => sum + entry.minutes, 0);
-  const modulesTouched = Object.values(progress.modules).filter((module) =>
-    Object.values(module.sectionsRead).some(Boolean)
-  ).length;
+  const modulesTouched = new Set(monthlyEntries.flatMap((entry) => entry.moduleIds ?? [])).size;
+  const monthlySummary = generateMonthlyPdSummary(progress, monthKey);
   const topWeakAreas = Object.values(progress.weakTopicReviews)
     .sort((left, right) => left.averageScore - right.averageScore)
     .slice(0, 3)
     .map((review) => weakTopicLabels[review.topic]);
-  const summaryMarkdown = buildMonthlyPdMarkdown(progress);
+  const summaryMarkdown = [
+    `# DCSPrep PD Summary (${monthKey})`,
+    '',
+    '> Keep this personal and privacy-safe. Do not include student, staff, parent, network, or credential details.',
+    '',
+    `Period: ${monthlySummary.startDateIso} to ${monthlySummary.endDateIso}`,
+    '',
+    '## Summary',
+    `- Total PD minutes: ${monthlySummary.totalMinutes}`,
+    `- Entries logged: ${monthlySummary.entryCount}`,
+    `- Modules touched: ${monthlySummary.moduleCount}`,
+    `- Scenarios completed: ${monthlySummary.scenariosCompleted}`,
+    `- Outputs created: ${monthlySummary.outputsCreated}`,
+    `- Current weak areas: ${monthlySummary.currentWeakAreas.length ? monthlySummary.currentWeakAreas.join(', ') : 'Not enough evidence yet'}`,
+    `- Suggested next focus: ${monthlySummary.suggestedNextFocus}`,
+    '',
+    '## Entries',
+    ...(monthlyEntries.length
+      ? monthlyEntries.map((entry) => `- ${entry.createdAtIso.slice(0, 10)} | ${entry.minutes} min | ${entry.type} | ${entry.title}: ${entry.evidenceSummary}`)
+      : ['- No PD entries logged yet this month.']),
+    ''
+  ].join('\n');
 
   function applyTemplate(templateId: string) {
     const template = templates.find((entry) => entry.id === templateId);
@@ -121,36 +155,56 @@ export default function PdLogPage() {
 
     setForm((current) => ({
       ...current,
-      resource: template.resource,
-      topic: template.topic,
-      learned: template.learned,
+      type: template.type,
+      title: template.title,
+      evidenceSummary: template.evidenceSummary,
       templateId: template.id
     }));
   }
 
+  function parseIdList(value: string) {
+    const trimmed = value.trim();
+    if (!trimmed) return undefined;
+    const parts = trimmed
+      .split(',')
+      .map((part) => part.trim())
+      .filter(Boolean);
+    return parts.length ? parts : undefined;
+  }
+
   function submitEntry() {
-    if (!form.resource || !form.topic || !form.learned || !form.nextStep || !form.sensitiveConfirmed) {
+    if (!form.title || !form.evidenceSummary || !form.privacyChecked) {
       return;
     }
 
-    setProgress((current) =>
-      savePdLogEntry(current, {
-        id: `pd-log-${Date.now()}`,
-        ...form
-      })
-    );
+    const entry: PdEntry = {
+      id: `pd-${Date.now()}`,
+      createdAtIso: `${form.date}T00:00:00.000Z`,
+      type: form.type,
+      title: form.title,
+      minutes: form.minutes,
+      moduleIds: parseIdList(form.moduleIds),
+      scenarioIds: parseIdList(form.scenarioIds),
+      practicalOutputIds: parseIdList(form.practicalOutputIds),
+      evidenceSummary: form.evidenceSummary,
+      reflection: form.reflection.trim() ? form.reflection.trim() : undefined,
+      privacyChecked: form.privacyChecked
+    };
+
+    setProgress((current) => addPdEntry(current, entry));
 
     setForm({
       date: getTodayDateKey(),
       minutes: 20,
-      resource: '',
-      topic: '',
-      dcsRelevance: '',
-      learned: '',
-      nextStep: '',
-      evidenceLink: '',
+      type: 'reflection',
+      title: '',
+      evidenceSummary: '',
+      reflection: '',
+      moduleIds: '',
+      scenarioIds: '',
+      practicalOutputIds: '',
       templateId: undefined,
-      sensitiveConfirmed: false
+      privacyChecked: false
     });
   }
 
@@ -221,57 +275,82 @@ export default function PdLogPage() {
               />
             </label>
             <label className="text-sm text-slate-700 md:col-span-2">
-              Resource
-              <input
-                value={form.resource}
-                onChange={(event) => setForm({ ...form, resource: event.target.value })}
+              Entry type
+              <select
+                value={form.type}
+                onChange={(event) => setForm({ ...form, type: event.target.value as PdEntryType })}
                 className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3"
-                placeholder="Microsoft Learn, A+ video, Scenario Lab, SOP draft..."
-              />
+              >
+                {(
+                  [
+                    'module-study',
+                    'quiz',
+                    'scenario',
+                    'flashcards',
+                    'practical-output',
+                    'focus-block',
+                    'reflection',
+                    'ai-coaching'
+                  ] as const
+                ).map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
             </label>
             <label className="text-sm text-slate-700 md:col-span-2">
-              Topic
+              Title
               <input
-                value={form.topic}
-                onChange={(event) => setForm({ ...form, topic: event.target.value })}
+                value={form.title}
+                onChange={(event) => setForm({ ...form, title: event.target.value })}
                 className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3"
-                placeholder="Ports and protocols, ViewBoard troubleshooting, offboarding sequence..."
+                placeholder="What did you do?"
               />
             </label>
             <label className="text-sm text-slate-700 md:col-span-2">
-              DCS relevance
+              Evidence summary
               <textarea
-                value={form.dcsRelevance}
-                onChange={(event) => setForm({ ...form, dcsRelevance: event.target.value })}
+                value={form.evidenceSummary}
+                onChange={(event) => setForm({ ...form, evidenceSummary: event.target.value })}
                 className="mt-2 min-h-24 w-full rounded-2xl border border-slate-200 px-4 py-3"
-                placeholder="Where would this show up at DCS?"
+                placeholder="What improved, changed, or became clearer?"
               />
             </label>
             <label className="text-sm text-slate-700 md:col-span-2">
-              What I learned
+              Reflection / next step (optional)
               <textarea
-                value={form.learned}
-                onChange={(event) => setForm({ ...form, learned: event.target.value })}
+                value={form.reflection}
+                onChange={(event) => setForm({ ...form, reflection: event.target.value })}
                 className="mt-2 min-h-24 w-full rounded-2xl border border-slate-200 px-4 py-3"
-                placeholder="What changed in your understanding?"
+                placeholder="What will you do next time?"
               />
             </label>
             <label className="text-sm text-slate-700 md:col-span-2">
-              Next step
-              <textarea
-                value={form.nextStep}
-                onChange={(event) => setForm({ ...form, nextStep: event.target.value })}
-                className="mt-2 min-h-24 w-full rounded-2xl border border-slate-200 px-4 py-3"
-                placeholder="What is the next action?"
-              />
-            </label>
-            <label className="text-sm text-slate-700 md:col-span-2">
-              Evidence link (optional)
+              Module IDs (optional, comma-separated)
               <input
-                value={form.evidenceLink}
-                onChange={(event) => setForm({ ...form, evidenceLink: event.target.value })}
+                value={form.moduleIds}
+                onChange={(event) => setForm({ ...form, moduleIds: event.target.value })}
                 className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3"
-                placeholder="Optional: certificate, note file, or resource URL"
+                placeholder="e.g. dns-dhcp-gateway-ip-basics, printer-troubleshooting"
+              />
+            </label>
+            <label className="text-sm text-slate-700 md:col-span-2">
+              Scenario IDs (optional, comma-separated)
+              <input
+                value={form.scenarioIds}
+                onChange={(event) => setForm({ ...form, scenarioIds: event.target.value })}
+                className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3"
+                placeholder="e.g. hdmi-works-no-audio"
+              />
+            </label>
+            <label className="text-sm text-slate-700 md:col-span-2">
+              Practical output IDs (optional, comma-separated)
+              <input
+                value={form.practicalOutputIds}
+                onChange={(event) => setForm({ ...form, practicalOutputIds: event.target.value })}
+                className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3"
+                placeholder="e.g. printer-triage-checklist"
               />
             </label>
           </div>
@@ -279,8 +358,8 @@ export default function PdLogPage() {
           <label className="mt-5 flex items-start gap-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
             <input
               type="checkbox"
-              checked={form.sensitiveConfirmed}
-              onChange={(event) => setForm({ ...form, sensitiveConfirmed: event.target.checked })}
+              checked={form.privacyChecked}
+              onChange={(event) => setForm({ ...form, privacyChecked: event.target.checked })}
               className="mt-1 h-4 w-4"
             />
             <span>I confirm this contains no student or staff private details.</span>
@@ -316,9 +395,11 @@ export default function PdLogPage() {
               {monthlyEntries.length ? (
                 monthlyEntries.map((entry) => (
                   <div key={entry.id} className="rounded-3xl bg-slate-50 p-4">
-                    <div className="text-sm font-semibold text-slate-900">{entry.date} | {entry.minutes} min | {entry.topic}</div>
-                    <p className="mt-2 text-sm text-slate-700">{entry.learned}</p>
-                    <p className="mt-2 text-sm text-slate-600">Next step: {entry.nextStep}</p>
+                    <div className="text-sm font-semibold text-slate-900">
+                      {entry.createdAtIso.slice(0, 10)} | {entry.minutes} min | {entry.type} | {entry.title}
+                    </div>
+                    <p className="mt-2 text-sm text-slate-700">{entry.evidenceSummary}</p>
+                    {entry.reflection ? <p className="mt-2 text-sm text-slate-600">Next step: {entry.reflection}</p> : null}
                   </div>
                 ))
               ) : (

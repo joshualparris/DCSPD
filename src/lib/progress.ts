@@ -5,8 +5,11 @@ import { getNextReviewDate, getTodayDateKey, type ReviewRating } from './spacedR
 
 export type FlashcardState = 'new' | 'learning' | 'solid';
 
+export type LeitnerBox = 1 | 2 | 3 | 4 | 5;
+
 export type FlashcardProgress = {
   state: FlashcardState;
+  leitnerBox: LeitnerBox;
   dueDateIso: string;
   lastReviewedAtIso?: string;
   lastRating?: ReviewRating;
@@ -41,6 +44,36 @@ export type PDLogEntry = {
   sensitiveConfirmed: boolean;
 };
 
+export type PdEntryType =
+  | 'module-study'
+  | 'quiz'
+  | 'scenario'
+  | 'flashcards'
+  | 'practical-output'
+  | 'focus-block'
+  | 'reflection'
+  | 'ai-coaching';
+
+export type PdEntry = {
+  id: string;
+  createdAtIso: string;
+  type: PdEntryType;
+  title: string;
+  minutes: number;
+
+  moduleIds?: string[];
+  scenarioIds?: string[];
+  practicalOutputIds?: string[];
+
+  weakTopicsTouched?: string[];
+  weakTopicsImproved?: string[];
+
+  evidenceSummary: string;
+  reflection?: string;
+
+  privacyChecked: boolean;
+};
+
 export type WeakTopicReview = {
   topic: WeakTopicKey;
   dueDateIso: string;
@@ -50,30 +83,48 @@ export type WeakTopicReview = {
   averageScore: number;
 };
 
+export type FocusMode = 'start-tiny' | 'focus-20' | 'overwhelmed';
+
+export type FocusSession = {
+  id: string;
+  mode: FocusMode;
+  task: string;
+  minutesPlanned: number;
+  startedAtIso: string;
+  completedAtIso?: string;
+  reflection?: string;
+  microTaskId?: string;
+};
+
 export type UserProgress = {
   lastOpenedModuleId?: string;
   modules: Record<string, ModuleProgress>;
   assessmentAttempts: AssessmentAttempt[];
   scenarioRuns: ScenarioRun[];
+  pdEntries: PdEntry[];
   pdLogEntries: PDLogEntry[];
   weakTopicReviews: Record<string, WeakTopicReview>;
+  focusSessions: FocusSession[];
 };
 
-const STORAGE_KEY = 'dcsprep_learning_cockpit_v2';
+const STORAGE_KEY = 'dcsprep_learning_cockpit_v4';
 
 export function getDefaultProgress(): UserProgress {
   return {
     modules: {},
     assessmentAttempts: [],
     scenarioRuns: [],
+    pdEntries: [],
     pdLogEntries: [],
-    weakTopicReviews: {}
+    weakTopicReviews: {},
+    focusSessions: []
   };
 }
 
 function getDefaultFlashcardProgress(): FlashcardProgress {
   return {
     state: 'new',
+    leitnerBox: 1,
     dueDateIso: getTodayDateKey(),
     reviewCount: 0
   };
@@ -88,6 +139,7 @@ function normalizeFlashcardProgress(value: unknown): FlashcardProgress {
     if (value === 'known') {
       return {
         state: 'solid',
+        leitnerBox: 3,
         dueDateIso: getNextReviewDate('good'),
         reviewCount: 1
       };
@@ -96,6 +148,7 @@ function normalizeFlashcardProgress(value: unknown): FlashcardProgress {
     if (value === 'learning') {
       return {
         state: 'learning',
+        leitnerBox: 1,
         dueDateIso: getTodayDateKey(),
         reviewCount: 1
       };
@@ -107,6 +160,13 @@ function normalizeFlashcardProgress(value: unknown): FlashcardProgress {
   const candidate = value as Partial<FlashcardProgress>;
   return {
     state: candidate.state === 'solid' || candidate.state === 'learning' ? candidate.state : 'new',
+    leitnerBox:
+      candidate.leitnerBox === 2 ||
+      candidate.leitnerBox === 3 ||
+      candidate.leitnerBox === 4 ||
+      candidate.leitnerBox === 5
+        ? candidate.leitnerBox
+        : 1,
     dueDateIso: candidate.dueDateIso || getTodayDateKey(),
     lastReviewedAtIso: candidate.lastReviewedAtIso,
     lastRating: candidate.lastRating,
@@ -156,7 +216,28 @@ function normalizeProgress(raw: unknown): UserProgress {
 
   const candidate = raw as Partial<UserProgress> & {
     modules?: Record<string, unknown>;
+    pdEntries?: unknown;
+    pdLogEntries?: unknown;
   };
+
+  const legacyPdLogEntries: PDLogEntry[] = Array.isArray(candidate.pdLogEntries)
+    ? (candidate.pdLogEntries as PDLogEntry[])
+    : [];
+
+  const migratedFromLegacy: PdEntry[] = legacyPdLogEntries.map((entry) => ({
+    id: entry.id,
+    createdAtIso: entry.date.length === 10 ? `${entry.date}T00:00:00.000Z` : new Date().toISOString(),
+    type: 'reflection',
+    title: entry.topic || entry.resource || 'PD log entry',
+    minutes: typeof entry.minutes === 'number' ? entry.minutes : 0,
+    evidenceSummary: entry.learned || '',
+    reflection: entry.nextStep || undefined,
+    privacyChecked: Boolean(entry.sensitiveConfirmed)
+  }));
+
+  const normalizedPdEntries: PdEntry[] = Array.isArray(candidate.pdEntries)
+    ? (candidate.pdEntries as PdEntry[])
+    : migratedFromLegacy;
 
   return {
     lastOpenedModuleId: candidate.lastOpenedModuleId,
@@ -168,7 +249,9 @@ function normalizeProgress(raw: unknown): UserProgress {
     ),
     assessmentAttempts: Array.isArray(candidate.assessmentAttempts) ? candidate.assessmentAttempts : [],
     scenarioRuns: Array.isArray(candidate.scenarioRuns) ? candidate.scenarioRuns : [],
+    pdEntries: normalizedPdEntries,
     pdLogEntries: Array.isArray(candidate.pdLogEntries) ? candidate.pdLogEntries : [],
+    focusSessions: Array.isArray(candidate.focusSessions) ? candidate.focusSessions : [],
     weakTopicReviews:
       candidate.weakTopicReviews && typeof candidate.weakTopicReviews === 'object'
         ? candidate.weakTopicReviews
@@ -290,6 +373,22 @@ function getFlashcardStateFromRating(rating: ReviewRating): FlashcardState {
   return 'learning';
 }
 
+function getNextLeitnerBox(currentBox: LeitnerBox, rating: ReviewRating): LeitnerBox {
+  if (rating === 'again') {
+    return 1;
+  }
+
+  if (rating === 'hard') {
+    return currentBox;
+  }
+
+  if (rating === 'easy') {
+    return currentBox >= 4 ? 5 : ((currentBox + 2) as LeitnerBox);
+  }
+
+  return currentBox >= 5 ? 5 : ((currentBox + 1) as LeitnerBox);
+}
+
 export function recordFlashcardReview(
   progress: UserProgress,
   moduleId: string,
@@ -310,6 +409,7 @@ export function recordFlashcardReview(
           ...moduleProgress.flashcards,
           [flashcardId]: {
             state: getFlashcardStateFromRating(rating),
+            leitnerBox: getNextLeitnerBox(existingCard.leitnerBox, rating),
             dueDateIso: getNextReviewDate(rating),
             lastReviewedAtIso: new Date().toISOString(),
             lastRating: rating,
@@ -391,5 +491,22 @@ export function savePdLogEntry(progress: UserProgress, entry: PDLogEntry): UserP
   return {
     ...progress,
     pdLogEntries: [entry, ...filtered].sort((a, b) => (a.date < b.date ? 1 : -1))
+  };
+}
+
+export function addPdEntry(progress: UserProgress, entry: PdEntry): UserProgress {
+  const filtered = progress.pdEntries.filter((existingEntry) => existingEntry.id !== entry.id);
+  return {
+    ...progress,
+    pdEntries: [entry, ...filtered].sort((a, b) => (a.createdAtIso < b.createdAtIso ? 1 : -1))
+  };
+}
+
+export function saveFocusSession(progress: UserProgress, session: FocusSession): UserProgress {
+  const filtered = progress.focusSessions.filter((existingSession) => existingSession.id !== session.id);
+
+  return {
+    ...progress,
+    focusSessions: [session, ...filtered].sort((a, b) => (a.startedAtIso < b.startedAtIso ? 1 : -1))
   };
 }

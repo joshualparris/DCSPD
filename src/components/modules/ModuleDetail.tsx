@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getModuleCompletion } from '../../lib/moduleMath';
 import {
+  addPdEntry,
   ensureModuleProgress,
   getInitialProgressSnapshot,
   getStoredProgressSnapshot,
@@ -19,6 +20,7 @@ import type { AssessmentAttempt } from '../../types/assessment';
 import type { TrainingModule } from '../../types/training';
 import AssessmentSession from '../assessment/AssessmentSession';
 import FlashcardDeck from '../flashcards/FlashcardDeck';
+import ModuleQuestionFirst from './ModuleQuestionFirst';
 import ModuleTabs from './ModuleTabs';
 import SectionReader from './SectionReader';
 
@@ -31,7 +33,7 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
     ensureModuleProgress(getInitialProgressSnapshot(), moduleData)
   );
   const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
-  const [tab, setTab] = useState('Learn');
+  const [tab, setTab] = useState('Questions First');
 
   useEffect(() => {
     setProgress(ensureModuleProgress(getStoredProgressSnapshot(), moduleData));
@@ -106,9 +108,11 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
         </div>
       </section>
 
-      <ModuleTabs tabs={['Learn', 'Review', 'Assessment', 'DCS Application']} onChange={setTab} />
+      <ModuleTabs tabs={['Questions First', 'Review', 'Assessment', 'Reference', 'DCS Application']} onChange={setTab} />
 
-      {tab === 'Learn' ? (
+      {tab === 'Questions First' ? <ModuleQuestionFirst moduleData={moduleData} /> : null}
+
+      {tab === 'Reference' ? (
         <div className="space-y-4">
           {moduleData.sections.map((section) => (
             <SectionReader
@@ -160,12 +164,26 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
               : 0;
 
             setProgress((current) =>
-              recordModuleQuizAttempt(current, moduleData.id, {
-                id: `${moduleData.id}-${Date.now()}`,
-                attemptAtIso: new Date().toISOString(),
-                score: average,
-                questionIds: attempts.map((attempt) => attempt.questionId)
-              })
+              addPdEntry(
+                recordModuleQuizAttempt(current, moduleData.id, {
+                  id: `${moduleData.id}-${Date.now()}`,
+                  attemptAtIso: new Date().toISOString(),
+                  score: average,
+                  questionIds: attempts.map((attempt) => attempt.questionId)
+                }),
+                {
+                  id: `pd-quiz-${moduleData.id}-${Date.now()}`,
+                  createdAtIso: new Date().toISOString(),
+                  type: 'quiz',
+                  title: `${moduleData.title} quiz (${average}%)`,
+                  minutes: Math.max(10, Math.round(attempts.length * 1.5)),
+                  moduleIds: [moduleData.id],
+                  weakTopicsTouched: [...new Set(attempts.map((attempt) => attempt.weakTopic))],
+                  evidenceSummary: `Completed a module quiz session and recorded an average score of ${average}%.`,
+                  reflection: undefined,
+                  privacyChecked: true
+                }
+              )
             );
           }}
         />
@@ -219,7 +237,28 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
                     type="checkbox"
                     checked={Boolean(moduleProgress.practicalOutputs[output.id])}
                     onChange={() =>
-                      setProgress((current) => togglePracticalOutput(current, moduleData.id, output.id))
+                      setProgress((current) => {
+                        const before = Boolean(current.modules[moduleData.id]?.practicalOutputs?.[output.id]);
+                        const next = togglePracticalOutput(current, moduleData.id, output.id);
+                        const after = Boolean(next.modules[moduleData.id]?.practicalOutputs?.[output.id]);
+
+                        if (!before && after) {
+                          return addPdEntry(next, {
+                            id: `pd-output-${moduleData.id}-${output.id}-${Date.now()}`,
+                            createdAtIso: new Date().toISOString(),
+                            type: 'practical-output',
+                            title: `Completed output: ${output.title}`,
+                            minutes: 15,
+                            moduleIds: [moduleData.id],
+                            practicalOutputIds: [output.id],
+                            evidenceSummary: `Completed a practical output for "${moduleData.title}".`,
+                            reflection: undefined,
+                            privacyChecked: true
+                          });
+                        }
+
+                        return next;
+                      })
                     }
                     className="mt-1 h-4 w-4 rounded border-slate-300"
                   />

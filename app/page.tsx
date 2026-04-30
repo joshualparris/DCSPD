@@ -26,8 +26,8 @@ export default function HomePage() {
   ).length;
   const dueQuestions = progress.assessmentAttempts.filter((attempt) => isDue(attempt.nextReviewDateIso)).length;
   const completedScenarios = progress.scenarioRuns.filter((run) => run.completed).length;
-  const monthlyMinutes = progress.pdLogEntries
-    .filter((entry) => entry.date.startsWith(getMonthKey(new Date())))
+  const monthlyMinutes = progress.pdEntries
+    .filter((entry) => entry.createdAtIso.startsWith(getMonthKey(new Date())))
     .reduce((sum, entry) => sum + entry.minutes, 0);
   const recommendation = getDashboardRecommendation(progress);
   const overallProgress = getOverallProgress(modules, progress);
@@ -43,8 +43,8 @@ export default function HomePage() {
               Professional Development Dashboard
             </h1>
             <p className="mt-4 text-sm leading-7 text-slate-600">
-              This dashboard supports the development of diagnosis, explanation, application, escalation, and
-              documentation skills for DCS IT support scenarios.
+              This dashboard supports question-first, scenario-based growth across real DCS support themes:
+              diagnosis, explanation, escalation, documentation, and practical support outputs.
             </p>
           </div>
 
@@ -95,13 +95,15 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-7">
           {[
+            ['Start tiny or focus block', '/focus'],
             ['Start 10-question assessment', '/strict-quiz'],
             ['Scenario Lab for situational practice', '/scenarios'],
             ['Review flashcards due today', '/due-today'],
             ['Add PD log entry', '/pd-log'],
-            ['View readiness profiles', '/readiness']
+            ['View readiness profiles', '/readiness'],
+            ['Open evidence pack', '/evidence-pack']
           ].map(([label, href]) => (
             <Link
               key={label}
