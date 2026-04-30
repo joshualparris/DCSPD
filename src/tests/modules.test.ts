@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { modules } from '../data/modules';
 
 describe('module catalogue', () => {
-  it('includes the ten starter IT PD modules', () => {
-    expect(modules).toHaveLength(10);
+  it('includes the expanded DCS workflow catalogue', () => {
+    expect(modules.length).toBeGreaterThanOrEqual(20);
 
     expect(modules.map((module) => module.id)).toEqual(
       expect.arrayContaining([
@@ -16,7 +16,20 @@ describe('module catalogue', () => {
         'mdm-intune-group-policy-concepts',
         'vlans-network-segmentation',
         'cloud-models-saas-paas-iaas-daas',
-        'ticket-notes-escalation-quality'
+        'ticket-notes-escalation-quality',
+        'parent-portal-registration',
+        'parent-portal-details-updates',
+        'sentral-support',
+        'ourdcs-schoolbox-support',
+        'login-and-password-support',
+        'permissions-and-access-requests',
+        'website-filtering-and-unblock-requests',
+        'new-user-onboarding',
+        'teams-sharepoint-onedrive-support',
+        'ipad-jamf-workflow-basics',
+        'a-plus-laptop-hardware-core1',
+        'a-plus-mobile-connectivity-mdm-core1',
+        'a-plus-network-core1-ports-protocols-services'
       ])
     );
   });
@@ -26,6 +39,10 @@ describe('module catalogue', () => {
       expect(module.sections.length).toBeGreaterThanOrEqual(3);
       expect(module.flashcards.length).toBeGreaterThanOrEqual(8);
       expect(module.quiz.length).toBeGreaterThanOrEqual(4);
+      expect(module.modulePattern.diagnosticQuestions.length).toBeGreaterThanOrEqual(2);
+      expect(module.modulePattern.explainBackPrompt.prompt).toBeTruthy();
+      expect(module.modulePattern.cornellPrompt.prompt).toBeTruthy();
+      expect(module.modulePattern.sq3rPrompt.prompt).toBeTruthy();
       expect(module.scenarioPrompts.length).toBeGreaterThanOrEqual(1);
       expect(module.practicalOutputs.length).toBeGreaterThanOrEqual(1);
     });
