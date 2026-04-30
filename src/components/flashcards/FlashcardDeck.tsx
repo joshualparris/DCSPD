@@ -1,15 +1,20 @@
 "use client";
-import React, { useCallback, useEffect, useState } from 'react';
-import FlashcardCard from './FlashcardCard';
-import type { Flashcard } from '../../types/training';
 
-type Props = {
+import { useEffect, useState } from 'react';
+import type { Flashcard } from '../../types/training';
+import type { FlashcardProgress } from '../../lib/progress';
+import type { ReviewRating } from '../../lib/spacedRepetition';
+import FlashcardCard from './FlashcardCard';
+
+type FlashcardDeckProps = {
   cards: Flashcard[];
-  statuses: Record<string, 'known' | 'learning' | 'unseen'>;
-  onUpdate: (id: string, status: 'known' | 'learning' | 'unseen') => void;
+  progress: Record<string, FlashcardProgress>;
+  onReview: (cardId: string, rating: ReviewRating) => void;
 };
 
-export default function FlashcardDeck({ cards, statuses, onUpdate }: Props) {
+const ratings: ReviewRating[] = ['again', 'hard', 'good', 'easy'];
+
+export default function FlashcardDeck({ cards, progress, onReview }: FlashcardDeckProps) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
@@ -17,36 +22,58 @@ export default function FlashcardDeck({ cards, statuses, onUpdate }: Props) {
     setFlipped(false);
   }, [index]);
 
-  const next = useCallback(() => setIndex((i) => (i + 1) % cards.length), [cards.length]);
-  const prev = useCallback(() => setIndex((i) => (i - 1 + cards.length) % cards.length), [cards.length]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.code === 'Space') { e.preventDefault(); setFlipped((f) => !f); }
-      if (e.key === 'ArrowRight') next();
-      if (e.key === 'ArrowLeft') prev();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [next, prev]);
-
   const card = cards[index];
+  const cardProgress = card ? progress[card.id] : undefined;
+
+  if (!card) {
+    return (
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
+        No flashcards loaded for this module yet.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
-      <FlashcardCard front={card.front} back={card.back} flipped={flipped} onFlip={() => setFlipped((f) => !f)} />
-
-      <div className="flex gap-2 items-center justify-between">
-        <div className="flex gap-2">
-          <button onClick={() => onUpdate(card.id, 'learning')} className="px-3 py-1 border rounded">Still learning</button>
-          <button onClick={() => onUpdate(card.id, 'known')} className="px-3 py-1 bg-indigo-600 text-white rounded">Know this</button>
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
+        <div>
+          Card {index + 1} of {cards.length}
         </div>
-
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <button onClick={prev} className="px-2 py-1 border rounded">◀</button>
-          <div>{index + 1}/{cards.length}</div>
-          <button onClick={next} className="px-2 py-1 border rounded">▶</button>
+        <div>
+          Review date: {cardProgress?.dueDateIso || 'today'} | Reviews completed: {cardProgress?.reviewCount || 0}
         </div>
+      </div>
+
+      <FlashcardCard front={card.front} back={card.back} flipped={flipped} onFlip={() => setFlipped(!flipped)} />
+
+      <div className="grid gap-3 md:grid-cols-4">
+        {ratings.map((rating) => (
+          <button
+            key={rating}
+            onClick={() => {
+              onReview(card.id, rating);
+              setIndex(index === cards.length - 1 ? 0 : index + 1);
+            }}
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium capitalize text-slate-800"
+          >
+            {rating}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex justify-between">
+        <button
+          onClick={() => setIndex(index === 0 ? cards.length - 1 : index - 1)}
+          className="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-700"
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => setIndex(index === cards.length - 1 ? 0 : index + 1)}
+          className="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-700"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

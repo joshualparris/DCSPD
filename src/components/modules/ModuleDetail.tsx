@@ -1,136 +1,238 @@
 "use client";
-import React, { useEffect, useMemo, useState } from 'react';
-import type { TrainingModule, Flashcard } from '../../types/training';
-import { getProgress, saveProgress, ensureModuleProgress, UserProgress } from '../../lib/progress';
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { getModuleCompletion } from '../../lib/moduleMath';
+import {
+  ensureModuleProgress,
+  getInitialProgressSnapshot,
+  getStoredProgressSnapshot,
+  markSectionRead,
+  recordAssessmentAttempt,
+  recordFlashcardReview,
+  recordModuleQuizAttempt,
+  saveProgress,
+  togglePracticalOutput,
+  type UserProgress
+} from '../../lib/progress';
+import type { AssessmentAttempt } from '../../types/assessment';
+import type { TrainingModule } from '../../types/training';
+import AssessmentSession from '../assessment/AssessmentSession';
+import FlashcardDeck from '../flashcards/FlashcardDeck';
 import ModuleTabs from './ModuleTabs';
 import SectionReader from './SectionReader';
-import FlashcardDeck from '../flashcards/FlashcardDeck';
-import QuizEngine from '../quiz/QuizEngine';
 
-export default function ModuleDetail({ moduleData }: { moduleData: TrainingModule }) {
-  const [progress, setProgress] = useState<UserProgress>(() => getProgress());
-  useEffect(() => { setProgress((p) => ensureModuleProgress(p, moduleData)); }, [moduleData]);
+type ModuleDetailProps = {
+  moduleData: TrainingModule;
+};
 
-  useEffect(() => { saveProgress(progress); }, [progress]);
-
-  const moduleProg = progress.modules[moduleData.id] ?? { sectionsRead: {}, flashcards: {}, quizAttempts: [] };
-
+export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
+  const [progress, setProgress] = useState<UserProgress>(() =>
+    ensureModuleProgress(getInitialProgressSnapshot(), moduleData)
+  );
+  const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
   const [tab, setTab] = useState('Learn');
 
-  const onMarkRead = (sectionId: string) => {
-    setProgress((p) => {
-      const copy = { ...p } as UserProgress;
-      copy.modules = { ...(copy.modules || {}) };
-      copy.modules[moduleData.id] = { ...(copy.modules[moduleData.id] || { sectionsRead: {}, flashcards: {}, quizAttempts: [] }) };
-      copy.modules[moduleData.id].sectionsRead = { ...(copy.modules[moduleData.id].sectionsRead || {}) };
-      copy.modules[moduleData.id].sectionsRead[sectionId] = true;
-      copy.lastOpenedModuleId = moduleData.id;
-      return copy;
-    });
-  };
+  useEffect(() => {
+    setProgress(ensureModuleProgress(getStoredProgressSnapshot(), moduleData));
+    setHasHydratedProgress(true);
+  }, [moduleData]);
 
-  const onUpdateFlashcard = (id: string, status: 'known' | 'learning' | 'unseen') => {
-    setProgress((p) => {
-      const copy = { ...p } as UserProgress;
-      copy.modules = { ...(copy.modules || {}) };
-      const m = (copy.modules[moduleData.id] ||= { sectionsRead: {}, flashcards: {}, quizAttempts: [] });
-      m.flashcards = { ...(m.flashcards || {}) };
-      m.flashcards[id] = status;
-      copy.lastOpenedModuleId = moduleData.id;
-      return copy;
-    });
-  };
+  useEffect(() => {
+    if (!hasHydratedProgress) {
+      return;
+    }
 
-  const onSubmitAttempt = (attempt: { attemptAtIso: string; score: number; answers: Record<string, number | boolean> }) => {
-    setProgress((p) => {
-      const copy = { ...p } as UserProgress;
-      copy.modules = { ...(copy.modules || {}) };
-      const m = (copy.modules[moduleData.id] ||= { sectionsRead: {}, flashcards: {}, quizAttempts: [] });
-      m.quizAttempts = [...(m.quizAttempts || []), attempt];
-      copy.lastOpenedModuleId = moduleData.id;
-      return copy;
-    });
-  };
+    saveProgress(progress);
+  }, [hasHydratedProgress, progress]);
 
-  const completion = useMemo(() => getModuleCompletion(moduleData.id, progress, moduleData), [progress, moduleData]);
+  const moduleProgress = progress.modules[moduleData.id];
+  const completion = getModuleCompletion(moduleData.id, progress, moduleData);
 
-  const knownCount = Object.values(moduleProg.flashcards || {}).filter((s) => s === 'known').length;
-  const totalFlash = moduleData.flashcards.length;
+  const latestQuizScore = moduleProgress.quizAttempts.length
+    ? moduleProgress.quizAttempts[moduleProgress.quizAttempts.length - 1].score
+    : null;
+
+  function handleModuleAttempt(attempt: AssessmentAttempt) {
+    setProgress((current) => recordAssessmentAttempt(current, attempt));
+  }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div className="md:col-span-3 mb-2">
-        <div className="text-sm text-slate-500">
-          <a href="/" className="underline mr-2">← Home</a>
-          <a href="/modules" className="underline">Modules</a>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+        <Link href="/" className="underline">
+          Dashboard
+        </Link>
+        <span>/</span>
+        <Link href="/modules" className="underline">
+          Modules
+        </Link>
+        <span>/</span>
+        <span className="text-slate-700">{moduleData.title}</span>
       </div>
-      <div className="md:col-span-3 space-y-4">
-        <div className="bg-white p-4 rounded shadow-sm">
-          <div className="flex justify-between items-start">
-            <div>
-              <div className="text-xl font-semibold">{moduleData.title}</div>
-              <div className="text-xs text-slate-500 mt-1">{moduleData.description}</div>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-3xl">
+            <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+              <span className="rounded-full bg-slate-100 px-3 py-1">{moduleData.domain}</span>
+              <span className="rounded-full bg-slate-100 px-3 py-1">{moduleData.level}</span>
+              <span className="rounded-full bg-slate-100 px-3 py-1">{moduleData.estimatedMinutes} min</span>
             </div>
-            <div className="text-sm text-slate-500">Completion: <span className="font-semibold">{completion}%</span></div>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900">{moduleData.title}</h1>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{moduleData.description}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {moduleData.tags.map((tag) => (
+                <span key={tag} className="rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-3">
-            <ModuleTabs tabs={["Learn", "Flashcards", "Quiz", "Checklist"]} onChange={(t) => setTab(t)} />
+          <div className="w-full max-w-sm rounded-3xl bg-slate-100 p-5">
+            <div className="text-sm text-slate-500">Module completion</div>
+            <div className="mt-2 text-4xl font-semibold text-slate-900">{Math.round(completion)}%</div>
+            <div className="mt-4 h-3 overflow-hidden rounded-full bg-white">
+              <div className="h-full rounded-full bg-slate-900" style={{ width: `${completion}%` }} />
+            </div>
+            <div className="mt-4 space-y-2 text-sm text-slate-700">
+              <div>
+                Flashcards reviewed: {Object.values(moduleProgress.flashcards).filter((card) => card.reviewCount > 0).length}
+              </div>
+              <div>Latest assessment score: {latestQuizScore === null ? 'No attempt yet' : `${latestQuizScore}%`}</div>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-4">
-            {tab === 'Learn' && (
-              <div className="space-y-4">
-                {moduleData.sections.map((s) => (
-                  <SectionReader key={s.id} id={s.id} title={s.title} bodyMarkdown={s.bodyMarkdown} onMarkRead={onMarkRead} isRead={Boolean(moduleProg.sectionsRead?.[s.id])} />
+      <ModuleTabs tabs={['Learn', 'Review', 'Assessment', 'DCS Application']} onChange={setTab} />
+
+      {tab === 'Learn' ? (
+        <div className="space-y-4">
+          {moduleData.sections.map((section) => (
+            <SectionReader
+              key={section.id}
+              id={section.id}
+              title={section.title}
+              bodyMarkdown={section.bodyMarkdown}
+              takeaway={section.takeaway}
+              onMarkRead={(sectionId) =>
+                setProgress((current) => markSectionRead(current, moduleData.id, sectionId))
+              }
+              isRead={Boolean(moduleProgress.sectionsRead[section.id])}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {tab === 'Review' ? (
+        <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="mb-5 max-w-2xl">
+            <h2 className="text-2xl font-semibold text-slate-900">Flashcard review</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Rate each card honestly. The app schedules the next review date locally with no backend needed.
+            </p>
+          </div>
+          <FlashcardDeck
+            cards={moduleData.flashcards}
+            progress={moduleProgress.flashcards}
+            onReview={(cardId, rating) =>
+              setProgress((current) => recordFlashcardReview(current, moduleData.id, cardId, rating))
+            }
+          />
+        </section>
+      ) : null}
+
+      {tab === 'Assessment' ? (
+        <AssessmentSession
+          questions={moduleData.quiz}
+          source="module-quiz"
+          title={`${moduleData.title} assessment`}
+          description="Record confidence first, then provide the answer, explanation, and judgement required for structured review."
+          onRecordAttempt={handleModuleAttempt}
+          onSessionComplete={(attempts) => {
+            const average = attempts.length
+              ? Math.round(
+                  (attempts.reduce((sum, attempt) => sum + attempt.scoreBreakdown.total, 0) / attempts.length) *
+                    100
+                )
+              : 0;
+
+            setProgress((current) =>
+              recordModuleQuizAttempt(current, moduleData.id, {
+                id: `${moduleData.id}-${Date.now()}`,
+                attemptAtIso: new Date().toISOString(),
+                score: average,
+                questionIds: attempts.map((attempt) => attempt.questionId)
+              })
+            );
+          }}
+        />
+      ) : null}
+
+      {tab === 'DCS Application' ? (
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-2xl font-semibold text-slate-900">DCS application</h2>
+            <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
+              {moduleData.dcsRelevance.map((item) => (
+                <li key={item}>- {item}</li>
+              ))}
+            </ul>
+
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-slate-900">Learning objectives</h3>
+              <ul className="mt-3 space-y-2 text-sm text-slate-700">
+                {moduleData.learningObjectives.map((objective) => (
+                  <li key={objective}>- {objective}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-slate-900">Scenario prompts</h3>
+              <div className="mt-3 space-y-3">
+                {moduleData.scenarioPrompts.map((prompt) => (
+                  <div key={prompt.id} className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-700">
+                    <div className="font-semibold text-slate-900">{prompt.title}</div>
+                    <p className="mt-2">{prompt.prompt}</p>
+                  </div>
                 ))}
               </div>
-            )}
+            </div>
+          </section>
 
-            {tab === 'Flashcards' && (
-              <div>
-                <div className="mb-3 text-sm text-slate-500">Known {knownCount}/{totalFlash} — flip with Space or click</div>
-                <FlashcardDeck cards={moduleData.flashcards as Flashcard[]} statuses={moduleProg.flashcards || {}} onUpdate={onUpdateFlashcard} />
-              </div>
-            )}
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-2xl font-semibold text-slate-900">Practical outputs</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              These outputs convert study into usable documentation, references, and support material.
+            </p>
 
-            {tab === 'Quiz' && (
-              <div>
-                <QuizEngine questions={moduleData.quiz} onSubmitAttempt={onSubmitAttempt} />
-              </div>
-            )}
-
-            {tab === 'Checklist' && (
-              <div className="bg-white p-4 rounded shadow-sm">
-                <h4 className="font-semibold">Learning objectives</h4>
-                <ul className="list-disc pl-5 mt-2 text-sm text-slate-700">
-                  {moduleData.learningObjectives.map((o) => <li key={o}>{o}</li>)}
-                </ul>
-
-                <div className="mt-4">
-                  <h5 className="font-semibold">Sections status</h5>
-                  <ul className="text-sm mt-2 list-disc pl-5 text-slate-600">
-                    {moduleData.sections.map((s) => (
-                      <li key={s.id}>{s.title} — {moduleProg.sectionsRead?.[s.id] ? 'Read' : 'Not read'}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
-          </div>
+            <div className="mt-5 space-y-3">
+              {moduleData.practicalOutputs.map((output) => (
+                <label
+                  key={output.id}
+                  className="flex items-start gap-3 rounded-2xl border border-slate-200 p-4 text-sm text-slate-700"
+                >
+                  <input
+                    type="checkbox"
+                    checked={Boolean(moduleProgress.practicalOutputs[output.id])}
+                    onChange={() =>
+                      setProgress((current) => togglePracticalOutput(current, moduleData.id, output.id))
+                    }
+                    className="mt-1 h-4 w-4 rounded border-slate-300"
+                  />
+                  <div>
+                    <div className="font-semibold text-slate-900">{output.title}</div>
+                    <p className="mt-1">{output.description}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </section>
         </div>
-      </div>
-
-      <aside className="md:col-span-1">
-        <div className="bg-white p-4 rounded shadow-sm text-sm">
-          <div className="font-semibold">Module progress</div>
-          <div className="mt-2">Completion: <strong>{completion}%</strong></div>
-          <div className="mt-2 text-xs text-slate-500">Flashcards engaged: {Object.values(moduleProg.flashcards || {}).filter((s) => s !== 'unseen').length}/{totalFlash}</div>
-          <div className="mt-3 text-xs text-slate-500">Latest quiz: {moduleProg.quizAttempts.length ? moduleProg.quizAttempts[moduleProg.quizAttempts.length - 1].score + '%' : 'No attempt'}</div>
-        </div>
-      </aside>
+      ) : null}
     </div>
   );
 }

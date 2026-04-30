@@ -1,11 +1,25 @@
 "use client";
-import React from 'react';
 
-export default function FlashcardCard({ front, back, flipped, onFlip }: { front: string; back: string; flipped: boolean; onFlip: () => void }) {
+type FlashcardCardProps = {
+  front: string;
+  back: string;
+  flipped: boolean;
+  onFlip: () => void;
+};
+
+export default function FlashcardCard({ front, back, flipped, onFlip }: FlashcardCardProps) {
   return (
-    <button onClick={onFlip} aria-pressed={flipped} className="w-full max-w-2xl mx-auto p-6 rounded-lg border bg-white shadow cursor-pointer text-left">
-      <div className="text-sm text-slate-500 mb-2">Flashcard (press Space or click)</div>
-      <div className="text-lg font-semibold">{flipped ? back : front}</div>
+    <button
+      onClick={onFlip}
+      className="w-full rounded-[2rem] border border-slate-200 bg-white p-6 text-left shadow-sm"
+    >
+      <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+        {flipped ? 'Reference answer' : 'Prompt'}
+      </div>
+      <div className="mt-4 text-xl font-semibold leading-8 text-slate-900">{flipped ? back : front}</div>
+      <div className="mt-4 text-sm text-slate-500">
+        Select to {flipped ? 'return to the prompt' : 'reveal the reference answer'}.
+      </div>
     </button>
   );
 }

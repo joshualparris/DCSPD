@@ -1,37 +1,51 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { modules } from '../../src/data/modules';
+
+import { useEffect, useState } from 'react';
 import ModuleCard from '../../src/components/modules/ModuleCard';
-import { getProgress } from '../../src/lib/progress';
+import { modules } from '../../src/data/modules';
 import { getModuleCompletion } from '../../src/lib/moduleMath';
+import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../src/lib/progress';
 
 export default function ModulesPage() {
-  const [progress, setProgress] = useState<any>(undefined);
+  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot(modules));
 
   useEffect(() => {
-    setProgress(getProgress());
+    setProgress(getStoredProgressSnapshot(modules));
   }, []);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-slate-500">
-          <Link href="/" className="underline">← Home</Link>
-          <span className="px-2">/</span>
-          <span className="font-semibold">Modules</span>
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Modules</div>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+              DCS-specific modules for targeted professional development
+            </h1>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+              Each module is concise, practical, and aligned to common DCS support scenarios. Review the concept,
+              assess retention, apply it in context, and produce a usable reference or note.
+            </p>
+          </div>
+          <div className="rounded-3xl bg-slate-100 px-5 py-4 text-sm text-slate-700">
+            {modules.length} modules across foundations, networking, endpoints, identity, cloud, and operations.
+          </div>
         </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">All Modules</h2>
-        <div className="text-sm text-slate-500">{modules.length} modules</div>
-      </div>
+      </section>
 
-      
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {modules.map((m) => (
-          <ModuleCard key={m.id} id={m.id} title={m.title} description={m.description} progress={Math.round(getModuleCompletion(m.id, progress, m))} />
+      <div className="grid gap-4 xl:grid-cols-2">
+        {modules.map((module) => (
+          <ModuleCard
+            key={module.id}
+            id={module.id}
+            title={module.title}
+            description={module.description}
+            domain={module.domain}
+            level={module.level}
+            estimatedMinutes={module.estimatedMinutes}
+            tags={module.tags}
+            progress={getModuleCompletion(module.id, progress, module)}
+          />
         ))}
       </div>
     </div>

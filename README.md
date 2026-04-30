@@ -1,57 +1,99 @@
-# DCSPrep — Foundations (seed)
+# DCSPrep
 
-This workspace contains a minimal Next.js + TypeScript app scaffold for the DCSPrep onboarding app (Foundations module seeded).
+DCSPrep is a local-first Next.js professional development app for Josh's DCS IT support growth. It focuses on safe Level 1 learning, structured assessment, scenario practice, error review, and visible progress across real school-support themes.
 
-Quick features implemented for the MVP:
-- Next.js (App Router) app
-- TypeScript + TailwindCSS
-- Local progress storage (localStorage)
-- Module data and seed content for Module 1: `foundations` (sections, flashcards, quiz)
-- Flashcards, Quiz engine, Section reader and completion math
+The intended direction is question-first and retrieval-first:
 
-Minimal run steps (local, dev):
+- flashcards
+- multiple-choice and short-answer practice
+- scenario-based troubleshooting
+- explanation and note-writing practice
+- short focused study blocks
 
-1. Install dependencies
+The app should stay privacy-safe while becoming more relevant to the actual DCS workflow areas supported through internal systems such as Sentral, OurDCS, Teams, and related school-owned resources.
+
+## Current App Areas
+
+- Professional Development Dashboard
+- Modules
+- Scenario Lab
+- Due Today
+- Structured assessment
+- PD log
+- Error log
+- Readiness profiles
+- Trainer guide
+- Settings
+
+## Current Content Coverage
+
+Core module areas currently implemented:
+
+- DCS IT Support Foundations
+- Ports and Protocols
+- DNS, DHCP, Gateway, and IP Basics
+- Printer Troubleshooting
+- Classroom Display and ViewBoard Troubleshooting
+- M365 Identity and Offboarding Basics
+- MDM, Intune, and Group Policy Concepts
+- VLANs and Network Segmentation
+- Cloud Models: SaaS, PaaS, IaaS, and DaaS
+- Ticket Notes and Escalation Quality
+
+## Development Commands
+
+Install dependencies:
 
 ```powershell
 npm install
 ```
 
-2. Run development server
+Run the dev server:
 
 ```powershell
 npm run dev
 ```
 
-Open http://localhost:3000
-
-How content is organised
-- `src/types/training.ts` — type definitions.
-- `src/data/modules.ts` — all module content (seeded Foundations module).
-- `src/lib/progress.ts` — read/write localStorage helpers for progress.
-- `src/lib/moduleMath.ts` — deterministic completion calculation (sections 50%, flashcards 20%, quiz 30%).
-- `src/components/` — UI components for shell, modules, flashcards and quiz.
-- `app/` — pages and layout.
-
-Adding Module 2+
-1. Duplicate the object shape inside `src/data/modules.ts` and use a unique `id`.
-2. Add sections, flashcards and quiz following the same schemas.
-
-Notes
-- The app saves progress in localStorage (no remote services yet). Use Settings → Reset progress to clear state.
-
-Dev server tips & OneDrive note
-- If your project lives inside OneDrive, Windows may lock files under `.next` and cause permission errors (EPERM) when the dev server writes traces or caches. To avoid this: move the project outside OneDrive or exclude the project folder (or at least `.next`) from OneDrive syncing.
-
-- Next chooses port 3000 by default. If 3000 is already in use Next will fall back to another port (for example 3001). To explicitly start the dev server on port 3000, you can run:
+Run lint:
 
 ```powershell
-$env:PORT=3000
-npm run dev
+npm run lint
 ```
 
-Or use the convenience script added to this project:
+Run production build:
 
 ```powershell
-npm run dev:3000
+npm run build
 ```
+
+## Project Structure
+
+- `app/` - App Router routes
+- `src/components/` - UI and learning components
+- `src/data/modules.ts` - module content
+- `src/data/questions.ts` - strict assessment bank
+- `src/data/scenarios.ts` - scenario chains
+- `src/lib/progress.ts` - local progress storage and hydration-safe helpers
+- `src/lib/moduleMath.ts` - completion calculations
+- `src/lib/readinessMath.ts` - readiness-profile calculations
+- `src/types/` - shared types
+
+## Audit and Roadmap Docs
+
+Current audit and backlog documents:
+
+- [`docs/jira-vs-dcsprep-audit.md`](docs/jira-vs-dcsprep-audit.md)
+- [`docs/dcsprep-upskilling-roadmap.md`](docs/dcsprep-upskilling-roadmap.md)
+- [`TODO.md`](TODO.md)
+
+These documents map the app against the DCS Jira analysis, identify missing or shallow training areas, and define the next implementation priorities.
+
+## Notes
+
+- Progress is stored in `localStorage`.
+- The app is PD-only and should remain privacy-safe.
+- Do not enter live student, staff, parent, credential, network, or incident details.
+
+## OneDrive Note
+
+If the project stays inside OneDrive, Windows may occasionally interfere with `.next` writes during local development. If you hit dev-server file locking issues, excluding the project folder or `.next` from sync is safer than deleting build files repeatedly.

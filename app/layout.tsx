@@ -1,44 +1,28 @@
 import './globals.css';
-import React from 'react';
+import type { Metadata } from 'next';
 import Topbar from '../src/components/shell/Topbar';
+import Sidebar from '../src/components/shell/Sidebar';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'DCSPrep',
-  description: 'Onboarding for Library & ICT Support — Dubbo Christian School'
+  description: 'A local-first DCS IT professional development dashboard.'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen flex flex-col">
-          <header>
-            <Topbar />
-          </header>
-
-          <main className="flex-1 container py-8">
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-              <div className="md:col-span-1">
-                {/* Sidebar area for desktop */}
-                <div className="sticky top-6">
-                  <div className="hidden md:block">
-                    {/* lazy import-like static sidebar content to be replaced by component pages */}
-                    <div className="bg-white p-3 rounded shadow-sm text-sm">
-                      <div className="font-semibold">Navigation</div>
-                      <div className="mt-2 text-xs text-slate-500">Use the page links to run the modules</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:col-span-5">
-                {children}
-              </div>
-            </div>
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(226,232,240,0.6),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2f7_100%)]">
+          <Topbar />
+          <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-[280px_minmax(0,1fr)]">
+            <Sidebar />
+            <div className="min-w-0">{children}</div>
           </main>
-
-          <footer className="bg-white border-t py-4 mt-8">
-            <div className="container text-sm text-slate-500">© {new Date().getFullYear()} Dubbo Christian School — DCSPrep</div>
+          <footer className="border-t border-slate-200 bg-white/80 px-4 py-5 text-sm text-slate-500">
+            <div className="mx-auto max-w-7xl">
+              DCSPrep is a personal PD tool. Keep all entries privacy-safe and free of real student, staff,
+              credential, or network details.
+            </div>
           </footer>
         </div>
       </body>

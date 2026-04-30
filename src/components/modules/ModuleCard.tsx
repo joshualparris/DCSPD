@@ -1,28 +1,67 @@
-import React from 'react';
 import Link from 'next/link';
 
-export default function ModuleCard({ id, title, description, progress = 0 }: { id: string; title: string; description: string; progress?: number }) {
+type ModuleCardProps = {
+  id: string;
+  title: string;
+  description: string;
+  domain: string;
+  level: string;
+  estimatedMinutes: number;
+  tags: string[];
+  progress: number;
+};
+
+export default function ModuleCard({
+  id,
+  title,
+  description,
+  domain,
+  level,
+  estimatedMinutes,
+  tags,
+  progress
+}: ModuleCardProps) {
   return (
-    <div className="bg-white p-4 rounded shadow-sm">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="font-semibold text-lg">{title}</div>
-          <div className="text-xs text-slate-500 mt-1">{description}</div>
+    <article className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+          <span className="rounded-full bg-slate-100 px-3 py-1">{domain}</span>
+          <span className="rounded-full bg-slate-100 px-3 py-1">{level}</span>
+          <span className="rounded-full bg-slate-100 px-3 py-1">{estimatedMinutes} min</span>
         </div>
 
-        <div className="text-right">
-          <div className="text-sm font-semibold">{Math.round(progress)}%</div>
-        </div>
-      </div>
-
-      <div className="mt-3 flex items-center gap-3 justify-between">
-        <div className="w-2/3 bg-slate-100 h-3 rounded overflow-hidden">
-          <div style={{ width: `${progress}%` }} className="h-3 bg-indigo-600" />
-        </div>
         <div>
-          <Link href={`/modules/${id}`} className="inline-block px-3 py-1 rounded bg-indigo-50 text-indigo-700 text-sm">Start / Continue</Link>
+          <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <span key={tag} className="rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-2">
+          <div className="flex items-center justify-between text-sm text-slate-600">
+            <span>Progress</span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+          <div className="mt-2 h-3 overflow-hidden rounded-full bg-slate-100">
+            <div className="h-full rounded-full bg-slate-900" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+
+        <div className="mt-2">
+          <Link
+            href={`/modules/${id}`}
+            className="inline-flex rounded-full bg-slate-900 px-4 py-2 text-sm text-white"
+          >
+            Open module
+          </Link>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

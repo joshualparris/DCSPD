@@ -5,14 +5,16 @@ export default function ModuleTabs({ tabs, onChange }: { tabs: string[]; onChang
   const [active, setActive] = useState(tabs[0] || '');
   return (
     <div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-wrap gap-2">
         {tabs.map((t) => (
           <button
             key={t}
             onClick={() => {
               setActive(t); onChange?.(t);
             }}
-            className={`px-3 py-1 rounded ${active === t ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700'}`}
+            className={`rounded-full px-4 py-2 text-sm ${
+              active === t ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-700'
+            }`}
           >
             {t}
           </button>
