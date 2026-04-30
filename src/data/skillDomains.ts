@@ -4,12 +4,33 @@ export const weakTopicLabels: Record<WeakTopicKey, string> = {
   'ports-protocols': 'Ports and protocols',
   'dns-dhcp-gateway': 'DNS, DHCP, and gateway basics',
   'vlan-firewall-rules': 'VLAN and firewall rules',
+  'network-services': 'Network services (DNS/DHCP/auth/proxy/etc.)',
+  'wireless-networks': 'Wireless networks (802.11/Bluetooth/NFC/RFID)',
+  'network-tools-devices': 'Network tools and devices',
+  'laptop-mobile-hardware': 'Laptop and mobile hardware',
+  'display-cables-connectors': 'Displays, cables, and connectors',
+  'memory-storage-raid': 'Memory, storage, and RAID',
+  'motherboards-cpu-power-cooling': 'Motherboards, CPU, power, and cooling',
+  'printers-maintenance': 'Printers and maintenance',
   'cloud-models': 'Cloud models',
+  virtualization: 'Virtualization concepts',
+  'hardware-troubleshooting': 'Hardware troubleshooting',
+  'network-troubleshooting': 'Network troubleshooting',
   'offboarding-sequence': 'Offboarding sequence',
   'mdm-group-policy': 'MDM and Group Policy',
   'printer-symptoms': 'Printer symptoms',
+  'classroom-av': 'Classroom AV and display troubleshooting',
   'ticket-quality': 'Ticket quality',
-  'security-risk-judgement': 'Security and risk judgement'
+  'security-risk-judgement': 'Security and risk judgement',
+  'parent-portal-workflows': 'Parent Portal workflows',
+  'sentral-support': 'Sentral support',
+  'schoolbox-workflows': 'OurDCS and Schoolbox workflows',
+  'login-password-support': 'Login and password support',
+  'permissions-access': 'Permissions and access requests',
+  'website-filtering': 'Website filtering and unblock requests',
+  'onboarding-workflows': 'New user onboarding',
+  'teams-sharepoint-onedrive': 'Teams, SharePoint, and OneDrive',
+  'jamf-ipad-support': 'iPad and Jamf support'
 };
 
 export type ReadinessArea = {
@@ -91,6 +112,23 @@ export const readinessProfiles = {
       moduleIds: ['dcs-it-support-foundations', 'classroom-display-viewboard-troubleshooting'],
       focusTerms: ['first check', 'triage'],
       weakTopics: ['ticket-quality']
+    },
+    {
+      id: 'school-service-workflows',
+      label: 'School service workflows',
+      moduleIds: [
+        'parent-portal-registration',
+        'sentral-support',
+        'login-and-password-support',
+        'new-user-onboarding'
+      ],
+      focusTerms: ['portal', 'Sentral', 'login', 'onboarding'],
+      weakTopics: [
+        'parent-portal-workflows',
+        'sentral-support',
+        'login-password-support',
+        'onboarding-workflows'
+      ]
     }
   ],
   level2: [
@@ -163,6 +201,41 @@ export const readinessProfiles = {
       moduleIds: ['ports-and-protocols', 'vlans-network-segmentation'],
       focusTerms: ['port', 'protocol', 'allow'],
       weakTopics: ['ports-protocols', 'vlan-firewall-rules']
+    },
+    {
+      id: 'school-platforms',
+      label: 'School platforms and workflow support',
+      moduleIds: [
+        'parent-portal-registration',
+        'parent-portal-details-updates',
+        'sentral-support',
+        'ourdcs-schoolbox-support',
+        'teams-sharepoint-onedrive-support'
+      ],
+      focusTerms: ['portal', 'Sentral', 'Schoolbox', 'SharePoint', 'OneDrive'],
+      weakTopics: [
+        'parent-portal-workflows',
+        'sentral-support',
+        'schoolbox-workflows',
+        'teams-sharepoint-onedrive'
+      ]
+    },
+    {
+      id: 'access-onboarding',
+      label: 'Access, password, and onboarding workflows',
+      moduleIds: [
+        'login-and-password-support',
+        'permissions-and-access-requests',
+        'new-user-onboarding',
+        'ipad-jamf-workflow-basics'
+      ],
+      focusTerms: ['access', 'password', 'onboarding', 'Jamf'],
+      weakTopics: [
+        'login-password-support',
+        'permissions-access',
+        'onboarding-workflows',
+        'jamf-ipad-support'
+      ]
     }
   ],
   schoolItManager: [
@@ -256,6 +329,26 @@ export const readinessProfiles = {
       moduleIds: ['cloud-models-saas-paas-iaas-daas', 'vlans-network-segmentation'],
       focusTerms: ['roadmap', 'future'],
       weakTopics: ['cloud-models', 'vlan-firewall-rules']
+    },
+    {
+      id: 'school-service-design',
+      label: 'School service design and self-service',
+      moduleIds: [
+        'parent-portal-registration',
+        'parent-portal-details-updates',
+        'sentral-support',
+        'website-filtering-and-unblock-requests',
+        'new-user-onboarding',
+        'teams-sharepoint-onedrive-support'
+      ],
+      focusTerms: ['parent', 'workflow', 'self-service', 'filtering', 'onboarding'],
+      weakTopics: [
+        'parent-portal-workflows',
+        'sentral-support',
+        'website-filtering',
+        'onboarding-workflows',
+        'teams-sharepoint-onedrive'
+      ]
     }
   ]
 } satisfies Record<string, ReadinessArea[]>;

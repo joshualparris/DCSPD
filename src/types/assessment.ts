@@ -4,12 +4,33 @@ export type WeakTopicKey =
   | 'ports-protocols'
   | 'dns-dhcp-gateway'
   | 'vlan-firewall-rules'
+  | 'network-services'
+  | 'wireless-networks'
+  | 'network-tools-devices'
+  | 'laptop-mobile-hardware'
+  | 'display-cables-connectors'
+  | 'memory-storage-raid'
+  | 'motherboards-cpu-power-cooling'
+  | 'printers-maintenance'
   | 'cloud-models'
+  | 'virtualization'
+  | 'hardware-troubleshooting'
+  | 'network-troubleshooting'
   | 'offboarding-sequence'
   | 'mdm-group-policy'
   | 'printer-symptoms'
+  | 'classroom-av'
   | 'ticket-quality'
-  | 'security-risk-judgement';
+  | 'security-risk-judgement'
+  | 'parent-portal-workflows'
+  | 'sentral-support'
+  | 'schoolbox-workflows'
+  | 'login-password-support'
+  | 'permissions-access'
+  | 'website-filtering'
+  | 'onboarding-workflows'
+  | 'teams-sharepoint-onedrive'
+  | 'jamf-ipad-support';
 
 export type AssessmentSource = 'strict-quiz' | 'module-quiz';
 
@@ -20,9 +41,16 @@ export type AssessmentOption = {
   label: string;
 };
 
+export type AssessmentQuestionType =
+  | 'mcq'
+  | 'short-answer'
+  | 'order-steps'
+  | 'scenario-response'
+  | 'categorization';
+
 export type BaseAssessmentQuestion = {
   id: string;
-  type: 'mcq' | 'short-answer' | 'order-steps' | 'scenario-response';
+  type: AssessmentQuestionType;
   prompt: string;
   domain: string;
   difficulty: AssessmentDifficulty;
@@ -59,11 +87,25 @@ export type ScenarioResponseAssessmentQuestion = BaseAssessmentQuestion & {
   rubric: string[];
 };
 
+export type CategorizationAssessmentItem = {
+  id: string;
+  label: string;
+  correctCategoryId: string;
+};
+
+export type CategorizationAssessmentQuestion = BaseAssessmentQuestion & {
+  type: 'categorization';
+  categories: AssessmentOption[];
+  items: CategorizationAssessmentItem[];
+  rubric: string[];
+};
+
 export type AssessmentQuestion =
   | MCQAssessmentQuestion
   | ShortAnswerAssessmentQuestion
   | OrderStepsAssessmentQuestion
-  | ScenarioResponseAssessmentQuestion;
+  | ScenarioResponseAssessmentQuestion
+  | CategorizationAssessmentQuestion;
 
 export type SelfRatingBand = 0 | 1 | 2;
 
@@ -73,6 +115,7 @@ export type AssessmentResponse = {
   selectedOptionId?: string;
   answerText?: string;
   orderedStepIds?: string[];
+  categorizedItems?: Record<string, string>;
   reasoning: string;
   judgement: string;
 };

@@ -1,5 +1,12 @@
-﻿import type { AssessmentQuestion, AssessmentSource } from '../types/assessment';
-import type { TrainingModule } from '../types/training';
+import type { AssessmentQuestion, AssessmentSource } from '../types/assessment';
+import type {
+  Flashcard,
+  ModulePattern,
+  PracticalOutput,
+  ScenarioPrompt,
+  Section,
+  TrainingModule
+} from '../types/training';
 
 const reviewSchedule = 'Again today. Hard tomorrow. Good in 3 days. Easy in 7 days.';
 
@@ -37,13 +44,24 @@ function scenarioResponse(
   };
 }
 
+function categorization(
+  question: Omit<Extract<AssessmentQuestion, { type: 'categorization' }>, 'type'>
+): AssessmentQuestion {
+  return {
+    type: 'categorization',
+    ...question
+  };
+}
+
 export const legacyModuleAliases: Record<string, string> = {
   foundations: 'dcs-it-support-foundations',
   'library-daily-routines': 'classroom-display-viewboard-troubleshooting',
   'ict-helpdesk-101': 'ticket-notes-escalation-quality'
 };
 
-export const modules: TrainingModule[] = [
+type LegacyTrainingModule = Omit<TrainingModule, 'modulePattern'>;
+
+const baseModules: LegacyTrainingModule[] = [
   {
     id: 'dcs-it-support-foundations',
     title: 'DCS IT Support Foundations',
@@ -1414,6 +1432,2475 @@ export const modules: TrainingModule[] = [
       }
     ]
   }
+];
+
+function buildSections(
+  prefix: string,
+  items: Array<{
+    title: string;
+    bodyMarkdown: string;
+    takeaway?: string;
+  }>
+): Section[] {
+  return items.map((item, index) => ({
+    id: `${prefix}-${index + 1}`,
+    ...item
+  }));
+}
+
+function buildFlashcards(prefix: string, items: Array<[front: string, back: string]>): Flashcard[] {
+  return items.map(([front, back], index) => ({
+    id: `${prefix}-f${index + 1}`,
+    front,
+    back
+  }));
+}
+
+function buildScenarioPrompts(
+  prefix: string,
+  items: Array<{
+    title: string;
+    prompt: string;
+  }>
+): ScenarioPrompt[] {
+  return items.map((item, index) => ({
+    id: `${prefix}-s${index + 1}`,
+    ...item
+  }));
+}
+
+function buildPracticalOutputs(
+  prefix: string,
+  items: Array<{
+    title: string;
+    description: string;
+  }>
+): PracticalOutput[] {
+  return items.map((item, index) => ({
+    id: `${prefix}-p${index + 1}`,
+    ...item
+  }));
+}
+
+function mergeUniqueStrings(base: string[], extras: string[] = []) {
+  return Array.from(new Set([...base, ...extras]));
+}
+
+function buildDefaultPattern(module: LegacyTrainingModule): ModulePattern {
+  return {
+    diagnosticQuestions: module.quiz.slice(0, 2).map((question, index) => ({
+      id: `${module.id}-diagnostic-${index + 1}`,
+      prompt: question.prompt,
+      expectedFocus: question.modelAnswer
+    })),
+    explainBackPrompt: {
+      id: `${module.id}-explain-back`,
+      title: 'Explain it simply',
+      prompt: `Explain ${module.title} in plain English as if you were helping a new Level 1 support worker.`,
+      supportText: 'Keep it simple, practical, and tied to safe DCS support behaviour.'
+    },
+    cornellPrompt: {
+      id: `${module.id}-cornell`,
+      title: 'Cornell reflection',
+      prompt: `Write cue questions, summary notes, and one next-action line for ${module.title}.`,
+      supportText: 'Keep the notes short enough that you could revise them during a quiet support window.'
+    },
+    conceptSortExercise: {
+      id: `${module.id}-concept-sort`,
+      title: 'Support judgement sort',
+      prompt: `Sort these common support considerations into the bucket that best fits ${module.title}.`,
+      cards: [
+        'Visible user symptom',
+        'Safe Level 1 check',
+        'Escalation trigger or owner boundary',
+        'Privacy or data-handling concern',
+        'Useful note detail',
+        'Possible self-service article angle'
+      ],
+      buckets: [
+        { id: 'symptom', label: 'Symptom or clue' },
+        { id: 'action', label: 'Safe first-line action' },
+        { id: 'boundary', label: 'Boundary or escalation' }
+      ],
+      modelGroups: [
+        'Symptom and clue items should sound like what the user sees or reports.',
+        'Safe first-line actions should stay reversible and appropriate for Level 1.',
+        'Boundary items should mention privacy, approvals, ownership, or escalation thresholds.'
+      ]
+    },
+    memoryPrompt: {
+      id: `${module.id}-memory`,
+      title: 'Memory sheet prompt',
+      prompt: `Create a one-minute memory sheet for ${module.title}: three signals, three safe checks, and one escalation trigger.`,
+      mnemonicHint: module.tags.slice(0, 3).join(' / ')
+    },
+    sq3rPrompt: {
+      id: `${module.id}-sq3r`,
+      title: 'SQ3R companion',
+      prompt: `Survey, question, read, recite, and review one internal DCS-safe resource related to ${module.title}.`,
+      supportText: 'Convert the reading into safe prompts and summaries instead of copying internal content.'
+    },
+    safePromptWorkflow: {
+      id: `${module.id}-safe-prompt`,
+      title: 'Turn internal knowledge into safe prompts',
+      goal: `Convert DCS workflow knowledge about ${module.title} into study prompts without copying private material.`,
+      steps: [
+        'Identify the workflow or support pattern, not the private case details.',
+        'Abstract the safe symptom, decision point, and escalation boundary.',
+        'Write a question, flashcard, or scenario prompt using generic language.',
+        'Remove names, access keys, credentials, private notes, and copied internal text.',
+        'Check that the result teaches judgement rather than exposing system detail.'
+      ],
+      examplePrompt: `Create three privacy-safe retrieval questions about ${module.title} that focus on symptoms, safe first actions, and escalation boundaries.`,
+      privacyReminder:
+        'Keep the workflow, remove the confidential specifics. Do not paste live parent, student, staff, credential, or internal system data.'
+    }
+  };
+}
+
+type ModuleEnhancement = {
+  description?: string;
+  estimatedMinutes?: number;
+  addTags?: string[];
+  addLearningObjectives?: string[];
+  addDcsRelevance?: string[];
+  addSections?: Section[];
+  addFlashcards?: Flashcard[];
+  addQuiz?: AssessmentQuestion[];
+  addScenarioPrompts?: ScenarioPrompt[];
+  addPracticalOutputs?: PracticalOutput[];
+};
+
+function enhanceModule(module: LegacyTrainingModule, enhancement?: ModuleEnhancement): TrainingModule {
+  return {
+    ...module,
+    description: enhancement?.description ?? module.description,
+    estimatedMinutes: enhancement?.estimatedMinutes ?? module.estimatedMinutes,
+    tags: mergeUniqueStrings(module.tags, enhancement?.addTags),
+    learningObjectives: mergeUniqueStrings(module.learningObjectives, enhancement?.addLearningObjectives),
+    dcsRelevance: mergeUniqueStrings(module.dcsRelevance, enhancement?.addDcsRelevance),
+    sections: [...module.sections, ...(enhancement?.addSections ?? [])],
+    flashcards: [...module.flashcards, ...(enhancement?.addFlashcards ?? [])],
+    quiz: [...module.quiz, ...(enhancement?.addQuiz ?? [])],
+    scenarioPrompts: [...module.scenarioPrompts, ...(enhancement?.addScenarioPrompts ?? [])],
+    practicalOutputs: [...module.practicalOutputs, ...(enhancement?.addPracticalOutputs ?? [])],
+    modulePattern: buildDefaultPattern({
+      ...module,
+      description: enhancement?.description ?? module.description,
+      estimatedMinutes: enhancement?.estimatedMinutes ?? module.estimatedMinutes,
+      tags: mergeUniqueStrings(module.tags, enhancement?.addTags),
+      learningObjectives: mergeUniqueStrings(module.learningObjectives, enhancement?.addLearningObjectives),
+      dcsRelevance: mergeUniqueStrings(module.dcsRelevance, enhancement?.addDcsRelevance),
+      sections: [...module.sections, ...(enhancement?.addSections ?? [])],
+      flashcards: [...module.flashcards, ...(enhancement?.addFlashcards ?? [])],
+      quiz: [...module.quiz, ...(enhancement?.addQuiz ?? [])],
+      scenarioPrompts: [...module.scenarioPrompts, ...(enhancement?.addScenarioPrompts ?? [])],
+      practicalOutputs: [...module.practicalOutputs, ...(enhancement?.addPracticalOutputs ?? [])]
+    })
+  };
+}
+
+function createModule(module: LegacyTrainingModule): TrainingModule {
+  return {
+    ...module,
+    modulePattern: buildDefaultPattern(module)
+  };
+}
+
+const moduleEnhancements: Partial<Record<LegacyTrainingModule['id'], ModuleEnhancement>> = {
+  'dcs-it-support-foundations': {
+    estimatedMinutes: 24,
+    addTags: ['multi-campus', 'ownership boundaries', 'safe internal source use'],
+    addLearningObjectives: [
+      'Recognise when a support pattern spans DCS, Preschool, or Wellington context and should be noted clearly.',
+      'Separate ICT triage from admin, leadership, and system-owner workflows.',
+      'Turn internal DCS knowledge into safe prompts instead of copied notes.'
+    ],
+    addDcsRelevance: [
+      'Helps Josh avoid treating every campus, office, and classroom workflow as identical.',
+      'Builds cleaner judgement about where real DCS process knowledge often lives internally.'
+    ],
+    addSections: buildSections('foundations-deepen', [
+      {
+        title: 'Multi-campus context changes the note',
+        bodyMarkdown:
+          'A symptom may sound familiar but still live in a different support context across DCS, Preschool, or Wellington. Capture the campus, room, and user role early so later handoff is not built on the wrong assumption.',
+        takeaway: 'Campus and role context are part of first-line triage, not optional detail.'
+      },
+      {
+        title: 'Where workflow knowledge usually lives',
+        bodyMarkdown:
+          'Real DCS workflow knowledge often sits in school-owned systems such as Teams, OurDCS, Sentral training, or local SOPs. The PD app should teach the pattern, language, and boundary without becoming a copy of those sources.',
+        takeaway: 'Use internal resources as source material for prompts and checklists, not as text to reproduce.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('foundations-deepen', [
+      ['Why note the campus as well as the room?', 'Because the same symptom can belong to a different owner, asset set, or workflow at another campus.'],
+      ['What is a safe use of internal DCS documentation in this app?', 'Abstract the workflow into prompts, flashcards, and safe scenarios without copying sensitive text.'],
+      ['What boundary question often matters before promising action?', 'Who actually owns the workflow, approval, or production change?'],
+      ['What should Josh capture when a process differs between offices or campuses?', 'The exact location, user role, visible symptom, and who appears to own the next step.']
+    ]),
+    addQuiz: [
+      shortAnswer({
+        id: 'foundations-q5',
+        prompt: 'Why does multi-campus context matter before Josh writes an escalation note?',
+        domain: 'DCS support foundations',
+        difficulty: 'stretch',
+        explanation: 'The same symptom can have different ownership and urgency depending on where it sits.',
+        modelAnswer:
+          'Multi-campus context matters because the correct owner, system path, and operational impact can differ between DCS, Preschool, and Wellington. Naming the campus and role prevents a misleading handoff.',
+        commonMistakes: ['Writing the room only', 'Assuming all campuses share the same workflow owner'],
+        dcsContext: 'A short note can still be wrong if it omits the support context the next person needs.',
+        reviewSchedule,
+        recommendedModuleId: 'dcs-it-support-foundations',
+        weakTopic: 'ticket-quality',
+        rubric: ['Names campus context', 'Links context to ownership or impact', 'Shows handoff value'],
+        keywordHints: ['campus', 'owner', 'impact', 'handoff']
+      }),
+      categorization({
+        id: 'foundations-q6',
+        prompt: 'Sort each item into the best primary ownership bucket.',
+        domain: 'DCS support foundations',
+        difficulty: 'challenge',
+        explanation: 'Ownership boundaries are part of safe support behaviour.',
+        modelAnswer:
+          'Level 1 triages and documents, admin or system owners handle workflow-specific data changes, and senior ICT handles risky production changes or unclear technical boundaries.',
+        commonMistakes: ['Treating every workflow as ICT-owned', 'Ignoring admin ownership for family data changes'],
+        dcsContext: 'DCS service quality improves when Josh routes work cleanly instead of overclaiming ownership.',
+        reviewSchedule,
+        recommendedModuleId: 'dcs-it-support-foundations',
+        weakTopic: 'ticket-quality',
+        categories: [
+          { id: 'l1', label: 'Level 1 triage and note' },
+          { id: 'admin', label: 'Admin or workflow owner' },
+          { id: 'senior-ict', label: 'Senior ICT escalation' }
+        ],
+        items: [
+          { id: 'family-change', label: 'Parent requests a family-detail amendment', correctCategoryId: 'admin' },
+          { id: 'display-check', label: 'Teacher laptop shows picture but no audio in class', correctCategoryId: 'l1' },
+          { id: 'firewall-rule', label: 'Guest network needs a new path to internal systems', correctCategoryId: 'senior-ict' },
+          { id: 'safe-note', label: 'Capture the campus, role, symptom, and steps already tried', correctCategoryId: 'l1' }
+        ],
+        rubric: ['Groups ownership accurately', 'Keeps Level 1 inside safe scope', 'Recognises admin and senior ICT boundaries']
+      })
+    ],
+    addScenarioPrompts: buildScenarioPrompts('foundations-deepen', [
+      {
+        title: 'Same symptom, different campus',
+        prompt: 'Explain how the same issue note should change when the request comes from another campus or office workflow.'
+      }
+    ]),
+    addPracticalOutputs: buildPracticalOutputs('foundations-deepen', [
+      {
+        title: 'Safe-source conversion sheet',
+        description: 'Draft a checklist for turning internal workflow reading into privacy-safe prompts, flashcards, and scenarios.'
+      }
+    ])
+  },
+  'dns-dhcp-gateway-ip-basics': {
+    estimatedMinutes: 24,
+    addTags: ['SSID', 'BYOD', 'forget rejoin', 'cross-device comparison'],
+    addSections: buildSections('dns-deepen', [
+      {
+        title: 'Wi-Fi onboarding before deeper theory',
+        bodyMarkdown:
+          'Many classroom and BYOD complaints still come down to the wrong SSID, poor signal, or a stale saved profile. Confirm the network name, check whether another device works nearby, and use forget-and-rejoin only after you have captured the symptom clearly.',
+        takeaway: 'Confirm the network context before treating the issue like deeper infrastructure.'
+      },
+      {
+        title: 'Cross-device comparison beats guesswork',
+        bodyMarkdown:
+          'If one nearby device joins and reaches resources while another cannot, the note changes from "internet down" to a device, profile, or onboarding path issue. That comparison often saves time and prevents noisy room-outage escalations.',
+        takeaway: 'A known-good comparison is one of the safest high-value checks.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('dns-deepen', [
+      ['Why confirm the SSID first?', 'Because the wrong network can mimic deeper internet or access faults.'],
+      ['When is forget-and-rejoin appropriate?', 'After you have captured the symptom and confirmed the device should be on that network.'],
+      ['What does a working nearby device help prove?', 'That the problem may be device-specific, profile-specific, or signal-specific rather than a whole-room outage.'],
+      ['Why mention signal or distance in a note?', 'Because weak signal can explain intermittent joins, slow authentication, or unstable browsing.']
+    ]),
+    addQuiz: [
+      mcq({
+        id: 'dns-q5',
+        prompt: 'A BYOD laptop cannot reach class sites, but a nearby staff laptop works on the expected SSID. What is the best first conclusion?',
+        domain: 'DNS, DHCP, and gateway basics',
+        difficulty: 'stretch',
+        explanation: 'Cross-device comparison narrows scope safely.',
+        modelAnswer:
+          'The issue is more likely device, onboarding, profile, or signal specific than a room-wide outage. Josh should keep the note narrow and continue safe first-line checks.',
+        commonMistakes: ['Escalating the whole room immediately', 'Ignoring the known-good comparison'],
+        dcsContext: 'BYOD and managed devices do not always fail for the same reasons.',
+        reviewSchedule,
+        recommendedModuleId: 'dns-dhcp-gateway-ip-basics',
+        weakTopic: 'dns-dhcp-gateway',
+        options: [
+          { id: 'a', label: 'The school internet is definitely down' },
+          { id: 'b', label: 'The issue may be device, profile, or onboarding specific' },
+          { id: 'c', label: 'The gateway must be deleted' },
+          { id: 'd', label: 'Every nearby device should forget the network immediately' }
+        ],
+        correctOptionId: 'b'
+      }),
+      scenarioResponse({
+        id: 'dns-q6',
+        prompt: 'A student iPad keeps joining the wrong saved network. Explain the safer first-line response and the note Josh should capture.',
+        domain: 'DNS, DHCP, and gateway basics',
+        difficulty: 'challenge',
+        explanation: 'SSID mistakes should be named before deeper network assumptions are made.',
+        modelAnswer:
+          'Confirm the expected SSID, note whether other devices in the same area connect successfully, and if appropriate have the user forget the wrong network and join the correct one. Capture the device type, SSID confusion, area, and result.',
+        commonMistakes: ['Calling it a total outage', 'Skipping the exact network-name issue in the note'],
+        dcsContext: 'Managed and BYOD devices often surface as onboarding issues first.',
+        reviewSchedule,
+        recommendedModuleId: 'dns-dhcp-gateway-ip-basics',
+        weakTopic: 'dns-dhcp-gateway',
+        rubric: ['Names SSID issue clearly', 'Uses safe comparison', 'Captures useful evidence']
+      })
+    ],
+    addScenarioPrompts: buildScenarioPrompts('dns-deepen', [
+      {
+        title: 'Wrong SSID versus real outage',
+        prompt: 'Write the difference between a profile mistake, weak signal, and a wider room outage.'
+      }
+    ])
+  },
+  'printer-troubleshooting': {
+    estimatedMinutes: 26,
+    addTags: ['PaperCut', 'Follow-Me', 'photocopier', 'service handoff'],
+    addSections: buildSections('printer-deepen', [
+      {
+        title: 'Queue, release, or device fault?',
+        bodyMarkdown:
+          'PaperCut and Follow-Me printing add another decision point. A job may leave the workstation queue correctly but still wait for release at the copier. Separate "did the job submit?" from "did the user release it?" from "did the device actually print?".',
+        takeaway: 'A print job can fail before release, at release, or at the device.'
+      },
+      {
+        title: 'Photocopier faults and service-call notes',
+        bodyMarkdown:
+          'Large devices often surface jams, low toner, transfer, fuser, or thermal-style faults differently from simple desktop printers. Level 1 should capture the device, code or message if visible, consumable status, and whether copying as well as printing is affected before handing off for service.',
+        takeaway: 'Photocopier servicing needs better evidence than "printer broken".'
+      }
+    ]),
+    addFlashcards: buildFlashcards('printer-deepen', [
+      ['What extra layer does Follow-Me printing add?', 'A release step at the device after the job has already queued.'],
+      ['If the job is in PaperCut but not on paper, what question matters next?', 'Was the job released successfully at the device, and did the copier show an error?'],
+      ['What does toner rubbing off usually point toward?', 'A device or fuser-quality issue rather than the wrong queue.'],
+      ['What should a copier service note include?', 'Device location, visible message or code, scope, consumables state, and whether copying is also affected.']
+    ]),
+    addQuiz: [
+      mcq({
+        id: 'printer-q5',
+        prompt: 'A job appears in the print system, but nothing comes out until the user authenticates at the copier. Which bucket best fits the issue?',
+        domain: 'Printer troubleshooting',
+        difficulty: 'stretch',
+        explanation: 'Queue success does not guarantee release success.',
+        modelAnswer:
+          'This sits in the release workflow bucket. The workstation may have submitted correctly, but the Follow-Me or release step still matters.',
+        commonMistakes: ['Calling it only a queue failure', 'Jumping straight to hardware replacement'],
+        dcsContext: 'PaperCut-style workflows create failure points beyond the desktop queue.',
+        reviewSchedule,
+        recommendedModuleId: 'printer-troubleshooting',
+        weakTopic: 'printer-symptoms',
+        options: [
+          { id: 'a', label: 'Release or authentication workflow' },
+          { id: 'b', label: 'Definitely a DNS outage' },
+          { id: 'c', label: 'Purely a document-format issue every time' },
+          { id: 'd', label: 'A power fault on every printer in the school' }
+        ],
+        correctOptionId: 'a'
+      }),
+      scenarioResponse({
+        id: 'printer-q6',
+        prompt: 'A copier prints, but toner rubs off and copying quality is poor too. Explain the best escalation note.',
+        domain: 'Printer troubleshooting',
+        difficulty: 'challenge',
+        explanation: 'The note should separate queue success from device-quality failure.',
+        modelAnswer:
+          'State the device or room, note that printing and copying both show poor output quality, describe the symptom precisely such as toner rubbing off, and record any visible device messages or consumable clues. This points toward device servicing rather than the user selecting the wrong queue.',
+        commonMistakes: ['Writing only "print failed"', 'Leaving out that copying also fails'],
+        dcsContext: 'Service-call notes need device-quality evidence, not just user frustration.',
+        reviewSchedule,
+        recommendedModuleId: 'printer-troubleshooting',
+        weakTopic: 'printer-symptoms',
+        rubric: ['Names quality symptom', 'Mentions scope across print and copy', 'Supports service handoff']
+      })
+    ],
+    addScenarioPrompts: buildScenarioPrompts('printer-deepen', [
+      {
+        title: 'PaperCut release versus hardware fault',
+        prompt: 'Write how you would separate a stuck release workflow from a copier hardware problem.'
+      }
+    ]),
+    addPracticalOutputs: buildPracticalOutputs('printer-deepen', [
+      {
+        title: 'Copier service-call handoff',
+        description: 'Draft a privacy-safe template for a copier fault note that includes release-path clues, visible codes, and service urgency.'
+      }
+    ])
+  },
+  'classroom-display-viewboard-troubleshooting': {
+    estimatedMinutes: 26,
+    addTags: ['Windows+P', 'HDMI audio', 'projector inputs', 'thermal clues'],
+    addSections: buildSections('viewboard-deepen', [
+      {
+        title: 'Picture path and audio path are siblings, not twins',
+        bodyMarkdown:
+          'HDMI picture working does not guarantee the correct playback device is selected in Windows. Use Windows+P for display mode issues, then check the playback device if the picture appears but the room still has no audio.',
+        takeaway: 'Picture restored does not mean the audio path is healthy.'
+      },
+      {
+        title: 'Projectors, interactive boards, and thermal clues',
+        bodyMarkdown:
+          'Some rooms still involve projector inputs, lamp warnings, or thermal shutdown behaviour rather than only flat-panel boards. Capture the room technology, selected input, temperature or lamp messages, and whether touch or SMART-style interaction is a separate failure path.',
+        takeaway: 'Room technology type shapes the likely fault path and the note you write.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('viewboard-deepen', [
+      ['What quick Windows shortcut often matters in display incidents?', 'Windows+P for display mode selection.'],
+      ['If picture works but there is no audio, what should Josh check next?', 'The selected playback device or room audio path.'],
+      ['What does a lamp or thermal warning suggest?', 'A room-specific projector hardware or heat issue rather than only the laptop source.'],
+      ['Why mention the exact room technology?', 'Because ViewBoard, projector, SMART board, and room audio chains can fail differently.']
+    ]),
+    addQuiz: [
+      mcq({
+        id: 'viewboard-q5',
+        prompt: 'A laptop now displays correctly, but the teacher still has no sound through the room. What is the best next check?',
+        domain: 'Classroom display troubleshooting',
+        difficulty: 'stretch',
+        explanation: 'Audio path reasoning should follow the symptom split.',
+        modelAnswer:
+          'Check the Windows playback device and room audio path, because picture and audio may be travelling on related but not identical routes.',
+        commonMistakes: ['Restarting the whole chain with no symptom distinction', 'Treating no audio as proof the picture fix failed'],
+        dcsContext: 'Teachers often describe the whole incident as "HDMI not working" even after picture returns.',
+        reviewSchedule,
+        recommendedModuleId: 'classroom-display-viewboard-troubleshooting',
+        weakTopic: 'classroom-av',
+        options: [
+          { id: 'a', label: 'Check the playback device and audio path' },
+          { id: 'b', label: 'Delete the display driver immediately' },
+          { id: 'c', label: 'Assume the network is causing the sound issue' },
+          { id: 'd', label: 'Ignore audio because picture is enough' }
+        ],
+        correctOptionId: 'a'
+      }),
+      scenarioResponse({
+        id: 'viewboard-q6',
+        prompt: 'A projector room keeps overheating and dropping image during assemblies. Explain the note Josh should escalate.',
+        domain: 'Classroom display troubleshooting',
+        difficulty: 'challenge',
+        explanation: 'Recurring room faults need exact room and hardware-path evidence.',
+        modelAnswer:
+          'Capture the room, event context, device type, symptom pattern, any lamp or thermal message, steps already tried, and whether a fallback source worked. Note that the problem appears recurring so the room can be tracked properly.',
+        commonMistakes: ['Logging it only as "screen cuts out"', 'Forgetting recurrence and room context'],
+        dcsContext: 'Assembly and event rooms often need stronger recurrence notes than day-to-day classroom issues.',
+        reviewSchedule,
+        recommendedModuleId: 'classroom-display-viewboard-troubleshooting',
+        weakTopic: 'classroom-av',
+        rubric: ['Names room and device type', 'Mentions thermal or recurrence clues', 'Supports room-level follow-up']
+      })
+    ],
+    addScenarioPrompts: buildScenarioPrompts('viewboard-deepen', [
+      {
+        title: 'HDMI works but no audio',
+        prompt: 'Explain the shortest safe check sequence for picture restored but no room sound.'
+      }
+    ])
+  },
+  'm365-identity-offboarding-basics': {
+    estimatedMinutes: 24,
+    addTags: ['block sign-in', 'session revocation', 'sign-in logs', 'shared mailbox cleanup'],
+    addSections: buildSections('offboarding-deepen', [
+      {
+        title: 'Block sign-in, then reason about sessions and logs',
+        bodyMarkdown:
+          'The first offboarding decision is often access containment: is sign-in blocked, and are existing sessions or tokens still relevant? Josh should understand the sequence and language even when the authorised owner performs the action.',
+        takeaway: 'Containment and evidence language matter before deeper cleanup detail.'
+      },
+      {
+        title: 'Shared mailboxes, MFA, and managed mobile data',
+        bodyMarkdown:
+          'A departing account may leave traces in shared mailboxes, MFA devices, and managed mobile access paths. Level 1 does not improvise these changes, but a strong note can name the potential cleanup areas and whether the risk is immediate or routine.',
+        takeaway: 'Good offboarding notes include the systems that may still carry access or data risk.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('offboarding-deepen', [
+      ['What is often the first containment question in offboarding?', 'Has sign-in been blocked or otherwise contained by the authorised owner?'],
+      ['Why might session revocation matter after sign-in is blocked?', 'Because existing sessions or tokens can linger briefly even after the main account state changes.'],
+      ['What extra systems may need cleanup during offboarding?', 'Shared mailboxes, MFA methods, group memberships, and managed mobile access paths.'],
+      ['Why should Josh mention sign-in logs or recent activity carefully?', 'They help frame the risk, but review belongs to the authorised owner.']
+    ]),
+    addQuiz: [
+      orderSteps({
+        id: 'offboarding-q5',
+        prompt: 'Order the safer first-line reasoning for a suspected incomplete offboarding case.',
+        domain: 'M365 offboarding',
+        difficulty: 'challenge',
+        explanation: 'Containment language and evidence should come before cleanup speculation.',
+        modelAnswer:
+          'Confirm the requested outcome and authority, capture the visible symptom, note whether access containment such as sign-in block or session review may matter, then escalate for authorised sequence review.',
+        commonMistakes: ['Jumping straight to mailbox cleanup guesses', 'Skipping the current visible state'],
+        dcsContext: 'Identity risk conversations need sequencing, not panic.',
+        reviewSchedule,
+        recommendedModuleId: 'm365-identity-offboarding-basics',
+        weakTopic: 'offboarding-sequence',
+        steps: [
+          { id: 'authority', label: 'Confirm the requested outcome and owner' },
+          { id: 'symptom', label: 'Capture the exact current visible symptom' },
+          { id: 'containment', label: 'Note whether sign-in or session containment seems relevant' },
+          { id: 'escalate', label: 'Escalate for authorised sequence review' }
+        ],
+        correctOrder: ['authority', 'symptom', 'containment', 'escalate'],
+        rubric: ['Starts with authority', 'Names containment language', 'Escalates without overclaiming']
+      }),
+      shortAnswer({
+        id: 'offboarding-q6',
+        prompt: 'Why might a strong offboarding note mention shared mailbox, MFA, or managed mobile cleanup even if Josh is not doing those tasks himself?',
+        domain: 'M365 offboarding',
+        difficulty: 'stretch',
+        explanation: 'Good notes preserve risk and sequence context for the authorised owner.',
+        modelAnswer:
+          'Because those systems may still hold access or data risk. Mentioning them helps the authorised owner review the sequence fully without assuming the visible Teams symptom is the whole story.',
+        commonMistakes: ['Treating the visible symptom as the entire offboarding scope', 'Assuming mentioning a risk is the same as performing the change'],
+        dcsContext: 'The note should widen the right person’s awareness without widening Josh’s authority.',
+        reviewSchedule,
+        recommendedModuleId: 'm365-identity-offboarding-basics',
+        weakTopic: 'offboarding-sequence',
+        rubric: ['Names downstream systems', 'Connects to risk or sequence', 'Keeps authority boundaries clear'],
+        keywordHints: ['shared mailbox', 'MFA', 'managed mobile', 'sequence']
+      })
+    ]
+  },
+  'mdm-intune-group-policy-concepts': {
+    estimatedMinutes: 24,
+    addTags: ['startup', 'sign-in', 'background refresh', 'OU placement', 'drive mapping'],
+    addSections: buildSections('mdm-deepen', [
+      {
+        title: 'Group Policy timing changes the symptom',
+        bodyMarkdown:
+          'Some settings land at startup, some at sign-in, and some during background refresh. If a drive mapping or printer deployment appears late or disappears after a reboot, timing may matter as much as the policy itself.',
+        takeaway: 'Policy timing is part of diagnosis, not just admin trivia.'
+      },
+      {
+        title: 'OU placement, security filtering, and classic school deployments',
+        bodyMarkdown:
+          'Drive mapping, printer deployment, and login-script behaviour often depend on where the device or user sits and what filtering applies. Level 1 should capture the expected outcome, device context, and repeatability rather than guessing at the policy object.',
+        takeaway: 'Note the target, timing, and repeatability before escalating policy behaviour.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('mdm-deepen', [
+      ['Why does startup versus sign-in timing matter?', 'Because a missing setting may simply not have hit the device at the expected phase yet.'],
+      ['What is OU placement shorthand for in support language?', 'Where the user or device sits for policy targeting purposes.'],
+      ['Name two classic Group Policy style outcomes.', 'Drive mapping and printer deployment.'],
+      ['What should a Level 1 note capture on policy issues?', 'Expected result, device or user context, timing, and repeatability.']
+    ]),
+    addQuiz: [
+      mcq({
+        id: 'mdm-q5',
+        prompt: 'A shared drive mapping appears after sign-in but not immediately at startup. Which idea should Josh consider before escalating it as random failure?',
+        domain: 'MDM and Group Policy',
+        difficulty: 'stretch',
+        explanation: 'Policy timing shapes user experience.',
+        modelAnswer:
+          'Consider whether the mapping depends on sign-in context or later policy refresh rather than assuming the whole policy path is broken.',
+        commonMistakes: ['Calling timing behaviour random', 'Ignoring whether the symptom happens before or after sign-in'],
+        dcsContext: 'Classroom pressure can hide the fact that timing itself is the clue.',
+        reviewSchedule,
+        recommendedModuleId: 'mdm-intune-group-policy-concepts',
+        weakTopic: 'mdm-group-policy',
+        options: [
+          { id: 'a', label: 'Policy timing and sign-in context may matter' },
+          { id: 'b', label: 'Drive mappings can only be DNS issues' },
+          { id: 'c', label: 'The user should disable every policy locally' },
+          { id: 'd', label: 'OU placement can never affect mappings' }
+        ],
+        correctOptionId: 'a'
+      }),
+      scenarioResponse({
+        id: 'mdm-q6',
+        prompt: 'A printer deployed by policy appears for staff in one area but not another. Explain the strongest Level 1 escalation note.',
+        domain: 'MDM and Group Policy',
+        difficulty: 'challenge',
+        explanation: 'The note should preserve targeting clues without pretending to know the policy internals.',
+        modelAnswer:
+          'Capture the user role, device type, campus or area, whether sign-in or reboot changes the outcome, and whether similar staff in another location receive the printer. That frames OU, filtering, or targeting review without guessing at the actual policy object.',
+        commonMistakes: ['Writing only "printer missing"', 'Pretending certainty about the exact policy object'],
+        dcsContext: 'Support value comes from the targeting clues, not from bluffing policy ownership.',
+        reviewSchedule,
+        recommendedModuleId: 'mdm-intune-group-policy-concepts',
+        weakTopic: 'mdm-group-policy',
+        rubric: ['Captures targeting context', 'Mentions timing or repeatability', 'Avoids false admin certainty']
+      })
+    ]
+  },
+  'vlans-network-segmentation': {
+    estimatedMinutes: 22,
+    addTags: ['allow-block rules', 'guest internet only', 'source destination'],
+    addSections: buildSections('vlan-deepen', [
+      {
+        title: 'Write source-to-destination rules in plain English',
+        bodyMarkdown:
+          'Segmentation becomes more useful when Josh can say "guest Wi-Fi can reach the internet but not internal printers" or "staff devices can reach the staff printer VLAN but not student management interfaces". This is still support language, not permission to edit the rule.',
+        takeaway: 'Plain-English allow and block rules sharpen escalation quality.'
+      },
+      {
+        title: 'Guest internet-only is a design, not a failure',
+        bodyMarkdown:
+          'A guest network may work perfectly while still blocking TVs, printers, and internal dashboards. The correct question is whether the requested path is meant to exist, not whether the guest internet works.',
+        takeaway: 'Internet access and internal-service access should be described separately.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('vlan-deepen', [
+      ['What does a plain-English rule sound like?', 'Source network A may or may not reach destination service B, and here is why.'],
+      ['Why is guest internet-only a valid design?', 'It lets guests browse while protecting internal school services.'],
+      ['What should Josh capture when a path seems blocked?', 'Source network, destination service, business need, urgency, and whether the block may be intentional.'],
+      ['What is a weak segmentation note?', 'One that says "internet works so the printer should too".']
+    ]),
+    addQuiz: [
+      shortAnswer({
+        id: 'vlan-q5',
+        prompt: 'Write one plain-English allow/block rule for a guest internet-only design in a school.',
+        domain: 'VLAN and segmentation',
+        difficulty: 'challenge',
+        explanation: 'The skill is translating business need into readable rule language.',
+        modelAnswer:
+          'Example: guest Wi-Fi devices may reach the public internet but must not reach internal printers, TVs, staff file shares, or admin systems unless a separate approved path is provided.',
+        commonMistakes: ['Writing vague language like "guest should be limited"', 'Forgetting the source or destination'],
+        dcsContext: 'Readable rule language helps senior ICT assess the request faster.',
+        reviewSchedule,
+        recommendedModuleId: 'vlans-network-segmentation',
+        weakTopic: 'vlan-firewall-rules',
+        rubric: ['Names source and destination', 'States allow or block clearly', 'Reflects school design intent'],
+        keywordHints: ['guest', 'internet', 'internal', 'allow', 'block']
+      }),
+      categorization({
+        id: 'vlan-q6',
+        prompt: 'Sort each traffic example into the best bucket.',
+        domain: 'VLAN and segmentation',
+        difficulty: 'stretch',
+        explanation: 'Traffic path thinking gets clearer when it is sorted explicitly.',
+        modelAnswer:
+          'Guest internet browsing is an intended guest path, guest-to-internal-device requests are protected internal paths, and escalation requests sit in the approved-change bucket.',
+        commonMistakes: ['Treating all traffic as equivalent because it uses Wi-Fi', 'Ignoring design intent'],
+        dcsContext: 'This keeps classroom event requests from being logged like random break/fix faults.',
+        reviewSchedule,
+        recommendedModuleId: 'vlans-network-segmentation',
+        weakTopic: 'vlan-firewall-rules',
+        categories: [
+          { id: 'allowed', label: 'Usually allowed path' },
+          { id: 'blocked', label: 'Usually blocked by design' },
+          { id: 'request', label: 'Needs approved access request' }
+        ],
+        items: [
+          { id: 'guest-web', label: 'Guest device browsing the public web', correctCategoryId: 'allowed' },
+          { id: 'guest-printer', label: 'Guest device trying to reach internal staff printer', correctCategoryId: 'blocked' },
+          { id: 'event-tv', label: 'Event guest device needs temporary display path to internal TV', correctCategoryId: 'request' },
+          { id: 'staff-printer', label: 'Staff device sending to authorised internal printer', correctCategoryId: 'allowed' }
+        ],
+        rubric: ['Sorts path types accurately', 'Recognises design intent', 'Distinguishes request from fault']
+      })
+    ]
+  },
+  'cloud-models-saas-paas-iaas-daas': {
+    estimatedMinutes: 20,
+    addTags: ['DaaS', 'BYOD', 'hosted desktop', 'trade-offs'],
+    addSections: buildSections('cloud-deepen', [
+      {
+        title: 'Where DaaS becomes practical in schools',
+        bodyMarkdown:
+          'DaaS thinking matters when users need a Windows-only or school-managed application from BYOD or mixed devices. Instead of giving every personal device direct local install complexity, a hosted desktop can centralise the app environment.',
+        takeaway: 'DaaS is often about access design and supportability, not just cloud vocabulary.'
+      },
+      {
+        title: 'Hosted desktop versus local install trade-offs',
+        bodyMarkdown:
+          'Local install plus VPN may feel simple until device diversity, support time, and data handling become messy. A hosted desktop can improve control and consistency, but it also depends on connectivity and a good user experience path.',
+        takeaway: 'Cloud-model choices are support trade-offs, not one-word labels.'
+      }
+    ]),
+    addFlashcards: buildFlashcards('cloud-deepen', [
+      ['When might DaaS be attractive in a school?', 'When BYOD or mixed devices need controlled access to a desktop-style app environment.'],
+      ['What is one benefit of hosted desktop over many local installs?', 'Consistency and centralised support.'],
+      ['What is one cost of hosted desktop?', 'It relies heavily on connectivity and the user session path.'],
+      ['Why compare hosted desktop with VPN plus local install?', 'Because the trade-off is about control, supportability, and user experience.']
+    ]),
+    addQuiz: [
+      mcq({
+        id: 'cloud-q5',
+        prompt: 'Which option best fits a school that needs BYOD users to access a Windows-only app without managing many local installs?',
+        domain: 'Cloud models',
+        difficulty: 'stretch',
+        explanation: 'DaaS becomes relevant when the desktop experience itself is the service.',
+        modelAnswer:
+          'A hosted desktop or DaaS-style approach may fit best because it centralises the application environment instead of depending on many local installations.',
+        commonMistakes: ['Treating every app decision as SaaS by default', 'Ignoring the desktop-session layer'],
+        dcsContext: 'The goal is access design that stays supportable for mixed devices.',
+        reviewSchedule,
+        recommendedModuleId: 'cloud-models-saas-paas-iaas-daas',
+        weakTopic: 'cloud-models',
+        options: [
+          { id: 'a', label: 'DaaS or hosted desktop approach' },
+          { id: 'b', label: 'Assume every BYOD device should install it locally' },
+          { id: 'c', label: 'Guest Wi-Fi segmentation only' },
+          { id: 'd', label: 'Delete the browser cache' }
+        ],
+        correctOptionId: 'a'
+      }),
+      scenarioResponse({
+        id: 'cloud-q6',
+        prompt: 'Explain the trade-off between VPN plus local install and a hosted desktop for a school-only application.',
+        domain: 'Cloud models',
+        difficulty: 'challenge',
+        explanation: 'This is an architecture judgement question, not a terminology quiz.',
+        modelAnswer:
+          'VPN plus local install can reduce session dependency but increases variation across devices, local support effort, and data-handling complexity. A hosted desktop centralises control and consistency, but depends on stable connectivity and a usable remote session experience.',
+        commonMistakes: ['Calling one option universally best', 'Ignoring support and device-diversity trade-offs'],
+        dcsContext: 'The right answer depends on supportability as much as on technology preference.',
+        reviewSchedule,
+        recommendedModuleId: 'cloud-models-saas-paas-iaas-daas',
+        weakTopic: 'cloud-models',
+        rubric: ['Mentions both benefits and costs', 'Frames the decision as a trade-off', 'Uses school support context']
+      })
+    ]
+  }
+};
+
+const additionalModules: TrainingModule[] = [
+  createModule({
+    id: 'parent-portal-registration',
+    title: 'Parent Portal Registration',
+    description:
+      'Handle first-line Parent Portal registration issues safely: access keys, common blockers, ownership boundaries, and parent-facing communication.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 22,
+    tags: ['Parent Portal', 'access key', 'registration', 'parent-facing notes'],
+    learningObjectives: [
+      'Separate registration blockers from account-data issues.',
+      'Recognise where ICT triage ends and admin or system-owner workflow begins.',
+      'Write parent-facing notes that are clear, calm, and privacy-safe.'
+    ],
+    dcsRelevance: [
+      'Parent Portal registration is a high-frequency parent support theme.',
+      'Good triage avoids bouncing families between ICT and admin without evidence.'
+    ],
+    sections: buildSections('parent-portal-registration', [
+      {
+        title: 'Start with the registration path, not assumptions',
+        bodyMarkdown:
+          'Confirm what the parent is trying to do: first registration, re-registration, or recovering after an old attempt. Access-key problems, email mismatches, expired expectations, and already-used registrations each need slightly different notes.',
+        takeaway: 'Name the exact stage of registration before troubleshooting.'
+      },
+      {
+        title: 'Common blockers and what Level 1 should capture',
+        bodyMarkdown:
+          'Capture whether the parent has the access key, whether the expected email address matches the school record, what message appears, and whether the issue affects one family only. Avoid requesting unnecessary private detail inside the PD app.',
+        takeaway: 'Access key, email match, error wording, and scope are the most useful first-line clues.'
+      },
+      {
+        title: 'Ownership boundaries and parent-facing language',
+        bodyMarkdown:
+          'ICT can triage the symptom and check the obvious workflow stage, but family-data corrections or workflow-owner actions may belong to admin or the authorised system owner. Parent-facing wording should explain the next step without blaming the family or overpromising timeline.',
+        takeaway: 'Clear handoff language is part of the fix.'
+      }
+    ]),
+    flashcards: buildFlashcards('parent-portal-registration', [
+      ['What is the first thing to clarify in a Parent Portal issue?', 'Whether the parent is registering for the first time, retrying, or recovering an older setup attempt.'],
+      ['Which two clues are especially useful in registration triage?', 'Access-key status and whether the expected email matches the school record.'],
+      ['Why should Josh avoid broad family-data discussion in this app?', 'Because the app is for PD and should stay privacy-safe.'],
+      ['What kind of wording helps a parent-facing handoff?', 'Calm explanation of the next step, owner, and what information is already captured.'],
+      ['When might admin ownership matter in portal registration?', 'When family records, relationship details, or official contact data need correction.'],
+      ['What makes a weak portal note?', 'Saying only "Parent Portal not working" with no stage, message, or blocker detail.'],
+      ['Why does scope still matter in a portal issue?', 'It helps distinguish one-family data mismatch from a broader workflow or service pattern.'],
+      ['What should Josh capture instead of copied screenshots with private detail?', 'The generic error wording, stage of the process, and the safe next action.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'parent-portal-registration-q1',
+        prompt: 'Which detail is most important to capture first in a Parent Portal registration complaint?',
+        domain: 'Parent Portal registration',
+        difficulty: 'foundation',
+        explanation: 'The stage of the workflow shapes the next question.',
+        modelAnswer:
+          'Clarify whether this is first registration, a retry, or recovery from an earlier setup attempt before guessing at the cause.',
+        commonMistakes: ['Jumping straight to system blame', 'Skipping the workflow stage'],
+        dcsContext: 'Families often describe several different portal states as simply "it does not work".',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-registration',
+        weakTopic: 'parent-portal-workflows',
+        options: [
+          { id: 'a', label: 'The exact registration stage and current blocker' },
+          { id: 'b', label: 'The family should just try a different browser first' },
+          { id: 'c', label: 'Immediately regenerate everything without context' },
+          { id: 'd', label: 'Assume ICT owns every family-data correction' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'parent-portal-registration-q2',
+        prompt: 'What should a privacy-safe Parent Portal registration note include?',
+        domain: 'Parent Portal registration',
+        difficulty: 'stretch',
+        explanation: 'The note should preserve workflow clues without oversharing.',
+        modelAnswer:
+          'Include the registration stage, whether the access key is present, whether the expected email appears to match, the generic error or blocker, steps already tried, and the next owner or handoff point.',
+        commonMistakes: ['Copying excessive family detail', 'Leaving out the workflow stage'],
+        dcsContext: 'Parent-facing support still needs clean operational notes behind it.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-registration',
+        weakTopic: 'parent-portal-workflows',
+        rubric: ['Names stage and blocker', 'Stays privacy-safe', 'Shows next owner or action'],
+        keywordHints: ['access key', 'email match', 'error', 'handoff']
+      }),
+      orderSteps({
+        id: 'parent-portal-registration-q3',
+        prompt: 'Order the safer first-line response to a Parent Portal registration issue.',
+        domain: 'Parent Portal registration',
+        difficulty: 'stretch',
+        explanation: 'Triage should clarify the workflow before routing the issue.',
+        modelAnswer:
+          'Clarify the stage, capture the key blocker and message, check whether the issue looks like access-key flow or family-data mismatch, then hand off to the right owner with a clean note.',
+        commonMistakes: ['Regenerating or escalating before the stage is clear', 'Ignoring ownership boundaries'],
+        dcsContext: 'Families benefit when the first note already points to the right owner.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-registration',
+        weakTopic: 'parent-portal-workflows',
+        steps: [
+          { id: 'stage', label: 'Clarify whether this is first registration or a retry' },
+          { id: 'blocker', label: 'Capture the access-key, email, and error clues' },
+          { id: 'owner', label: 'Work out whether the issue looks like workflow or record ownership' },
+          { id: 'handoff', label: 'Send a clean parent-safe handoff note' }
+        ],
+        correctOrder: ['stage', 'blocker', 'owner', 'handoff'],
+        rubric: ['Clarifies stage first', 'Captures actionable clues', 'Routes cleanly']
+      }),
+      scenarioResponse({
+        id: 'parent-portal-registration-q4',
+        prompt: 'A parent says the access key is not working and they are frustrated. Explain the response Josh should give and the note he should record.',
+        domain: 'Parent Portal registration',
+        difficulty: 'challenge',
+        explanation: 'Parent-facing calm and workflow clarity matter together.',
+        modelAnswer:
+          'Acknowledge the frustration, confirm whether this is first registration or a retry, capture the generic message shown, note whether the expected email and key path look correct, and explain the next handoff or check without blaming the parent. Record the workflow stage, blocker, and safe next owner.',
+        commonMistakes: ['Responding defensively', 'Skipping the note because it feels like admin territory'],
+        dcsContext: 'The first-line note still improves turnaround even when another owner completes the fix.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-registration',
+        weakTopic: 'parent-portal-workflows',
+        rubric: ['Uses calm parent-facing language', 'Captures the key blocker', 'Routes safely']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('parent-portal-registration', [
+      {
+        title: 'Access-key blocker',
+        prompt: 'Write a short parent-safe escalation note for a registration attempt that appears blocked at the access-key stage.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('parent-portal-registration', [
+      {
+        title: 'Parent Portal registration quick guide',
+        description: 'Draft a first-line checklist and parent-facing note pattern for registration issues.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'parent-portal-details-updates',
+    title: 'Parent Portal Details Updates',
+    description:
+      'Triage family-detail update requests, urgent exceptions, and admin handoff boundaries without treating private records casually.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 18,
+    tags: ['Parent Portal', 'family updates', 'admin handoff', 'urgent exceptions'],
+    learningObjectives: [
+      'Separate portal-access issues from family-record change requests.',
+      'Recognise urgent exceptions that need careful escalation.',
+      'Use privacy-safe wording around family amendments.'
+    ],
+    dcsRelevance: [
+      'Family-detail updates are common and often sensitive.',
+      'Good first-line handling reduces confusion and protects privacy.'
+    ],
+    sections: buildSections('parent-portal-details-updates', [
+      {
+        title: 'This is a records workflow first',
+        bodyMarkdown:
+          'Family-detail amendments often belong to an authorised records workflow rather than a pure technical fix. Start by clarifying what category of detail needs updating and whether the parent can already access the portal.',
+        takeaway: 'Do not confuse access success with permission to change records directly.'
+      },
+      {
+        title: 'Urgent exceptions need careful wording',
+        bodyMarkdown:
+          'Medical, emergency-contact, or custody-style changes can carry real urgency. Josh should not investigate private detail in the PD app, but he should recognise when the request needs quick handoff and carefully worded escalation.',
+        takeaway: 'Urgency can be high even when the first-line action is still only triage and handoff.'
+      },
+      {
+        title: 'Admin handoff beats vague bouncing',
+        bodyMarkdown:
+          'A strong note captures the requested amendment type, urgency, portal status, and who needs to continue the workflow. Parents should not be bounced between ICT and admin with no clear owner.',
+        takeaway: 'Good handoff language lowers stress for families and staff.'
+      }
+    ]),
+    flashcards: buildFlashcards('parent-portal-details-updates', [
+      ['What question helps separate access from records workflow?', 'Can the parent access the portal already, or is the issue specifically the detail-change process?'],
+      ['Why are some detail changes urgent?', 'Because medical, emergency, or custody-related information can affect student safety or compliance.'],
+      ['What should a safe note capture instead of private detail?', 'The category of change, urgency, and next owner.'],
+      ['What is a weak response to a family update request?', 'Bouncing it onward with no workflow context or urgency note.'],
+      ['Why might admin ownership matter more than ICT ownership here?', 'Because the authoritative family record may sit in an administrative workflow.'],
+      ['How should Josh handle emergency-style changes in the PD app?', 'Use generic language and keep live private detail out of the app.'],
+      ['What is the key difference between registration and detail updates?', 'Registration is access workflow; detail updates are often records workflow.'],
+      ['What should parent-facing wording sound like?', 'Clear, calm, and explicit about the next owner or step.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'parent-portal-details-updates-q1',
+        prompt: 'A parent can sign in but says their family detail change has not taken effect. What is the best first judgement?',
+        domain: 'Parent Portal details updates',
+        difficulty: 'foundation',
+        explanation: 'Portal access and records workflow are different questions.',
+        modelAnswer:
+          'Treat it as a family-record or workflow update question first, not a simple login failure, and capture the amendment category and urgency.',
+        commonMistakes: ['Resetting the problem back to login only', 'Skipping the amendment category'],
+        dcsContext: 'Being able to sign in does not mean the records workflow is complete.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-details-updates',
+        weakTopic: 'parent-portal-workflows',
+        options: [
+          { id: 'a', label: 'It is primarily a records or workflow update issue' },
+          { id: 'b', label: 'The parent must be using the wrong password' },
+          { id: 'c', label: 'Delete the portal account immediately' },
+          { id: 'd', label: 'Ignore urgency because they can still log in' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'parent-portal-details-updates-q2',
+        prompt: 'What should Josh include in a privacy-safe note for an urgent family detail amendment request?',
+        domain: 'Parent Portal details updates',
+        difficulty: 'stretch',
+        explanation: 'The note should preserve urgency without reproducing private records.',
+        modelAnswer:
+          'Capture the category of change, why it is urgent, whether the parent can access the portal, what the current blocker is, and the authorised owner or handoff path. Keep the actual private details out of the PD app.',
+        commonMistakes: ['Pasting the private detail itself', 'Omitting the urgency reason'],
+        dcsContext: 'The note should help the right person act without oversharing.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-details-updates',
+        weakTopic: 'parent-portal-workflows',
+        rubric: ['Names category and urgency', 'Stays privacy-safe', 'Shows the handoff path'],
+        keywordHints: ['category', 'urgent', 'portal access', 'owner']
+      }),
+      categorization({
+        id: 'parent-portal-details-updates-q3',
+        prompt: 'Sort each request by the best primary handling path.',
+        domain: 'Parent Portal details updates',
+        difficulty: 'challenge',
+        explanation: 'Not every parent issue belongs to the same queue.',
+        modelAnswer:
+          'Login or registration blockers need portal triage, record amendments need the admin workflow, and urgent safety-sensitive changes need fast authorised handoff.',
+        commonMistakes: ['Treating every request as technical only', 'Ignoring urgent exception handling'],
+        dcsContext: 'This is where school workflow knowledge matters more than generic IT theory.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-details-updates',
+        weakTopic: 'parent-portal-workflows',
+        categories: [
+          { id: 'portal', label: 'Portal triage' },
+          { id: 'records', label: 'Admin records workflow' },
+          { id: 'urgent', label: 'Urgent authorised handoff' }
+        ],
+        items: [
+          { id: 'reg', label: 'Parent cannot finish first registration', correctCategoryId: 'portal' },
+          { id: 'custody', label: 'Sensitive family/custody-style change needs review', correctCategoryId: 'urgent' },
+          { id: 'address', label: 'Routine contact-detail amendment request', correctCategoryId: 'records' },
+          { id: 'med', label: 'Medical-contact update flagged as urgent', correctCategoryId: 'urgent' }
+        ],
+        rubric: ['Recognises handling paths', 'Distinguishes urgent cases', 'Keeps workflow ownership clear']
+      }),
+      scenarioResponse({
+        id: 'parent-portal-details-updates-q4',
+        prompt: 'A parent says a medical-related detail change is urgent and not visible yet. Explain Josh’s first-line response.',
+        domain: 'Parent Portal details updates',
+        difficulty: 'challenge',
+        explanation: 'Urgency and privacy should both shape the response.',
+        modelAnswer:
+          'Acknowledge the urgency, confirm the broad category of the update and whether portal access is working, avoid collecting unnecessary private detail in the PD app, and hand off quickly through the authorised workflow with a calm, explicit note about urgency.',
+        commonMistakes: ['Treating it like a normal low-priority portal issue', 'Collecting more detail than needed in the wrong place'],
+        dcsContext: 'Family trust depends on both speed and discipline.',
+        reviewSchedule,
+        recommendedModuleId: 'parent-portal-details-updates',
+        weakTopic: 'parent-portal-workflows',
+        rubric: ['Acknowledges urgency', 'Protects privacy', 'Names the handoff clearly']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('parent-portal-details-updates', [
+      {
+        title: 'Urgent family amendment',
+        prompt: 'Write a short note that records urgency, category, and owner without exposing private details.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('parent-portal-details-updates', [
+      {
+        title: 'Family amendment handoff template',
+        description: 'Create a first-line handoff pattern for routine versus urgent Parent Portal detail-update requests.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'sentral-support',
+    title: 'Sentral Support',
+    description:
+      'Triage first-line Sentral issues around markbook visibility, parent access keys, reporting periods, and safe escalation boundaries.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 22,
+    tags: ['Sentral', 'markbook', 'access keys', 'reporting periods'],
+    learningObjectives: [
+      'Separate visibility, permissions, workflow timing, and user-expectation issues.',
+      'Recognise reporting-period pressure and safe escalation points.',
+      'Write notes that help the authorised Sentral owner act quickly.'
+    ],
+    dcsRelevance: [
+      'Sentral questions can spike around reporting periods and parent-access needs.',
+      'Good triage avoids guessing at configuration or permissions.'
+    ],
+    sections: buildSections('sentral-support', [
+      {
+        title: 'Ask what is missing, not just what is broken',
+        bodyMarkdown:
+          'A markbook issue may be missing visibility, wrong class context, reporting-period timing, or a real permission problem. A parent-access-key issue is a different workflow again. Start with the exact function that is missing.',
+        takeaway: 'Sentral issues split into distinct workflow buckets very quickly.'
+      },
+      {
+        title: 'Reporting-period pressure changes urgency',
+        bodyMarkdown:
+          'When reports or marks are due, a small visibility issue can have high staff impact. Level 1 should capture timing, who is affected, and whether the issue is one user, one class, or something wider before escalating.',
+        takeaway: 'Timing and scope often matter as much as the specific symptom.'
+      },
+      {
+        title: 'Safe escalation beats fake admin confidence',
+        bodyMarkdown:
+          'Josh should not pretend full Sentral admin authority. The goal is to identify the function, scope, and timing clearly enough that the authorised owner can act without extra back-and-forth.',
+        takeaway: 'Clean Sentral notes protect speed and trust.'
+      }
+    ]),
+    flashcards: buildFlashcards('sentral-support', [
+      ['What is the first split in Sentral triage?', 'Work out whether the issue is markbook visibility, parent-access workflow, reporting timing, or another specific function.'],
+      ['Why does reporting period context matter?', 'Because a small issue can block time-sensitive staff work.'],
+      ['What should a good Sentral note capture?', 'Function affected, user role, class or scope, timing, and steps already tried.'],
+      ['Why should Josh avoid acting like a Sentral admin?', 'Because false authority creates risk and weaker escalation.'],
+      ['What is a weak Sentral complaint note?', 'One that says only "Sentral not working".'],
+      ['How can scope change the handoff?', 'One class or one user suggests a different path from a wider reporting-period issue.'],
+      ['What makes parent-access-key issues distinct?', 'They are a separate workflow from classroom markbook visibility.'],
+      ['What question helps with staff complaints?', 'What exact screen, class, or reporting task is missing or blocked?']
+    ]),
+    quiz: [
+      mcq({
+        id: 'sentral-support-q1',
+        prompt: 'A teacher says they cannot see the markbook they need. What is the best first clarification?',
+        domain: 'Sentral support',
+        difficulty: 'foundation',
+        explanation: 'Specific function and scope come before assumptions.',
+        modelAnswer:
+          'Clarify which class, screen, or reporting task is affected and whether the issue is only for this user or a wider cohort.',
+        commonMistakes: ['Calling it a general outage immediately', 'Skipping the exact function that is missing'],
+        dcsContext: 'Markbook complaints often need context more than instant system changes.',
+        reviewSchedule,
+        recommendedModuleId: 'sentral-support',
+        weakTopic: 'sentral-support',
+        options: [
+          { id: 'a', label: 'Which class or reporting function is missing, and who else is affected?' },
+          { id: 'b', label: 'Delete the user and recreate them straight away' },
+          { id: 'c', label: 'Assume the whole system is down school-wide' },
+          { id: 'd', label: 'Ignore timing even if reports are due today' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'sentral-support-q2',
+        prompt: 'What should Josh capture in a Sentral note during reporting season?',
+        domain: 'Sentral support',
+        difficulty: 'stretch',
+        explanation: 'Timing and impact are part of the support picture.',
+        modelAnswer:
+          'Record the exact function or screen affected, user role, class or cohort scope, reporting deadline or urgency, safe steps tried, and whether the issue seems isolated or broader.',
+        commonMistakes: ['Leaving out timing', 'Failing to mention the class or scope'],
+        dcsContext: 'Reporting-season pressure can turn a narrow issue into an urgent one quickly.',
+        reviewSchedule,
+        recommendedModuleId: 'sentral-support',
+        weakTopic: 'sentral-support',
+        rubric: ['Names function and scope', 'Captures timing or urgency', 'Shows safe steps tried'],
+        keywordHints: ['class', 'function', 'deadline', 'scope']
+      }),
+      categorization({
+        id: 'sentral-support-q3',
+        prompt: 'Sort each Sentral issue by the most likely workflow bucket.',
+        domain: 'Sentral support',
+        difficulty: 'challenge',
+        explanation: 'Different Sentral issues need different owners and questions.',
+        modelAnswer:
+          'Markbook visibility, parent access-key workflow, and reporting-period pressure are different support paths even if users describe them all as "Sentral".',
+        commonMistakes: ['Using the same triage for every Sentral ticket', 'Ignoring parent and staff workflow differences'],
+        dcsContext: 'Workflow naming makes the next action clearer for DCS support.',
+        reviewSchedule,
+        recommendedModuleId: 'sentral-support',
+        weakTopic: 'sentral-support',
+        categories: [
+          { id: 'markbook', label: 'Markbook or class visibility' },
+          { id: 'parent', label: 'Parent access-key workflow' },
+          { id: 'reporting', label: 'Reporting-period urgency' }
+        ],
+        items: [
+          { id: 'class-view', label: 'Teacher cannot see one class markbook', correctCategoryId: 'markbook' },
+          { id: 'parent-key', label: 'Family asks about Sentral access key', correctCategoryId: 'parent' },
+          { id: 'due-today', label: 'Staff member blocked with reports due today', correctCategoryId: 'reporting' },
+          { id: 'grade-screen', label: 'Specific grading screen missing during reporting week', correctCategoryId: 'reporting' }
+        ],
+        rubric: ['Separates workflow types', 'Recognises urgency context', 'Supports clean routing']
+      }),
+      scenarioResponse({
+        id: 'sentral-support-q4',
+        prompt: 'A teacher says marks are due today and one class is missing from their Sentral view. Explain Josh’s first-line response.',
+        domain: 'Sentral support',
+        difficulty: 'challenge',
+        explanation: 'This combines function, scope, and timing.',
+        modelAnswer:
+          'Clarify the exact class and screen, confirm whether other staff are affected, note the reporting deadline, document safe checks already tried, and escalate quickly with a clear note because the timing makes the impact high.',
+        commonMistakes: ['Ignoring the time pressure', 'Logging it as a vague system complaint'],
+        dcsContext: 'Reporting deadlines can raise the urgency without changing Josh’s authority.',
+        reviewSchedule,
+        recommendedModuleId: 'sentral-support',
+        weakTopic: 'sentral-support',
+        rubric: ['Captures the exact function', 'Mentions the deadline', 'Escalates cleanly']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('sentral-support', [
+      {
+        title: 'Markbook visibility under deadline',
+        prompt: 'Write the shortest useful note for a reporting-period Sentral issue.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('sentral-support', [
+      {
+        title: 'Sentral triage cheat sheet',
+        description: 'Create a first-line guide that separates markbook, parent-access, and reporting-period support paths.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'ourdcs-schoolbox-support',
+    title: 'OurDCS / Schoolbox Support',
+    description:
+      'Support class pages, staff workflow issues, and portal/LMS triage boundaries for OurDCS and Schoolbox-style requests.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 20,
+    tags: ['OurDCS', 'Schoolbox', 'class pages', 'workflow triage'],
+    learningObjectives: [
+      'Clarify whether the issue is page visibility, content workflow, permissions, or publishing expectation.',
+      'Separate staff workflow support from deeper portal administration.',
+      'Write clear notes for class-page and LMS-style issues.'
+    ],
+    dcsRelevance: [
+      'Portal and LMS workflow questions are part of daily staff support reality.',
+      'Class-page issues often need better classification before they can be fixed.'
+    ],
+    sections: buildSections('ourdcs-schoolbox-support', [
+      {
+        title: 'Page, content, permission, or publishing issue?',
+        bodyMarkdown:
+          'Staff may say "OurDCS is broken" when the real issue is one class page, one attachment, one permission path, or a publishing step they expected to happen automatically. Start by naming the specific workflow.',
+        takeaway: 'Portal and LMS issues become clearer as soon as the exact page or action is named.'
+      },
+      {
+        title: 'Staff workflow support at Level 1',
+        bodyMarkdown:
+          'Level 1 can help classify the issue, confirm the exact class page or workflow, and capture what the staff member expected to happen. Deeper template, configuration, or admin-path changes still belong to the authorised owner.',
+        takeaway: 'Expectation versus outcome is one of the best clues in portal support.'
+      },
+      {
+        title: 'Triage boundaries for portals and LMS tools',
+        bodyMarkdown:
+          'Some issues are content or workflow coaching, some are permissions, and some are real system-owner tasks. Josh adds value by sorting them well and writing clear notes rather than overpromising portal admin action.',
+        takeaway: 'Good routing starts with the exact staff workflow that failed.'
+      }
+    ]),
+    flashcards: buildFlashcards('ourdcs-schoolbox-support', [
+      ['What is a helpful first split in OurDCS or Schoolbox support?', 'Work out whether the issue is visibility, content workflow, permissions, or publishing expectation.'],
+      ['Why capture the exact class page or resource?', 'Because one page issue is different from a wider portal problem.'],
+      ['What question helps when staff say a page is broken?', 'What did you expect to happen, and what actually happened instead?'],
+      ['What should Josh avoid promising?', 'Deep portal administration or template changes he does not own.'],
+      ['Why is expectation versus outcome useful?', 'It clarifies whether the problem is workflow knowledge, permissions, or system behaviour.'],
+      ['What makes a weak LMS note?', 'No page, no class, and no description of the missing action.'],
+      ['How can one attachment issue mislead support?', 'It can sound like the whole portal is down when the problem is only one resource path.'],
+      ['What is good first-line value here?', 'Classification, scope capture, and clean staff-facing communication.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'ourdcs-schoolbox-support-q1',
+        prompt: 'A teacher says their class page is broken. What is the best first question?',
+        domain: 'OurDCS and Schoolbox support',
+        difficulty: 'foundation',
+        explanation: 'The exact page and expected action matter.',
+        modelAnswer:
+          'Ask which class page or resource is affected and what the teacher expected to happen versus what actually happened.',
+        commonMistakes: ['Treating it like an immediate whole-portal outage', 'Skipping the expected action'],
+        dcsContext: 'LMS-style complaints often hide a specific workflow issue under broad language.',
+        reviewSchedule,
+        recommendedModuleId: 'ourdcs-schoolbox-support',
+        weakTopic: 'schoolbox-workflows',
+        options: [
+          { id: 'a', label: 'Which page or resource is affected, and what did you expect to happen?' },
+          { id: 'b', label: 'Rebuild the entire class page immediately' },
+          { id: 'c', label: 'Assume the portal is fully down for everyone' },
+          { id: 'd', label: 'Ignore whether the issue is only one attachment' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'ourdcs-schoolbox-support-q2',
+        prompt: 'What should a strong LMS or class-page note include?',
+        domain: 'OurDCS and Schoolbox support',
+        difficulty: 'stretch',
+        explanation: 'Portal notes need workflow context, not just frustration.',
+        modelAnswer:
+          'Include the exact page or class, the action the staff member attempted, the expected outcome, the actual result, any visible message, scope, and whether the issue appears instructional, permission-based, or system-owner territory.',
+        commonMistakes: ['Leaving out the expected outcome', 'Calling everything a permission issue too early'],
+        dcsContext: 'A good note can turn a vague class-page complaint into a workable task.',
+        reviewSchedule,
+        recommendedModuleId: 'ourdcs-schoolbox-support',
+        weakTopic: 'schoolbox-workflows',
+        rubric: ['Names page and action', 'Captures expected vs actual', 'Frames likely workflow bucket'],
+        keywordHints: ['page', 'action', 'expected', 'actual', 'scope']
+      }),
+      categorization({
+        id: 'ourdcs-schoolbox-support-q3',
+        prompt: 'Sort each request into the best primary bucket.',
+        domain: 'OurDCS and Schoolbox support',
+        difficulty: 'challenge',
+        explanation: 'Workflow, permissions, and system-owner issues need different treatment.',
+        modelAnswer:
+          'Some issues are content workflow coaching, some are permission access questions, and some are deeper portal-owner tasks.',
+        commonMistakes: ['Using "permissions" as a catch-all', 'Skipping workflow coaching as a real support task'],
+        dcsContext: 'School platforms create both technical and workflow support demands.',
+        reviewSchedule,
+        recommendedModuleId: 'ourdcs-schoolbox-support',
+        weakTopic: 'schoolbox-workflows',
+        categories: [
+          { id: 'workflow', label: 'Staff workflow or coaching' },
+          { id: 'permissions', label: 'Access or visibility question' },
+          { id: 'owner', label: 'Portal owner or deeper admin path' }
+        ],
+        items: [
+          { id: 'publish', label: 'Teacher expected new content to appear automatically after editing', correctCategoryId: 'workflow' },
+          { id: 'page-view', label: 'Teacher cannot see one class area they should use', correctCategoryId: 'permissions' },
+          { id: 'template', label: 'Department wants template structure changed globally', correctCategoryId: 'owner' },
+          { id: 'resource', label: 'One shared resource link on a page is missing', correctCategoryId: 'workflow' }
+        ],
+        rubric: ['Separates workflow from access', 'Recognises deeper owner tasks', 'Improves routing judgement']
+      }),
+      scenarioResponse({
+        id: 'ourdcs-schoolbox-support-q4',
+        prompt: 'A teacher says students cannot see the class page resources they uploaded. Explain Josh’s first-line response.',
+        domain: 'OurDCS and Schoolbox support',
+        difficulty: 'challenge',
+        explanation: 'This can be workflow, visibility, or permission related.',
+        modelAnswer:
+          'Clarify the exact class page and resource, confirm whether the issue affects all students or a subset, capture what the teacher expected after upload, and note any visible publishing or visibility clue before escalating or routing it to the right owner.',
+        commonMistakes: ['Assuming the whole portal is down', 'Skipping scope and expectation'],
+        dcsContext: 'The uploaded-resource complaint is often about a specific publishing or visibility path.',
+        reviewSchedule,
+        recommendedModuleId: 'ourdcs-schoolbox-support',
+        weakTopic: 'schoolbox-workflows',
+        rubric: ['Names exact page and resource', 'Checks scope', 'Captures expected behaviour']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('ourdcs-schoolbox-support', [
+      {
+        title: 'Class page resources missing',
+        prompt: 'Write a short LMS support note that separates page context, visibility, and expected outcome.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('ourdcs-schoolbox-support', [
+      {
+        title: 'OurDCS or Schoolbox quick-reference guide',
+        description: 'Create a first-line cheat sheet for class-page visibility, upload expectations, and owner boundaries.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'login-and-password-support',
+    title: 'Login and Password Support',
+    description:
+      'Handle username checks, lockouts, expired passwords, self-service resets, and compromise suspicion with safe first-line judgement.',
+    domain: 'Identity and Access',
+    level: 'L1',
+    estimatedMinutes: 22,
+    tags: ['password reset', 'lockout', 'expired password', 'self-service', 'compromise suspicion'],
+    learningObjectives: [
+      'Separate forgotten-password, lockout, expired-password, and compromise-suspicion cases.',
+      'Use self-service and identity checks safely before escalating.',
+      'Write notes that preserve identity risk without oversharing.'
+    ],
+    dcsRelevance: [
+      'Login and password issues are among the most common first-line support requests.',
+      'The wrong response can increase both downtime and security risk.'
+    ],
+    sections: buildSections('login-and-password-support', [
+      {
+        title: 'Not every login failure is the same',
+        bodyMarkdown:
+          'A user who forgot the password, a user who is locked out, and a user whose password expired may all say "I cannot log in". Separate username, timing, message wording, and whether self-service should work before acting.',
+        takeaway: 'The exact login state matters more than the broad complaint.'
+      },
+      {
+        title: 'Self-service before unsafe shortcuts',
+        bodyMarkdown:
+          'If the environment supports self-service reset, use that path where appropriate. Josh should never ask for the user’s password and should treat repeated unexpected prompts or compromise suspicion as a higher-risk workflow.',
+        takeaway: 'Safe identity support protects both uptime and trust.'
+      },
+      {
+        title: 'Know when the issue becomes security-sensitive',
+        bodyMarkdown:
+          'Unexpected password changes, sign-in prompts that do not fit the situation, or repeated failures after a reset can move the issue beyond routine access help. Capture the symptom, timing, and scope cleanly, then escalate.',
+        takeaway: 'Compromise suspicion changes the judgement and the wording.'
+      }
+    ]),
+    flashcards: buildFlashcards('login-and-password-support', [
+      ['Why clarify the exact login message?', 'Because forgotten password, lockout, and expiry often need different next steps.'],
+      ['What should Josh never ask a user for?', 'Their current password.'],
+      ['When is self-service reset especially useful?', 'When the identity workflow supports it and the issue looks routine rather than suspicious.'],
+      ['What raises compromise suspicion?', 'Unexpected password-change signs, strange prompts, or failures that do not fit a normal reset story.'],
+      ['Why confirm the username carefully?', 'A typo or wrong account can look like a password failure.'],
+      ['What is a weak login note?', 'One that says only "cannot log in" without the message, timing, or state.'],
+      ['Why does staff versus student context matter?', 'The workflow and urgency can differ depending on account type and support path.'],
+      ['What should a strong identity note capture?', 'Username context, exact symptom, message wording, steps tried, and any security concern.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'login-and-password-support-q1',
+        prompt: 'A user says they cannot log in. What is the best first step?',
+        domain: 'Login and password support',
+        difficulty: 'foundation',
+        explanation: 'The exact identity state should be clarified before action.',
+        modelAnswer:
+          'Confirm the correct username, capture the exact message or symptom, and work out whether the issue looks like forgotten password, lockout, expiry, or something more suspicious.',
+        commonMistakes: ['Resetting immediately without context', 'Ignoring the username check'],
+        dcsContext: 'Fast identity support still depends on correct classification.',
+        reviewSchedule,
+        recommendedModuleId: 'login-and-password-support',
+        weakTopic: 'login-password-support',
+        options: [
+          { id: 'a', label: 'Clarify username, exact message, and likely login state' },
+          { id: 'b', label: 'Ask them to tell you the password they last used' },
+          { id: 'c', label: 'Assume the account is compromised every time' },
+          { id: 'd', label: 'Ignore the message wording and go straight to escalation' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'login-and-password-support-q2',
+        prompt: 'What should a good password-support note include?',
+        domain: 'Login and password support',
+        difficulty: 'stretch',
+        explanation: 'Identity notes need evidence and restraint together.',
+        modelAnswer:
+          'Include the username context or account type, exact sign-in symptom or message, whether the issue looks like lockout, expiry, or reset failure, what safe steps were tried, and whether any compromise suspicion exists.',
+        commonMistakes: ['Pasting unnecessary private detail', 'Leaving out the exact sign-in state'],
+        dcsContext: 'A clean note helps the next person decide whether this is routine or risky.',
+        reviewSchedule,
+        recommendedModuleId: 'login-and-password-support',
+        weakTopic: 'login-password-support',
+        rubric: ['Names sign-in state', 'Records safe steps tried', 'Mentions security concern if present'],
+        keywordHints: ['username', 'message', 'lockout', 'expiry', 'security']
+      }),
+      orderSteps({
+        id: 'login-and-password-support-q3',
+        prompt: 'Order the safer response to a likely routine password-reset request.',
+        domain: 'Login and password support',
+        difficulty: 'stretch',
+        explanation: 'Routine identity work still benefits from sequence.',
+        modelAnswer:
+          'Confirm the correct account and symptom, use the approved self-service or standard reset path if appropriate, verify the outcome safely, then escalate if the failure persists or looks suspicious.',
+        commonMistakes: ['Resetting before confirming the account', 'Skipping post-reset verification'],
+        dcsContext: 'Routine access support still needs safe verification.',
+        reviewSchedule,
+        recommendedModuleId: 'login-and-password-support',
+        weakTopic: 'login-password-support',
+        steps: [
+          { id: 'account', label: 'Confirm the correct username or account context' },
+          { id: 'state', label: 'Clarify the exact login state or message' },
+          { id: 'path', label: 'Use the approved self-service or reset path' },
+          { id: 'verify', label: 'Check the result and escalate if it still looks wrong' }
+        ],
+        correctOrder: ['account', 'state', 'path', 'verify'],
+        rubric: ['Confirms account first', 'Uses approved path', 'Verifies safely']
+      }),
+      scenarioResponse({
+        id: 'login-and-password-support-q4',
+        prompt: 'A user says the reset did not help and the prompts now feel suspicious. Explain Josh’s next move.',
+        domain: 'Login and password support',
+        difficulty: 'challenge',
+        explanation: 'The issue may have shifted from routine access help to security-sensitive handling.',
+        modelAnswer:
+          'Stop treating it as routine only. Capture the exact symptom, timing, and what happened after the reset, avoid collecting passwords, and escalate through the appropriate security-aware path because compromise suspicion is now part of the note.',
+        commonMistakes: ['Persisting with casual resets', 'Ignoring the security concern because a reset was already tried'],
+        dcsContext: 'Compromise suspicion changes the support posture immediately.',
+        reviewSchedule,
+        recommendedModuleId: 'login-and-password-support',
+        weakTopic: 'login-password-support',
+        rubric: ['Recognises risk shift', 'Avoids unsafe questions', 'Escalates with clear evidence']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('login-and-password-support', [
+      {
+        title: 'Lockout or suspicious reset failure',
+        prompt: 'Write the note you would want another tech to see before they touch the account.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('login-and-password-support', [
+      {
+        title: 'Password help quick guide',
+        description: 'Draft a first-line workflow for username checks, self-service reset, lockout handling, and security-sensitive escalation.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'permissions-and-access-requests',
+    title: 'Permissions and Access Requests',
+    description:
+      'Triage shared-drive, software, group, and role-based access requests with clean approvals, least-privilege thinking, and safe handoff.',
+    domain: 'Identity and Access',
+    level: 'L1',
+    estimatedMinutes: 22,
+    tags: ['permissions', 'shared drives', 'software access', 'approvals', 'least privilege'],
+    learningObjectives: [
+      'Separate login issues from permission issues.',
+      'Capture request completeness, business need, and approval context.',
+      'Use least-privilege language without blocking legitimate work.'
+    ],
+    dcsRelevance: [
+      'Access requests are common and easy to mishandle without clear approvals.',
+      'Strong notes reduce rework for whoever actually grants access.'
+    ],
+    sections: buildSections('permissions-and-access-requests', [
+      {
+        title: 'Access issue or login issue?',
+        bodyMarkdown:
+          'A user who can sign in but cannot reach a drive, Team, or application probably has an access-path problem, not a password problem. Separate authentication success from authorisation failure before routing the request.',
+        takeaway: 'Being unable to open something is not automatically a login failure.'
+      },
+      {
+        title: 'Request completeness matters',
+        bodyMarkdown:
+          'The best access request notes capture who needs what, for which role or task, whether an approval exists, how urgent it is, and whether a shared drive, group, Team, or app is involved. A vague request creates slow, risky work.',
+        takeaway: 'Completeness is part of security and part of service quality.'
+      },
+      {
+        title: 'Least privilege is practical, not abstract',
+        bodyMarkdown:
+          'Least privilege means granting the smallest appropriate access for the actual work. Josh does not decide every approval, but he should phrase requests in a way that makes scope and justification clear.',
+        takeaway: 'Clear justification helps protect both the user and the school.'
+      }
+    ]),
+    flashcards: buildFlashcards('permissions-and-access-requests', [
+      ['How do you distinguish a permission issue from a login issue?', 'The user may authenticate successfully but still be denied the drive, Team, or application they need.'],
+      ['What should a strong access request include?', 'Who needs access, to what, for what role or task, approval context, urgency, and scope.'],
+      ['Why is least privilege useful?', 'It gives the user the access they need without widening risk unnecessarily.'],
+      ['What is a weak access request?', 'Please give them access with no role, destination, or approval context.'],
+      ['Why mention whether it is a drive, Team, or software request?', 'Different systems have different owners and grant paths.'],
+      ['What should Josh avoid promising?', 'That access will be granted without the right owner or approval.'],
+      ['What is an important post-grant question?', 'Can the user now reach the intended resource or workflow safely?'],
+      ['Why is role context useful?', 'It explains the business need and supports the least-privilege decision.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'permissions-and-access-requests-q1',
+        prompt: 'A staff member can sign in normally but cannot open a shared drive folder they need. What is the best first judgement?',
+        domain: 'Permissions and access',
+        difficulty: 'foundation',
+        explanation: 'Authentication success changes the problem class.',
+        modelAnswer:
+          'Treat it as an access or permission issue first, then capture the exact resource, role need, and approval context.',
+        commonMistakes: ['Resetting the password first', 'Ignoring the exact target resource'],
+        dcsContext: 'This is a frequent school support distinction.',
+        reviewSchedule,
+        recommendedModuleId: 'permissions-and-access-requests',
+        weakTopic: 'permissions-access',
+        options: [
+          { id: 'a', label: 'This is likely an access-path issue, not a pure login failure' },
+          { id: 'b', label: 'Delete the account and start over' },
+          { id: 'c', label: 'Assume they need full admin rights' },
+          { id: 'd', label: 'Ignore approvals because they already work at the school' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'permissions-and-access-requests-q2',
+        prompt: 'What should Josh capture before escalating a software or shared-drive access request?',
+        domain: 'Permissions and access',
+        difficulty: 'stretch',
+        explanation: 'Completeness makes access requests safer and faster.',
+        modelAnswer:
+          'Capture who needs access, the exact resource or software, their role or task need, urgency, whether an approval exists, and whether the problem is no access at all or unexpected limited access.',
+        commonMistakes: ['Leaving out business need', 'Not naming the exact resource'],
+        dcsContext: 'A complete request helps the owner grant the smallest correct access faster.',
+        reviewSchedule,
+        recommendedModuleId: 'permissions-and-access-requests',
+        weakTopic: 'permissions-access',
+        rubric: ['Names resource and user', 'Includes role or task need', 'Mentions approval or urgency'],
+        keywordHints: ['who', 'resource', 'role', 'approval', 'urgency']
+      }),
+      categorization({
+        id: 'permissions-and-access-requests-q3',
+        prompt: 'Sort each issue into the best bucket.',
+        domain: 'Permissions and access',
+        difficulty: 'challenge',
+        explanation: 'Classification improves the handoff path.',
+        modelAnswer:
+          'Some problems are login-state issues, some are permissions requests, and some are approval-owner tasks before any grant should happen.',
+        commonMistakes: ['Treating every denial as a password issue', 'Skipping approval ownership'],
+        dcsContext: 'This is one of the clearest places where Level 1 triage quality matters.',
+        reviewSchedule,
+        recommendedModuleId: 'permissions-and-access-requests',
+        weakTopic: 'permissions-access',
+        categories: [
+          { id: 'login', label: 'Login or identity issue' },
+          { id: 'access', label: 'Permissions or access path' },
+          { id: 'approval', label: 'Approval or owner decision needed' }
+        ],
+        items: [
+          { id: 'signin', label: 'User cannot authenticate to the account at all', correctCategoryId: 'login' },
+          { id: 'drive', label: 'User signs in but cannot open the requested shared drive', correctCategoryId: 'access' },
+          { id: 'xero', label: 'Finance application access requested for a new role with no approval yet', correctCategoryId: 'approval' },
+          { id: 'team', label: 'Teacher can access M365 but not the Team needed for their class', correctCategoryId: 'access' }
+        ],
+        rubric: ['Separates login from access', 'Recognises approval boundary', 'Improves routing']
+      }),
+      scenarioResponse({
+        id: 'permissions-and-access-requests-q4',
+        prompt: 'A new staff member says they can sign in but still lack the folders and software needed for today. Explain Josh’s first-line response.',
+        domain: 'Permissions and access',
+        difficulty: 'challenge',
+        explanation: 'The note should combine urgency with completeness.',
+        modelAnswer:
+          'Clarify the exact folders, Teams, or applications missing, capture the staff member’s role and start-day urgency, note any existing approval context, and escalate the request clearly without promising unauthorised broad access.',
+        commonMistakes: ['Calling it only a login issue', 'Promising full access without approval context'],
+        dcsContext: 'Day-one access issues often need fast but still disciplined handling.',
+        reviewSchedule,
+        recommendedModuleId: 'permissions-and-access-requests',
+        weakTopic: 'permissions-access',
+        rubric: ['Names exact resources', 'Captures urgency and role', 'Keeps approval boundaries clear']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('permissions-and-access-requests', [
+      {
+        title: 'Shared-drive access request',
+        prompt: 'Write the shortest escalation note that still captures resource, role, approval context, and urgency.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('permissions-and-access-requests', [
+      {
+        title: 'Access request template',
+        description: 'Create a reusable request pattern for shared drives, software, and role-based access grants.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'website-filtering-and-unblock-requests',
+    title: 'Website Filtering and Unblock Requests',
+    description:
+      'Capture block details, education-purpose justification, workflow timing, and escalation boundaries for website filtering requests.',
+    domain: 'Operations',
+    level: 'L1',
+    estimatedMinutes: 18,
+    tags: ['filtering', 'blocked sites', 'unblock request', 'justification'],
+    learningObjectives: [
+      'Separate blocked-site workflow from general internet faults.',
+      'Capture the evidence needed for an unblock review.',
+      'Communicate lead time and approval boundaries clearly.'
+    ],
+    dcsRelevance: [
+      'Website filtering requests are common and process-sensitive.',
+      'The right evidence prevents repeated back-and-forth on unblock requests.'
+    ],
+    sections: buildSections('website-filtering-and-unblock-requests', [
+      {
+        title: 'Blocked site is not the same as no internet',
+        bodyMarkdown:
+          'If browsing generally works but one site is blocked, the problem is likely a filtering workflow rather than a connectivity failure. Capture the exact URL or category, the visible block message, and the educational purpose.',
+        takeaway: 'Unblock requests need evidence and justification, not just frustration.'
+      },
+      {
+        title: 'Why justification and lead time matter',
+        bodyMarkdown:
+          'Some requests need review against policy, curriculum purpose, or risk. Josh should explain the next step and likely lead time honestly instead of suggesting that every block can be lifted immediately.',
+        takeaway: 'Policy workflow awareness is part of good first-line service.'
+      },
+      {
+        title: 'Evidence for the reviewing owner',
+        bodyMarkdown:
+          'A strong note includes the exact site or service, who needs it, what educational task is blocked, the visible message, urgency, and when the activity is due. That is far better than simply saying "Please unblock this site".',
+        takeaway: 'Evidence quality shapes turnaround quality.'
+      }
+    ]),
+    flashcards: buildFlashcards('website-filtering-and-unblock-requests', [
+      ['How do you recognise a filtering request rather than a general internet failure?', 'General browsing works, but the specific site or service shows a block message or category issue.'],
+      ['What evidence should a blocked-site note include?', 'Exact site, visible block wording, user group, educational purpose, and urgency.'],
+      ['Why mention educational purpose?', 'Because unblock review depends on business or curriculum need, not only technical reachability.'],
+      ['What is a weak unblock request?', 'This site is blocked. Please fix.'],
+      ['Why should Josh avoid promising instant unblocking?', 'Because review and approval may be required.'],
+      ['What timing detail often matters?', 'When the lesson, activity, or event needs the site.'],
+      ['Why is the visible block message useful?', 'It distinguishes filtering from other kinds of failure.'],
+      ['What should Josh capture instead of a vague complaint?', 'Who needs the site, why, when, and what exact block was seen.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'website-filtering-and-unblock-requests-q1',
+        prompt: 'Which clue best suggests a filtering workflow rather than a total internet fault?',
+        domain: 'Website filtering and unblock requests',
+        difficulty: 'foundation',
+        explanation: 'The symptom pattern changes the route.',
+        modelAnswer:
+          'If general browsing works but one site shows a block message, that points toward filtering workflow rather than broad connectivity loss.',
+        commonMistakes: ['Treating one blocked site as a total outage', 'Ignoring the exact block message'],
+        dcsContext: 'This distinction matters in classrooms where time is short and policy still applies.',
+        reviewSchedule,
+        recommendedModuleId: 'website-filtering-and-unblock-requests',
+        weakTopic: 'website-filtering',
+        options: [
+          { id: 'a', label: 'Other sites work, but this one shows a block message' },
+          { id: 'b', label: 'The device has no power' },
+          { id: 'c', label: 'The password expired yesterday' },
+          { id: 'd', label: 'The class printer jammed' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'website-filtering-and-unblock-requests-q2',
+        prompt: 'What should an unblock request note include?',
+        domain: 'Website filtering and unblock requests',
+        difficulty: 'stretch',
+        explanation: 'Evidence and justification are the heart of this workflow.',
+        modelAnswer:
+          'Include the exact site or service, who needs it, the visible block wording, the educational purpose or task, urgency or due time, and the approval path or owner if known.',
+        commonMistakes: ['Leaving out educational purpose', 'Not naming the exact site'],
+        dcsContext: 'The reviewing owner needs more than a complaint to assess risk and need.',
+        reviewSchedule,
+        recommendedModuleId: 'website-filtering-and-unblock-requests',
+        weakTopic: 'website-filtering',
+        rubric: ['Names exact site', 'Explains educational need', 'Captures urgency or timing'],
+        keywordHints: ['URL', 'block message', 'purpose', 'urgency']
+      }),
+      orderSteps({
+        id: 'website-filtering-and-unblock-requests-q3',
+        prompt: 'Order the safer response to a blocked-site request from a teacher.',
+        domain: 'Website filtering and unblock requests',
+        difficulty: 'stretch',
+        explanation: 'Evidence should come before routing.',
+        modelAnswer:
+          'Confirm that other browsing works, capture the exact blocked site and message, record the educational purpose and timing, then route the request through the approved workflow.',
+        commonMistakes: ['Sending an unblock request with no evidence', 'Treating it like a random internet fault'],
+        dcsContext: 'Good unblock requests save time later in the approval chain.',
+        reviewSchedule,
+        recommendedModuleId: 'website-filtering-and-unblock-requests',
+        weakTopic: 'website-filtering',
+        steps: [
+          { id: 'scope', label: 'Check whether general internet access still works' },
+          { id: 'site', label: 'Capture the exact site and visible block message' },
+          { id: 'purpose', label: 'Record the educational purpose and timing need' },
+          { id: 'route', label: 'Send the request through the approved workflow' }
+        ],
+        correctOrder: ['scope', 'site', 'purpose', 'route'],
+        rubric: ['Separates filtering from outage', 'Captures evidence', 'Routes appropriately']
+      }),
+      scenarioResponse({
+        id: 'website-filtering-and-unblock-requests-q4',
+        prompt: 'A teacher needs a blocked site for tomorrow’s lesson. Explain Josh’s note and response.',
+        domain: 'Website filtering and unblock requests',
+        difficulty: 'challenge',
+        explanation: 'Lead time and justification both matter.',
+        modelAnswer:
+          'Capture the exact site, visible block message, curriculum purpose, and when the lesson needs it. Explain that the request will be routed for review rather than promising instant unblocking, and note the timing so urgency is visible to the reviewer.',
+        commonMistakes: ['Promising the site will be opened immediately', 'Skipping the lesson timing'],
+        dcsContext: 'Teacher trust rises when the workflow is explained clearly and honestly.',
+        reviewSchedule,
+        recommendedModuleId: 'website-filtering-and-unblock-requests',
+        weakTopic: 'website-filtering',
+        rubric: ['Captures site and message', 'Includes educational purpose', 'Communicates lead time honestly']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('website-filtering-and-unblock-requests', [
+      {
+        title: 'Lesson-blocked website',
+        prompt: 'Write a one-paragraph unblock request note that would help the reviewer decide quickly.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('website-filtering-and-unblock-requests', [
+      {
+        title: 'Website unblock checklist',
+        description: 'Create a first-line evidence checklist for blocked-site and unblock workflow requests.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'new-user-onboarding',
+    title: 'New User Onboarding',
+    description:
+      'Support staff, student, and prac-teacher onboarding requests with completeness checks, role context, and day-one validation.',
+    domain: 'Identity and Access',
+    level: 'L1',
+    estimatedMinutes: 22,
+    tags: ['onboarding', 'new staff', 'students', 'prac teachers', 'day-one checks'],
+    learningObjectives: [
+      'Capture who the user is, when they start, and what systems they actually need.',
+      'Separate request completeness from provisioned-access verification.',
+      'Use day-one validation notes to reduce rework.'
+    ],
+    dcsRelevance: [
+      'New-user onboarding is a repeated, high-impact support workflow.',
+      'Missing access on day one affects both confidence and operations.'
+    ],
+    sections: buildSections('new-user-onboarding', [
+      {
+        title: 'Completeness before provisioning',
+        bodyMarkdown:
+          'A good onboarding request captures start date, role, campus, account type, approvals, and required systems. Staff, students, and prac teachers may need different sets of access, devices, and communication steps.',
+        takeaway: 'Good onboarding starts with complete requests, not emergency guesswork.'
+      },
+      {
+        title: 'Role context shapes the system list',
+        bodyMarkdown:
+          'Do not assume every new user needs the same systems. The right note names the role or learning context, expected drives, Teams, portals, and any special software or classroom needs.',
+        takeaway: 'Role context is the difference between enough access and too much access.'
+      },
+      {
+        title: 'Day-one validation catches gaps fast',
+        bodyMarkdown:
+          'Even when accounts are created, day-one checks still matter: can the user sign in, reach the expected systems, print if required, and access the right class or team context? Missing-access notes should be specific and calm.',
+        takeaway: 'Onboarding quality includes validation, not only request submission.'
+      }
+    ]),
+    flashcards: buildFlashcards('new-user-onboarding', [
+      ['What belongs in a complete onboarding request?', 'Start date, role, campus, approvals, required systems, and any special access needs.'],
+      ['Why does role context matter in onboarding?', 'It determines which systems and permissions are actually appropriate.'],
+      ['What is a weak onboarding note?', 'New user needs setup ASAP with no role or systems listed.'],
+      ['Why are prac teachers worth naming separately?', 'They may follow different timing, approval, or system-need patterns from permanent staff.'],
+      ['What should day-one validation check?', 'Sign-in success and access to the systems the role actually needs.'],
+      ['Why separate request completeness from missing-access follow-up?', 'Because the account may exist but still be missing key resources.'],
+      ['What kind of data should stay out of the PD app?', 'Private identifiers, credentials, and copied personal details.'],
+      ['What should Josh capture when onboarding is incomplete?', 'What is present, what is missing, who approved it, and what start-day impact remains.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'new-user-onboarding-q1',
+        prompt: 'Which detail is most important before routing a new onboarding request?',
+        domain: 'New user onboarding',
+        difficulty: 'foundation',
+        explanation: 'Role and start context drive the rest of the workflow.',
+        modelAnswer:
+          'Capture the user type, role, start date, campus, and required systems before treating the request as complete enough to action.',
+        commonMistakes: ['Requesting setup with no role context', 'Ignoring start date urgency'],
+        dcsContext: 'Onboarding mistakes usually begin with missing context, not with the account tool.',
+        reviewSchedule,
+        recommendedModuleId: 'new-user-onboarding',
+        weakTopic: 'onboarding-workflows',
+        options: [
+          { id: 'a', label: 'User type, role, start date, campus, and needed systems' },
+          { id: 'b', label: 'Only the person’s first name' },
+          { id: 'c', label: 'Assume every user needs the same access' },
+          { id: 'd', label: 'Ignore whether they start today or next week' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'new-user-onboarding-q2',
+        prompt: 'What should a day-one validation note include when a new user still lacks access?',
+        domain: 'New user onboarding',
+        difficulty: 'stretch',
+        explanation: 'Missing-access notes should be exact and role-aware.',
+        modelAnswer:
+          'Include what the user can access already, what required systems are still missing, the role and day-one impact, and any approvals or onboarding request context already known.',
+        commonMistakes: ['Writing only "user not set up"', 'Leaving out which systems are already working'],
+        dcsContext: 'The next person needs to see both the gaps and the progress already made.',
+        reviewSchedule,
+        recommendedModuleId: 'new-user-onboarding',
+        weakTopic: 'onboarding-workflows',
+        rubric: ['Names working and missing systems', 'Captures role impact', 'Uses request context'],
+        keywordHints: ['working', 'missing', 'role', 'impact', 'context']
+      }),
+      categorization({
+        id: 'new-user-onboarding-q3',
+        prompt: 'Sort each item into the best onboarding bucket.',
+        domain: 'New user onboarding',
+        difficulty: 'challenge',
+        explanation: 'Completeness, provisioning, and validation are separate stages.',
+        modelAnswer:
+          'Some items belong to request completeness, some to actual provisioning, and some to day-one validation of what the user can really use.',
+        commonMistakes: ['Treating request submission as the whole workflow', 'Ignoring validation after provisioning'],
+        dcsContext: 'This is how Josh avoids assuming setup is finished when the user still cannot work.',
+        reviewSchedule,
+        recommendedModuleId: 'new-user-onboarding',
+        weakTopic: 'onboarding-workflows',
+        categories: [
+          { id: 'request', label: 'Request completeness' },
+          { id: 'provision', label: 'Provisioning action' },
+          { id: 'validate', label: 'Day-one validation' }
+        ],
+        items: [
+          { id: 'start-date', label: 'Confirm the user’s start date and campus', correctCategoryId: 'request' },
+          { id: 'account', label: 'Create or route account setup through the owner path', correctCategoryId: 'provision' },
+          { id: 'signin', label: 'Check whether the user can sign in and reach required systems', correctCategoryId: 'validate' },
+          { id: 'role', label: 'List the Teams, drives, or apps the role needs', correctCategoryId: 'request' }
+        ],
+        rubric: ['Separates workflow stages', 'Recognises validation as distinct', 'Improves request clarity']
+      }),
+      scenarioResponse({
+        id: 'new-user-onboarding-q4',
+        prompt: 'A prac teacher starts today and can sign in but cannot reach the class resources they were told to use. Explain Josh’s first-line response.',
+        domain: 'New user onboarding',
+        difficulty: 'challenge',
+        explanation: 'This is a role-context and day-one validation problem.',
+        modelAnswer:
+          'Confirm the prac teacher’s expected class resources and context, capture which systems work already, identify the missing access paths, note start-day urgency, and escalate the specific missing resources rather than logging it as a generic setup failure.',
+        commonMistakes: ['Calling it only a login problem', 'Not naming the class resources that are missing'],
+        dcsContext: 'Day-one access notes are strongest when they list exact missing workflows.',
+        reviewSchedule,
+        recommendedModuleId: 'new-user-onboarding',
+        weakTopic: 'onboarding-workflows',
+        rubric: ['Names exact missing resources', 'Captures day-one urgency', 'Uses role context']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('new-user-onboarding', [
+      {
+        title: 'Missing day-one access',
+        prompt: 'Write the best note for a new user who has an account but still cannot do the job they started today.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('new-user-onboarding', [
+      {
+        title: 'Onboarding checklist',
+        description: 'Create a staff, student, and prac-teacher onboarding checklist with completeness and day-one validation steps.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'teams-sharepoint-onedrive-support',
+    title: 'Teams, SharePoint, and OneDrive Support',
+    description:
+      'Support common sharing, sync, ownership, and access issues in Teams, SharePoint, and OneDrive at a Level 1-safe scope.',
+    domain: 'Cloud and Platforms',
+    level: 'L1',
+    estimatedMinutes: 22,
+    tags: ['Teams', 'SharePoint', 'OneDrive', 'sync', 'sharing', 'ownership'],
+    learningObjectives: [
+      'Separate sync issues, sharing issues, and ownership or permission issues.',
+      'Use Level 1-safe checks before escalating cloud-collaboration complaints.',
+      'Write notes that preserve the exact path and impact.'
+    ],
+    dcsRelevance: [
+      'Teams, SharePoint, and OneDrive are everyday staff platforms.',
+      'Clear path and scope notes prevent vague cloud-support escalations.'
+    ],
+    sections: buildSections('teams-sharepoint-onedrive-support', [
+      {
+        title: 'Path matters: Team, site, or personal file area?',
+        bodyMarkdown:
+          'A user may say "OneDrive" when the file actually lives in a Team or SharePoint site, or say "Teams" when the real problem is a sync path. Start by naming where the file or folder is meant to live.',
+        takeaway: 'Platform name confusion is common and worth clarifying early.'
+      },
+      {
+        title: 'Sync, sharing, or ownership?',
+        bodyMarkdown:
+          'A file can fail because sync is stalled, because sharing was done to the wrong people, or because the user lacks ownership or site access. These are different support paths even though they all feel like missing files to the user.',
+        takeaway: 'The missing file complaint often hides one of three different workflows.'
+      },
+      {
+        title: 'Level 1-safe checks and handoff',
+        bodyMarkdown:
+          'Safe first checks include confirming the location path, whether the issue is on one device or web and desktop both, what sharing was expected, and whether someone else in the Team can see the same content. Escalation should name the exact library, Team, or personal area involved.',
+        takeaway: 'Precise path language is the most useful note improvement here.'
+      }
+    ]),
+    flashcards: buildFlashcards('teams-sharepoint-onedrive-support', [
+      ['Why clarify whether the file is in Teams, SharePoint, or OneDrive?', 'Because the storage path and owner workflow differ.'],
+      ['What are the three common buckets for missing-file complaints?', 'Sync issue, sharing issue, or ownership/access issue.'],
+      ['What is a safe first comparison for a sync problem?', 'Check whether the file is visible in the web version or on another device.'],
+      ['Why mention the exact Team or library?', 'Because vague cloud-platform language weakens the escalation note.'],
+      ['What does a sharing issue usually need?', 'Expected audience, current visibility, and how the file was shared.'],
+      ['What is a weak note here?', 'Teams is broken and my files are gone.'],
+      ['Why does web versus desktop comparison help?', 'It separates local sync path issues from wider access issues.'],
+      ['What should Josh avoid promising?', 'That he will fix ownership or site-level settings without the right owner.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'teams-sharepoint-onedrive-support-q1',
+        prompt: 'A teacher says a file is missing from Teams. What is the best first clarification?',
+        domain: 'Teams, SharePoint, and OneDrive',
+        difficulty: 'foundation',
+        explanation: 'Path clarity comes first.',
+        modelAnswer:
+          'Clarify whether the file lives in a Team, a SharePoint site library, or the teacher’s own OneDrive, and what location they expected to open.',
+        commonMistakes: ['Treating every file complaint as generic Teams failure', 'Skipping the path question'],
+        dcsContext: 'Platform names get used loosely in daily school support.',
+        reviewSchedule,
+        recommendedModuleId: 'teams-sharepoint-onedrive-support',
+        weakTopic: 'teams-sharepoint-onedrive',
+        options: [
+          { id: 'a', label: 'Where exactly is the file meant to live and who should see it?' },
+          { id: 'b', label: 'Delete the Team and recreate it' },
+          { id: 'c', label: 'Assume the user lost all their files' },
+          { id: 'd', label: 'Ignore whether the web version still works' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'teams-sharepoint-onedrive-support-q2',
+        prompt: 'What should Josh include in a note for a likely sync problem?',
+        domain: 'Teams, SharePoint, and OneDrive',
+        difficulty: 'stretch',
+        explanation: 'Sync complaints benefit from location and comparison details.',
+        modelAnswer:
+          'Include the exact file or library path, whether the issue occurs on web, desktop, or both, what sync symptom is visible, whether another device or user sees the same content, and the current impact.',
+        commonMistakes: ['Not naming the path', 'Failing to compare web versus desktop'],
+        dcsContext: 'These details help distinguish local sync from wider access issues.',
+        reviewSchedule,
+        recommendedModuleId: 'teams-sharepoint-onedrive-support',
+        weakTopic: 'teams-sharepoint-onedrive',
+        rubric: ['Names path clearly', 'Captures comparison checks', 'States impact'],
+        keywordHints: ['path', 'web', 'desktop', 'sync', 'impact']
+      }),
+      categorization({
+        id: 'teams-sharepoint-onedrive-support-q3',
+        prompt: 'Sort each complaint into the best primary bucket.',
+        domain: 'Teams, SharePoint, and OneDrive',
+        difficulty: 'challenge',
+        explanation: 'Missing files can be missing for different reasons.',
+        modelAnswer:
+          'Web-versus-desktop mismatch points toward sync, wrong audience or link expectation points toward sharing, and site or Team access gaps point toward ownership or permissions.',
+        commonMistakes: ['Using one troubleshooting path for every missing-file complaint', 'Skipping path and audience context'],
+        dcsContext: 'Precise classification makes the cloud platforms much easier to support.',
+        reviewSchedule,
+        recommendedModuleId: 'teams-sharepoint-onedrive-support',
+        weakTopic: 'teams-sharepoint-onedrive',
+        categories: [
+          { id: 'sync', label: 'Sync path issue' },
+          { id: 'sharing', label: 'Sharing or audience issue' },
+          { id: 'access', label: 'Ownership or access issue' }
+        ],
+        items: [
+          { id: 'web-only', label: 'File appears on web but not in the local folder', correctCategoryId: 'sync' },
+          { id: 'wrong-people', label: 'Teacher expected the class to see a file that only staff can open', correctCategoryId: 'sharing' },
+          { id: 'team-missing', label: 'User cannot open the Team site they should belong to', correctCategoryId: 'access' },
+          { id: 'onedrive-share', label: 'Personal OneDrive link was sent to the wrong audience', correctCategoryId: 'sharing' }
+        ],
+        rubric: ['Separates platform problem types', 'Uses path and audience clues', 'Improves routing']
+      }),
+      scenarioResponse({
+        id: 'teams-sharepoint-onedrive-support-q4',
+        prompt: 'A staff member says the shared faculty folder shows in the browser but not on their laptop. Explain Josh’s first-line response.',
+        domain: 'Teams, SharePoint, and OneDrive',
+        difficulty: 'challenge',
+        explanation: 'This likely points toward local sync rather than total access failure.',
+        modelAnswer:
+          'Capture the exact site or folder path, note that the browser view works, record the local sync symptom, and confirm whether the issue is isolated to one device. That frames the problem as likely sync-path related rather than a total access denial.',
+        commonMistakes: ['Logging it as broad access loss', 'Ignoring the browser success clue'],
+        dcsContext: 'The web-versus-laptop difference is one of the best signal-splitting clues in M365 file support.',
+        reviewSchedule,
+        recommendedModuleId: 'teams-sharepoint-onedrive-support',
+        weakTopic: 'teams-sharepoint-onedrive',
+        rubric: ['Uses path detail', 'Mentions browser-versus-laptop split', 'Captures device scope']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('teams-sharepoint-onedrive-support', [
+      {
+        title: 'Browser works, laptop does not',
+        prompt: 'Write the best note for a file path that works on the web but not in the local sync view.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('teams-sharepoint-onedrive-support', [
+      {
+        title: 'Teams/SharePoint/OneDrive triage guide',
+        description: 'Create a quick guide that separates sync, sharing, and access-path issues.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'ipad-jamf-workflow-basics',
+    title: 'iPad and Jamf Workflow Basics',
+    description:
+      'Handle first-line iPad and Jamf-related triage with ownership boundaries, evidence capture, and Level 1-safe next steps.',
+    domain: 'Endpoint Support',
+    level: 'L1',
+    estimatedMinutes: 20,
+    tags: ['iPad', 'Jamf', 'mobile devices', 'enrolment', 'evidence capture'],
+    learningObjectives: [
+      'Separate device issue, app issue, enrolment clue, and policy clue at first line.',
+      'Capture evidence that helps the Jamf or mobile-device owner act quickly.',
+      'Recognise where Level 1 stops before risky device-management changes.'
+    ],
+    dcsRelevance: [
+      'Mobile devices and shared iPads create recurring school support patterns.',
+      'Good evidence capture matters when the actual fix lives in device management.'
+    ],
+    sections: buildSections('ipad-jamf-workflow-basics', [
+      {
+        title: 'Think in device, app, and management layers',
+        bodyMarkdown:
+          'An iPad complaint may belong to the physical device, the app, the account in use, or the management path. Josh adds value by separating those layers before escalating.',
+        takeaway: 'Mobile support starts with layer identification, not with random settings changes.'
+      },
+      {
+        title: 'Capture evidence the owner can use',
+        bodyMarkdown:
+          'Record the device type, user context, visible error, app or workflow affected, whether the issue is one device or several, and whether a restart or reconnect changed anything. These clues help the Jamf or owner path move faster.',
+        takeaway: 'Evidence capture is the main Level 1 contribution in managed-device workflows.'
+      },
+      {
+        title: 'Know the management boundary',
+        bodyMarkdown:
+          'Josh should not improvise enrolment resets or deep management changes without authorisation. The safe move is to preserve the symptom, note the device context, and escalate through the management owner when the issue clearly lives there.',
+        takeaway: 'Management ownership is a boundary, not a failure of effort.'
+      }
+    ]),
+    flashcards: buildFlashcards('ipad-jamf-workflow-basics', [
+      ['What are the main first-line layers in an iPad support issue?', 'Device, app, account, and management layer.'],
+      ['Why does scope matter on iPad issues?', 'One iPad suggests a different path from several iPads failing the same way.'],
+      ['What should a good Jamf-related note include?', 'Device context, visible symptom, app or task affected, scope, and safe steps tried.'],
+      ['What should Josh avoid doing casually on a managed device?', 'Deep enrolment or management changes without authorisation.'],
+      ['Why is app versus device distinction useful?', 'Because the problem may be app-specific rather than whole-device.'],
+      ['What is a weak mobile-device note?', 'iPad not working.'],
+      ['Why capture whether restart or reconnect changed anything?', 'Because it helps separate transient issues from deeper management patterns.'],
+      ['What is the safest value Josh adds in Jamf workflows?', 'Structured triage and evidence-rich escalation.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'ipad-jamf-workflow-basics-q1',
+        prompt: 'A single iPad cannot open the required classroom app, but nearby iPads can. What is the best first judgement?',
+        domain: 'iPad and Jamf support',
+        difficulty: 'foundation',
+        explanation: 'Scope helps split one-device from fleet issues.',
+        modelAnswer:
+          'Treat it as a one-device or one-app path first, not a fleet-wide outage, and capture the exact app, device context, and visible symptom.',
+        commonMistakes: ['Calling it a whole-iPad problem for every device', 'Skipping the app context'],
+        dcsContext: 'Mobile-device scope is one of the quickest high-value checks.',
+        reviewSchedule,
+        recommendedModuleId: 'ipad-jamf-workflow-basics',
+        weakTopic: 'jamf-ipad-support',
+        options: [
+          { id: 'a', label: 'This likely starts as a one-device or one-app issue' },
+          { id: 'b', label: 'Jamf must be down for every iPad' },
+          { id: 'c', label: 'Factory reset the device immediately' },
+          { id: 'd', label: 'Ignore nearby working devices' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'ipad-jamf-workflow-basics-q2',
+        prompt: 'What should Josh capture before escalating an iPad or Jamf issue?',
+        domain: 'iPad and Jamf support',
+        difficulty: 'stretch',
+        explanation: 'The management owner needs context, not only frustration.',
+        modelAnswer:
+          'Capture the device type or context, app or workflow affected, exact symptom, whether the issue is isolated or widespread, any visible message, and the safe checks already tried such as restart or reconnect.',
+        commonMistakes: ['Leaving out scope', 'Not naming the affected app or workflow'],
+        dcsContext: 'These clues help the owner decide whether the issue is app, account, or management related.',
+        reviewSchedule,
+        recommendedModuleId: 'ipad-jamf-workflow-basics',
+        weakTopic: 'jamf-ipad-support',
+        rubric: ['Names app or workflow', 'Captures scope', 'Lists safe checks'],
+        keywordHints: ['device', 'app', 'scope', 'message', 'steps tried']
+      }),
+      categorization({
+        id: 'ipad-jamf-workflow-basics-q3',
+        prompt: 'Sort each clue into the best support layer.',
+        domain: 'iPad and Jamf support',
+        difficulty: 'challenge',
+        explanation: 'Layer thinking keeps first-line action safer.',
+        modelAnswer:
+          'Some clues point toward the app, some toward the device or connection, and some toward the management path.',
+        commonMistakes: ['Calling everything a Jamf issue', 'Skipping the app layer entirely'],
+        dcsContext: 'Managed devices get easier to support when the layer is named early.',
+        reviewSchedule,
+        recommendedModuleId: 'ipad-jamf-workflow-basics',
+        weakTopic: 'jamf-ipad-support',
+        categories: [
+          { id: 'device', label: 'Device or connection layer' },
+          { id: 'app', label: 'App or user workflow layer' },
+          { id: 'management', label: 'Management or enrolment layer' }
+        ],
+        items: [
+          { id: 'wifi', label: 'Only this iPad keeps dropping Wi-Fi in one room', correctCategoryId: 'device' },
+          { id: 'app-open', label: 'Specific classroom app crashes on launch', correctCategoryId: 'app' },
+          { id: 'fleet-policy', label: 'Several devices show the same managed restriction unexpectedly', correctCategoryId: 'management' },
+          { id: 'signin-app', label: 'The app opens but the expected class workflow cannot be completed', correctCategoryId: 'app' }
+        ],
+        rubric: ['Sorts by layer', 'Uses scope clues', 'Supports safer triage']
+      }),
+      scenarioResponse({
+        id: 'ipad-jamf-workflow-basics-q4',
+        prompt: 'A shared iPad cart has one device that will not complete the expected login flow after a restart. Explain Josh’s first-line response.',
+        domain: 'iPad and Jamf support',
+        difficulty: 'challenge',
+        explanation: 'This combines device context, workflow evidence, and management boundaries.',
+        modelAnswer:
+          'Capture the cart or shared-device context, exact login-flow point that fails, whether other iPads in the cart behave normally, and any visible message after restart. Keep the action inside safe checks, then escalate if it still looks like a managed-device path issue.',
+        commonMistakes: ['Treating it as a whole-cart outage with no comparison', 'Trying deep management changes without evidence'],
+        dcsContext: 'Shared carts often need exact device and workflow notes to avoid broad noisy escalations.',
+        reviewSchedule,
+        recommendedModuleId: 'ipad-jamf-workflow-basics',
+        weakTopic: 'jamf-ipad-support',
+        rubric: ['Uses comparison within the cart', 'Names exact workflow point', 'Keeps management boundaries clear']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('ipad-jamf-workflow-basics', [
+      {
+        title: 'Single iPad versus managed fleet issue',
+        prompt: 'Write the note that separates a one-device classroom problem from a wider management pattern.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('ipad-jamf-workflow-basics', [
+      {
+        title: 'iPad and Jamf first-response checklist',
+        description: 'Create a Level 1-safe checklist for device, app, and management-layer triage on school iPads.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'a-plus-laptop-hardware-core1',
+    title: 'A+ Core 1: Laptop hardware',
+    description:
+      'Laptop components, ports, upgrades, and common hardware symptoms. Focus on parts recognition and safe, evidence-driven troubleshooting.',
+    domain: 'Endpoint Support',
+    level: 'A+',
+    estimatedMinutes: 30,
+    tags: ['A+ 220-1201', 'laptop', 'battery', 'SSD', 'ports', 'repair'],
+    learningObjectives: [
+      'Identify common laptop hardware parts and their purpose.',
+      'Choose a safe upgrade path (RAM/storage) based on the symptom and device constraints.',
+      'Describe a Level 1-safe first response for power, battery, and overheating symptoms.'
+    ],
+    dcsRelevance: [
+      'Maps to student and staff laptop triage without turning PD notes into ticket archives.',
+      'Supports faster identification of "battery/power vs performance vs thermal" symptom patterns.'
+    ],
+    sections: buildSections('a-plus-laptop-hardware-core1', [
+      {
+        title: 'Laptop parts you must recognise',
+        bodyMarkdown:
+          'Laptop support is mostly evidence and constraint handling: form factor limits, integrated parts, and time pressure.\n\nCore parts: battery, AC adapter/charger, DC jack, keyboard/trackpad, display panel, webcam/mic, storage (2.5" SATA, M.2 NVMe), RAM (SO-DIMM), Wi‑Fi/Bluetooth card, fans and heat sinks.\n\nA safe first check is usually: power source, charger state, visible damage, and whether the symptom is power, display, storage, or thermal.',
+        takeaway: 'Classify the symptom (power/display/storage/thermal) before changing settings.'
+      },
+      {
+        title: 'Upgrades: SSDs, RAM, and what they change',
+        bodyMarkdown:
+          'Storage upgrades change perceived speed and reliability. RAM upgrades mainly help multitasking and memory pressure.\n\nIf the device is sluggish:\n- Check storage health and free space first.\n- SSD vs HDD matters dramatically.\n\nIf the device freezes under load:\n- Memory pressure (RAM) is likely.\n\nAlways confirm form factor (SO‑DIMM vs soldered) and interface (SATA vs NVMe) before ordering parts.',
+        takeaway: 'Choose upgrades based on symptom + constraints, not guesswork.'
+      },
+      {
+        title: 'Battery and thermal symptoms (Level 1-safe)',
+        bodyMarkdown:
+          'Battery symptoms: won’t charge, drains fast, shuts down under load, or runs only on AC.\n\nThermal symptoms: fan noise, throttling/slow performance, shutdowns, or very hot chassis.\n\nSafe actions: check adapter, confirm charging state, check vents/airflow, and document reproducibility. Avoid disassembly unless authorised.',
+        takeaway: 'Capture evidence and escalate rather than experimenting under time pressure.'
+      }
+    ]),
+    flashcards: buildFlashcards('a-plus-laptop-hardware-core1', [
+      ['What does an M.2 slot commonly host in modern laptops?', 'An SSD (often NVMe PCIe, sometimes SATA depending on the device).'],
+      ['What kind of RAM is common in laptops?', 'SO‑DIMM (or soldered LPDDR in some ultrabooks).'],
+      ['What symptom often suggests thermal throttling?', 'Performance slows significantly under load and improves after cooling.'],
+      ['What is a safe first step for a laptop that will not power on?', 'Confirm power source/charger state and compare with known-good if available.'],
+      ['SSD vs HDD: which gives the biggest everyday speed improvement?', 'SSD.'],
+      ['Name two common laptop radios.', 'Wi‑Fi and Bluetooth.'],
+      ['What is the DC jack?', 'The laptop power input port where the charger connects.'],
+      ['Why avoid disassembly as Level 1 without approval?', 'It increases risk and may exceed role boundaries.'],
+      ['What does “runs only on AC” often point to?', 'Battery failure or power-path/battery connection issues.'],
+      ['What is one evidence item to capture before escalation for power issues?', 'Exact symptom + charger/LED state + AC vs battery behaviour.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'a-plus-laptop-hardware-q1',
+        prompt: 'A laptop is extremely slow when launching apps and opening files, but it does not freeze. Which upgrade most directly improves this symptom on an older device?',
+        domain: 'A+ Core 1 laptop hardware',
+        difficulty: 'foundation',
+        explanation: 'Storage speed is a dominant factor for app launch and file access.',
+        modelAnswer: 'Replace an HDD with an SSD (or upgrade to a faster SSD if applicable).',
+        commonMistakes: ['Assuming RAM is always the first upgrade', 'Skipping evidence about disk behaviour'],
+        dcsContext: 'Many “slow laptop” reports are storage-bound. Preserve evidence and choose the smallest safe fix.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-laptop-hardware-core1',
+        weakTopic: 'laptop-mobile-hardware',
+        options: [
+          { id: 'a', label: 'Upgrade from HDD to SSD' },
+          { id: 'b', label: 'Increase screen resolution' },
+          { id: 'c', label: 'Add an external keyboard' },
+          { id: 'd', label: 'Disable Wi‑Fi to improve performance' }
+        ],
+        correctOptionId: 'a'
+      }),
+      mcq({
+        id: 'a-plus-laptop-hardware-q2',
+        prompt: 'A laptop becomes slow and then suddenly shuts down during a video call. The chassis feels very hot. What is the strongest first classification?',
+        domain: 'A+ Core 1 laptop hardware',
+        difficulty: 'foundation',
+        explanation: 'Heat + shutdown strongly suggests a thermal path issue.',
+        modelAnswer: 'Thermal issue (overheating / throttling leading to shutdown).',
+        commonMistakes: ['Calling it a network issue', 'Jumping to OS reinstall'],
+        dcsContext: 'Classroom pressure can push devices into thermal limits. Classify the symptom before deeper work.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-laptop-hardware-core1',
+        weakTopic: 'laptop-mobile-hardware',
+        options: [
+          { id: 'a', label: 'Thermal/overheating path issue' },
+          { id: 'b', label: 'DNS resolution failure' },
+          { id: 'c', label: 'Printer queue issue' },
+          { id: 'd', label: 'VLAN segmentation issue' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'a-plus-laptop-hardware-q3',
+        prompt: 'List three laptop items you should confirm before ordering a storage upgrade.',
+        domain: 'A+ Core 1 laptop hardware',
+        difficulty: 'stretch',
+        explanation: 'Correct parts depend on form factor and interface.',
+        modelAnswer: 'Confirm interface (SATA vs NVMe), form factor (2.5" vs M.2), and device compatibility/available slots/capacity.',
+        commonMistakes: ['Buying the wrong interface', 'Assuming all M.2 drives are the same'],
+        dcsContext: 'Wrong parts waste time and budget; evidence-based ordering matters.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-laptop-hardware-core1',
+        weakTopic: 'laptop-mobile-hardware',
+        rubric: ['Names interface', 'Names form factor', 'Mentions compatibility/slots/capacity'],
+        keywordHints: ['SATA', 'NVMe', 'M.2', '2.5', 'slot', 'model']
+      }),
+      orderSteps({
+        id: 'a-plus-laptop-hardware-q4',
+        prompt: 'Order the safest Level 1 response for “laptop will not power on.”',
+        domain: 'A+ Core 1 laptop hardware',
+        difficulty: 'stretch',
+        explanation: 'Start with power evidence before deeper changes.',
+        modelAnswer: 'Confirm power source, check adapter/indicator, try known-good outlet/adapter, then escalate with evidence.',
+        commonMistakes: ['Disassembling immediately', 'Changing BIOS settings without power evidence'],
+        dcsContext: 'The priority is safe triage and minimal disruption.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-laptop-hardware-core1',
+        weakTopic: 'laptop-mobile-hardware',
+        steps: [
+          { id: 'source', label: 'Confirm outlet / power source is working' },
+          { id: 'adapter', label: 'Check adapter/charger connection and indicators' },
+          { id: 'known', label: 'Test a known-good adapter or outlet if available' },
+          { id: 'escalate', label: 'Escalate with evidence if still no power' }
+        ],
+        correctOrder: ['source', 'adapter', 'known', 'escalate'],
+        rubric: ['Power evidence first', 'Uses known-good comparison', 'Escalates instead of guessing']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('a-plus-laptop-hardware-core1', [
+      {
+        title: 'Sluggish laptop triage note (privacy-safe)',
+        prompt: 'Write the note that separates storage-bound slowness from RAM pressure and thermal throttling.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('a-plus-laptop-hardware-core1', [
+      {
+        title: 'Laptop symptom classification cheat sheet',
+        description: 'Create a one-page cheat sheet: power vs display vs storage vs thermal, with safe first checks.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'a-plus-mobile-connectivity-mdm-core1',
+    title: 'A+ Core 1: Mobile connectivity and MDM basics',
+    description:
+      'Mobile connections (USB, Bluetooth, NFC, tethering/hotspots) and MDM ownership models (BYOD/COPE) with safe support boundaries.',
+    domain: 'Operations',
+    level: 'A+',
+    estimatedMinutes: 26,
+    tags: ['A+ 220-1201', 'mobile', 'USB', 'Bluetooth', 'NFC', 'tethering', 'MDM'],
+    learningObjectives: [
+      'Choose the right connection method for the goal (charge, data, audio, internet).',
+      'Explain common mobile connectivity terms simply.',
+      'Describe what MDM does and how ownership models change support boundaries.'
+    ],
+    dcsRelevance: [
+      'Useful for staff BYOD realities and school-managed iPads without mixing real data into PD notes.',
+      'Builds safer judgement around “what Level 1 can do” versus “what needs an MDM owner”.'
+    ],
+    sections: buildSections('a-plus-mobile-connectivity-mdm-core1', [
+      {
+        title: 'Connection methods: what they’re for',
+        bodyMarkdown:
+          'Mobile devices connect in multiple layers:\n- USB/USB‑C/Lightning: charging + data + sometimes video/audio.\n- Bluetooth: pairing accessories and short-range data.\n- NFC: extremely short-range tap interactions.\n- Hotspot/tethering: using a phone as an internet connection.\n\nClarify the goal before choosing the connection path.',
+        takeaway: 'Clarify goal first: charging, data, audio, or internet.'
+      },
+      {
+        title: '“It won’t connect” triage patterns',
+        bodyMarkdown:
+          'Wi‑Fi/mobile: capture SSID, signal, error/symptom, and scope (one device or many).\n\nBluetooth: confirm pairing mode, remove/re-pair, and check it is not paired elsewhere.\n\nHotspot: confirm hotspot is enabled and the client is authenticating to the right SSID.',
+        takeaway: 'Evidence beats guessing: SSID/scope for Wi‑Fi and pairing state for Bluetooth.'
+      },
+      {
+        title: 'MDM and ownership boundaries',
+        bodyMarkdown:
+          'MDM is central configuration/app/policy management.\n\nOwnership models:\n- BYOD: user-owned, limited control and high privacy sensitivity.\n- COPE: org-owned with personal enablement, more control.\n\nCapture ownership context and route to the authorised owner when management changes are required.',
+        takeaway: 'Ownership model determines what changes are safe and allowed.'
+      }
+    ]),
+    flashcards: buildFlashcards('a-plus-mobile-connectivity-mdm-core1', [
+      ['What does Bluetooth primarily provide?', 'Short-range pairing for accessories and low-power data exchange.'],
+      ['What is NFC?', 'Near Field Communication: very short-range tap communication (tags/auth).'],
+      ['What is tethering/hotspot?', 'Using a phone as an internet connection for another device (Wi‑Fi/USB/Bluetooth).'],
+      ['What is MDM?', 'Central management for device configuration, apps, and security policy.'],
+      ['BYOD stands for what?', 'Bring Your Own Device (user-owned).'],
+      ['COPE means what?', 'Corporate-Owned, Personally Enabled (org-owned, personal use allowed).'],
+      ['First evidence question for “Wi‑Fi won’t connect”?', 'Which SSID, what error/symptom, and is it one device or many?'],
+      ['First evidence question for Bluetooth problems?', 'Is it already paired elsewhere and is it in pairing mode/discoverable?']
+    ]),
+    quiz: [
+      mcq({
+        id: 'a-plus-mobile-connectivity-q1',
+        prompt: 'Which technology is designed for very short-range “tap” interactions such as tags or quick auth?',
+        domain: 'A+ Core 1 mobile connectivity',
+        difficulty: 'foundation',
+        explanation: 'NFC is intentionally short-range.',
+        modelAnswer: 'NFC.',
+        commonMistakes: ['Confusing Bluetooth with NFC'],
+        dcsContext: 'Short-range tech matters for accessories, tags, and quick device workflows.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-mobile-connectivity-mdm-core1',
+        weakTopic: 'laptop-mobile-hardware',
+        options: [
+          { id: 'a', label: 'NFC' },
+          { id: 'b', label: 'Bluetooth' },
+          { id: 'c', label: 'TCP' },
+          { id: 'd', label: 'DHCP' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'a-plus-mobile-connectivity-q2',
+        prompt: 'Why does BYOD versus COPE matter in support decisions?',
+        domain: 'A+ Core 1 MDM basics',
+        difficulty: 'stretch',
+        explanation: 'Ownership affects allowed changes and privacy.',
+        modelAnswer:
+          'Because ownership determines what the organisation is allowed to manage/change and how privacy boundaries are handled; BYOD is user-owned with limited control, COPE is organisation-owned with more managed policy and app control.',
+        commonMistakes: ['Treating all devices as school-owned', 'Ignoring privacy boundaries'],
+        dcsContext: 'School support must respect ownership and privacy boundaries.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-mobile-connectivity-mdm-core1',
+        weakTopic: 'mdm-group-policy',
+        rubric: ['Mentions ownership', 'Mentions control/policy', 'Mentions privacy/boundaries'],
+        keywordHints: ['BYOD', 'COPE', 'ownership', 'policy', 'privacy']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('a-plus-mobile-connectivity-mdm-core1', [
+      { title: 'Hotspot in an outage', prompt: 'Write the note that captures hotspot use safely without copying private details.' }
+    ]),
+    practicalOutputs: buildPracticalOutputs('a-plus-mobile-connectivity-mdm-core1', [
+      { title: 'Mobile connectivity quick map', description: 'Create a quick map: USB vs Bluetooth vs NFC vs hotspot, and when each is used.' }
+    ])
+  }),
+  createModule({
+    id: 'a-plus-network-core1-ports-protocols-services',
+    title: 'A+ Core 1: Networking basics (ports, protocols, services)',
+    description:
+      'Core networking concepts: IP/TCP/UDP, common ports, and what DNS/DHCP/services do. Designed for support notes and troubleshooting.',
+    domain: 'Networking',
+    level: 'A+',
+    estimatedMinutes: 34,
+    tags: ['A+ 220-1201', 'TCP', 'UDP', 'ports', 'DNS', 'DHCP', 'HTTP', 'HTTPS'],
+    learningObjectives: [
+      'Explain IP/TCP/UDP and port numbers in plain English.',
+      'Recall common ports and the service they map to.',
+      'Describe DNS and DHCP symptoms and how to separate them.'
+    ],
+    dcsRelevance: [
+      'Helps you write clearer network notes (DNS vs DHCP vs “internet is down”).',
+      'Supports better escalation quality when class time is impacted.'
+    ],
+    sections: buildSections('a-plus-network-core1-ports-protocols-services', [
+      {
+        title: 'IP, TCP, UDP (what they do)',
+        bodyMarkdown:
+          'IP handles addressing and routing between networks. TCP provides reliable, ordered delivery. UDP is simpler and faster but does not guarantee delivery.\n\nPorts identify the application/service endpoint on a host.\n\nSupport habit: decide which layer is failing: IP reachability, name resolution (DNS), address assignment (DHCP), or an application port.',
+        takeaway: 'Layer thinking prevents vague “network is down” notes.'
+      },
+      {
+        title: 'Common ports you should recall',
+        bodyMarkdown:
+          'Practical set: 22 SSH, 23 Telnet, 25 SMTP, 53 DNS, 67/68 DHCP, 80 HTTP, 110 POP3, 143 IMAP, 389 LDAP, 443 HTTPS, 445 SMB, 3389 RDP.',
+        takeaway: 'A small set of ports covers most support conversations.'
+      },
+      {
+        title: 'DNS vs DHCP symptom splits',
+        bodyMarkdown:
+          'DNS failure: names fail but IP access may still work.\n\nDHCP failure: no valid lease, possible 169.254.x.x, limited connectivity.\n\nWrite notes that separate: IP reachability vs name resolution vs authentication/proxy blocks.',
+        takeaway: 'Separate DNS vs DHCP vs auth/proxy symptoms in your notes.'
+      }
+    ]),
+    flashcards: buildFlashcards('a-plus-network-core1-ports-protocols-services', [
+      ['What does IP primarily provide?', 'Addressing and routing between networks.'],
+      ['What is TCP known for?', 'Reliable, ordered delivery (connection-oriented).'],
+      ['What is UDP known for?', 'Lower overhead; no delivery guarantee (connectionless).'],
+      ['Port 53 is used by what?', 'DNS.'],
+      ['Ports 67/68 are used by what?', 'DHCP.'],
+      ['Port 443 is used by what?', 'HTTPS.'],
+      ['Port 3389 is used by what?', 'RDP.'],
+      ['DNS failure symptom pattern?', 'Names fail; direct IP may still work.'],
+      ['DHCP failure symptom pattern?', 'No valid lease; may see 169.254.x.x (APIPA).']
+    ]),
+    quiz: [
+      mcq({
+        id: 'a-plus-network-core1-q1',
+        prompt: 'A device shows 169.254.x.x and cannot reach the network. What is the most likely failing service?',
+        domain: 'A+ Core 1 networking',
+        difficulty: 'foundation',
+        explanation: 'APIPA often appears when DHCP lease assignment fails.',
+        modelAnswer: 'DHCP (address assignment).',
+        commonMistakes: ['Calling it DNS', 'Assuming whole-network outage'],
+        dcsContext: 'Keep the note precise: “no DHCP lease / APIPA seen” is better than “internet down.”',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-network-core1-ports-protocols-services',
+        weakTopic: 'dns-dhcp-gateway',
+        options: [
+          { id: 'a', label: 'DHCP' },
+          { id: 'b', label: 'DNS' },
+          { id: 'c', label: 'SMTP' },
+          { id: 'd', label: 'NFC' }
+        ],
+        correctOptionId: 'a'
+      }),
+      mcq({
+        id: 'a-plus-network-core1-q2',
+        prompt: 'Which port is most commonly associated with HTTPS?',
+        domain: 'A+ Core 1 networking',
+        difficulty: 'foundation',
+        explanation: 'HTTPS typically uses TCP 443.',
+        modelAnswer: '443.',
+        commonMistakes: ['Choosing 80', 'Mixing up with 53'],
+        dcsContext: 'Port recognition helps interpret firewall rules and access notes.',
+        reviewSchedule,
+        recommendedModuleId: 'a-plus-network-core1-ports-protocols-services',
+        weakTopic: 'ports-protocols',
+        options: [
+          { id: 'a', label: '80' },
+          { id: 'b', label: '443' },
+          { id: 'c', label: '53' },
+          { id: 'd', label: '3389' }
+        ],
+        correctOptionId: 'b'
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('a-plus-network-core1-ports-protocols-services', [
+      { title: 'APIPA note', prompt: 'Write a note for a 169.254/APIPA device that stays scope-aware and escalation-ready.' }
+    ]),
+    practicalOutputs: buildPracticalOutputs('a-plus-network-core1-ports-protocols-services', [
+      { title: 'Common ports reference card', description: 'Create a short reference card of the ports you must recall for Core 1.' }
+    ])
+  })
+];
+
+export const modules: TrainingModule[] = [
+  ...baseModules.map((module) => enhanceModule(module, moduleEnhancements[module.id])),
+  ...additionalModules
 ];
 
 export function getModuleById(moduleId: string) {

@@ -1,8 +1,15 @@
 "use client";
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getReadinessProfile, type ReadinessScore } from '../../src/lib/readinessMath';
 import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../src/lib/progress';
+
+function confidenceStyles(confidence: ReadinessScore['confidence']) {
+  if (confidence === 'high') return 'bg-emerald-100 text-emerald-800';
+  if (confidence === 'medium') return 'bg-amber-100 text-amber-800';
+  return 'bg-slate-200 text-slate-700';
+}
 
 function ProfileCard({
   title,
@@ -37,10 +44,44 @@ function ProfileCard({
                 <div className="text-sm font-semibold text-slate-900">{score.label}</div>
                 <div className="mt-1 text-sm text-slate-600">{score.note}</div>
               </div>
-              <div className="text-lg font-semibold text-slate-900">{Math.round(score.score)}%</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${confidenceStyles(score.confidence)}`}>
+                  {score.confidence} confidence{score.isEstimate ? ' (estimate)' : ''}
+                </span>
+                <div className="text-lg font-semibold text-slate-900">{Math.round(score.score)}%</div>
+              </div>
             </div>
             <div className="mt-3 h-3 overflow-hidden rounded-full bg-white">
               <div className="h-full rounded-full bg-slate-900" style={{ width: `${Math.min(100, score.score)}%` }} />
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-2xl bg-white p-4 text-sm text-slate-700">
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Evidence drivers</div>
+                <ul className="mt-3 space-y-1">
+                  <li>- Assessment: {Math.round(score.drivers.assessment)}%</li>
+                  <li>- Scenarios: {Math.round(score.drivers.scenarios)}%</li>
+                  <li>- Note quality: {Math.round(score.drivers.noteQuality)}%</li>
+                  <li>- Flashcards: {Math.round(score.drivers.flashcards)}%</li>
+                  <li>- Practical outputs: {Math.round(score.drivers.practicalOutputs)}%</li>
+                  <li>- Weak-area penalty: -{Math.round(score.drivers.weakAreaPenalty)}%</li>
+                </ul>
+              </div>
+              <div className="rounded-2xl bg-white p-4 text-sm text-slate-700">
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Next best focus</div>
+                <div className="mt-3">
+                  <div className="font-semibold text-slate-900">Weakest area</div>
+                  <div className="mt-1 text-slate-700">{score.weakestArea}</div>
+                </div>
+                {score.nextAction ? (
+                  <Link
+                    href={score.nextAction.href}
+                    className="mt-4 inline-flex rounded-full bg-slate-900 px-4 py-2 text-sm text-white"
+                  >
+                    {score.nextAction.label}
+                  </Link>
+                ) : null}
+              </div>
             </div>
           </div>
         ))}
