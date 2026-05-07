@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { globalSearch, SearchResult } from '../../src/lib/search';
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
   
@@ -70,7 +70,7 @@ export default function SearchPage() {
           <div className="text-slate-400 mb-4">
              <svg className="mx-auto" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </div>
-          <h2 className="text-xl font-semibold text-slate-900">No results found for "{query}"</h2>
+          <h2 className="text-xl font-semibold text-slate-900">No results found for &quot;{query}&quot;</h2>
           <p className="mt-2 text-slate-600">Try a different keyword or check for typos.</p>
         </section>
       )}
@@ -99,20 +99,9 @@ export default function SearchPage() {
                   <p className="mt-2 text-sm text-slate-600 line-clamp-2 leading-relaxed">
                     {result.description}
                   </p>
-                  {result.context && (
-                    <div className="mt-4 text-xs font-medium text-slate-400 italic">
-                      {result.context}
-                    </div>
-                  )}
-                  {result.tags && result.tags.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {result.tags.map((tag) => (
-                        <span key={tag} className="rounded-lg bg-slate-50 px-2 py-1 text-[10px] font-medium text-slate-500">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  <div className="mt-4 pt-4 border-t border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    {result.context || 'Search Result'}
+                  </div>
                 </Link>
               ))}
             </div>
@@ -120,5 +109,17 @@ export default function SearchPage() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-pulse text-slate-400 font-medium">Loading search...</div>
+      </div>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 }

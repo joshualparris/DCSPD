@@ -30,7 +30,9 @@ export const weakTopicLabels: Record<WeakTopicKey, string> = {
   'website-filtering': 'Website filtering and unblock requests',
   'onboarding-workflows': 'New user onboarding',
   'teams-sharepoint-onedrive': 'Teams, SharePoint, and OneDrive',
-  'jamf-ipad-support': 'iPad and Jamf support'
+  'jamf-ipad-support': 'iPad and Jamf support',
+  'soft-skills': 'Soft skills and empathy',
+  'communication': 'Communication and plain English'
 };
 
 export type ReadinessArea = {

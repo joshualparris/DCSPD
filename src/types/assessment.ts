@@ -30,7 +30,9 @@ export type WeakTopicKey =
   | 'website-filtering'
   | 'onboarding-workflows'
   | 'teams-sharepoint-onedrive'
-  | 'jamf-ipad-support';
+  | 'jamf-ipad-support'
+  | 'soft-skills'
+  | 'communication';
 
 export type AssessmentSource = 'strict-quiz' | 'module-quiz';
 

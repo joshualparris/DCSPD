@@ -52,7 +52,7 @@ export default function FeedbackLogPage() {
             Your AI Coaching History
           </h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            Review every piece of feedback, model answer, and improvement suggestion you've received across all quizzes and academic assessments.
+            Review every piece of feedback, model answer, and improvement suggestion you&apos;ve received across all quizzes and academic assessments.
           </p>
         </div>
       </section>
@@ -145,7 +145,7 @@ export default function FeedbackLogPage() {
                     )}
                   </div>
                   <Link 
-                    href={attempt.kind === 'standard' ? `/modules/${attempt.recommendedModuleId}` : `/academic-pd/subjects/${attempt.subjectId}`}
+                    href={attempt.kind === 'standard' ? `/modules/${attempt.recommendedModuleId}` : `/academic-pd/subjects/${attempt.subjectCode}`}
                     className="text-sm font-semibold text-slate-900 hover:underline"
                   >
                     Review source material →

@@ -1,4 +1,3 @@
-import { TrainingModule } from './modules';
 
 export type LearningPath = {
   id: string;

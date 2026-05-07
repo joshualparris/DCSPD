@@ -1,7 +1,9 @@
-import { modules, TrainingModule } from '../data/modules';
+import { modules } from '../data/modules';
 import { scenarios } from '../data/scenarios';
-import { academicSubjects, AcademicSubject } from '../data/academicSubjects';
+import { academicSubjects } from '../data/academicSubjects';
+import { AcademicSubject } from '../types/academic';
 import { Scenario } from '../types/scenarios';
+import { TrainingModule } from '../types/training';
 
 export type SearchResultType = 'module' | 'scenario' | 'academic' | 'flashcard' | 'question';
 

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { learningPaths } from '../../src/data/learningPaths';
 import { modules } from '../../src/data/modules';
 import { getInitialProgressSnapshot, getStoredProgressSnapshot } from '../../src/lib/progress';
-import { getModuleProgress } from '../../src/lib/moduleMath';
+import { getModuleCompletion } from '../../src/lib/moduleMath';
 
 export default function PathsPage() {
   const [progress, setProgress] = useState(() => getInitialProgressSnapshot(modules));
@@ -13,6 +13,9 @@ export default function PathsPage() {
   useEffect(() => {
     setProgress(getStoredProgressSnapshot(modules));
   }, []);
+
+  // Helper to simplify the call since getModuleCompletion requires 3 args
+  const getModuleProgress = (m: any, p: any) => getModuleCompletion(m.id, p, m);
 
   return (
     <div className="space-y-6">
@@ -23,7 +26,7 @@ export default function PathsPage() {
             Professional Development Tracks
           </h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            Follow a structured path to master specific domains of DCS IT support. Complete all modules in a path to earn a virtual "Specialist" badge.
+            Follow a structured path to master specific domains of DCS IT support. Complete all modules in a path to earn a virtual &quot;Specialist&quot; badge.
           </p>
         </div>
       </section>
