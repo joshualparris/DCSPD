@@ -10,6 +10,7 @@ import type {
   ConfidenceLevel
 } from '../../types/assessment';
 import AiCoachPanel from '../ai/AiCoachPanel';
+import AiOralExaminer from '../ai/AiOralExaminer';
 
 type AssessmentSessionProps = {
   questions: AssessmentQuestion[];
@@ -141,6 +142,52 @@ export default function AssessmentSession({
             </div>
           </div>
         </div>
+
+        <AiCoachPanel
+          input={{
+            contextType: 'freeform',
+            prompt: `${title} debrief and coaching plan`,
+            userAnswer: JSON.stringify(
+              {
+                questionsCompleted: sessionAttempts.length,
+                averageScore,
+                revisitCount,
+                weakestDomain: weakestTopicText(sessionAttempts),
+                attempts: sessionAttempts.map((attempt) => ({
+                  questionId: attempt.questionId,
+                  domain: attempt.domain,
+                  weakTopic: attempt.weakTopic,
+                  totalScore: Math.round(attempt.scoreBreakdown.total * 100),
+                  correctness: Math.round(attempt.scoreBreakdown.correctness * 100),
+                  reasoning: Math.round(attempt.scoreBreakdown.reasoning * 100),
+                  judgement: Math.round(attempt.scoreBreakdown.judgement * 100),
+                  shouldRevisit: attempt.shouldRevisit
+                }))
+              },
+              null,
+              2
+            ),
+            rubric: [
+              'Summarise strengths accurately',
+              'Identify top weak area',
+              'Provide concrete 20-minute next practice',
+              'Keep recommendations Level 1-safe'
+            ],
+            extraContext: 'Return concise coaching suitable for next immediate study block.'
+          }}
+          debounceMs={400}
+          minChars={40}
+        />
+
+        <AiOralExaminer
+          title={title}
+          weakestDomain={weakestTopicText(sessionAttempts)}
+          attempts={sessionAttempts.map((attempt) => ({
+            domain: attempt.domain,
+            weakTopic: attempt.weakTopic,
+            totalScore: Math.round(attempt.scoreBreakdown.total * 100)
+          }))}
+        />
 
         <button
           onClick={() => {

@@ -5036,6 +5036,100 @@ const additionalModules: TrainingModule[] = [
     practicalOutputs: buildPracticalOutputs('a-plus-troubleshooting-core1', [
       { title: 'Troubleshooting split cards', description: 'Create quick cards: web (IP/DNS/app), print (queue/release/device), display (chain/symptom split).' }
     ])
+  }),
+  createModule({
+    id: 'soft-skills-dcs-support',
+    title: 'Soft Skills for DCS Support',
+    description:
+      'Master the empathy, communication, and de-escalation skills needed to support staff and students under pressure at DCS.',
+    domain: 'Foundations',
+    level: 'L1',
+    estimatedMinutes: 15,
+    tags: ['communication', 'empathy', 'soft-skills', 'de-escalation'],
+    learningObjectives: [
+      'Apply active listening to understand the teacher’s actual classroom pain.',
+      'Communicate technical fixes and limitations in plain English.',
+      'Maintain a calm, helpful posture during high-pressure classroom outages.'
+    ],
+    dcsRelevance: [
+      'Technical skills are only half the job; the other half is making people feel heard.',
+      'Reduces the "IT vs Teachers" friction that can happen during busy periods.',
+      'Ensures that Josh is seen as a supportive partner in the learning environment.'
+    ],
+    sections: buildSections('soft-skills-dcs-support', [
+      {
+        title: 'Empathy-First Support',
+        bodyMarkdown:
+          'When a teacher calls with a display issue, they aren\'t just reporting a technical fault; they are reporting a block to their lesson and a disruption for 30 students. Acknowledge the urgency first: "I can see this is holding up your lesson, let\'s look at the source first." This small phrase changes the interaction from a "ticket" to a partnership.',
+        takeaway: 'Acknowledge the classroom pain before the technical check.'
+      },
+      {
+        title: 'Plain English Translation',
+        bodyMarkdown:
+          'Avoid technical jargon that shuts down conversation. Instead of "DHCP lease failure", say "The laptop isn\'t picking up an address from the school network." Instead of "SSID mismatch", say "It\'s trying to connect to the wrong Wi-Fi." Your goal is to be understood, not to sound like an expert.',
+        takeaway: 'Being understood is more important than sounding like an expert.'
+      },
+      {
+        title: 'De-escalation and Boundaries',
+        bodyMarkdown:
+          'If a user is frustrated, stay calm and factual. Don\'t take it personally. If you can\'t fix it immediately, give a clear "Next Step" rather than a vague "I\'ll look into it." Example: "I can\'t get this display back in the next two minutes. I\'ll grab a loaner laptop for you and then call Paul to look at the room fault so you can keep teaching."',
+        takeaway: 'Calm facts and clear workarounds beat vague promises.'
+      }
+    ]),
+    flashcards: buildFlashcards('soft-skills-dcs-support', [
+      ['What is the first step in empathetic support?', 'Acknowledge the user\'s problem and its impact on their work.'],
+      ['Why should you avoid jargon in the classroom?', 'It can be confusing or alienating for staff under pressure.'],
+      ['What is a "clear next step" in support?', 'A specific action you will take and a timeframe for follow-up.'],
+      ['How do you handle an angry user?', 'Stay calm, listen actively, and focus on the technical resolution and workarounds.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'ss-q1',
+        prompt: 'A teacher is visibly stressed because the printer isn\'t working for their next lesson. What is the best opening line?',
+        domain: 'Soft Skills',
+        difficulty: 'foundation',
+        explanation: 'Empathy and acknowledgement should come before the technical check.',
+        modelAnswer: 'Acknowledge the impact on their class first to build a partnership.',
+        commonMistakes: ['Ignoring the teacher and touching the printer', 'Saying "It works for me"'],
+        dcsContext: 'Teachers are under tight time pressure between lessons.',
+        reviewSchedule,
+        recommendedModuleId: 'soft-skills-dcs-support',
+        weakTopic: 'communication',
+        options: [
+          { id: 'a', label: '"Did you send it to the right queue? Check your settings."' },
+          { id: 'b', label: '"I can see this is a problem for your next lesson. Let\'s check the queue together."' },
+          { id: 'c', label: '"I\'m busy right now, put a ticket in."' },
+          { id: 'd', label: '"Printers are always doing this, it\'s not my fault."' }
+        ],
+        correctOptionId: 'b'
+      }),
+      scenarioResponse({
+        id: 'ss-q2',
+        prompt: 'You can\'t fix a classroom display issue within the 5 minutes before a lesson starts. Write your response to the teacher.',
+        domain: 'Soft Skills',
+        difficulty: 'stretch',
+        explanation: 'Provide a workaround and a clear escalation path.',
+        modelAnswer: 'Acknowledge the failure, provide a workaround (like a loaner), and explain the next technical step you will take.',
+        commonMistakes: ['Staying and trying to fix it while the lesson is supposed to start', 'Leaving without saying anything'],
+        dcsContext: 'Keeping the lesson moving is the priority.',
+        reviewSchedule,
+        recommendedModuleId: 'soft-skills-dcs-support',
+        weakTopic: 'communication',
+        rubric: ['Acknowledges the block', 'Provides a workaround', 'Sets a clear next step']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('soft-skills-dcs-support', [
+      {
+        title: 'Communicating a delay',
+        prompt: 'Practice telling a staff member their device needs to be sent away for repair while managing their expectations.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('soft-skills-dcs-support', [
+      {
+        title: 'Communication Cheat Sheet',
+        description: 'Create a list of "Plain English" alternatives for 5 common technical phrases.'
+      }
+    ])
   })
 ];
 

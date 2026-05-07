@@ -1,5 +1,13 @@
 export type ReviewRating = 'again' | 'hard' | 'good' | 'easy';
 
+export const leitnerBoxLabels = {
+  1: 'Box 1 - new or fragile',
+  2: 'Box 2 - early recall',
+  3: 'Box 3 - settling in',
+  4: 'Box 4 - strong recall',
+  5: 'Box 5 - long-term recall'
+} as const;
+
 const REVIEW_DAY_OFFSETS: Record<ReviewRating, number> = {
   again: 0,
   hard: 1,

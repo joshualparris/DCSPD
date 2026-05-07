@@ -38,6 +38,13 @@ const templates = [
     evidenceSummary: 'I mapped a Microsoft concept to a DCS support scenario within operational boundaries.'
   },
   {
+    id: 'academic-pd-study',
+    label: 'Academic PD subject study',
+    type: 'module-study' as const,
+    title: 'Academic SLG / SILO study',
+    evidenceSummary: 'I studied an RBC or SMITB learning outcome and mapped it to a privacy-safe DCS IT support capability.'
+  },
+  {
     id: 'scenario-practice',
     label: 'DCS scenario practice',
     type: 'scenario' as const,

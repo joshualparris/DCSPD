@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { Flashcard } from '../../types/training';
 import type { FlashcardProgress } from '../../lib/progress';
-import type { ReviewRating } from '../../lib/spacedRepetition';
+import { leitnerBoxLabels, type ReviewRating } from '../../lib/spacedRepetition';
 import FlashcardCard from './FlashcardCard';
 
 type FlashcardDeckProps = {
@@ -40,7 +40,8 @@ export default function FlashcardDeck({ cards, progress, onReview }: FlashcardDe
           Card {index + 1} of {cards.length}
         </div>
         <div>
-          Review date: {cardProgress?.dueDateIso || 'today'} | Reviews completed: {cardProgress?.reviewCount || 0}
+          Review date: {cardProgress?.dueDateIso || 'today'} | {leitnerBoxLabels[cardProgress?.leitnerBox || 1]} |
+          {' '}Reviews completed: {cardProgress?.reviewCount || 0}
         </div>
       </div>
 

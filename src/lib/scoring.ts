@@ -16,6 +16,20 @@ function getAnswerSummary(question: AssessmentQuestion, response: AssessmentResp
     return question.options.find((option) => option.id === response.selectedOptionId)?.label ?? 'No answer selected';
   }
 
+  if (question.type === 'categorization') {
+    if (!response.categorizedItems || !Object.keys(response.categorizedItems).length) {
+      return 'No categorization submitted';
+    }
+
+    return question.items
+      .map((item) => {
+        const categoryId = response.categorizedItems?.[item.id];
+        const categoryLabel = question.categories.find((category) => category.id === categoryId)?.label ?? 'Unsorted';
+        return `${item.label}: ${categoryLabel}`;
+      })
+      .join(' | ');
+  }
+
   if (question.type === 'order-steps') {
     if (!response.orderedStepIds?.length) {
       return 'No order submitted';
@@ -56,6 +70,21 @@ function getAutoCorrectness(question: AssessmentQuestion, response: AssessmentRe
     };
   }
 
+  if (question.type === 'categorization') {
+    const categorizedItems = response.categorizedItems ?? {};
+    const matches = question.items.filter((item) => categorizedItems[item.id] === item.correctCategoryId).length;
+    const score = question.items.length ? (matches / question.items.length) * 0.3 : 0;
+
+    return {
+      autoMarked: true,
+      score: Number(score.toFixed(2)),
+      feedback:
+        matches === question.items.length
+          ? 'The sorting matched the model ownership or symptom categories.'
+          : 'Some items landed in the right bucket, but the categorization needs tightening.'
+    };
+  }
+
   return {
     autoMarked: false,
     score: 0,
@@ -65,7 +94,8 @@ function getAutoCorrectness(question: AssessmentQuestion, response: AssessmentRe
 
 export function getDefaultSelfRating(question: AssessmentQuestion): AssessmentSelfRating {
   return {
-    correctness: question.type === 'mcq' || question.type === 'order-steps' ? 2 : 1,
+    correctness:
+      question.type === 'mcq' || question.type === 'order-steps' || question.type === 'categorization' ? 2 : 1,
     reasoning: 1,
     judgement: 1
   };

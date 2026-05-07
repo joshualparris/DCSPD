@@ -23,6 +23,12 @@ export type Flashcard = {
   back: string;
 };
 
+export type DiagnosticQuestion = {
+  id: string;
+  prompt: string;
+  expectedFocus: string;
+};
+
 export type ScenarioPrompt = {
   id: string;
   title: string;
@@ -33,6 +39,54 @@ export type PracticalOutput = {
   id: string;
   title: string;
   description: string;
+};
+
+export type StudyPrompt = {
+  id: string;
+  title: string;
+  prompt: string;
+  supportText?: string;
+};
+
+export type ConceptSortBucket = {
+  id: string;
+  label: string;
+  description?: string;
+};
+
+export type ConceptSortExercise = {
+  id: string;
+  title: string;
+  prompt: string;
+  cards: string[];
+  buckets: ConceptSortBucket[];
+  modelGroups: string[];
+};
+
+export type MemoryPrompt = {
+  id: string;
+  title: string;
+  prompt: string;
+  mnemonicHint?: string;
+};
+
+export type SafePromptWorkflow = {
+  id: string;
+  title: string;
+  goal: string;
+  steps: string[];
+  examplePrompt: string;
+  privacyReminder: string;
+};
+
+export type ModulePattern = {
+  diagnosticQuestions: DiagnosticQuestion[];
+  explainBackPrompt: StudyPrompt;
+  conceptSortExercise?: ConceptSortExercise;
+  memoryPrompt?: MemoryPrompt;
+  cornellPrompt: StudyPrompt;
+  sq3rPrompt: StudyPrompt;
+  safePromptWorkflow?: SafePromptWorkflow;
 };
 
 export type TrainingModule = {
@@ -48,6 +102,7 @@ export type TrainingModule = {
   sections: Section[];
   flashcards: Flashcard[];
   quiz: AssessmentQuestion[];
+  modulePattern: ModulePattern;
   scenarioPrompts: ScenarioPrompt[];
   practicalOutputs: PracticalOutput[];
 };

@@ -11,7 +11,7 @@ import {
   saveProgress,
   type UserProgress
 } from '../../src/lib/progress';
-import { isDue, type ReviewRating } from '../../src/lib/spacedRepetition';
+import { isDue, leitnerBoxLabels, type ReviewRating } from '../../src/lib/spacedRepetition';
 
 const ratings: ReviewRating[] = ['again', 'hard', 'good', 'easy'];
 
@@ -87,6 +87,9 @@ export default function DueTodayPage() {
                 <div key={revealKey} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
                   <div className="text-xs uppercase tracking-[0.2em] text-slate-500">{moduleTitle}</div>
                   <div className="mt-3 text-xl font-semibold text-slate-900">{revealed ? card.back : card.front}</div>
+                  <div className="mt-2 text-sm text-slate-600">
+                    {leitnerBoxLabels[progress.modules[moduleId]?.flashcards?.[card.id]?.leitnerBox || 1]}
+                  </div>
                   <button
                     onClick={() =>
                       setRevealedCards((current) => ({

@@ -27,6 +27,12 @@ export type Scenario = {
   idealTroubleshootingPath: string[];
   escalationPoint: string;
   ticketNoteExample: string;
+  jiraNotePrompt: string;
+  noteRubric: {
+    id: string;
+    label: string;
+    description: string;
+  }[];
   riskNote: string;
   recommendedModuleIds: string[];
 };
@@ -43,5 +49,8 @@ export type ScenarioRun = {
   startedAtIso: string;
   completedAtIso?: string;
   stepChoices: ScenarioRunChoice[];
+  escalationNote?: string;
+  noteScores?: Record<string, number>;
+  noteAverage?: number;
   completed: boolean;
 };

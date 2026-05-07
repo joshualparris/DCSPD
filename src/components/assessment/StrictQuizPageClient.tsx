@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { weakTopicLabels } from '../../data/skillDomains';
 import { strictQuestionBank, getQuestionsByWeakTopic } from '../../data/questions';
 import {
@@ -16,10 +16,18 @@ type StrictQuizPageClientProps = {
   weakTopic: string | null;
 };
 
+function shuffle<T>(items: T[]) {
+  return [...items].sort(() => Math.random() - 0.5);
+}
+
 function pickQuestions(weakTopic: string | null) {
-  const topicQuestions = weakTopic ? getQuestionsByWeakTopic(weakTopic) : [];
-  const pool = topicQuestions.length ? topicQuestions : strictQuestionBank;
-  return pool.slice(0, 10);
+  if (!weakTopic) {
+    return shuffle(strictQuestionBank).slice(0, 10);
+  }
+
+  const topicQuestions = shuffle(getQuestionsByWeakTopic(weakTopic));
+  const mixedQuestions = shuffle(strictQuestionBank.filter((question) => question.weakTopic !== weakTopic));
+  return [...topicQuestions.slice(0, 6), ...mixedQuestions.slice(0, 4)].slice(0, 10);
 }
 
 export default function StrictQuizPageClient({ weakTopic }: StrictQuizPageClientProps) {
@@ -39,7 +47,7 @@ export default function StrictQuizPageClient({ weakTopic }: StrictQuizPageClient
     saveProgress(progress);
   }, [hasHydratedProgress, progress]);
 
-  const questions = pickQuestions(weakTopic);
+  const questions = useMemo(() => pickQuestions(weakTopic), [weakTopic]);
   const weakTopicLabel =
     weakTopic && weakTopic in weakTopicLabels
       ? weakTopicLabels[weakTopic as keyof typeof weakTopicLabels]

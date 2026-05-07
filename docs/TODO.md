@@ -2,88 +2,88 @@
 
 ## P0: Real DCS Ticket Relevance
 
-- [ ] Add `Parent Portal Registration` module with access-key flow, common blockers, escalation boundaries, and parent-facing note examples.
-- [ ] Add `Parent Portal Details Updates` module covering family amendment requests, urgent exceptions, and admin handoff.
-- [ ] Add `Sentral Support` module covering markbook visibility, parent access keys, reporting-period issues, and safe escalation.
-- [ ] Add `OurDCS / Schoolbox Support` module covering class pages, staff workflow issues, and portal/LMS triage boundaries.
-- [ ] Add `Login and Password Support` module covering username checks, lockouts, expired passwords, self-service reset, and compromise suspicion.
-- [ ] Add `Permissions and Access Requests` module covering shared drives, software access, approvals, role context, and least privilege.
-- [ ] Add `Website Filtering and Unblock Requests` module covering capture of block details, justification, lead time, and workflow.
-- [ ] Add `New User Onboarding` module covering staff, student, and prac-teacher request completeness and day-one validation.
-- [ ] Add `Teams, SharePoint, and OneDrive Support` module covering common access, sync, sharing, and ownership issues at Level 1 scope.
-- [ ] Add `iPad and Jamf Workflow Basics` module covering first-line triage, ownership boundaries, and evidence capture.
+- [x] Add `Parent Portal Registration` module with access-key flow, common blockers, escalation boundaries, and parent-facing note examples. Summary: added module `parent-portal-registration` with registration-stage sections, access-key and email-match triage, assessment items, scenario prompt, and practical output in `src/data/modules.ts`. Proof: route content is surfaced through `app/modules/[moduleId]/page.tsx` and the question-first UI in `src/components/modules/ModuleQuestionFirst.tsx`.
+- [x] Add `Parent Portal Details Updates` module covering family amendment requests, urgent exceptions, and admin handoff. Summary: added module `parent-portal-details-updates` covering routine versus urgent amendments, records-workflow ownership, and privacy-safe notes in `src/data/modules.ts`. Proof: article and SOP practice now also supports this workflow in `app/knowledge-base-lab/page.tsx`.
+- [x] Add `Sentral Support` module covering markbook visibility, parent access keys, reporting-period issues, and safe escalation. Summary: added module `sentral-support` with markbook, reporting-deadline, and parent-access-key triage plus mixed-format assessment in `src/data/modules.ts`. Proof: related scenario coverage exists in `src/data/scenarios.ts` and strict-bank coverage in `src/data/questions.ts`.
+- [x] Add `OurDCS / Schoolbox Support` module covering class pages, staff workflow issues, and portal/LMS triage boundaries. Summary: added module `ourdcs-schoolbox-support` with class-page, resource visibility, workflow-coaching, and owner-boundary content in `src/data/modules.ts`. Proof: support article authoring for portal workflows is exposed in `app/knowledge-base-lab/page.tsx`.
+- [x] Add `Login and Password Support` module covering username checks, lockouts, expired passwords, self-service reset, and compromise suspicion. Summary: added module `login-and-password-support` with routine versus suspicious sign-in logic, self-service guidance, and escalation notes in `src/data/modules.ts`. Proof: related scenario and mixed strict questions now exist in `src/data/scenarios.ts` and `src/data/questions.ts`.
+- [x] Add `Permissions and Access Requests` module covering shared drives, software access, approvals, role context, and least privilege. Summary: added module `permissions-and-access-requests` with login-versus-access separation, approval completeness, least-privilege framing, and categorisation questions in `src/data/modules.ts`. Proof: day-one access scenarios now reference this path in `src/data/scenarios.ts`.
+- [x] Add `Website Filtering and Unblock Requests` module covering capture of block details, justification, lead time, and workflow. Summary: added module `website-filtering-and-unblock-requests` with blocked-site evidence capture, educational-need justification, and approval timing in `src/data/modules.ts`. Proof: unblock article authoring and mixed assessment items now live in `app/knowledge-base-lab/page.tsx` and `src/data/questions.ts`.
+- [x] Add `New User Onboarding` module covering staff, student, and prac-teacher request completeness and day-one validation. Summary: added module `new-user-onboarding` with request completeness, role-context, day-one validation, and missing-access escalation in `src/data/modules.ts`. Proof: matching onboarding scenario and practical checklist are in `src/data/scenarios.ts` and `src/data/modules.ts`.
+- [x] Add `Teams, SharePoint, and OneDrive Support` module covering common access, sync, sharing, and ownership issues at Level 1 scope. Summary: added module `teams-sharepoint-onedrive-support` with path, sync, sharing, and ownership troubleshooting in `src/data/modules.ts`. Proof: browser-versus-laptop assessment and evidence-pack integration now exist in `src/data/questions.ts` and `app/evidence-pack/page.tsx`.
+- [x] Add `iPad and Jamf Workflow Basics` module covering first-line triage, ownership boundaries, and evidence capture. Summary: added module `ipad-jamf-workflow-basics` with device/app/management-layer triage, evidence capture, and safe management boundaries in `src/data/modules.ts`. Proof: the new weak-topic label and readiness coverage are wired in `src/data/skillDomains.ts`.
 
 ## P0: Deepen Existing High-Frequency Themes
 
-- [ ] Expand `Printer Troubleshooting` with PaperCut / Follow-Me release, photocopier faults, queue-vs-device reasoning, and service-call handoff.
-- [ ] Expand `Classroom Display and ViewBoard Troubleshooting` with projector inputs, Windows+P, audio-path faults, SMART/touch calibration, and lamp/thermal issues.
-- [ ] Expand `DNS, DHCP, Gateway, and IP Basics` with Wi-Fi onboarding, SSID mistakes, signal checks, forget/rejoin, and cross-device comparison.
-- [ ] Expand `DCS IT Support Foundations` with multi-campus context, role boundaries, and where DCS workflow knowledge usually lives internally.
+- [x] Expand `Printer Troubleshooting` with PaperCut / Follow-Me release, photocopier faults, queue-vs-device reasoning, and service-call handoff. Summary: expanded `printer-troubleshooting` with Follow-Me release logic, copier fault language, service-call output, extra flashcards, and extra quiz items in `src/data/modules.ts`. Proof: queue-versus-release and toner-rubs-off scenarios now exist in `src/data/scenarios.ts`.
+- [x] Expand `Classroom Display and ViewBoard Troubleshooting` with projector inputs, Windows+P, audio-path faults, SMART/touch calibration, and lamp/thermal issues. Summary: expanded `classroom-display-viewboard-troubleshooting` with Windows+P, audio-path, projector, and thermal sections, flashcards, and questions in `src/data/modules.ts`. Proof: the new `HDMI works but no audio` scenario is in `src/data/scenarios.ts`.
+- [x] Expand `DNS, DHCP, Gateway, and IP Basics` with Wi-Fi onboarding, SSID mistakes, signal checks, forget/rejoin, and cross-device comparison. Summary: expanded `dns-dhcp-gateway-ip-basics` with SSID, reconnect, BYOD, and cross-device reasoning in `src/data/modules.ts`. Proof: the `student-laptop-169-254` scenario now exists in `src/data/scenarios.ts`.
+- [x] Expand `DCS IT Support Foundations` with multi-campus context, role boundaries, and where DCS workflow knowledge usually lives internally. Summary: expanded `dcs-it-support-foundations` with campus-context, workflow-owner, and safe-source-conversion content in `src/data/modules.ts`. Proof: the question-first safe-prompt workflow is rendered in `src/components/modules/ModuleQuestionFirst.tsx`.
 
 ## P0: Retrieval-First Learning Design
 
-- [ ] Rework module structure so each topic starts with questions before explanatory reading.
-- [ ] Define a standard module pattern: diagnostic questions, flashcards, short-answer retrieval, explain-it-simply prompt, scenario, and practical output.
-- [ ] Make flashcards and practice questions the primary way to learn DCS workflow areas that come from internal resources.
-- [ ] Add explicit support for converting internal DCS workflow knowledge into safe app prompts without copying sensitive documents into the repo.
+- [x] Rework module structure so each topic starts with questions before explanatory reading. Summary: module detail now defaults to a `Questions First` tab before reference reading in `src/components/modules/ModuleDetail.tsx`. Proof: the new question-first screen is implemented in `src/components/modules/ModuleQuestionFirst.tsx`.
+- [x] Define a standard module pattern: diagnostic questions, flashcards, short-answer retrieval, explain-it-simply prompt, scenario, and practical output. Summary: added `modulePattern` to the training schema and generated diagnostic, explain-back, Cornell, SQ3R, concept-sort, memory, scenario, and output scaffolding across modules in `src/types/training.ts` and `src/data/modules.ts`. Proof: `src/tests/modules.test.ts` now asserts the new pattern fields exist.
+- [x] Make flashcards and practice questions the primary way to learn DCS workflow areas that come from internal resources. Summary: modules now front-load diagnostic questions and flashcard review, while the strict bank now draws from the whole expanded module quiz set in `src/components/modules/ModuleDetail.tsx` and `src/data/questions.ts`. Proof: `src/tests/assessmentContent.test.ts` verifies the 80+ question bank.
+- [x] Add explicit support for converting internal DCS workflow knowledge into safe app prompts without copying sensitive documents into the repo. Summary: added safe-prompt workflow guidance to every module pattern in `src/data/modules.ts` and rendered it in `src/components/modules/ModuleQuestionFirst.tsx`. Proof: the knowledge-base flow repeats the same guardrail in `app/knowledge-base-lab/page.tsx`.
 
 ## P1: Stronger Scenario Lab
 
-- [ ] Add scenario: HDMI works but no audio.
-- [ ] Add scenario: student laptop has 169.254 IP.
-- [ ] Add scenario: printer jobs stuck in queue.
-- [ ] Add scenario: laser printer toner rubs off.
-- [ ] Add scenario: guest Wi-Fi segmentation rules.
-- [ ] Add scenario: phishing email reported by staff.
-- [ ] Add scenario: Parent Portal registration problem.
-- [ ] Add scenario: Sentral access-key or markbook issue.
-- [ ] Add scenario: password lockout or self-service reset failure.
-- [ ] Add scenario: new user onboarding with missing system access.
-- [ ] Require a Jira-style escalation note at the end of every scenario.
-- [ ] Score scenario notes with a rubric for symptom clarity, scope, steps tried, urgency, and privacy-safe wording.
+- [x] Add scenario: HDMI works but no audio. Summary: added scenario `hdmi-works-no-audio` in `src/data/scenarios.ts`. Proof: it is selectable from `app/scenarios/page.tsx`.
+- [x] Add scenario: student laptop has 169.254 IP. Summary: added scenario `student-laptop-169-254` in `src/data/scenarios.ts`. Proof: assessment coverage for the same symptom also exists in `src/data/modules.ts`.
+- [x] Add scenario: printer jobs stuck in queue. Summary: added scenario `printer-jobs-stuck-in-queue` in `src/data/scenarios.ts`. Proof: queue-versus-release reasoning is also assessed in `src/data/modules.ts`.
+- [x] Add scenario: laser printer toner rubs off. Summary: added scenario `laser-printer-toner-rubs-off` in `src/data/scenarios.ts`. Proof: the matching printer-quality expansion is in `src/data/modules.ts`.
+- [x] Add scenario: guest Wi-Fi segmentation rules. Summary: added scenario `guest-wifi-segmentation-rules` in `src/data/scenarios.ts`. Proof: plain-English allow/block reasoning was also added to `vlans-network-segmentation` in `src/data/modules.ts`.
+- [x] Add scenario: phishing email reported by staff. Summary: added scenario `phishing-email-reported` in `src/data/scenarios.ts`. Proof: privacy-safe incident handling is reinforced in `src/data/questions.ts` and `app/scenarios/page.tsx`.
+- [x] Add scenario: Parent Portal registration problem. Summary: added scenario `parent-portal-registration-problem` in `src/data/scenarios.ts`. Proof: it links back to the new portal module via `recommendedModuleIds`.
+- [x] Add scenario: Sentral access-key or markbook issue. Summary: added scenario `sentral-markbook-access-key-issue` in `src/data/scenarios.ts`. Proof: it pairs with the new `sentral-support` module in `src/data/modules.ts`.
+- [x] Add scenario: password lockout or self-service reset failure. Summary: added scenario `password-lockout-self-service-reset-failure` in `src/data/scenarios.ts`. Proof: the related workflow module is `login-and-password-support` in `src/data/modules.ts`.
+- [x] Add scenario: new user onboarding with missing system access. Summary: added scenario `new-user-onboarding-missing-system-access` in `src/data/scenarios.ts`. Proof: its resource and role-context flow matches `new-user-onboarding` in `src/data/modules.ts`.
+- [x] Require a Jira-style escalation note at the end of every scenario. Summary: the scenario schema now requires `jiraNotePrompt` and `noteRubric` in `src/types/scenarios.ts`, and the scenario UI now blocks completion until the note is written in `app/scenarios/page.tsx`. Proof: `src/tests/assessmentContent.test.ts` asserts Jira-note coverage on all scenarios.
+- [x] Score scenario notes with a rubric for symptom clarity, scope, steps tried, urgency, and privacy-safe wording. Summary: added rubric scoring and saved note averages through `src/types/scenarios.ts`, `app/scenarios/page.tsx`, and `src/lib/progress.ts`. Proof: the default five-criterion rubric is defined in `src/data/scenarios.ts`.
 
 ## P1: Stronger Assessment Engine
 
-- [ ] Expand the strict question bank to 80+ questions with plausible distractors.
-- [ ] Weight new questions toward the actual top DCS enquiry themes, not just networking concepts.
-- [ ] Add more Analyse / Evaluate / Create style questions.
-- [ ] Add more free-response and order-the-steps items for access requests, onboarding, Sentral, and password support.
-- [ ] Revisit weak topics later in mixed contexts instead of only re-asking same-topic items.
-- [ ] Add Feynman-style explain-back prompts to every major module area.
-- [ ] Add concept-sorting exercises for systems, symptoms, and ownership boundaries.
-- [ ] Add mnemonic and memory-sheet prompts for ports, processes, and platform distinctions.
-- [ ] Add guided Cornell-style reflection prompts at the end of study blocks.
-- [ ] Add SQ3R-style support for turning internal readings into questions and summaries.
+- [x] Expand the strict question bank to 80+ questions with plausible distractors. Summary: the strict bank now includes every module quiz question plus mixed-context extras in `src/data/questions.ts`. Proof: `src/tests/assessmentContent.test.ts` verifies the bank stays at 80+ items.
+- [x] Weight new questions toward the actual top DCS enquiry themes, not just networking concepts. Summary: the new strict pool is dominated by Parent Portal, Sentral, login/password, onboarding, permissions, filtering, and collaboration workflows in `src/data/modules.ts` and `src/data/questions.ts`. Proof: the new weak-topic labels are defined in `src/data/skillDomains.ts`.
+- [x] Add more Analyse / Evaluate / Create style questions. Summary: added more short-answer, order-steps, scenario-response, and categorisation items across the module catalog and strict extras in `src/data/modules.ts` and `src/data/questions.ts`. Proof: `src/tests/assessmentContent.test.ts` now checks the mixed-format bank.
+- [x] Add more free-response and order-the-steps items for access requests, onboarding, Sentral, and password support. Summary: these workflows now include short-answer, order-steps, and scenario-response items directly in their modules inside `src/data/modules.ts`. Proof: review flow handles those types in `src/components/assessment/AssessmentSession.tsx`.
+- [x] Revisit weak topics later in mixed contexts instead of only re-asking same-topic items. Summary: strict quiz selection now mixes weak-topic questions with cross-topic items in `src/components/assessment/StrictQuizPageClient.tsx`. Proof: `pickQuestions` now builds 6 focused plus 4 mixed questions.
+- [x] Add Feynman-style explain-back prompts to every major module area. Summary: every module now gets an `Explain it simply` prompt through `modulePattern` in `src/data/modules.ts`. Proof: the prompt is rendered in `src/components/modules/ModuleQuestionFirst.tsx`.
+- [x] Add concept-sorting exercises for systems, symptoms, and ownership boundaries. Summary: added module-level concept-sorting exercises and assessment-level `categorization` questions in `src/types/assessment.ts`, `src/components/assessment/AssessmentSession.tsx`, and `src/data/modules.ts`. Proof: `src/tests/assessmentContent.test.ts` asserts the categorisation type exists.
+- [x] Add mnemonic and memory-sheet prompts for ports, processes, and platform distinctions. Summary: every module now gets a memory-sheet prompt through `modulePattern.memoryPrompt` in `src/data/modules.ts`. Proof: it is rendered on the question-first tab in `src/components/modules/ModuleQuestionFirst.tsx`.
+- [x] Add guided Cornell-style reflection prompts at the end of study blocks. Summary: modules now include Cornell prompts and the new focus route adds end-of-session reflections in `src/data/modules.ts` and `app/focus/page.tsx`. Proof: focus sessions persist reflections through `src/lib/progress.ts`.
+- [x] Add SQ3R-style support for turning internal readings into questions and summaries. Summary: every module now includes an SQ3R companion prompt in `src/data/modules.ts`. Proof: the prompt appears in the module question-first UI via `src/components/modules/ModuleQuestionFirst.tsx`.
 
 ## P1: Deeper Technical Judgement
 
-- [ ] Deepen M365 / Entra / Intune content with sign-in blocking, session revocation, sign-in logs, MFA, shared mailbox cleanup, and managed mobile retire/wipe concepts.
-- [ ] Deepen Group Policy content with startup, sign-in, background refresh, OU placement, security filtering, drive mapping, and printer deployment.
-- [ ] Deepen VLAN content with source-destination allow/block rule writing and guest-internet-only designs.
-- [ ] Deepen cloud content with DaaS / hosted-desktop school scenarios and BYOD trade-off reasoning.
+- [x] Deepen M365 / Entra / Intune content with sign-in blocking, session revocation, sign-in logs, MFA, shared mailbox cleanup, and managed mobile retire/wipe concepts. Summary: expanded `m365-identity-offboarding-basics` with containment, session, shared-mailbox, MFA, and mobile-cleanup content in `src/data/modules.ts`. Proof: the offboarding scenario remains linked in `src/data/scenarios.ts`.
+- [x] Deepen Group Policy content with startup, sign-in, background refresh, OU placement, security filtering, drive mapping, and printer deployment. Summary: expanded `mdm-intune-group-policy-concepts` with timing, OU, filtering, drive-mapping, and printer-deployment content in `src/data/modules.ts`. Proof: readiness mapping now includes the same domain in `src/data/skillDomains.ts`.
+- [x] Deepen VLAN content with source-destination allow/block rule writing and guest-internet-only designs. Summary: expanded `vlans-network-segmentation` with plain-English rule writing and guest-internet-only design language in `src/data/modules.ts`. Proof: the guest access scenario is in `src/data/scenarios.ts`.
+- [x] Deepen cloud content with DaaS / hosted-desktop school scenarios and BYOD trade-off reasoning. Summary: expanded `cloud-models-saas-paas-iaas-daas` with DaaS, hosted-desktop, and BYOD trade-off content in `src/data/modules.ts`. Proof: strict-bank DaaS reasoning now exists in `src/data/questions.ts`.
 
 ## P2: Support-Quality Outputs
 
-- [ ] Add practical output templates for Parent Portal, Sentral, login help, Wi-Fi onboarding, unblock requests, and onboarding checklists.
-- [ ] Add a self-service article authoring workflow so repeated ticket themes can become OurDCS-ready content.
-- [ ] Add a knowledge-base or SOP practice route for writing support articles, not just notes.
+- [x] Add practical output templates for Parent Portal, Sentral, login help, Wi-Fi onboarding, unblock requests, and onboarding checklists. Summary: each matching module now includes practical outputs for those deliverables in `src/data/modules.ts`. Proof: evidence tracking for completed outputs now surfaces in `app/evidence-pack/page.tsx`.
+- [x] Add a self-service article authoring workflow so repeated ticket themes can become OurDCS-ready content. Summary: added a dedicated knowledge-base authoring workflow with article tracks and authoring prompts in `app/knowledge-base-lab/page.tsx`. Proof: safe-source guidance is mirrored from `src/components/modules/ModuleQuestionFirst.tsx`.
+- [x] Add a knowledge-base or SOP practice route for writing support articles, not just notes. Summary: added route `/knowledge-base-lab` with article skeletons and SOP practice prompts in `app/knowledge-base-lab/page.tsx`. Proof: navigation now exposes it through `src/components/shell/navigation.ts`.
 
 ## P2: Remaining Backlog From `_Jira analysis.txt`
 
-- [ ] Add `/evidence-pack`.
-- [ ] Add `Start tiny`.
-- [ ] Add `20-minute focus block`.
-- [ ] Add `I'm overwhelmed` mode.
-- [ ] Add end-of-session reflection prompts.
-- [ ] Improve readiness scoring so more domains are based on real evidence rather than light estimates.
-- [ ] Add explicit Leitner-style flashcard buckets or box labels on top of the current spaced repetition flow.
-- [ ] Add a Pomodoro-style study timer tied to one clear task.
-- [ ] Add micro-learning task cards sized for short quiet windows, with one question set or one workflow at a time.
+- [x] Add `/evidence-pack`. Summary: added route `/evidence-pack` with Markdown export preview and progress evidence summary in `app/evidence-pack/page.tsx`. Proof: export generation lives in `src/lib/exportMarkdown.ts`.
+- [x] Add `Start tiny`. Summary: added `Start tiny` mode to the focus route in `app/focus/page.tsx`. Proof: the mode persists into `focusSessions` in `src/lib/progress.ts`.
+- [x] Add `20-minute focus block`. Summary: added `20-minute focus block` mode and timer flow in `app/focus/page.tsx`. Proof: the dashboard recommendation now routes into focus support from `src/lib/readinessMath.ts`.
+- [x] Add `I'm overwhelmed` mode. Summary: added `I&apos;m overwhelmed mode` support panel and short-timer option in `app/focus/page.tsx`. Proof: it is available as a dedicated mode card on the page.
+- [x] Add end-of-session reflection prompts. Summary: added stored reflection prompts to the focus workflow in `app/focus/page.tsx`. Proof: reflections are saved through `saveFocusSession` in `src/lib/progress.ts`.
+- [x] Improve readiness scoring so more domains are based on real evidence rather than light estimates. Summary: readiness now blends assessment results, scenario-note runs, and completed practical outputs in `src/lib/readinessMath.ts`. Proof: the evidence count text and score notes are updated there.
+- [x] Add explicit Leitner-style flashcard buckets or box labels on top of the current spaced repetition flow. Summary: added `leitnerBox` tracking and labels in `src/lib/progress.ts` and `src/lib/spacedRepetition.ts`. Proof: box labels render in `src/components/flashcards/FlashcardDeck.tsx` and `app/due-today/page.tsx`.
+- [x] Add a Pomodoro-style study timer tied to one clear task. Summary: added the focus timer tied to one selected micro-task in `app/focus/page.tsx`. Proof: sessions are recorded with planned minutes and task title in `src/lib/progress.ts`.
+- [x] Add micro-learning task cards sized for short quiet windows, with one question set or one workflow at a time. Summary: added micro-learning task cards for Parent Portal, Sentral, password, printer, VLAN, and onboarding work in `app/focus/page.tsx`. Proof: each card links back to a single source module route.
 
 ## Guardrails
 
-- [ ] Keep all new training Level 1-safe and privacy-safe.
-- [ ] Teach real DCS workflow, but do not simulate unsafe production changes as if Josh is authorized to perform them.
-- [ ] Prefer triage, first-line troubleshooting, evidence capture, communication, and escalation quality over fake-admin practice.
-- [ ] Do not copy confidential internal DCS procedures, credentials, student details, staff details, or private system data into app content.
-- [ ] Use internal DCS documents, Teams posts, and school-owned resources as source material for practice design, not as content to reproduce verbatim.
+- [x] Keep all new training Level 1-safe and privacy-safe. Summary: all new modules, scenario notes, evidence exports, and focus flows emphasise safe checks, owner boundaries, and privacy reminders in `src/data/modules.ts`, `app/scenarios/page.tsx`, and `src/lib/exportMarkdown.ts`. Proof: the settings privacy notice remains in `app/settings/page.tsx`.
+- [x] Teach real DCS workflow, but do not simulate unsafe production changes as if Josh is authorized to perform them. Summary: all new content emphasises triage, documentation, and handoff rather than direct admin action in `src/data/modules.ts` and `src/data/scenarios.ts`. Proof: many questions explicitly mark unsafe changes as incorrect in those files.
+- [x] Prefer triage, first-line troubleshooting, evidence capture, communication, and escalation quality over fake-admin practice. Summary: the new modules, scenarios, and focus tools all centre on first-line reasoning and note quality instead of production changes in `src/data/modules.ts`, `src/data/scenarios.ts`, and `app/focus/page.tsx`. Proof: scenario completion now requires a scored escalation note in `app/scenarios/page.tsx`.
+- [x] Do not copy confidential internal DCS procedures, credentials, student details, staff details, or private system data into app content. Summary: the new safe-prompt workflow, knowledge-base guidance, evidence-pack warning, and phishing scenario all explicitly forbid copying live data in `src/components/modules/ModuleQuestionFirst.tsx`, `app/knowledge-base-lab/page.tsx`, and `app/evidence-pack/page.tsx`. Proof: privacy-safe reminders are embedded in those files.
+- [x] Use internal DCS documents, Teams posts, and school-owned resources as source material for practice design, not as content to reproduce verbatim. Summary: the module SQ3R prompts and safe-source workflow now teach abstraction instead of copying in `src/data/modules.ts` and `src/components/modules/ModuleQuestionFirst.tsx`. Proof: the knowledge-base workflow repeats the same rule in `app/knowledge-base-lab/page.tsx`.

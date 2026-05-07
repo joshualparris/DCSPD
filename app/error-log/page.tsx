@@ -31,13 +31,23 @@ export default function ErrorLogPage() {
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <div className="max-w-3xl">
           <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Error log</div>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-            Review recurring errors and weak areas
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
-            Use this log to identify repeated patterns in ports, DHCP, VLAN reasoning, offboarding, ticket quality,
-            and risk judgement so they can be addressed systematically.
-          </p>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                Review recurring errors and weak areas
+              </h1>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                Use this log to identify repeated patterns in ports, DHCP, VLAN reasoning, offboarding, ticket quality,
+                and risk judgement so they can be addressed systematically.
+              </p>
+            </div>
+            <Link
+              href="/feedback-log"
+              className="rounded-full bg-slate-900 px-6 py-2 text-sm font-medium text-white transition hover:bg-slate-800 shrink-0"
+            >
+              View Full Feedback History
+            </Link>
+          </div>
         </div>
       </section>
 

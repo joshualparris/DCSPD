@@ -13,5 +13,14 @@ describe('sanitizeForAi', () => {
     expect(result.text).toContain('[REDACTED:TICKET]');
     expect(result.redactions).toBeGreaterThan(0);
   });
+
+  it('does not redact normal long words without digits', () => {
+    const input =
+      'The primary role of BIOS/UEFI is to initialize hardware and start the boot process, ensuring the system is properly configured.';
+    const result = sanitizeForAi(input);
+    expect(result.text).toContain('initialize hardware and start the boot process');
+    expect(result.text).toContain('properly configured');
+    expect(result.redactions).toBe(0);
+  });
 });
 

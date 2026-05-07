@@ -96,15 +96,59 @@ export type FocusSession = {
   microTaskId?: string;
 };
 
+export type AcademicAssessmentVerdict = 'Correct' | 'Mostly correct' | 'Partly correct' | 'Needs revision';
+
+export type AcademicAssessmentAttempt = {
+  id: string;
+  createdAtIso: string;
+  subjectId: string;
+  subjectCode: string;
+  subjectTitle: string;
+  track: string;
+  stream: string;
+  weeklyModuleId: string;
+  weeklyModuleTitle: string;
+  week: number;
+  assessmentId: string;
+  assessmentTitle: string;
+  assessmentKind: string;
+  evidenceType: string;
+  prompt: string;
+  userAnswer: string;
+  successCriteria: string[];
+  siloIds: string[];
+  dcsApplication: string;
+  score: number;
+  verdict: AcademicAssessmentVerdict;
+  strengths: string[];
+  missing: string[];
+  riskNotes: string[];
+  betterAnswer: string;
+  nextPractice: string;
+  redactionSummary: string;
+  privacyChecked: boolean;
+  pdEntryId?: string;
+};
+
 export type UserProgress = {
   lastOpenedModuleId?: string;
   modules: Record<string, ModuleProgress>;
   assessmentAttempts: AssessmentAttempt[];
+  academicAssessmentAttempts: AcademicAssessmentAttempt[];
   scenarioRuns: ScenarioRun[];
   pdEntries: PdEntry[];
   pdLogEntries: PDLogEntry[];
   weakTopicReviews: Record<string, WeakTopicReview>;
   focusSessions: FocusSession[];
+  streak?: {
+    current: number;
+    best: number;
+    lastActivityDateIso: string;
+  };
+  dailyChallenge?: {
+    lastCompletedDateIso: string;
+    lastQuestionId?: string;
+  };
 };
 
 const STORAGE_KEY = 'dcsprep_learning_cockpit_v4';
@@ -113,6 +157,7 @@ export function getDefaultProgress(): UserProgress {
   return {
     modules: {},
     assessmentAttempts: [],
+    academicAssessmentAttempts: [],
     scenarioRuns: [],
     pdEntries: [],
     pdLogEntries: [],
@@ -216,6 +261,7 @@ function normalizeProgress(raw: unknown): UserProgress {
 
   const candidate = raw as Partial<UserProgress> & {
     modules?: Record<string, unknown>;
+    academicAssessmentAttempts?: unknown;
     pdEntries?: unknown;
     pdLogEntries?: unknown;
   };
@@ -248,6 +294,9 @@ function normalizeProgress(raw: unknown): UserProgress {
       ])
     ),
     assessmentAttempts: Array.isArray(candidate.assessmentAttempts) ? candidate.assessmentAttempts : [],
+    academicAssessmentAttempts: Array.isArray(candidate.academicAssessmentAttempts)
+      ? (candidate.academicAssessmentAttempts as AcademicAssessmentAttempt[])
+      : [],
     scenarioRuns: Array.isArray(candidate.scenarioRuns) ? candidate.scenarioRuns : [],
     pdEntries: normalizedPdEntries,
     pdLogEntries: Array.isArray(candidate.pdLogEntries) ? candidate.pdLogEntries : [],
@@ -255,7 +304,50 @@ function normalizeProgress(raw: unknown): UserProgress {
     weakTopicReviews:
       candidate.weakTopicReviews && typeof candidate.weakTopicReviews === 'object'
         ? candidate.weakTopicReviews
-        : {}
+        : {},
+    streak: candidate.streak || { current: 0, best: 0, lastActivityDateIso: '' },
+    dailyChallenge: candidate.dailyChallenge || { lastCompletedDateIso: '' }
+  };
+}
+
+export function recordDailyActivity(progress: UserProgress): UserProgress {
+  const today = getTodayDateKey();
+  const lastDate = progress.streak?.lastActivityDateIso || '';
+
+  if (lastDate === today) {
+    return progress;
+  }
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = yesterday.toISOString().split('T')[0];
+
+  const currentStreak = progress.streak?.current || 0;
+  const bestStreak = progress.streak?.best || 0;
+
+  let nextStreak = 1;
+  if (lastDate === yesterdayKey) {
+    nextStreak = currentStreak + 1;
+  }
+
+  return {
+    ...progress,
+    streak: {
+      current: nextStreak,
+      best: Math.max(bestStreak, nextStreak),
+      lastActivityDateIso: today
+    }
+  };
+}
+
+export function completeDailyChallenge(progress: UserProgress, questionId: string): UserProgress {
+  const withStreak = recordDailyActivity(progress);
+  return {
+    ...withStreak,
+    dailyChallenge: {
+      lastCompletedDateIso: getTodayDateKey(),
+      lastQuestionId: questionId
+    }
   };
 }
 
@@ -499,6 +591,20 @@ export function addPdEntry(progress: UserProgress, entry: PdEntry): UserProgress
   return {
     ...progress,
     pdEntries: [entry, ...filtered].sort((a, b) => (a.createdAtIso < b.createdAtIso ? 1 : -1))
+  };
+}
+
+export function saveAcademicAssessmentAttempt(
+  progress: UserProgress,
+  attempt: AcademicAssessmentAttempt
+): UserProgress {
+  const filtered = progress.academicAssessmentAttempts.filter((existingAttempt) => existingAttempt.id !== attempt.id);
+
+  return {
+    ...progress,
+    academicAssessmentAttempts: [attempt, ...filtered].sort((a, b) =>
+      a.createdAtIso < b.createdAtIso ? 1 : -1
+    )
   };
 }
 
