@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { scenarios } from '../../src/data/scenarios';
+import { useEffect, useMemo, useState } from 'react';
+import { scenarios as baseScenarios } from '../../src/data/scenarios';
 import AiCoachPanel from '../../src/components/ai/AiCoachPanel';
+import AiNoteGenerator from '../../src/components/ai/AiNoteGenerator';
+import { getCustomScenarios } from '../../src/lib/customModules';
 import {
   addPdEntry,
   getInitialProgressSnapshot,
@@ -13,7 +15,23 @@ import {
 } from '../../src/lib/progress';
 import type { ScenarioChoice, ScenarioRunChoice } from '../../src/types/scenarios';
 
+import { gradeRubric } from '../../src/lib/rubricGrader';
+import type { RubricGrade } from '../../src/types/grading';
+import { 
+  AlertCircle, 
+  CheckCircle2, 
+  ChevronRight, 
+  MessageSquare, 
+  ShieldCheck, 
+  Target, 
+  XCircle,
+  BarChart3,
+  Award
+} from 'lucide-react';
+
 export default function ScenariosPage() {
+  const [customScenarios, setCustomScenarios] = useState<any[]>([]);
+  const scenarios = useMemo(() => [...baseScenarios, ...customScenarios], [customScenarios]);
   const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
   const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
   const [selectedScenarioId, setSelectedScenarioId] = useState(scenarios[0]?.id || '');
@@ -24,9 +42,11 @@ export default function ScenariosPage() {
   const [noteScores, setNoteScores] = useState<Record<string, number>>({});
   const [noteSubmitted, setNoteSubmitted] = useState(false);
   const [savedNoteAverage, setSavedNoteAverage] = useState<number | null>(null);
+  const [rubricGrade, setRubricGrade] = useState<RubricGrade | null>(null);
 
   useEffect(() => {
     setProgress(getStoredProgressSnapshot());
+    setCustomScenarios(getCustomScenarios());
     setHasHydratedProgress(true);
   }, []);
 
@@ -108,6 +128,14 @@ export default function ScenariosPage() {
 
     const finalAverage = noteAverage;
 
+    // Automatic Deterministic Grading
+    const grade = gradeRubric({
+      text: escalationNote,
+      rubric: scenario.noteRubric.map(r => ({ id: r.id, label: r.label, description: r.description })),
+      context: scenario.title
+    });
+    setRubricGrade(grade);
+
     setProgress((current) =>
       addPdEntry(
         saveScenarioRun(current, {
@@ -119,7 +147,8 @@ export default function ScenariosPage() {
           escalationNote: escalationNote.trim(),
           noteScores,
           noteAverage: finalAverage,
-          completed: true
+          completed: true,
+          rubricGrade: grade
         }),
         {
           id: `pd-scenario-${scenario.id}-${Date.now()}`,
@@ -129,7 +158,7 @@ export default function ScenariosPage() {
           minutes: scenario.estimatedMinutes,
           moduleIds: scenario.recommendedModuleIds,
           scenarioIds: [scenario.id],
-          evidenceSummary: `Completed a scenario run and recorded a note score of ${Math.round((finalAverage / 2) * 100)}%.`,
+          evidenceSummary: `Completed a scenario run and recorded a note score of ${Math.round((finalAverage / 2) * 100)}%. Grade level: ${grade.level}.`,
           reflection: undefined,
           privacyChecked: true
         }
@@ -249,6 +278,18 @@ export default function ScenariosPage() {
                 <p className="mt-3 text-sm leading-7 text-slate-700">{scenario.jiraNotePrompt}</p>
               </div>
 
+              <AiNoteGenerator
+                scenarioTitle={scenario.title}
+                initialReport={scenario.initialReport}
+                userChoices={runChoices.map(c => {
+                  const step = scenario.steps.find(s => s.id === c.stepId);
+                  const choice = step?.choices.find(ch => ch.id === c.choiceId);
+                  return `${step?.title}: ${choice?.label}`;
+                })}
+                draftNote={escalationNote}
+                onNoteGenerated={(note) => setEscalationNote(note)}
+              />
+
               <textarea
                 value={escalationNote}
                 onChange={(event) => setEscalationNote(event.target.value)}
@@ -357,13 +398,80 @@ export default function ScenariosPage() {
               <div className="rounded-3xl border border-slate-200 bg-white p-5">
                 <div className="font-semibold text-slate-900">Your Jira-style note</div>
                 <p className="mt-3 whitespace-pre-line text-sm leading-7 text-slate-700">{escalationNote}</p>
-                <p className="mt-3 text-sm text-slate-600">
-                  Rubric score:{' '}
-                  {savedNoteAverage === null ? 'Not scored' : `${Math.round((savedNoteAverage / 2) * 100)}%`}
-                </p>
               </div>
 
-              <button onClick={() => restartScenario()} className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white">
+              {rubricGrade && (
+                <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-rose-600">
+                      <Award size={24} />
+                      <h2 className="text-xl font-bold text-slate-900">Note Analysis</h2>
+                    </div>
+                    <div className={`rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest ${
+                      rubricGrade.level === 'excellent' ? 'bg-emerald-100 text-emerald-700' :
+                      rubricGrade.level === 'strong' ? 'bg-blue-100 text-blue-700' :
+                      'bg-amber-100 text-amber-700'
+                    }`}>
+                      {rubricGrade.level}
+                    </div>
+                  </div>
+
+                  <div className="mt-8 grid gap-6 md:grid-cols-2">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Strengths</h4>
+                      <ul className="mt-3 space-y-2">
+                        {rubricGrade.strengths.map((s, i) => (
+                          <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
+                            <CheckCircle2 size={16} className="text-emerald-500" />
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Areas for Growth</h4>
+                      <ul className="mt-3 space-y-2">
+                        {rubricGrade.missing.map((m, i) => (
+                          <li key={i} className="flex items-center gap-2 text-sm text-slate-500">
+                            <AlertCircle size={16} className="text-amber-500" />
+                            {m}
+                          </li>
+                        ))}
+                        {rubricGrade.missing.length === 0 && (
+                          <li className="text-sm text-slate-400 italic">No missing criteria identified.</li>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {rubricGrade.privacyFlags.length > 0 && (
+                    <div className="mt-8 rounded-2xl bg-rose-50 p-4 border border-rose-100 flex gap-3">
+                      <ShieldCheck size={20} className="text-rose-600 shrink-0" />
+                      <div>
+                        <div className="text-sm font-bold text-rose-900 uppercase tracking-tight">Privacy Caution</div>
+                        <p className="mt-1 text-xs text-rose-800">
+                          We detected potential sensitive data in your note: <span className="font-mono font-bold">{rubricGrade.privacyFlags.join(', ')}</span>.
+                          Always ensure student names and credentials are redacted before saving to a real Jira ticket.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {rubricGrade.escalationFeedback.length > 0 && (
+                    <div className="mt-4 rounded-2xl bg-blue-50 p-4 border border-blue-100 flex gap-3">
+                      <Target size={20} className="text-blue-600 shrink-0" />
+                      <div>
+                        <div className="text-sm font-bold text-blue-900 uppercase tracking-tight">Escalation Advice</div>
+                        <p className="mt-1 text-xs text-blue-800">
+                          {rubricGrade.escalationFeedback[0]}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <button onClick={() => restartScenario()} className="rounded-full bg-slate-900 px-8 py-3 text-sm font-bold text-white hover:bg-slate-800 transition-all">
                 Restart scenario
               </button>
             </div>

@@ -5426,13 +5426,16 @@ export function getAcademicSubjectByCode(subjectCode: string) {
   return academicSubjects.find((subject) => subject.code.toLowerCase() === subjectCode.toLowerCase());
 }
 
-export function getAcademicTrackSubjects(track: AcademicSubject['track']) {
-  return academicSubjects.filter((subject) => subject.track === track);
+export function getAcademicTrackSubjects(track: AcademicSubject['track'], subjects = academicSubjects) {
+  return subjects.filter((subject) => subject.track === track);
 }
 
 export function getAcademicWeeklyModules(subject: AcademicSubject): AcademicWeeklyModule[] {
   if (subject.weeklyModules?.length) {
-    return subject.weeklyModules;
+    return subject.weeklyModules.map((module) => ({
+      ...module,
+      resources: module.resources.length ? module.resources : subject.resources.slice(0, 3)
+    }));
   }
 
   return subject.topics.map((topic, index) => {
@@ -5507,8 +5510,8 @@ export function getAcademicWeeklyModules(subject: AcademicSubject): AcademicWeek
   });
 }
 
-export function getAcademicSourceSummary() {
-  return academicSubjects.reduce(
+export function getAcademicSourceSummary(subjects = academicSubjects) {
+  return subjects.reduce(
     (summary, subject) => {
       summary[subject.sourceStatus] += 1;
       return summary;
@@ -5522,22 +5525,22 @@ export function getAcademicSourceSummary() {
   );
 }
 
-export function getAcademicCatalogueStats() {
-  const silos = academicSubjects.reduce((sum, subject) => sum + subject.silos.length, 0);
-  const practicalTasks = academicSubjects.reduce((sum, subject) => sum + subject.practicalTasks.length, 0);
-  const resources = academicSubjects.reduce((sum, subject) => sum + subject.resources.length, 0);
-  const weeklyModules = academicSubjects.reduce((sum, subject) => sum + getAcademicWeeklyModules(subject).length, 0);
-  const weeklyAssessments = academicSubjects.reduce(
+export function getAcademicCatalogueStats(subjects = academicSubjects) {
+  const silos = subjects.reduce((sum, subject) => sum + subject.silos.length, 0);
+  const practicalTasks = subjects.reduce((sum, subject) => sum + subject.practicalTasks.length, 0);
+  const resources = subjects.reduce((sum, subject) => sum + subject.resources.length, 0);
+  const weeklyModules = subjects.reduce((sum, subject) => sum + getAcademicWeeklyModules(subject).length, 0);
+  const weeklyAssessments = subjects.reduce(
     (sum, subject) => sum + getAcademicWeeklyModules(subject).reduce((total, module) => total + module.assessments.length, 0),
     0
   );
-  const highRelevanceBridges = academicSubjects.reduce(
+  const highRelevanceBridges = subjects.reduce(
     (sum, subject) => sum + subject.dcsBridges.filter((bridge) => bridge.relevance === 'high').length,
     0
   );
 
   return {
-    subjects: academicSubjects.length,
+    subjects: subjects.length,
     silos,
     practicalTasks,
     resources,
@@ -5547,8 +5550,8 @@ export function getAcademicCatalogueStats() {
   };
 }
 
-export function getRecommendedAcademicBuildPath(limit = 4) {
-  return academicSubjects
+export function getRecommendedAcademicBuildPath(limit = 4, subjects = academicSubjects) {
+  return subjects
     .filter((subject) => typeof subject.implementationPriority === 'number')
     .sort((left, right) => (left.implementationPriority ?? 999) - (right.implementationPriority ?? 999))
     .slice(0, limit);

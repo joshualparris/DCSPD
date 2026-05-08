@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="DCSPrep">
+  <rect width="512" height="512" rx="112" fill="#0f172a"/>
+  <path d="M126 154c0-24 19-43 43-43h174c24 0 43 19 43 43v204c0 24-19 43-43 43H169c-24 0-43-19-43-43V154z" fill="#f8fafc"/>
+  <path d="M170 170h172v38H170v-38zm0 70h112v30H170v-30zm0 58h172v30H170v-30z" fill="#0f172a"/>
+  <path d="M340 224l38 38-97 97-51 13 13-51 97-97z" fill="#2563eb"/>
+  <path d="M322 242l38 38" stroke="#dbeafe" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="164" cy="365" r="18" fill="#10b981"/>
+</svg>

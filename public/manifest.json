@@ -1,0 +1,39 @@
+{
+  "name": "DCSPrep IT Support",
+  "short_name": "DCSPrep",
+  "description": "Professional development dashboard for DCS IT support.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Skill Coach",
+      "short_name": "Coach",
+      "description": "Open adaptive recommendations and badges.",
+      "url": "/skill-coach"
+    },
+    {
+      "name": "Due Today",
+      "short_name": "Due",
+      "description": "Review due flashcards and weak topics.",
+      "url": "/due-today"
+    },
+    {
+      "name": "Academic PD",
+      "short_name": "Academic",
+      "description": "Open SLG-linked professional development.",
+      "url": "/academic-pd"
+    }
+  ]
+}

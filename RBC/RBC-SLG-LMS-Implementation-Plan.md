@@ -1265,19 +1265,30 @@ Risk: DCSPrep turns into a full university LMS too early.
 
 Mitigation: ship vertical slices. CSE1PE first, then cyber, AI, cloud, then advanced AI subjects.
 
-## Next best expansion step
+## Current implementation status
 
-Implement Phase 0 and the CSE1PE vertical slice.
+Updated: 2026-05-08.
 
-Concrete next task:
+The Phase 0 / CSE1PE vertical slice has moved into the live app as `/academic-pd`, not `/rbc`. The app now includes the Academic PD catalogue, subject pages, weekly SLG-style module boxes, integrated AI-graded assessments, feedback history, subject progress bars, per-SILO progress, generated subject flashcards, final challenge checklists, certificates, progress backup/import/export, SLG draft import, content governance, supervisor analytics, local sync, KB export, hardware catalogue, virtual classroom troubleshooting, mobile QA, and integration export scaffolds.
 
-1. Create `src/types/academic.ts`.
-2. Create `src/data/rbcSubjects.ts` with all subjects from this plan.
-3. Add `/rbc` and `/rbc/subjects/[subjectCode]`.
-4. Build CSE1PE with working SILO progress, flashcards, assessment items, and one Python practical task.
-5. Add tests proving every subject/source/SILO link is valid.
+Completed implementation tasks:
 
-That gives DCSPrep a real foundation for a complete RBC/SMITB professional-development LMS without boiling the ocean in the first build.
+1. [x] Create `src/types/academic.ts`.
+2. [x] Create the Academic PD subject catalogue in `src/data/academicSubjects.ts`.
+3. [x] Add `/academic-pd` and `/academic-pd/subjects/[subjectCode]`.
+4. [x] Build CSE1PE with working weekly modules, SILO progress, flashcards, assessment items, and practical DCS transfer tasks.
+5. [x] Add tests proving subject/source/SILO links and assessment coverage are valid.
+6. [x] Add a draft SLG import workflow for pasted/copied PDF text.
+7. [x] Add content governance review status and admin draft export.
+8. [x] Add evidence, supervisor, KB, and LMS/HRIS export scaffolds.
+
+Next best expansion steps:
+
+1. [ ] Add full binary PDF text extraction for SLG import.
+2. [ ] Add direct admin publishing so subjects, resources, assessments, and weekly blocks can be updated without editing TypeScript.
+3. [ ] Add authenticated cloud database sync across devices.
+4. [ ] Run mobile/offline QA on a phone and document the install/offline behaviour.
+5. [ ] Add quick-fix printable cheat sheets and synthetic ticket CSV import.
 
 ## Public source links checked while preparing this plan
 

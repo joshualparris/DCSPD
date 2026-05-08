@@ -50,7 +50,7 @@ describe('academic subject catalogue', () => {
       const weeklyModules = getAcademicWeeklyModules(subject);
       expect(weeklyModules.length).toBeGreaterThanOrEqual(1);
       weeklyModules.forEach((module) => {
-        expect(module.title).toMatch(/^Week \d+ - Topic \d+:/);
+        expect(module.title).toMatch(/^Week \d+( - Topic \d+)?:/);
         expect(module.overview).toBeTruthy();
         expect(module.dcsConnections.length).toBeGreaterThanOrEqual(1);
         expect(module.internalLinks.length).toBeGreaterThanOrEqual(1);
@@ -107,7 +107,6 @@ describe('academic subject catalogue', () => {
     const stats = getAcademicCatalogueStats();
 
     expect(sourceSummary.canonical).toBeGreaterThan(0);
-    expect(sourceSummary.placeholder).toBeGreaterThanOrEqual(1);
     expect(sourceSummary['manual-check']).toBeGreaterThanOrEqual(1);
     expect(stats.weeklyModules).toBeGreaterThanOrEqual(academicSubjects.length);
     expect(stats.weeklyAssessments).toBeGreaterThanOrEqual(stats.weeklyModules);

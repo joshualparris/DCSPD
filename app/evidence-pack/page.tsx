@@ -36,6 +36,7 @@ export default function EvidencePackPage() {
     includeScenarios: true,
     includePracticalOutputs: true,
     includeReflections: true,
+    includeFeedbackEvidence: true,
     includeReadiness: true
   }));
 
@@ -48,6 +49,15 @@ export default function EvidencePackPage() {
     return sum + Object.values(progress.modules[module.id]?.practicalOutputs || {}).filter(Boolean).length;
   }, 0);
   const completedScenarios = progress.scenarioRuns.filter((run) => run.completed).length;
+  const feedbackEvidenceItems =
+    progress.assessmentAttempts.length +
+    progress.academicAssessmentAttempts.length +
+    progress.certificationAssessmentAttempts.length +
+    progress.roleplayFeedbackAttempts.length;
+  const gradedAssessmentItems =
+    progress.assessmentAttempts.length +
+    progress.academicAssessmentAttempts.length +
+    progress.certificationAssessmentAttempts.length;
 
   async function copyMarkdown() {
     await navigator.clipboard.writeText(markdown);
@@ -122,6 +132,7 @@ export default function EvidencePackPage() {
                 ['includeModules', 'Include modules studied'],
                 ['includeScenarios', 'Include scenario practice'],
                 ['includePracticalOutputs', 'Include practical outputs'],
+                ['includeFeedbackEvidence', 'Include feedback log evidence'],
                 ['includeReflections', 'Include reflections (privacy-checked)'],
                 ['includeReadiness', 'Include readiness snapshot']
               ] as const
@@ -140,7 +151,7 @@ export default function EvidencePackPage() {
         </div>
 
         <div className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-3">
+          <section className="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
             <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
               <div className="text-sm text-slate-500">Focus sessions</div>
               <div className="mt-3 text-2xl font-semibold text-slate-900">{progress.focusSessions.length}</div>
@@ -152,6 +163,14 @@ export default function EvidencePackPage() {
             <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
               <div className="text-sm text-slate-500">Scenarios completed</div>
               <div className="mt-3 text-2xl font-semibold text-slate-900">{completedScenarios}</div>
+            </div>
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="text-sm text-slate-500">Feedback evidence items</div>
+              <div className="mt-3 text-2xl font-semibold text-slate-900">{feedbackEvidenceItems}</div>
+            </div>
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="text-sm text-slate-500">Assessments graded</div>
+              <div className="mt-3 text-2xl font-semibold text-slate-900">{gradedAssessmentItems}</div>
             </div>
           </section>
 

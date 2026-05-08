@@ -144,6 +144,8 @@ export type AssessmentFeedback = {
   nextReviewDateIso: string;
 };
 
+import { RubricGrade } from './grading';
+
 export type AssessmentAttempt = {
   id: string;
   questionId: string;
@@ -163,4 +165,5 @@ export type AssessmentAttempt = {
   timestampIso: string;
   shouldRevisit: boolean;
   nextReviewDateIso: string;
+  rubricGrade?: RubricGrade;
 };

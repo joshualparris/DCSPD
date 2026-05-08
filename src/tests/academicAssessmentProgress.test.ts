@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { academicSubjects } from '../data/academicSubjects';
+import { getAcademicSubjectProgress } from '../lib/academicProgress';
 import { getDefaultProgress, saveAcademicAssessmentAttempt, type AcademicAssessmentAttempt } from '../lib/progress';
 
 function attempt(overrides: Partial<AcademicAssessmentAttempt> = {}): AcademicAssessmentAttempt {
@@ -60,5 +62,31 @@ describe('academic assessment progress', () => {
     expect(updated.academicAssessmentAttempts).toHaveLength(1);
     expect(updated.academicAssessmentAttempts[0].score).toBe(88);
     expect(updated.academicAssessmentAttempts[0].missing).toEqual([]);
+  });
+
+  it('calculates subject completion from unique completed assessments', () => {
+    const cse1pe = academicSubjects.find((subject) => subject.code === 'CSE1PE');
+    expect(cse1pe).toBeDefined();
+
+    const attempts = [
+      attempt({ id: 'first', assessmentId: 'cse1pe-w1-quick-check', score: 70 }),
+      attempt({
+        id: 'second',
+        assessmentId: 'cse1pe-w1-quick-check',
+        createdAtIso: '2026-05-08T00:00:00.000Z',
+        score: 90
+      }),
+      attempt({ id: 'third', assessmentId: 'cse1pe-w1-flowchart-task', score: 80 })
+    ];
+
+    const progress = getAcademicSubjectProgress(cse1pe!, attempts);
+
+    expect(progress.completedAssessments).toBe(2);
+    expect(progress.totalAssessments).toBeGreaterThan(2);
+    expect(progress.latestScore).toBe(90);
+    expect(Math.round(progress.averageScore ?? 0)).toBe(85);
+    expect(progress.completedAssessmentIds).toEqual(
+      expect.arrayContaining(['cse1pe-w1-quick-check', 'cse1pe-w1-flowchart-task'])
+    );
   });
 });

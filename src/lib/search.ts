@@ -1,11 +1,13 @@
-import { modules } from '../data/modules';
-import { scenarios } from '../data/scenarios';
-import { academicSubjects } from '../data/academicSubjects';
+import { modules as baseModules } from '../data/modules';
+import { scenarios as baseScenarios } from '../data/scenarios';
+import { academicSubjects as baseAcademicSubjects } from '../data/academicSubjects';
+import { roleplayScenarios as baseRoleplays } from '../data/roleplayScenarios';
+import { getCustomModules, getCustomRoleplays, getCustomScenarios, getCustomAcademic } from './customModules';
 import { AcademicSubject } from '../types/academic';
 import { Scenario } from '../types/scenarios';
 import { TrainingModule } from '../types/training';
 
-export type SearchResultType = 'module' | 'scenario' | 'academic' | 'flashcard' | 'question';
+export type SearchResultType = 'module' | 'scenario' | 'academic' | 'flashcard' | 'question' | 'roleplay';
 
 export interface SearchResult {
   id: string;
@@ -22,6 +24,12 @@ export function globalSearch(query: string): SearchResult[] {
 
   const q = query.toLowerCase();
   const results: SearchResult[] = [];
+
+  // Get all data including custom uploads
+   const modules = [...baseModules, ...getCustomModules()];
+   const scenarios = [...baseScenarios, ...getCustomScenarios()];
+   const academicSubjects = [...baseAcademicSubjects, ...getCustomAcademic()];
+   const roleplays = [...baseRoleplays, ...getCustomRoleplays()];
 
   // Search Modules
   modules.forEach((m) => {
@@ -110,6 +118,27 @@ export function globalSearch(query: string): SearchResult[] {
         description: sub.summary,
         href: `/academic-pd/subjects/${sub.id}`,
         context: `${sub.track} track - ${sub.provider}`
+      });
+    }
+  });
+
+  // Search Roleplays
+  roleplays.forEach((r) => {
+    if (
+      r.persona.toLowerCase().includes(q) ||
+      r.issueTitle.toLowerCase().includes(q) ||
+      r.scenario.toLowerCase().includes(q) ||
+      r.archetype.toLowerCase().includes(q) ||
+      r.focus.some((f) => f.toLowerCase().includes(q))
+    ) {
+      results.push({
+        id: r.id,
+        type: 'roleplay',
+        title: `Roleplay: ${r.persona}`,
+        description: r.issueTitle,
+        href: `/simulations/roleplay`,
+        tags: r.focus,
+        context: r.archetype
       });
     }
   });

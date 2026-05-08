@@ -1,5 +1,51 @@
 # Professional Development Module Implementation Plan for DCS Prep App
 
+## 2026 Audit Response: Implementation Direction
+
+The audit confirms that DCSPrep and DCS Professional Development already have a strong privacy-safe, question-first foundation. The next upgrades should focus on the gaps that commercial IT upskilling platforms handle well, while keeping DCSPrep local-first and useful for DCS IT work.
+
+### Upgrade Stream 1: Adaptive Skill Coach
+
+- Implemented first slice in `/skill-coach`.
+- Use existing progress data to produce mini Skill-IQ style readiness scores.
+- Recommend next actions from real evidence: weak topics, due reviews, scenario history, Academic PD attempts, roleplay practice, and badge progress.
+- Keep recommendations small enough for quiet support windows.
+
+### Upgrade Stream 2: Micro-Learning
+
+- Convert broad modules into short repeatable 5-20 minute blocks.
+- Use a daily workout pattern: diagnose, learn, apply, record evidence.
+- Keep tasks tied to DCS IT support patterns rather than generic IT theory.
+
+### Upgrade Stream 3: Badges And Certificates
+
+- Use internal digital badges first rather than claiming external certification.
+- Badge criteria should require evidence, not just page views.
+- Priority badges:
+  - DCS Level 1 Ready;
+  - Classroom Technology Specialist;
+  - DCS Security Advocate;
+  - Privacy-Safe AI Learner;
+  - DCS Scenario Practitioner;
+  - DCS Support Communicator.
+
+### Upgrade Stream 4: Hands-On Labs
+
+- Expand the existing Scenario Lab, Network Map, Roleplay Bot, KB Lab, and Technical Playground.
+- Add synthetic labs for classroom display triage, Wi-Fi/DNS/DHCP decision paths, printer support, ticket notes, and access escalation.
+
+### Upgrade Stream 5: Mobile And Offline
+
+- Treat DCSPrep as a progressive web app before considering a native app.
+- Cache core learning routes and keep progress local-first.
+- Add install shortcuts for Skill Coach, Due Today, and Academic PD.
+
+### Upgrade Stream 6: Supervisor Analytics Later
+
+- Keep individual learning private by default.
+- Add exportable evidence packs before adding any manager dashboard.
+- If a manager view is built later, use aggregated progress and skill gaps, not sensitive support details.
+
 Not quite. The idea is good, but I **wouldn’t build it as a full LMS inside DCSPrep** yet.
 
 The attached plan is trying to add course catalogue, modules, assessments, resource library, progress tracking, discussion forums, user roles, certificates, PDFs, videos, code editors, and simulations all at once.  That’s too big and would distract from what DCSPrep is best at: helping you grow in **DCS Level 1 IT support with early Level 2 growth**.
@@ -560,25 +606,32 @@ Based on the RBC folder structure:
 
 ## Implementation Timeline
 
+Current implementation note, updated 2026-05-08: the app has already shipped the lightweight Academic PD catalogue, subject pages, weekly module boxes, AI-graded assessments, feedback history, subject progress bars, certificates, backup/import/export, per-SILO progress, subject flashcards, final challenge checklists, admin SLG draft import, content governance, supervisor analytics, local sync adapter, KB export, hardware catalogue, classroom desk simulation, voice-to-ticket practice, mobile QA checklist, and LMS/HRIS export scaffolds. The detailed roadmap is now maintained in `RBC/DCSPrep_Current_Roadmap.md`.
+
 ### Phase 1: Foundation (Weeks 1-4)
-- Set up module structure in DCS Prep App
-- Create database schema for courses and assessments
-- Implement basic LMS navigation
+- [x] Set up module structure in DCS Prep App
+- [x] Create local-first progress schema for courses and assessments
+- [x] Implement basic LMS navigation
 
 ### Phase 2: Content Development (Weeks 5-12)
-- Develop learning modules for Year 1 subjects
-- Create assessment questions and rubrics
-- Curate and integrate external resources
+- [x] Develop learning modules for Year 1 subjects
+- [x] Create assessment questions and rubrics
+- [x] Curate and integrate external resources
 
 ### Phase 3: Advanced Features (Weeks 13-20)
-- Implement progress tracking and certificates
-- Add discussion forums and peer assessment
-- Integrate multimedia content players
+- [x] Implement progress tracking and certificates
+- [x] Add AI feedback history and evidence review
+- [x] Add per-SILO progress, subject flashcards, and final challenge checklists
+- [x] Add SLG import draft tooling and admin content governance
+- [x] Add supervisor analytics, local sync adapter, and LMS/HRIS export scaffolds
+- [x] Add virtual classroom, hardware catalogue, voice-to-ticket, and KB export workflows
+- [ ] Add privacy-safe discussion or peer review only if governance is approved
+- [ ] Integrate richer multimedia content players where they add value
 
 ### Phase 4: Testing and Deployment (Weeks 21-24)
-- User testing with IT staff
-- Content review and updates
-- Full deployment and training
+- [ ] User testing with IT staff
+- [ ] Content review and updates
+- [ ] Full deployment and training
 
 ## Technical Implementation
 

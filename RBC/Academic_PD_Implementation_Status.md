@@ -1,8 +1,116 @@
 # Academic PD Track Implementation Status
 
-## Current Status: Phase 2.8 Implemented
+## Current Status: Phase 3.2 Implemented
 
-The Academic PD module is now fully populated with weekly schedules for all priority subjects, robust certification mappings, and canonical networking foundations.
+The Academic PD module is now fully populated with weekly schedules for all priority subjects, robust certification mappings, canonical networking foundations, audit-driven Skill Coach upgrades, exportable certificates, local progress backup/restore, per-SILO learning support, admin import/governance tools, supervisor analytics, and integration/export scaffolds.
+
+For the current source of truth, see `RBC/DCSPrep_Current_Roadmap.md`.
+
+## Implemented In Phase 3.2
+
+### Admin, Governance, Sync, Simulations, And Integration Scaffolds
+
+- Added `/admin` as the central admin hub.
+- Added `/admin/slg-import` for pasted SLG/PDF text parsing into subject code, SILOs, weekly topics, and draft Academic PD JSON.
+- Added `src/lib/slgImport.ts` with tested SLG draft parsing and draft generation helpers.
+- Added `/admin/content` for content governance:
+  - review queue;
+  - source-status flags;
+  - last-reviewed and next-review dates;
+  - stale/source-check action guidance;
+  - browser-based subject draft export.
+- Added `src/lib/contentGovernance.ts` with tested review status helpers.
+- Added `/sync` and `/api/progress-sync` as a first server-side progress snapshot adapter.
+- Added `/admin/integrations` for SCORM-style manifest, HRIS CSV template, and supervisor analytics CSV exports.
+- Added `src/lib/integrationExports.ts` and `src/lib/supervisorAnalytics.ts`.
+- Added `/supervisor` as a read-only, privacy-safe manager analytics dashboard.
+- Added `/hardware` as a hardware catalogue with safe checks, common symptoms, escalation triggers, and privacy boundaries.
+- Added `/simulations/classroom-desk` as a visual classroom desk/cable/display/Wi-Fi troubleshooting simulation.
+- Added `/voice-to-ticket` for browser speech-to-ticket practice with typed fallback.
+- Added `/kb-sync` for OurDCS-ready Markdown and HTML article export.
+- Added `/mobile-qa` for PWA install/offline/mobile QA tracking.
+- Added `/certifications/aplus-core-2` as a 74-lesson Professor Messer / CompTIA A+ 220-1202 Core 2 certification pathway.
+- Added `src/data/aplusCore2.ts` with:
+  - all four Core 2 domains;
+  - 36 objectives;
+  - 74 lessons;
+  - direct Professor Messer video links;
+  - official/read-more resources;
+  - DCS IT application notes;
+  - per-lesson assessment prompts and success criteria.
+- Added Core 2 multiple-choice quick checks plus long-form AI grading and PD logging from the certification pathway.
+- Added `certificationAssessmentAttempts` to local progress for reusable certification assessment history, including combined score, MCQ score, long-form AI score, and MCQ response breakdowns.
+- Added Core 2 certification attempts to the Feedback Log and Evidence Pack evidence summaries.
+- Added tests for SLG import, content governance, integration exports, supervisor analytics, hardware catalogue, and classroom simulation data.
+
+## Implemented In Phase 3.1
+
+### Certificates, Backup, And Academic PD Polish
+
+- Added `/certificates` for printable/exportable badge certificates based on Skill Coach progress.
+- Added certificate HTML generation with privacy-safe evidence summaries and print-to-PDF support.
+- Added a Skill Coach link for exporting certificates.
+- Added Settings progress backup/export/import using a versioned DCSPrep backup JSON format.
+- Added progress backup parsing, validation, and normalization in `src/lib/progress.ts`.
+- Added saved Academic PD final challenge checklist state per subject.
+- Added per-SILO completion indicators on subject pages.
+- Added subject-specific flashcards generated from SILO plain-English summaries, mastery criteria, and knowledge checks.
+- Added a current roadmap document that separates completed work, open work, and intentionally skipped Level 3 roleplays.
+
+## Implemented In Phase 2.9
+
+### Audit-Driven DCSPrep / DCS PD Upgrade Slice
+
+- Added `/skill-coach` as a new adaptive growth page responding to the audit and SWOT findings.
+- Added `src/lib/skillCoach.ts` to generate:
+  - mini Skill-IQ style readiness scores for A+ Core Support, Level 2 Support, and School IT Manager growth;
+  - evidence confidence levels based on assessment, scenario, flashcard, output, roleplay, and Academic PD activity;
+  - priority recommendations for diagnostics, weak-topic review, micro-learning, roleplay, hands-on labs, badges, and Academic PD grading;
+  - a 20-minute micro-learning workout assembled from the highest-value next actions;
+  - badge/certificate progress for learning paths, privacy-safe AI feedback, scenarios, communication roleplay, and PD evidence.
+- Added a visible `Skill Coach` navigation item and dashboard quick action.
+- Added hands-on lab recommendations linking to:
+  - Network Map;
+  - Roleplay Bot;
+  - Scenario Lab;
+  - Knowledge Base Lab;
+  - Technical Playground.
+- Recalibrated roleplay satisfaction scoring so neutral progress counts as partial success instead of zero, and recovery across the conversation earns credit.
+- Updated the roleplay actor prompt with explicit sentiment calibration: angry for ignored/escalated concerns, neutral for respectful partial progress, and satisfied for empathy plus clear next step.
+- Extended the Evidence Pack so Feedback Log activity is included as evidence:
+  - module quiz and strict-quiz feedback;
+  - Academic PD graded assessment feedback;
+  - roleplay coaching summaries;
+  - feedback evidence counters on the Evidence Pack page.
+- Expanded the Roleplay Bot with 10 additional realistic K-12 IT support personas and scenarios:
+  - frozen interactive whiteboard;
+  - phishing credential compromise;
+  - front-office copier failure;
+  - web filter block;
+  - maintenance portal password recovery;
+  - student iPad boot loop;
+  - VIP assembly AV failure;
+  - missing OneDrive/cloud file;
+  - admin-rights software update loop;
+  - demountable classroom Wi-Fi blackspot.
+- Roleplay scenarios now include persona archetype, pressure level, coaching focus, IT challenge notes, and an opening line from the staff member.
+- Added a dedicated Level 2 roleplay section for delegated systems work:
+  - comprehensive M365/AD staff offboarding;
+  - Sentral Parent Portal rollout and access-key triage;
+  - Jamf/Intune iPad provisioning;
+  - Year 12 Google Workspace/AD account archiving;
+  - PaperCut print quota allocation and reporting;
+  - NAPLAN Locked Down Browser deployment;
+  - asset audit and e-waste secure wipe;
+  - Vivi firmware fleet update;
+  - Bell/PA custom schedule management;
+  - M365 Defender phishing breach investigation.
+- Strengthened the PWA/offline foundation:
+  - added a real app icon at `public/icons/icon.svg`;
+  - updated the web app manifest with shortcuts for Skill Coach, Due Today, and Academic PD;
+  - upgraded the service worker to cache core PD routes and use network-first navigation with cached fallback.
+- Cleaned Next metadata configuration by moving viewport/theme settings to the `viewport` export.
+- Added `src/tests/skillCoach.test.ts` to protect the new diagnostic, recommendation, lab, and badge logic.
 
 ## Implemented In Phase 2.8
 
@@ -126,6 +234,22 @@ The Academic PD module is now fully populated with weekly schedules for all prio
   - full feedback history.
 - Added links from the Academic PD dashboard and subject pages to the feedback review page.
 
+## Implemented In Phase 2.8
+
+### Subject Completion Progress Bars
+
+- Added reusable Academic PD progress helpers in `src/lib/academicProgress.ts`.
+- Each subject now calculates completion from unique logged assessment IDs, so repeat attempts improve score history without double-counting content completion.
+- The Academic PD dashboard now shows an individual progress bar on every subject card.
+- Subject detail pages now show:
+  - overall subject completion percentage;
+  - completed assessments versus total assessments;
+  - fully completed weekly modules versus total weekly modules;
+  - average score;
+  - per-week completion counts;
+  - completed/not-logged status on each assessment card.
+- Logging an assessment updates the visible progress immediately.
+
 ## Implemented In Phase 2
 
 ### Academic Data Model
@@ -191,17 +315,19 @@ The Academic PD module is now fully populated with weekly schedules for all prio
 
 ## Source Health Notes
 
-- CSE2CN remains a placeholder subject because it is currently based on the RBC study plan rather than a verified local SLG.
+- CSE2CN has been upgraded to a canonical networking foundations subject.
 - CSE5BDC is marked manual-check because the local source naming should be verified against the official subject code/title.
 - Duplicate source variants are retained where useful so the module can show the best current source while preserving source history.
 
-## Recommended Phase 3
+## Recommended Phase 3+ Backlog
 
-1. Add per-SILO completion state and progress indicators.
-2. Add subject-specific flashcards generated from the SILO knowledge checks.
-3. Add a practical output submission checklist for each final challenge.
-4. Add a curated "DCS IT weekly PD path" that mixes Academic PD, DCSPrep modules, scenarios, and evidence outputs.
-5. Add admin/edit tooling so new SLGs can be imported or reviewed without editing TypeScript manually.
+1. [x] Add per-SILO completion state and progress indicators.
+2. [x] Add subject-specific flashcards generated from the SILO knowledge checks.
+3. [x] Add a practical output submission checklist for each final challenge.
+4. [ ] Add a curated "DCS IT weekly PD path" that mixes Academic PD, DCSPrep modules, scenarios, and evidence outputs.
+5. [ ] Add admin/edit tooling so new SLGs can be imported or reviewed without editing TypeScript manually.
+6. [ ] Add content governance metadata with last-reviewed dates and stale-content warnings.
+7. [ ] Add a PDF SLG parser/import tool for new SLGs.
 
 ## Implementation Principle
 

@@ -52,6 +52,7 @@ export function buildEvidencePackMarkdown(progress: UserProgress, date = new Dat
     includeScenarios: true,
     includePracticalOutputs: true,
     includeReflections: true,
+    includeFeedbackEvidence: true,
     includeReadiness: true
   });
 }

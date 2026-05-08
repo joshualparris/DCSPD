@@ -1,10 +1,17 @@
+"use client";
+
 import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
 import {
   getAcademicCatalogueStats,
   getAcademicSourceSummary,
   getAcademicTrackSubjects,
-  getRecommendedAcademicBuildPath
+  getRecommendedAcademicBuildPath,
+  academicSubjects as baseSubjects
 } from '../../src/data/academicSubjects';
+import { getAcademicSubjectProgress } from '../../lib/academicProgress';
+import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../lib/progress';
+import { getCustomAcademic } from '../../src/lib/customModules';
 import type { AcademicSubject } from '../../src/types/academic';
 
 const sourceStatusLabels: Record<AcademicSubject['sourceStatus'], string> = {
@@ -21,8 +28,9 @@ const sourceStatusClasses: Record<AcademicSubject['sourceStatus'], string> = {
   placeholder: 'border-rose-200 bg-rose-50 text-rose-800'
 };
 
-function SubjectCard({ subject }: { subject: AcademicSubject }) {
+function SubjectCard({ subject, progress }: { subject: AcademicSubject; progress: UserProgress }) {
   const highBridge = subject.dcsBridges.find((bridge) => bridge.relevance === 'high');
+  const subjectProgress = getAcademicSubjectProgress(subject, progress.academicAssessmentAttempts);
 
   return (
     <Link
@@ -41,6 +49,29 @@ function SubjectCard({ subject }: { subject: AcademicSubject }) {
         {subject.provider} | {subject.track} | {subject.level}
       </p>
       <p className="mt-3 text-sm leading-6 text-slate-700">{subject.summary}</p>
+
+      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+        <div className="flex items-center justify-between gap-3 text-sm">
+          <span className="font-semibold text-slate-900">Subject progress</span>
+          <span className="text-slate-600">
+            {subjectProgress.completedAssessments}/{subjectProgress.totalAssessments} assessments
+          </span>
+        </div>
+        <div className="mt-3 h-2 rounded-full bg-white">
+          <div
+            className="h-full rounded-full bg-slate-900 transition-all"
+            style={{ width: `${subjectProgress.completionPercent}%` }}
+          />
+        </div>
+        <div className="mt-2 flex flex-wrap justify-between gap-2 text-xs text-slate-600">
+          <span>{subjectProgress.completionPercent}% complete</span>
+          <span>
+            {subjectProgress.averageScore === null
+              ? 'No score yet'
+              : `Average ${Math.round(subjectProgress.averageScore)}/100`}
+          </span>
+        </div>
+      </div>
 
       {highBridge ? (
         <div className="mt-4 rounded-xl bg-blue-50 p-3 text-sm text-blue-950">
@@ -68,11 +99,21 @@ function SubjectCard({ subject }: { subject: AcademicSubject }) {
 }
 
 export default function AcademicPDPage() {
-  const rbcSubjects = getAcademicTrackSubjects('RBC');
-  const smitbSubjects = getAcademicTrackSubjects('SMITB');
-  const stats = getAcademicCatalogueStats();
-  const sourceSummary = getAcademicSourceSummary();
-  const buildPath = getRecommendedAcademicBuildPath(4);
+  const [customSubjects, setCustomSubjects] = useState<AcademicSubject[]>([]);
+  const allSubjects = useMemo(() => [...baseSubjects, ...customSubjects], [customSubjects]);
+  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
+  const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
+  const rbcSubjects = getAcademicTrackSubjects('RBC', allSubjects);
+  const smitbSubjects = getAcademicTrackSubjects('SMITB', allSubjects);
+  const stats = getAcademicCatalogueStats(allSubjects);
+  const sourceSummary = getAcademicSourceSummary(allSubjects);
+  const buildPath = getRecommendedAcademicBuildPath(4, allSubjects);
+
+  useEffect(() => {
+    setProgress(getStoredProgressSnapshot());
+    setCustomSubjects(getCustomAcademic());
+    setHasHydratedProgress(true);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -167,7 +208,7 @@ export default function AcademicPDPage() {
         </div>
         <div className="grid gap-4 xl:grid-cols-2">
           {rbcSubjects.map((subject) => (
-            <SubjectCard key={subject.id} subject={subject} />
+            <SubjectCard key={subject.id} subject={subject} progress={progress} />
           ))}
         </div>
       </section>
@@ -179,7 +220,7 @@ export default function AcademicPDPage() {
         </div>
         <div className="grid gap-4 xl:grid-cols-2">
           {smitbSubjects.map((subject) => (
-            <SubjectCard key={subject.id} subject={subject} />
+            <SubjectCard key={subject.id} subject={subject} progress={progress} />
           ))}
         </div>
       </section>

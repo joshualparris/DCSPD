@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { createAssessmentAttempt, getDefaultSelfRating } from '../../lib/scoring';
+import { gradeRubric } from '../../lib/rubricGrader';
+import type { RubricGrade } from '../../types/grading';
 import type {
   AssessmentAttempt,
   AssessmentQuestion,
@@ -11,6 +13,7 @@ import type {
 } from '../../types/assessment';
 import AiCoachPanel from '../ai/AiCoachPanel';
 import AiOralExaminer from '../ai/AiOralExaminer';
+import { Award, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react';
 
 type AssessmentSessionProps = {
   questions: AssessmentQuestion[];
@@ -255,12 +258,28 @@ export default function AssessmentSession({
       return;
     }
 
+    let rubricGrade: RubricGrade | undefined = undefined;
+    if (question.type === 'short-answer' && question.rubric) {
+      rubricGrade = gradeRubric({
+        text: draft.answerText || '',
+        rubric: question.rubric,
+        keywordHints: question.keywordHints,
+        context: question.prompt
+      });
+    }
+
     const finalAttempt = createAssessmentAttempt({
       question,
       response: draft,
       selfRating: draft.selfRating,
       source
     });
+
+    // Inject rubric grade if calculated
+    if (rubricGrade) {
+      finalAttempt.rubricGrade = rubricGrade;
+    }
+
     const nextAttempts = [...sessionAttempts, finalAttempt];
 
     onRecordAttempt?.(finalAttempt);
@@ -481,6 +500,71 @@ export default function AssessmentSession({
               </ul>
             </div>
           </div>
+
+          {/* New Rubric Analysis for short-answer */}
+          {question.type === 'short-answer' && draft.answerText && (
+            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              {(() => {
+                const grade = gradeRubric({
+                  text: draft.answerText,
+                  rubric: question.rubric || [],
+                  keywordHints: question.keywordHints,
+                  context: question.prompt
+                });
+                return (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-rose-600">
+                        <Award size={20} />
+                        <span className="text-sm font-bold uppercase tracking-widest">Coaching Analysis</span>
+                      </div>
+                      <div className={`rounded-full px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
+                        grade.level === 'excellent' ? 'bg-emerald-100 text-emerald-700' :
+                        grade.level === 'strong' ? 'bg-blue-100 text-blue-700' :
+                        'bg-amber-100 text-amber-700'
+                      }`}>
+                        {grade.level}
+                      </div>
+                    </div>
+                    
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Strengths</div>
+                        <ul className="mt-2 space-y-1">
+                          {grade.strengths.map((s, i) => (
+                            <li key={i} className="flex items-center gap-2 text-xs text-slate-600">
+                              <CheckCircle2 size={12} className="text-emerald-500" />
+                              {s}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Missing</div>
+                        <ul className="mt-2 space-y-1">
+                          {grade.missing.map((m, i) => (
+                            <li key={i} className="flex items-center gap-2 text-xs text-slate-500">
+                              <AlertCircle size={12} className="text-amber-500" />
+                              {m}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {grade.privacyFlags.length > 0 && (
+                      <div className="rounded-xl bg-rose-50 p-3 flex gap-2 border border-rose-100">
+                        <ShieldCheck size={16} className="text-rose-600 shrink-0" />
+                        <div className="text-[10px] leading-relaxed text-rose-900">
+                          <span className="font-bold">Privacy Check:</span> Avoid including <span className="font-bold">{grade.privacyFlags.join(', ')}</span> in your answers.
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          )}
 
           <div className="grid gap-4 md:grid-cols-3">
             {(

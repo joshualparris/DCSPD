@@ -5080,7 +5080,11 @@ const additionalModules: TrainingModule[] = [
       ['What is the first step in empathetic support?', 'Acknowledge the user\'s problem and its impact on their work.'],
       ['Why should you avoid jargon in the classroom?', 'It can be confusing or alienating for staff under pressure.'],
       ['What is a "clear next step" in support?', 'A specific action you will take and a timeframe for follow-up.'],
-      ['How do you handle an angry user?', 'Stay calm, listen actively, and focus on the technical resolution and workarounds.']
+      ['How do you handle an angry user?', 'Stay calm, listen actively, and focus on the technical resolution and workarounds.'],
+      ['What should you do before explaining the technical fix?', 'Confirm you understand the user\'s immediate teaching or work impact.'],
+      ['What is a good support boundary phrase?', 'I can help with the device issue, and I will escalate the access decision to the right approver.'],
+      ['Why should you offer a workaround?', 'A workaround keeps learning or work moving while the root cause is investigated.'],
+      ['What makes a follow-up promise useful?', 'It names the next action, owner, and approximate timeframe.']
     ]),
     quiz: [
       mcq({
@@ -5116,6 +5120,41 @@ const additionalModules: TrainingModule[] = [
         recommendedModuleId: 'soft-skills-dcs-support',
         weakTopic: 'communication',
         rubric: ['Acknowledges the block', 'Provides a workaround', 'Sets a clear next step']
+      }),
+      mcq({
+        id: 'ss-q3',
+        prompt: 'A staff member says, "This system always breaks when I need it." What should you do first?',
+        domain: 'Soft Skills',
+        difficulty: 'foundation',
+        explanation: 'Acknowledge the frustration before moving into diagnosis.',
+        modelAnswer: 'Acknowledge the frustration and impact, then ask one focused diagnostic question.',
+        commonMistakes: ['Defending the system', 'Blaming the user', 'Starting with jargon'],
+        dcsContext: 'Support conversations often happen while staff are under time pressure.',
+        reviewSchedule,
+        recommendedModuleId: 'soft-skills-dcs-support',
+        weakTopic: 'communication',
+        options: [
+          { id: 'a', label: 'Tell them the system is usually reliable.' },
+          { id: 'b', label: 'Acknowledge the frustration and ask what they were trying to do.' },
+          { id: 'c', label: 'Tell them to restart and walk away.' },
+          { id: 'd', label: 'Explain the backend architecture.' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'ss-q4',
+        prompt: 'Write a one-sentence plain-English explanation for a Wi-Fi authentication issue.',
+        domain: 'Soft Skills',
+        difficulty: 'foundation',
+        explanation: 'Plain English helps users understand the issue without exposing unnecessary technical detail.',
+        modelAnswer: 'Your device is reaching the school Wi-Fi, but it is not being accepted with the current sign-in details, so I will check the account and connection steps.',
+        commonMistakes: ['Using unexplained acronyms', 'Blaming the user', 'Mentioning private network details'],
+        dcsContext: 'Staff need clear next steps, not internal network jargon.',
+        reviewSchedule,
+        recommendedModuleId: 'soft-skills-dcs-support',
+        weakTopic: 'communication',
+        keywordHints: ['plain English', 'sign-in', 'next step', 'no blame'],
+        rubric: ['Plain English', 'No blame', 'Clear next step']
       })
     ],
     scenarioPrompts: buildScenarioPrompts('soft-skills-dcs-support', [
@@ -5159,5 +5198,3 @@ export function getModuleQuestions(moduleId: string, source: AssessmentSource = 
 }
 
 export default modules;
-
-

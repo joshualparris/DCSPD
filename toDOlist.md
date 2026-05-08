@@ -4,7 +4,15 @@ Yes — your current TODO is good, but **not optimised for your actual lane**.
 
 The biggest issue: it treats **Parent Portal and Sentral as Tier 1 Josh-owned learning areas**, but from what you’re saying, those are more **awareness + escalation boundary** topics, especially if Ruth Cargill mostly owns Sentral/Parent Portal. So I’d demote those. Keep enough knowledge to triage and hand off well, but don’t build the app around them.
 
-Your app should prioritise what helps you become better at **DCS Level 1 IT support with early Level 2 growth**, not become a general admin systems expert. The DCSPrep TODO already has good principles around Level 1 safety, privacy, triage, escalation, and not copying confidential internal content. 
+Your app should prioritize what helps you become better at **DCS Level 1 IT support with early Level 2 growth**, not become a general admin systems expert. The DCSPrep TODO already has good principles around Level 1 safety, privacy, triage, escalation, and not copying confidential internal content.
+
+## Recent progress
+* [x] Added multiple-choice quick checks plus long-form AI feedback to every A+ Core 2 lesson assessment, with combined scoring saved to progress and PD evidence.
+* [x] Added A+ Core 2 certification feedback to the Feedback Log and Evidence Pack summaries.
+* [x] Added roleplay session feedback persistence and multi-mode Feedback Log display.
+* [x] Captured persona, scenario, timestamps, coach notes, sentiment, topics, and full transcript data from roleplay sessions.
+* [x] Implemented `RoleplayFeedbackAttempt` in `src/lib/progress.ts`, save logic in `src/components/ai/AiRoleplayChat.tsx`, and display logic in `app/feedback-log/page.tsx`.
+* [x] Confirmed production build success after these changes.
 
 ## 100% optimised DCSPrep TODO order
 
@@ -202,6 +210,7 @@ Once scenarios exist, make the app help you create useful artefacts.
 * [x] evidence pack
 * [x] copy-to-clipboard manager-safe summary
 * [x] link modules/scenarios/practical outputs to PD entries
+* [x] progress backup/export/import from Settings
 
 ---
 
@@ -240,37 +249,54 @@ Features to move DCS Prep from a local tool to a professional-grade learning pla
 Moving from a learning app to a mission-critical DCS Support Companion.
 
 ### 1. AI & Automation
-* [ ] **AI Support Note Generator**: Convert scenario answers into perfectly formatted Jira escalation notes.
-* [ ] **AI Roleplay Bot**: Practice soft skills with an AI that roleplays as frustrated teachers or confused parents.
-* [ ] **PDF SLG Parser**: AI-powered tool to convert any new university SLG PDF into a structured 12-week schedule.
-* [ ] **Automated KB Sync**: One-click export of Lab articles into "OurDCS" ready markdown/HTML formats.
+* [x] **AI Support Note Generator**: Convert scenario answers into perfectly formatted Jira escalation notes.
+* [x] **AI Roleplay Bot**: Practice soft skills with an AI that roleplays as frustrated teachers or confused parents.
+* [x] **PDF SLG Parser Draft Tool**: Paste/copied SLG PDF text and convert it into a structured draft with SILOs and weekly topics.
+* [ ] **Full Binary PDF SLG Extraction**: Extract text directly from uploaded PDFs rather than requiring pasted PDF text.
+* [x] **Automated KB Export**: One-click export of Lab articles into OurDCS-ready markdown/HTML formats.
 
 ### 2. Interactive Simulations
-* [ ] **Virtual Classroom "Desk"**: A visual 2D diagram of a classroom where you click cables/ports to diagnose faults.
-* [ ] **Interactive Network Map**: A simulation of DCS VLANs to practice "ping" logic and segmentation boundaries.
-* [ ] **Voice-to-Ticket Mode**: Use speech-to-text to practice "walk-up" support interactions in the Scenario Lab.
-* [ ] **DCS Hardware Catalog**: A visual "encyclopedia" of every device model used at DCS with quick troubleshooting specs.
+* [x] **Virtual Classroom "Desk"**: A visual 2D diagram of a classroom where you click cables/ports to diagnose faults.
+* [x] **Interactive Network Map**: A simulation of DCS VLANs to practice "ping" logic and segmentation boundaries.
+* [x] **Voice-to-Ticket Mode**: Use speech-to-text with typed fallback to practice "walk-up" support interactions.
+* [x] **DCS Hardware Catalog**: A visual "encyclopedia" of common DCS device patterns with quick troubleshooting specs.
 
 ### 3. Advanced Learning Tech
-* [ ] **Spaced Repetition Heatmap**: A dashboard visualization showing knowledge strength/decay across all domains.
-* [ ] **Progressive Web App (PWA)**: Full offline support so the app works even when troubleshooting Wi-Fi outages.
-* [x] **Global Search**:
-    * Implement a unified search bar to find any flashcard, module, or scenario by technical keyword.
-* [x] **AI Feedback Log**:
-    * Create a unified history of all AI coaching, scores, and model answers across the entire app.
-* [ ] **Skill Badge Export**: Generate professional PDF certificates for completed Learning Paths as formal PD evidence.
+* [x] **Spaced Repetition Heatmap**: A dashboard visualization showing knowledge strength/decay across all domains.
+* [x] **Progressive Web App (PWA)**: Full offline support so the app works even when troubleshooting Wi-Fi outages.
+* [x] **Skill Badge Export**: Generate printable/exportable certificates for completed Learning Paths as formal PD evidence.
+* [x] **A+ Core 2 Certification Pathway**: Add all Professor Messer 220-1202 Core 2 topics with read-more links, multiple-choice checks, long-form AI feedback, and logged DCSPrep assessments.
+* [ ] **Micro-Learning Optimization**:
+    * Break modules into <5 minute "Micro-Lessons" for faster quiet-window consumption.
+    * Add "Quick-Read" summaries for every long section.
 
 ### 4. Operations & Workflow
 * [ ] **"Common Pitfalls" Tracker**: A dynamic dashboard area highlighting your most frequent assessment mistakes.
 * [ ] **Quick-Fix "Cheat Sheets"**: One-page printable/PDF summaries for high-frequency issues (ViewBoard/PaperCut).
 * [ ] **Bulk Data Importer**: Import synthetic ticket data (CSV) for advanced Data Critical Thinking analysis.
 * [ ] **Peer Review Simulation**: AI-generated feedback simulating how a senior tech (Paul) would critique your notes.
+* [x] **Supervisor Dashboard**: A read-only analytics view for IT managers to identify skill gaps and evidence patterns.
 
 ### 5. Engagement & UX
-* [ ] **Leaderboard (Anonymized)**: Compare your streak and progress against "Synthetic Peer" benchmarks for motivation.
-* [ ] **Daily Push Notifications**: Browser-based reminders for Daily Challenges and due flashcard reviews.
-* [ ] **Dark Mode & High Contrast**: Full accessibility audit for different lighting conditions (quiet windows).
-* [ ] **Focus Timer Ambient Sounds**: Optional "Classroom Hum" or "Office White Noise" for the 20-minute Focus Block.
+* [ ] **Gamification Suite**:
+    * [x] **Badges**: Unlockable progress badges for paths and evidence types.
+    * [ ] **Leaderboard (Anonymized)**: Compare progress against synthetic peer benchmarks.
+    * [x] **Completion Certificates**: Printable/exportable certificates for HR/PD records.
+* [ ] **Social Learning (Privacy-Safe)**:
+    * **Moderated Discussion**: A safe space to share "triage wins" (with automatic privacy filtering).
+    * **Peer Note Review**: Anonymized peer feedback on Jira note quality.
+* [ ] **Accessibility & Content Formats**:
+    * **Audio Summaries**: AI-generated audio for listening during commute/walks.
+    * **Dark Mode & High Contrast**: Full accessibility audit.
+* [ ] **Daily Push Notifications**: Browser-based reminders for Daily Challenges.
+* [ ] **Focus Timer Ambient Sounds**: Optional "Classroom Hum" or "Office White Noise".
+
+### 6. Integration & Compliance
+* [x] **LMS/HRIS Export Scaffolds**: Support for SCORM-style manifest export, HRIS template CSV, and supervisor CSV.
+* [ ] **Live LMS/HRIS Integration**: Authenticated API/SCORM package integration with approved systems.
+* [x] **Content Governance**: A simple "Last Reviewed" system to ensure technical modules stay current with DCS changes.
+* [x] **Server-Side Sync Adapter**: Local Next.js API snapshot for progress backup/sync testing.
+* [ ] **Authenticated Cloud Database Sync**: Real cross-device sync with identity, conflict handling, and hosted backups.
 
 ---
 
@@ -283,6 +309,20 @@ Every major roadmap item is now implemented in the codebase.
 - [x] Populate full weekly schedules for CSE1ICB (Cybersecurity) from SLG.
 - [x] Verify and update placeholder subjects (e.g., CSE2CN) using available SLG PDFs.
 - [x] Add detailed certification links (CompTIA A+, Cisco CCNA, etc.) to `academicSubjects.ts`.
+- [x] Add per-SILO completion state and progress indicators.
+- [x] Add subject-specific flashcards generated from SILO knowledge checks.
+- [x] Add saved final challenge submission checklists.
+- [x] Add PDF SLG parser/import draft tool for new SLGs.
+- [x] Add admin/edit draft tooling so subject updates can be prepared without editing TypeScript.
+- [x] Add content governance metadata and stale-content review workflow.
+- [ ] Add direct admin publishing from draft JSON into the source catalogue.
+
+### Certification Pathways:
+- [x] Add Professor Messer / CompTIA A+ 220-1202 Core 2 pathway with 74 readable, linked, assessable lessons.
+- [x] Store Core 2 assessment attempts in DCSPrep progress and PD evidence, including combined score, MCQ score, and long-form AI score.
+- [ ] Add A+ Core 1 220-1201 pathway using the same read/watch/assess pattern.
+- [ ] Add Network+ N10-009 pathway using the same read/watch/assess pattern.
+- [ ] Add Security+ SY0-701 pathway using the same read/watch/assess pattern.
 
 ### General Maintenance:
 - [ ] Move app out of OneDrive to prevent file locking issues.

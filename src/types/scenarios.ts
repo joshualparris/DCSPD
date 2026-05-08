@@ -43,6 +43,8 @@ export type ScenarioRunChoice = {
   correct: boolean;
 };
 
+import { RubricGrade } from './grading';
+
 export type ScenarioRun = {
   id: string;
   scenarioId: string;
@@ -53,4 +55,5 @@ export type ScenarioRun = {
   noteScores?: Record<string, number>;
   noteAverage?: number;
   completed: boolean;
+  rubricGrade?: RubricGrade;
 };

@@ -1,6 +1,8 @@
 import type { AssessmentAttempt, WeakTopicKey } from '../types/assessment';
 import type { ScenarioRun } from '../types/scenarios';
 import type { TrainingModule } from '../types/training';
+import type { TroubleshootingPlaybook } from '../types/playbooks';
+import type { DcsAssetProfile } from '../types/assets';
 import { getNextReviewDate, getTodayDateKey, type ReviewRating } from './spacedRepetition';
 
 export type FlashcardState = 'new' | 'learning' | 'solid';
@@ -96,6 +98,31 @@ export type FocusSession = {
   microTaskId?: string;
 };
 
+export type RoleplaySentiment = 'angry' | 'neutral' | 'satisfied';
+
+export type RoleplayExchange = {
+  userMessage: string;
+  botReply: string;
+  coachNotes: string;
+  sentiment: RoleplaySentiment;
+  timestamp: string;
+};
+
+export type RoleplayFeedbackAttempt = {
+  id: string;
+  createdAtIso: string;
+  persona: string;
+  scenario: string;
+  exchangeCount: number;
+  exchanges: RoleplayExchange[];
+  sentimentTrajectory: RoleplaySentiment[];
+  averageSentiment: RoleplaySentiment;
+  keyTopics: string[];
+  coachNotesSummary: string;
+  durationSeconds: number;
+  satisfactionScore: number; // 0-100
+};
+
 export type AcademicAssessmentVerdict = 'Correct' | 'Mostly correct' | 'Partly correct' | 'Needs revision';
 
 export type AcademicAssessmentAttempt = {
@@ -130,16 +157,52 @@ export type AcademicAssessmentAttempt = {
   pdEntryId?: string;
 };
 
+export type CertificationAssessmentAttempt = {
+  id: string;
+  createdAtIso: string;
+  certificationId: string;
+  certificationTitle: string;
+  lessonId: string;
+  lessonTitle: string;
+  objectiveId: string;
+  objectiveTitle: string;
+  prompt: string;
+  userAnswer: string;
+  score: number;
+  longFormScore?: number;
+  multipleChoiceScore?: number;
+  multipleChoiceResponses?: {
+    questionId: string;
+    selectedOptionId: string;
+    correctOptionId: string;
+    correct: boolean;
+    explanation: string;
+  }[];
+  strengths: string[];
+  missing: string[];
+  riskNotes: string[];
+  betterAnswer: string;
+  nextPractice: string;
+  redactionSummary: string;
+  privacyChecked: boolean;
+  pdEntryId?: string;
+};
+
 export type UserProgress = {
   lastOpenedModuleId?: string;
   modules: Record<string, ModuleProgress>;
   assessmentAttempts: AssessmentAttempt[];
   academicAssessmentAttempts: AcademicAssessmentAttempt[];
+  certificationAssessmentAttempts: CertificationAssessmentAttempt[];
+  academicFinalChallengeChecklists?: Record<string, Record<string, boolean>>;
+  roleplayFeedbackAttempts: RoleplayFeedbackAttempt[];
   scenarioRuns: ScenarioRun[];
   pdEntries: PdEntry[];
   pdLogEntries: PDLogEntry[];
   weakTopicReviews: Record<string, WeakTopicReview>;
   focusSessions: FocusSession[];
+  playbookAttempts?: Record<string, { completedAtIso: string; note?: string }>;
+  assetInteractions?: Record<string, { lastViewedAtIso: string; count: number }>;
   streak?: {
     current: number;
     best: number;
@@ -158,11 +221,16 @@ export function getDefaultProgress(): UserProgress {
     modules: {},
     assessmentAttempts: [],
     academicAssessmentAttempts: [],
+    certificationAssessmentAttempts: [],
+    academicFinalChallengeChecklists: {},
+    roleplayFeedbackAttempts: [],
     scenarioRuns: [],
     pdEntries: [],
     pdLogEntries: [],
     weakTopicReviews: {},
-    focusSessions: []
+    focusSessions: [],
+    playbookAttempts: {},
+    assetInteractions: {}
   };
 }
 
@@ -262,6 +330,9 @@ function normalizeProgress(raw: unknown): UserProgress {
   const candidate = raw as Partial<UserProgress> & {
     modules?: Record<string, unknown>;
     academicAssessmentAttempts?: unknown;
+    certificationAssessmentAttempts?: unknown;
+    academicFinalChallengeChecklists?: unknown;
+    roleplayFeedbackAttempts?: unknown;
     pdEntries?: unknown;
     pdLogEntries?: unknown;
   };
@@ -296,6 +367,16 @@ function normalizeProgress(raw: unknown): UserProgress {
     assessmentAttempts: Array.isArray(candidate.assessmentAttempts) ? candidate.assessmentAttempts : [],
     academicAssessmentAttempts: Array.isArray(candidate.academicAssessmentAttempts)
       ? (candidate.academicAssessmentAttempts as AcademicAssessmentAttempt[])
+      : [],
+    certificationAssessmentAttempts: Array.isArray(candidate.certificationAssessmentAttempts)
+      ? (candidate.certificationAssessmentAttempts as CertificationAssessmentAttempt[])
+      : [],
+    academicFinalChallengeChecklists:
+      candidate.academicFinalChallengeChecklists && typeof candidate.academicFinalChallengeChecklists === 'object'
+        ? (candidate.academicFinalChallengeChecklists as Record<string, Record<string, boolean>>)
+        : {},
+    roleplayFeedbackAttempts: Array.isArray(candidate.roleplayFeedbackAttempts)
+      ? (candidate.roleplayFeedbackAttempts as RoleplayFeedbackAttempt[])
       : [],
     scenarioRuns: Array.isArray(candidate.scenarioRuns) ? candidate.scenarioRuns : [],
     pdEntries: normalizedPdEntries,
@@ -378,6 +459,40 @@ export function saveProgress(progress: UserProgress) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch (error) {
     console.error('saveProgress error', error);
+  }
+}
+
+export type ProgressBackup = {
+  app: 'DCSPrep';
+  schemaVersion: 1;
+  exportedAtIso: string;
+  progress: UserProgress;
+};
+
+export function createProgressBackup(progress: UserProgress, exportedAtIso = new Date().toISOString()): ProgressBackup {
+  return {
+    app: 'DCSPrep',
+    schemaVersion: 1,
+    exportedAtIso,
+    progress
+  };
+}
+
+export function serializeProgressBackup(progress: UserProgress) {
+  return JSON.stringify(createProgressBackup(progress), null, 2);
+}
+
+export function parseProgressBackupJson(json: string): { ok: true; progress: UserProgress } | { ok: false; error: string } {
+  try {
+    const parsed = JSON.parse(json) as Partial<ProgressBackup>;
+
+    if (parsed.app !== 'DCSPrep' || parsed.schemaVersion !== 1 || !parsed.progress) {
+      return { ok: false, error: 'This does not look like a DCSPrep progress backup.' };
+    }
+
+    return { ok: true, progress: normalizeProgress(parsed.progress) };
+  } catch {
+    return { ok: false, error: 'The selected backup file is not valid JSON.' };
   }
 }
 
@@ -608,11 +723,142 @@ export function saveAcademicAssessmentAttempt(
   };
 }
 
+export function saveCertificationAssessmentAttempt(
+  progress: UserProgress,
+  attempt: CertificationAssessmentAttempt
+): UserProgress {
+  const filtered = progress.certificationAssessmentAttempts.filter((existingAttempt) => existingAttempt.id !== attempt.id);
+
+  return {
+    ...progress,
+    certificationAssessmentAttempts: [attempt, ...filtered].sort((a, b) =>
+      a.createdAtIso < b.createdAtIso ? 1 : -1
+    )
+  };
+}
+
+export function toggleAcademicFinalChallengeChecklistItem(
+  progress: UserProgress,
+  subjectId: string,
+  itemId: string
+): UserProgress {
+  const subjectChecklist = progress.academicFinalChallengeChecklists?.[subjectId] || {};
+
+  return {
+    ...progress,
+    academicFinalChallengeChecklists: {
+      ...(progress.academicFinalChallengeChecklists || {}),
+      [subjectId]: {
+        ...subjectChecklist,
+        [itemId]: !subjectChecklist[itemId]
+      }
+    }
+  };
+}
+
 export function saveFocusSession(progress: UserProgress, session: FocusSession): UserProgress {
   const filtered = progress.focusSessions.filter((existingSession) => existingSession.id !== session.id);
 
   return {
     ...progress,
     focusSessions: [session, ...filtered].sort((a, b) => (a.startedAtIso < b.startedAtIso ? 1 : -1))
+  };
+}
+
+export function saveRoleplayFeedbackAttempt(
+  progress: UserProgress,
+  attempt: RoleplayFeedbackAttempt
+): UserProgress {
+  const filtered = progress.roleplayFeedbackAttempts.filter((existing) => existing.id !== attempt.id);
+
+  return {
+    ...progress,
+    roleplayFeedbackAttempts: [attempt, ...filtered].sort((a, b) =>
+      a.createdAtIso < b.createdAtIso ? 1 : -1
+    )
+  };
+}
+
+export function calculateRoleplaySatisfactionScore(sentiments: RoleplaySentiment[]): number {
+  if (sentiments.length === 0) {
+    return 50;
+  }
+
+  const sentimentScores: Record<RoleplaySentiment, number> = {
+    angry: 35,
+    neutral: 70,
+    satisfied: 95
+  };
+  const baseScore =
+    sentiments.reduce((sum, sentiment) => sum + sentimentScores[sentiment], 0) / sentiments.length;
+  const trajectoryScores = sentiments.map((sentiment) => sentimentScores[sentiment]);
+  const firstScore = trajectoryScores[0] ?? baseScore;
+  const finalScore = trajectoryScores[trajectoryScores.length - 1] ?? baseScore;
+  const improvementBonus = Math.max(0, Math.min(8, (finalScore - firstScore) / 7.5));
+  const finalTwo = sentiments.slice(-2);
+  const recoveryFloor = finalTwo.includes('satisfied') ? 72 : finalTwo.every((sentiment) => sentiment !== 'angry') ? 58 : 0;
+
+  return Math.round(Math.max(recoveryFloor, Math.min(100, baseScore + improvementBonus)));
+}
+
+export function getRoleplayFeedbackStats(attempts: RoleplayFeedbackAttempt[]) {
+  if (attempts.length === 0) {
+    return {
+      totalSessions: 0,
+      averageSatisfaction: 0,
+      averageDuration: 0,
+      personaBreakdown: {} as Record<string, number>,
+      topTopics: [] as string[],
+      sentimentTrend: 'neutral' as RoleplaySentiment
+    };
+  }
+
+  const totalSessions = attempts.length;
+  const averageSatisfaction = Math.round(
+    attempts.reduce(
+      (sum, attempt) => sum + calculateRoleplaySatisfactionScore(attempt.sentimentTrajectory),
+      0
+    ) / attempts.length
+  );
+  const averageDuration = Math.round(
+    attempts.reduce((sum, a) => sum + a.durationSeconds, 0) / attempts.length
+  );
+
+  // Count personas
+  const personaBreakdown: Record<string, number> = {};
+  attempts.forEach((a) => {
+    personaBreakdown[a.persona] = (personaBreakdown[a.persona] || 0) + 1;
+  });
+
+  // Get top topics
+  const topicCounts: Record<string, number> = {};
+  attempts.forEach((a) => {
+    a.keyTopics.forEach((topic) => {
+      topicCounts[topic] = (topicCounts[topic] || 0) + 1;
+    });
+  });
+  const topTopics = Object.entries(topicCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([topic]) => topic);
+
+  // Calculate sentiment trend
+  const sentiments: RoleplaySentiment[] = attempts.flatMap((a) => a.sentimentTrajectory);
+  const sentimentCounts = {
+    angry: sentiments.filter((s) => s === 'angry').length,
+    neutral: sentiments.filter((s) => s === 'neutral').length,
+    satisfied: sentiments.filter((s) => s === 'satisfied').length
+  };
+  const sentimentTrend = (
+    Object.entries(sentimentCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'neutral'
+  ) as RoleplaySentiment;
+
+  return {
+    totalSessions,
+    averageSatisfaction,
+    averageDuration,
+    personaBreakdown,
+    topTopics,
+    sentimentTrend
   };
 }

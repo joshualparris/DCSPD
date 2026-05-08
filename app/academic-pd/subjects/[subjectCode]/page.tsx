@@ -1,19 +1,29 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AcademicAssessmentGrader, {
   type AcademicAssessmentLogPayload
 } from '../../../../src/components/academic/AcademicAssessmentGrader';
-import { getAcademicSubjectByCode, getAcademicWeeklyModules } from '../../../../src/data/academicSubjects';
+import { getAcademicSubjectByCode as getBaseAcademicSubjectByCode, getAcademicWeeklyModules } from '../../../../src/data/academicSubjects';
+import { getCustomAcademic } from '../../../../src/lib/customModules';
 import {
   addPdEntry,
+  getInitialProgressSnapshot,
   getStoredProgressSnapshot,
   saveAcademicAssessmentAttempt,
   saveProgress,
+  toggleAcademicFinalChallengeChecklistItem,
   type AcademicAssessmentAttempt,
-  type PdEntry
+  type PdEntry,
+  type UserProgress
 } from '../../../../src/lib/progress';
+import { getAcademicSubjectProgress } from '../../../../src/lib/academicProgress';
+import {
+  getAcademicFinalChallengeChecklist,
+  getAcademicSiloProgress,
+  getAcademicSubjectFlashcards
+} from '../../../../src/lib/academicSiloProgress';
 import type { AcademicSubject } from '../../../../src/types/academic';
 import type { AcademicAssessmentItem, AcademicWeeklyModule } from '../../../../src/types/academic';
 
@@ -63,22 +73,85 @@ function formatLabel(value: string) {
 }
 
 export default function SubjectPage({ params }: PageProps) {
-  const subject = getAcademicSubjectByCode(params.subjectCode);
-  const [expandedSilos, setExpandedSilos] = useState<Set<string>>(() =>
-    new Set(subject?.silos[0]?.id ? [subject.silos[0].id] : [])
+  const [hasMounted, setHasMounted] = useState(false);
+  const [subject, setSubject] = useState<AcademicSubject | undefined>(() => 
+    getBaseAcademicSubjectByCode(params.subjectCode)
   );
-  const [expandedWeeks, setExpandedWeeks] = useState<Set<string>>(() =>
-    new Set(
-      subject?.weeklyModules?.[0]?.id
-        ? [subject.weeklyModules[0].id]
-        : subject?.topics[0]?.id
-          ? [`${subject.id}-week-1-${subject.topics[0].id}`]
-          : []
-    )
-  );
-  const [loggedMessage, setLoggedMessage] = useState('');
 
-  if (!subject) {
+  const [expandedSilos, setExpandedSilos] = useState<Set<string>>(new Set());
+  const [expandedWeeks, setExpandedWeeks] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    setHasMounted(true);
+    let currentSubject = getBaseAcademicSubjectByCode(params.subjectCode);
+    if (!currentSubject) {
+      currentSubject = getCustomAcademic().find(s => s.code.toLowerCase() === params.subjectCode.toLowerCase());
+    }
+    
+    if (currentSubject) {
+      setSubject(currentSubject);
+      setExpandedSilos(new Set([currentSubject.silos[0]?.id].filter(Boolean)));
+      setExpandedWeeks(new Set(
+        currentSubject.weeklyModules?.[0]?.id
+          ? [currentSubject.weeklyModules[0].id]
+          : currentSubject.topics[0]?.id
+            ? [`${currentSubject.id}-week-1-${currentSubject.topics[0].id}`]
+            : []
+      ));
+    }
+  }, [params.subjectCode]);
+
+  const [loggedMessage, setLoggedMessage] = useState('');
+  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
+
+  useEffect(() => {
+    setProgress(getStoredProgressSnapshot());
+  }, []);
+
+  const subjectProgress = useMemo(
+    () => (subject ? getAcademicSubjectProgress(subject, progress.academicAssessmentAttempts) : null),
+    [subject, progress.academicAssessmentAttempts]
+  );
+  const siloProgress = useMemo(
+    () => (subject ? getAcademicSiloProgress(subject, progress.academicAssessmentAttempts) : []),
+    [subject, progress.academicAssessmentAttempts]
+  );
+
+  if (!hasMounted) {
+    return (
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="h-8 w-48 animate-pulse bg-slate-100 rounded-lg" />
+        <div className="mt-4 h-32 w-full animate-pulse bg-slate-100 rounded-lg" />
+      </div>
+    );
+  }
+
+  const subjectFlashcards = useMemo(() => (subject ? getAcademicSubjectFlashcards(subject) : []), [subject]);
+  const finalChecklist = useMemo(() => (subject ? getAcademicFinalChallengeChecklist(subject) : []), [subject]);
+
+  const latestAttemptByAssessment = useMemo(() => {
+    const latest = new Map<string, AcademicAssessmentAttempt>();
+
+    if (!subject) {
+      return latest;
+    }
+
+    progress.academicAssessmentAttempts
+      .filter(
+        (attempt) =>
+          attempt.subjectId === subject.id || attempt.subjectCode.toLowerCase() === subject.code.toLowerCase()
+      )
+      .forEach((attempt) => {
+        const existing = latest.get(attempt.assessmentId);
+        if (!existing || existing.createdAtIso < attempt.createdAtIso) {
+          latest.set(attempt.assessmentId, attempt);
+        }
+      });
+
+    return latest;
+  }, [subject, progress.academicAssessmentAttempts]);
+
+  if (!subject || !subjectProgress) {
     return (
       <div className="space-y-6">
         <Link href="/academic-pd" className="inline-flex text-sm font-medium text-blue-700 hover:text-blue-900">
@@ -99,6 +172,8 @@ export default function SubjectPage({ params }: PageProps) {
   const relatedModuleIds = uniqueList(subject.dcsBridges.flatMap((bridge) => bridge.relatedDcsModuleIds));
   const practicalOutputIds = uniqueList(subject.practicalTasks.map((task) => task.id));
   const weeklyModules = getAcademicWeeklyModules(subject);
+  const finalChecklistState = progress.academicFinalChallengeChecklists?.[subject.id] || {};
+  const completedFinalChecklistItems = finalChecklist.filter((item) => finalChecklistState[item.id]).length;
   const sourceSummary = subject.localSources?.length
     ? subject.localSources.map((source) => `${source.fileName} (${source.status})`).join(', ')
     : subject.sourceFileName ?? 'Manual catalogue entry';
@@ -130,7 +205,7 @@ export default function SubjectPage({ params }: PageProps) {
   function logPdEntry(type: PdEntry['type'], minutes: number) {
     if (!subject) return; // Safety check
     
-    const progress = getStoredProgressSnapshot();
+    const storedProgress = getStoredProgressSnapshot();
     const nowIso = new Date().toISOString();
     const isOutput = type === 'practical-output';
 
@@ -151,7 +226,9 @@ export default function SubjectPage({ params }: PageProps) {
       privacyChecked: true
     };
 
-    saveProgress(addPdEntry(progress, entry));
+    const updatedProgress = addPdEntry(storedProgress, entry);
+    saveProgress(updatedProgress);
+    setProgress(updatedProgress);
     setLoggedMessage(`${minutes} minutes logged as ${type}.`);
   }
 
@@ -162,7 +239,7 @@ export default function SubjectPage({ params }: PageProps) {
   ) {
     if (!subject) return; // Safety check
 
-    const progress = getStoredProgressSnapshot();
+    const storedProgress = getStoredProgressSnapshot();
     const nowIso = new Date().toISOString();
     const pdEntryId = `academic-${subject.id}-${assessment.id}-pd-${Date.now()}`;
     const attemptId = `academic-${subject.id}-${assessment.id}-attempt-${Date.now()}`;
@@ -214,8 +291,19 @@ export default function SubjectPage({ params }: PageProps) {
       pdEntryId
     };
 
-    saveProgress(saveAcademicAssessmentAttempt(addPdEntry(progress, entry), attempt));
+    const updatedProgress = saveAcademicAssessmentAttempt(addPdEntry(storedProgress, entry), attempt);
+    saveProgress(updatedProgress);
+    setProgress(updatedProgress);
     setLoggedMessage(`${module.title} assessment logged with score ${Math.round(payload.score)}/100.`);
+  }
+
+  function toggleFinalChallengeChecklist(itemId: string) {
+    if (!subject) return; // Safety check
+
+    const storedProgress = getStoredProgressSnapshot();
+    const updatedProgress = toggleAcademicFinalChallengeChecklistItem(storedProgress, subject.id, itemId);
+    saveProgress(updatedProgress);
+    setProgress(updatedProgress);
   }
 
   return (
@@ -258,6 +346,75 @@ export default function SubjectPage({ params }: PageProps) {
             <div className="font-semibold">{highBridge.dcsArea}</div>
             <p className="mt-2 leading-6">{highBridge.explanation}</p>
           </div>
+        </div>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Subject progress</div>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+              {subjectProgress.completionPercent}% complete
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              {subjectProgress.completedAssessments} of {subjectProgress.totalAssessments} assessments complete across{' '}
+              {subjectProgress.completedWeeks} of {subjectProgress.totalWeeks} fully completed weekly modules.
+            </p>
+          </div>
+          <div className="rounded-2xl bg-slate-50 px-5 py-4 text-sm text-slate-700">
+            Average score:{' '}
+            <span className="font-semibold text-slate-900">
+              {subjectProgress.averageScore === null ? 'No graded attempts yet' : `${Math.round(subjectProgress.averageScore)}/100`}
+            </span>
+          </div>
+        </div>
+        <div className="mt-5 h-3 rounded-full bg-slate-100">
+          <div
+            className="h-full rounded-full bg-slate-900 transition-all"
+            style={{ width: `${subjectProgress.completionPercent}%` }}
+          />
+        </div>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Per-SILO progress</div>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900">Outcome coverage and weak spots</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Completion is calculated from the latest logged assessment mapped to each subject learning outcome.
+            </p>
+          </div>
+          <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
+            {siloProgress.filter((silo) => silo.completionPercent === 100).length}/{siloProgress.length} SILOs complete
+          </div>
+        </div>
+        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {siloProgress.map((silo) => (
+            <article key={silo.siloId} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-sm font-semibold text-slate-900">{silo.label}</div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    {silo.completedAssessments}/{silo.totalAssessments} assessments
+                  </div>
+                </div>
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-900">
+                  {silo.completionPercent}%
+                </span>
+              </div>
+              <div className="mt-4 h-2 rounded-full bg-white">
+                <div className="h-full rounded-full bg-slate-900" style={{ width: `${silo.completionPercent}%` }} />
+              </div>
+              <div className="mt-3 text-xs leading-5 text-slate-600">
+                Average:{' '}
+                <span className="font-semibold text-slate-900">
+                  {silo.averageScore === null ? 'No score yet' : `${Math.round(silo.averageScore)}/100`}
+                </span>
+                {' '}| {silo.flashcards.length} flashcards
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -309,6 +466,31 @@ export default function SubjectPage({ params }: PageProps) {
           </section>
 
           <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Subject flashcards</div>
+                <h2 className="mt-3 text-2xl font-semibold text-slate-900">Retrieve the SILOs before assessment</h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  These cards are generated from the SLG learning outcomes, mastery criteria, and knowledge checks.
+                </p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                {subjectFlashcards.length} cards
+              </div>
+            </div>
+            <div className="mt-5 grid gap-3 lg:grid-cols-2">
+              {subjectFlashcards.map((card) => (
+                <details key={card.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <summary className="cursor-pointer text-sm font-semibold leading-6 text-slate-900">
+                    {card.front}
+                  </summary>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">{card.back}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Weekly LMS modules</div>
             <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div>
@@ -326,6 +508,9 @@ export default function SubjectPage({ params }: PageProps) {
             <div className="mt-5 grid gap-4">
               {weeklyModules.map((module) => {
                 const isExpanded = expandedWeeks.has(module.id);
+                const completedInModule = module.assessments.filter((assessment) =>
+                  latestAttemptByAssessment.has(assessment.id)
+                ).length;
                 return (
                   <article key={module.id} className="overflow-hidden rounded-2xl border border-slate-200">
                     <button
@@ -346,6 +531,9 @@ export default function SubjectPage({ params }: PageProps) {
                               {module.contactHours} contact hours
                             </span>
                           ) : null}
+                          <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-600">
+                            {completedInModule}/{module.assessments.length} complete
+                          </span>
                         </div>
                         <h3 className="mt-3 text-xl font-semibold text-slate-900">{module.title}</h3>
                         <p className="mt-2 text-sm leading-6 text-slate-600">{module.overview}</p>
@@ -420,40 +608,53 @@ export default function SubjectPage({ params }: PageProps) {
                         <div>
                           <h4 className="text-sm font-semibold text-slate-900">Integrated assessment</h4>
                           <div className="mt-3 grid gap-3 lg:grid-cols-2">
-                            {module.assessments.map((assessment) => (
-                              <div key={assessment.id} className="rounded-2xl border border-slate-200 bg-white p-4">
-                                <div className="flex flex-wrap items-center gap-2">
-                                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                                    {assessmentKindLabels[assessment.kind]}
-                                  </span>
-                                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
-                                    {assessment.minutes} min
-                                  </span>
-                                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
-                                    {assessment.evidenceType}
-                                  </span>
-                                </div>
-                                <h5 className="mt-3 font-semibold text-slate-900">{assessment.title}</h5>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">{assessment.prompt}</p>
-                                <div className="mt-3 rounded-xl bg-slate-50 p-3">
-                                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                                    Success criteria
+                            {module.assessments.map((assessment) => {
+                              const completedAttempt = latestAttemptByAssessment.get(assessment.id);
+
+                              return (
+                                <div key={assessment.id} className="rounded-2xl border border-slate-200 bg-white p-4">
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                                      {assessmentKindLabels[assessment.kind]}
+                                    </span>
+                                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
+                                      {assessment.minutes} min
+                                    </span>
+                                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
+                                      {assessment.evidenceType}
+                                    </span>
+                                    {completedAttempt ? (
+                                      <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800">
+                                        Completed {Math.round(completedAttempt.score)}/100
+                                      </span>
+                                    ) : (
+                                      <span className="rounded-full bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                                        Not logged
+                                      </span>
+                                    )}
                                   </div>
-                                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-600">
-                                    {assessment.successCriteria.map((criterion) => (
-                                      <li key={criterion}>{criterion}</li>
-                                    ))}
-                                  </ul>
+                                  <h5 className="mt-3 font-semibold text-slate-900">{assessment.title}</h5>
+                                  <p className="mt-2 text-sm leading-6 text-slate-600">{assessment.prompt}</p>
+                                  <div className="mt-3 rounded-xl bg-slate-50 p-3">
+                                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                                      Success criteria
+                                    </div>
+                                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-600">
+                                      {assessment.successCriteria.map((criterion) => (
+                                        <li key={criterion}>{criterion}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                  <p className="mt-3 text-sm leading-6 text-slate-600">{assessment.dcsApplication}</p>
+                                  <AcademicAssessmentGrader
+                                    subject={subject}
+                                    module={module}
+                                    assessment={assessment}
+                                    onLog={(payload) => logWeeklyAssessment(module, assessment, payload)}
+                                  />
                                 </div>
-                                <p className="mt-3 text-sm leading-6 text-slate-600">{assessment.dcsApplication}</p>
-                                <AcademicAssessmentGrader
-                                  subject={subject}
-                                  module={module}
-                                  assessment={assessment}
-                                  onLog={(payload) => logWeeklyAssessment(module, assessment, payload)}
-                                />
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -617,6 +818,30 @@ export default function SubjectPage({ params }: PageProps) {
             <h2 className="mt-3 text-2xl font-semibold text-slate-900">{subject.finalChallenge.title}</h2>
             <p className="mt-3 text-sm leading-6 text-slate-600">{subject.finalChallenge.brief}</p>
             <p className="mt-3 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">{subject.finalChallenge.evidence}</p>
+            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-sm font-semibold text-slate-900">Submission checklist</div>
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-900">
+                  {completedFinalChecklistItems}/{finalChecklist.length}
+                </span>
+              </div>
+              <div className="mt-3 space-y-3">
+                {finalChecklist.map((item) => (
+                  <label key={item.id} className="flex cursor-pointer items-start gap-3 rounded-xl bg-white p-3">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(finalChecklistState[item.id])}
+                      onChange={() => toggleFinalChallengeChecklist(item.id)}
+                      className="mt-1 h-4 w-4 accent-slate-900"
+                    />
+                    <span>
+                      <span className="block text-sm font-semibold text-slate-900">{item.label}</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-600">{item.detail}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
             {subject.recommendedNextAction ? (
               <p className="mt-3 text-sm leading-6 text-slate-600">{subject.recommendedNextAction}</p>
             ) : null}

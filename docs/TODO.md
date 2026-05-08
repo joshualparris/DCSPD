@@ -1,5 +1,17 @@
 # DCSPrep TODO
 
+## Recent progress
+* [x] Added admin SLG draft import, content governance, LMS/HRIS export scaffolds, and local progress sync adapter.
+* [x] Added virtual classroom desk simulation, hardware catalogue, voice-to-ticket practice, KB export, supervisor dashboard, and mobile/offline QA checklist.
+* [x] Added Professor Messer / CompTIA A+ 220-1202 Core 2 pathway with 74 read/watch/assess lessons and stored AI assessment attempts.
+* [x] Added multiple-choice answers plus long-form AI feedback to every A+ Core 2 assessment, with combined scores logged to PD evidence.
+* [x] Added A+ Core 2 certification feedback to the Feedback Log and Evidence Pack summaries.
+* [x] Confirmed tests and production build success after the platform expansion.
+* [x] Added roleplay session feedback persistence and multi-mode Feedback Log display.
+* [x] Captured persona, scenario, timestamps, coach notes, sentiment, topics, and full transcript data from roleplay sessions.
+* [x] Implemented `RoleplayFeedbackAttempt` in `src/lib/progress.ts`, save logic in `src/components/ai/AiRoleplayChat.tsx`, and display logic in `app/feedback-log/page.tsx`.
+* [x] Confirmed production build success after these changes.
+
 ## P0: Real DCS Ticket Relevance
 
 - [x] Add `Parent Portal Registration` module with access-key flow, common blockers, escalation boundaries, and parent-facing note examples. Summary: added module `parent-portal-registration` with registration-stage sections, access-key and email-match triage, assessment items, scenario prompt, and practical output in `src/data/modules.ts`. Proof: route content is surfaced through `app/modules/[moduleId]/page.tsx` and the question-first UI in `src/components/modules/ModuleQuestionFirst.tsx`.

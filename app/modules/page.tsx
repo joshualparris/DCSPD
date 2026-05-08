@@ -1,17 +1,51 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import ModuleCard from '../../src/components/modules/ModuleCard';
-import { modules } from '../../src/data/modules';
+import { modules as baseModules } from '../../src/data/modules';
 import { getModuleCompletion } from '../../src/lib/moduleMath';
 import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../src/lib/progress';
+import { getCustomModules } from '../../src/lib/customModules';
 
 export default function ModulesPage() {
-  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot(modules));
+  const [hasMounted, setHasMounted] = useState(false);
+  const [customModules, setCustomModules] = useState<any[]>([]);
+  const modules = useMemo(() => [...baseModules, ...customModules], [customModules]);
+  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot(baseModules));
 
   useEffect(() => {
-    setProgress(getStoredProgressSnapshot(modules));
+    const loadedCustom = getCustomModules();
+    setCustomModules(loadedCustom);
+    setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (hasMounted) {
+      setProgress(getStoredProgressSnapshot(modules));
+    }
+  }, [hasMounted, modules]);
+
+  if (!hasMounted) {
+    return (
+      <div className="space-y-6">
+        <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Modules</div>
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                DCS-specific modules for targeted professional development
+              </h1>
+            </div>
+          </div>
+        </section>
+        <div className="grid gap-4 xl:grid-cols-2">
+          {baseModules.map((module) => (
+            <div key={module.id} className="h-48 animate-pulse rounded-[2rem] bg-slate-100" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
