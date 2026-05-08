@@ -35,13 +35,17 @@ function getMonthKey(date: Date) {
 export default function DashboardPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const [progress, setProgress] = useState<UserProgress | undefined>(undefined);
+  const [customModules, setCustomModules] = useState<any[]>([]);
+  const [customScenarios, setCustomScenarios] = useState<any[]>([]);
   
-  const allModules = useMemo(() => [...baseModules, ...getCustomModules()], []);
-  const allScenarios = useMemo(() => [...baseScenarios, ...getCustomScenarios()], []);
+  const allModules = useMemo(() => [...baseModules, ...customModules], [customModules]);
+  const allScenarios = useMemo(() => [...baseScenarios, ...customScenarios], [customScenarios]);
 
   useEffect(() => {
     setHasMounted(true);
     setProgress(getStoredProgressSnapshot());
+    setCustomModules(getCustomModules());
+    setCustomScenarios(getCustomScenarios());
   }, []);
 
   const studyPath = useMemo(() => 
@@ -172,7 +176,7 @@ export default function DashboardPage() {
             ) : (
               <div className="rounded-[2rem] border border-dashed border-slate-200 p-16 text-center">
                 <CheckCircle2 className="mx-auto text-emerald-500" size={64} />
-                <h3 className="mt-6 text-xl font-bold text-slate-900">You're all caught up!</h3>
+                <h3 className="mt-6 text-xl font-bold text-slate-900">You&apos;re all caught up!</h3>
                 <p className="mt-3 text-slate-500">
                   Excellent work. Check back tomorrow for new recommendations or browse the full catalogue.
                 </p>
@@ -274,7 +278,7 @@ export default function DashboardPage() {
             
             {dailyQuestion.type === 'mcq' && (
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                {dailyQuestion.options.map((opt) => (
+                {dailyQuestion.options.map((opt: any) => (
                   <button
                     key={opt.id}
                     onClick={() => {

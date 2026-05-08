@@ -9,8 +9,8 @@ import {
   getRecommendedAcademicBuildPath,
   academicSubjects as baseSubjects
 } from '../../src/data/academicSubjects';
-import { getAcademicSubjectProgress } from '../../lib/academicProgress';
-import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../lib/progress';
+import { getAcademicSubjectProgress } from '../../src/lib/academicProgress';
+import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../src/lib/progress';
 import { getCustomAcademic } from '../../src/lib/customModules';
 import type { AcademicSubject } from '../../src/types/academic';
 

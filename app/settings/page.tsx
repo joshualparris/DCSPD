@@ -142,7 +142,7 @@ export default function SettingsPage() {
       // Simple heuristic to detect type
       if (data.sections && data.learningObjectives) {
         // Ensure mandatory fields exist for rendering
-        const module = {
+        const trainingModule = {
           modulePattern: {
             diagnosticQuestions: [],
             explainBackPrompt: { id: 'eb', title: 'Explain it back', prompt: 'P' },
@@ -154,15 +154,15 @@ export default function SettingsPage() {
           ...data
         };
         // Normalize rubric if needed (AI often makes it an object)
-        if (module.quiz) {
-          module.quiz = module.quiz.map((q: any) => {
+        if (trainingModule.quiz) {
+          trainingModule.quiz = trainingModule.quiz.map((q: any) => {
             if (q.type === 'short-answer' && Array.isArray(q.rubric) && typeof q.rubric[0] === 'object') {
               return { ...q, rubric: q.rubric.map((r: any) => r.criterion || r.label || JSON.stringify(r)) };
             }
             return q;
           });
         }
-        saveCustomModule(module as TrainingModule);
+        saveCustomModule(trainingModule as TrainingModule);
         setModuleStatus({ state: 'ok', message: `Training Module "${data.title}" uploaded!` });
       } else if (data.persona && data.itChallenge) {
         saveCustomRoleplay(data as RoleplayScenario);

@@ -115,7 +115,7 @@ export default function RoleplaySimulationPage() {
                           <div className="font-bold">{scenario.persona}</div>
                           <div className="mt-1 text-xs opacity-70">{scenario.archetype}</div>
                         </div>
-                        <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold ${pressureStyles[scenario.pressure]}`}>
+                        <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold ${(pressureStyles as any)[scenario.pressure]}`}>
                           {scenario.pressure}
                         </span>
                       </div>
@@ -156,7 +156,7 @@ export default function RoleplaySimulationPage() {
                 <h2 className="mt-3 text-2xl font-semibold text-slate-900">{selectedScenario.issueTitle}</h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{selectedScenario.scenario}</p>
               </div>
-              <span className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${pressureStyles[selectedScenario.pressure]}`}>
+              <span className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${(pressureStyles as any)[selectedScenario.pressure]}`}>
                 {selectedScenario.pressure} pressure
               </span>
             </div>
@@ -197,7 +197,7 @@ export default function RoleplaySimulationPage() {
             ) : null}
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {selectedScenario.focus.map((focus) => (
+              {selectedScenario.focus.map((focus: string) => (
                 <span key={focus} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600">
                   {focus}
                 </span>

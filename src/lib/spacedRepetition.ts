@@ -1,3 +1,6 @@
+import { TrainingModule } from '../types/training';
+import { UserProgress } from './progress';
+
 export type ReviewRating = 'again' | 'hard' | 'good' | 'easy';
 
 export const leitnerBoxLabels = {
@@ -60,4 +63,12 @@ export function scoreToReviewRating(score: number): ReviewRating {
   }
 
   return 'easy';
+}
+
+export function getDueFlashcards(modules: TrainingModule[], progress: UserProgress) {
+  return modules.flatMap((module) =>
+    Object.values(progress.modules[module.id]?.flashcards || {}).filter(
+      (card) => isDue(card.dueDateIso)
+    )
+  );
 }

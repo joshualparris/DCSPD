@@ -116,16 +116,6 @@ export default function SubjectPage({ params }: PageProps) {
     () => (subject ? getAcademicSiloProgress(subject, progress.academicAssessmentAttempts) : []),
     [subject, progress.academicAssessmentAttempts]
   );
-
-  if (!hasMounted) {
-    return (
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="h-8 w-48 animate-pulse bg-slate-100 rounded-lg" />
-        <div className="mt-4 h-32 w-full animate-pulse bg-slate-100 rounded-lg" />
-      </div>
-    );
-  }
-
   const subjectFlashcards = useMemo(() => (subject ? getAcademicSubjectFlashcards(subject) : []), [subject]);
   const finalChecklist = useMemo(() => (subject ? getAcademicFinalChallengeChecklist(subject) : []), [subject]);
 
@@ -150,6 +140,15 @@ export default function SubjectPage({ params }: PageProps) {
 
     return latest;
   }, [subject, progress.academicAssessmentAttempts]);
+
+  if (!hasMounted) {
+    return (
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="h-8 w-48 animate-pulse bg-slate-100 rounded-lg" />
+        <div className="mt-4 h-32 w-full animate-pulse bg-slate-100 rounded-lg" />
+      </div>
+    );
+  }
 
   if (!subject || !subjectProgress) {
     return (

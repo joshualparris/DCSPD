@@ -34,7 +34,7 @@ export default function ScenariosPage() {
   const scenarios = useMemo(() => [...baseScenarios, ...customScenarios], [customScenarios]);
   const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
   const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
-  const [selectedScenarioId, setSelectedScenarioId] = useState(scenarios[0]?.id || '');
+  const [selectedScenarioId, setSelectedScenarioId] = useState('');
   const [stepIndex, setStepIndex] = useState(0);
   const [runChoices, setRunChoices] = useState<ScenarioRunChoice[]>([]);
   const [revealedChoice, setRevealedChoice] = useState<ScenarioChoice | null>(null);
@@ -46,8 +46,15 @@ export default function ScenariosPage() {
 
   useEffect(() => {
     setProgress(getStoredProgressSnapshot());
-    setCustomScenarios(getCustomScenarios());
+    const custom = getCustomScenarios();
+    setCustomScenarios(custom);
     setHasHydratedProgress(true);
+    
+    // Set initial selection if not set
+    const all = [...baseScenarios, ...custom];
+    if (all.length > 0) {
+      setSelectedScenarioId(all[0].id);
+    }
   }, []);
 
   useEffect(() => {
@@ -64,11 +71,11 @@ export default function ScenariosPage() {
   const completedScenarios = progress.scenarioRuns.filter((run) => run.completed).length;
   const noteReady =
     Boolean(escalationNote.trim()) &&
-    scenario.noteRubric.every((criterion) => typeof noteScores[criterion.id] === 'number');
+    scenario.noteRubric.every((criterion: any) => typeof noteScores[criterion.id] === 'number');
   const noteAverage = scenario.noteRubric.length
     ? Number(
         (
-          scenario.noteRubric.reduce((sum, criterion) => sum + (noteScores[criterion.id] ?? 0), 0) /
+          scenario.noteRubric.reduce((sum: number, criterion: any) => sum + (noteScores[criterion.id] ?? 0), 0) /
           scenario.noteRubric.length
         ).toFixed(2)
       )
@@ -131,7 +138,7 @@ export default function ScenariosPage() {
     // Automatic Deterministic Grading
     const grade = gradeRubric({
       text: escalationNote,
-      rubric: scenario.noteRubric.map(r => ({ id: r.id, label: r.label, description: r.description })),
+      rubric: scenario.noteRubric.map((r: any) => ({ id: r.id, label: r.label, description: r.description })),
       context: scenario.title
     });
     setRubricGrade(grade);
@@ -214,7 +221,7 @@ export default function ScenariosPage() {
                 <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">{scenario.title}</div>
                 <h2 className="mt-3 text-2xl font-semibold text-slate-900">{scenario.initialReport}</h2>
                 <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                  {scenario.contextBullets.map((item) => (
+                  {scenario.contextBullets.map((item: string) => (
                     <li key={item}>- {item}</li>
                   ))}
                 </ul>
@@ -232,7 +239,7 @@ export default function ScenariosPage() {
               </div>
 
               <div className="space-y-3">
-                {currentStep?.choices.map((choice) => (
+                {currentStep?.choices.map((choice: any) => (
                   <button
                     key={choice.id}
                     onClick={() => handleChoice(choice)}
@@ -281,9 +288,9 @@ export default function ScenariosPage() {
               <AiNoteGenerator
                 scenarioTitle={scenario.title}
                 initialReport={scenario.initialReport}
-                userChoices={runChoices.map(c => {
-                  const step = scenario.steps.find(s => s.id === c.stepId);
-                  const choice = step?.choices.find(ch => ch.id === c.choiceId);
+                userChoices={runChoices.map((c: any) => {
+                  const step = scenario.steps.find((s: any) => s.id === c.stepId);
+                  const choice = step?.choices.find((ch: any) => ch.id === c.choiceId);
                   return `${step?.title}: ${choice?.label}`;
                 })}
                 draftNote={escalationNote}
@@ -305,7 +312,7 @@ export default function ScenariosPage() {
                   prompt: scenario.jiraNotePrompt,
                   userAnswer: escalationNote,
                   modelAnswer: scenario.ticketNoteExample,
-                  rubric: scenario.noteRubric.map((item) => `${item.label}: ${item.description}`),
+                  rubric: scenario.noteRubric.map((item: any) => `${item.label}: ${item.description}`),
                   extraContext: `Scenario: ${scenario.title}\nRisk note: ${scenario.riskNote}`
                 }}
                 debounceMs={900}
@@ -313,7 +320,7 @@ export default function ScenariosPage() {
               />
 
               <div className="grid gap-4 md:grid-cols-2">
-                {scenario.noteRubric.map((criterion) => (
+                {scenario.noteRubric.map((criterion: any) => (
                   <div key={criterion.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
                     <div className="font-semibold text-slate-900">{criterion.label}</div>
                     <p className="mt-2 text-sm text-slate-600">{criterion.description}</p>
@@ -373,7 +380,7 @@ export default function ScenariosPage() {
               <div className="rounded-3xl bg-slate-50 p-5">
                 <div className="font-semibold text-slate-900">Ideal troubleshooting path</div>
                 <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                  {scenario.idealTroubleshootingPath.map((step) => (
+                  {scenario.idealTroubleshootingPath.map((step: string) => (
                     <li key={step}>- {step}</li>
                   ))}
                 </ul>

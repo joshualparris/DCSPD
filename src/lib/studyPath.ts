@@ -35,15 +35,15 @@ export function generateStudyPath(
   }
 
   // 2. Check Weak Topics from Progress
-  if (progress.weakTopicTracking) {
-    Object.entries(progress.weakTopicTracking).forEach(([topic, stats]) => {
-      if (stats.score < 60) {
+  if (progress.weakTopicReviews) {
+    Object.entries(progress.weakTopicReviews).forEach(([topic, stats]) => {
+      if (stats.averageScore < 60) {
         const relatedModule = modules.find(m => m.tags.includes(topic) || m.domain.toLowerCase().includes(topic.toLowerCase()));
         if (relatedModule) {
           recommendations.push({
             id: `weak-topic-${topic}`,
             title: `Repair ${topic} knowledge`,
-            reason: `Your performance in ${topic} is below target (${stats.score.toFixed(0)}%).`,
+            reason: `Your performance in ${topic} is below target (${stats.averageScore.toFixed(0)}%).`,
             priority: 'critical',
             estimatedMinutes: relatedModule.estimatedMinutes,
             actionType: 'complete-module',
@@ -75,7 +75,7 @@ export function generateStudyPath(
 
   // 4. Check Unattempted Scenarios
   scenarios.forEach(s => {
-    const attempts = progress.scenarioAttempts?.[s.id] || [];
+    const attempts = progress.scenarioRuns.filter(r => r.scenarioId === s.id);
     if (attempts.length === 0) {
       recommendations.push({
         id: `new-scenario-${s.id}`,
