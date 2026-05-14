@@ -2,8 +2,9 @@
 
 import { type ChangeEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff } from 'lucide-react';
+import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff, CloudSync, AlertTriangle } from 'lucide-react';
 import { modules } from '../../src/data/modules';
+import { getSyncSettings, saveSyncSettings, type SyncProvider } from '../../src/lib/sync/syncManager';
 import { 
   MODULE_GENERATION_PROMPT, 
   ROLEPLAY_GENERATION_PROMPT, 
@@ -94,6 +95,7 @@ export default function SettingsPage() {
   });
 
   const [notificationStatus, setNotificationStatus] = useState<'default' | 'granted' | 'denied'>('default');
+  const [syncSettings, setSyncSettings] = useState(() => getSyncSettings());
 
   useEffect(() => {
     setSchedulerSettings(loadSchedulerSettings());
@@ -103,6 +105,11 @@ export default function SettingsPage() {
       setNotificationStatus(Notification.permission);
     }
   }, []);
+
+  function handleSaveSyncSettings() {
+    saveSyncSettings(syncSettings.provider, syncSettings.cloudUrl);
+    setBackupStatus({ state: 'ok', message: 'Sync settings updated locally.' });
+  }
 
   async function requestNotificationPermission() {
     if (!('Notification' in window)) {
@@ -446,6 +453,76 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
+      <section className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">
+              <AlertTriangle size={18} />
+              Infrastructure Stability
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold text-amber-900">OneDrive Migration Guide</h2>
+            <p className="mt-3 text-sm leading-7 text-amber-800">
+              Is your build failing or slow? Move the project out of OneDrive to a local folder to permanently 
+              resolve file-locking and sync conflicts.
+            </p>
+          </div>
+          <a
+            href="/MIGRATION_GUIDE.md"
+            download
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-600 px-6 py-3 text-sm font-medium text-white hover:bg-amber-700 transition-colors shadow-lg"
+          >
+            <Download size={18} />
+            Download Migration Guide
+          </a>
+        </div>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <CloudSync size={18} />
+              Cloud Sync Configuration
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Remote database endpoint</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Configure a custom Cloud API URL to enable remote progress synchronization across multiple devices.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleSaveSyncSettings}
+            className="rounded-full bg-slate-900 px-6 py-2 text-sm font-medium text-white hover:bg-slate-800 transition-colors"
+          >
+            Save sync settings
+          </button>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <label className="text-sm text-slate-700">
+            Default Provider
+            <select
+              value={syncSettings.provider}
+              onChange={(e) => setSyncSettings({ ...syncSettings, provider: e.target.value as SyncProvider })}
+              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900"
+            >
+              <option value="local-server">Local Next.js Server</option>
+              <option value="cloud-api">Custom Cloud API</option>
+            </select>
+          </label>
+          <label className="text-sm text-slate-700">
+            Cloud API Base URL
+            <input
+              type="url"
+              value={syncSettings.cloudUrl}
+              onChange={(e) => setSyncSettings({ ...syncSettings, cloudUrl: e.target.value })}
+              placeholder="https://your-api.com/sync"
+              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900"
+            />
+          </label>
+        </div>
+      </section>
+
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>

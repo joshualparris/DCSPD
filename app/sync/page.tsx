@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Download, Upload } from 'lucide-react';
+import { Download, Upload, Cloud, Server, Settings as SettingsIcon } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import {
   createProgressBackup,
@@ -12,6 +12,7 @@ import {
   type ProgressBackup,
   type UserProgress
 } from '../../src/lib/progress';
+import { SyncManager, getSyncSettings, type SyncProvider } from '../../src/lib/sync/syncManager';
 
 type SyncStatus = {
   state: 'idle' | 'working' | 'ok' | 'error';
@@ -25,43 +26,47 @@ export default function SyncPage() {
     message: 'No sync action yet.'
   });
   const [serverSnapshot, setServerSnapshot] = useState<ProgressBackup | null>(null);
+  const [syncSettings, setSyncSettings] = useState(() => getSyncSettings());
+  
+  const syncManager = useMemo(() => new SyncManager(syncSettings.cloudUrl), [syncSettings.cloudUrl]);
+
+  useEffect(() => {
+    saveSyncSettings(syncSettings.provider, syncSettings.cloudUrl);
+  }, [syncSettings]);
 
   useEffect(() => {
     setProgress(getStoredProgressSnapshot(modules));
-  }, []);
+    refreshServerSnapshot();
+  }, [syncSettings.provider]);
 
   async function refreshServerSnapshot() {
-    const response = await fetch('/api/progress-sync', { cache: 'no-store' });
-    const payload = (await response.json()) as { ok: boolean; backup: ProgressBackup | null; message?: string };
-
-    if (!payload.ok) {
-      throw new Error(payload.message || 'Could not read sync snapshot.');
+    try {
+      const payload = await syncManager.fetch(syncSettings.provider);
+      if (payload.ok) {
+        setServerSnapshot(payload.backup);
+      }
+      return payload.backup;
+    } catch (error) {
+      console.error('Failed to fetch server snapshot', error);
+      return null;
     }
-
-    setServerSnapshot(payload.backup);
-    return payload.backup;
   }
 
   async function pushProgress() {
-    setStatus({ state: 'working', message: 'Saving local browser progress to the server-side sync snapshot...' });
+    setStatus({ state: 'working', message: `Saving local browser progress to ${syncSettings.provider}...` });
 
     try {
       const backup = createProgressBackup(getStoredProgressSnapshot(modules));
-      const response = await fetch('/api/progress-sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(backup)
-      });
-      const payload = (await response.json()) as { ok: boolean; message?: string; savedAtIso?: string };
+      const payload = await syncManager.sync(syncSettings.provider, backup);
 
-      if (!response.ok || !payload.ok) {
+      if (!payload.ok) {
         throw new Error(payload.message || 'Sync save failed.');
       }
 
       setServerSnapshot(backup);
       setStatus({
         state: 'ok',
-        message: `Progress pushed to local server snapshot at ${payload.savedAtIso?.slice(0, 19) || 'now'}.`
+        message: `Progress pushed to ${syncSettings.provider} at ${payload.savedAtIso?.slice(0, 19) || 'now'}.`
       });
     } catch (error) {
       setStatus({
@@ -72,20 +77,20 @@ export default function SyncPage() {
   }
 
   async function pullProgress() {
-    setStatus({ state: 'working', message: 'Loading server-side sync snapshot...' });
+    setStatus({ state: 'working', message: `Loading snapshot from ${syncSettings.provider}...` });
 
     try {
-      const backup = await refreshServerSnapshot();
+      const payload = await syncManager.fetch(syncSettings.provider);
 
-      if (!backup) {
+      if (!payload.ok || !payload.backup) {
         setStatus({
           state: 'error',
-          message: 'No server-side snapshot exists yet. Push progress first.'
+          message: payload.message || `No snapshot exists on ${syncSettings.provider} yet. Push progress first.`
         });
         return;
       }
 
-      const parsed = parseProgressBackupJson(JSON.stringify(backup));
+      const parsed = parseProgressBackupJson(JSON.stringify(payload.backup));
 
       if (!parsed.ok) {
         setStatus({
@@ -99,7 +104,7 @@ export default function SyncPage() {
       setProgress(parsed.progress);
       setStatus({
         state: 'ok',
-        message: 'Server snapshot restored into this browser.'
+        message: `${syncSettings.provider} snapshot restored into this browser.`
       });
     } catch (error) {
       setStatus({
@@ -115,13 +120,56 @@ export default function SyncPage() {
         <div className="max-w-3xl">
           <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Progress sync</div>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900">
-            Local server snapshot for progress backup
+            Progress sync and cloud backup
           </h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            This is a first sync adapter: it saves a versioned DCSPrep progress backup to the local Next.js server. A
-            real cloud database still needs provider selection, authentication, and deployment hardening.
+            Sync your versioned DCSPrep progress across devices. Use the local Next.js server for private backup, 
+            or configure a Cloud API in Settings for remote access.
           </p>
         </div>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 mb-4">Sync Provider</div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <button
+            onClick={() => setSyncSettings({ ...syncSettings, provider: 'local-server' })}
+            className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition ${
+              syncSettings.provider === 'local-server'
+                ? 'border-slate-900 bg-slate-900 text-white shadow-md'
+                : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <Server size={20} />
+            <div>
+              <div className="font-semibold">Local Server</div>
+              <div className="text-xs opacity-70">Saves to .dcsprep-data/</div>
+            </div>
+          </button>
+          <button
+            onClick={() => setSyncSettings({ ...syncSettings, provider: 'cloud-api' })}
+            className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition ${
+              syncSettings.provider === 'cloud-api'
+                ? 'border-slate-900 bg-slate-900 text-white shadow-md'
+                : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <Cloud size={20} />
+            <div>
+              <div className="font-semibold">Cloud API</div>
+              <div className="text-xs opacity-70">{syncSettings.cloudUrl ? 'Remote sync configured' : 'Requires URL in Settings'}</div>
+            </div>
+          </button>
+        </div>
+        
+        {syncSettings.provider === 'cloud-api' && !syncSettings.cloudUrl && (
+          <div className="mt-4 flex items-center gap-3 rounded-2xl bg-amber-50 p-4 text-sm text-amber-900">
+            <SettingsIcon size={18} />
+            <p>
+              Cloud API is selected but no URL is configured. Go to <Link href="/settings" className="font-bold underline">Settings</Link> to add your provider endpoint.
+            </p>
+          </div>
+        )}
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">

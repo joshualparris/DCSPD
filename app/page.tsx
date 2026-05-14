@@ -17,7 +17,8 @@ import {
   AlertCircle,
   Clock,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 import { modules as baseModules } from '../src/data/modules';
 import { scenarios as baseScenarios } from '../src/data/scenarios';
@@ -35,11 +36,14 @@ function getMonthKey(date: Date) {
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
 }
 
+import { certificationExpansion } from '../src/data/certificationExpansion';
+
 export default function DashboardPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const [progress, setProgress] = useState<UserProgress | undefined>(undefined);
   const [customModules, setCustomModules] = useState<any[]>([]);
   const [customScenarios, setCustomScenarios] = useState<any[]>([]);
+  const [isOneDrive, setIsOneDrive] = useState(false);
   
   const allModules = useMemo(() => [...baseModules, ...customModules], [customModules]);
   const allScenarios = useMemo(() => [...baseScenarios, ...customScenarios], [customScenarios]);
@@ -49,6 +53,12 @@ export default function DashboardPage() {
     setProgress(getStoredProgressSnapshot());
     setCustomModules(getCustomModules());
     setCustomScenarios(getCustomScenarios());
+
+    // Check for OneDrive
+    fetch('/api/check-environment')
+      .then(res => res.json())
+      .then(data => setIsOneDrive(data.isOneDrive))
+      .catch(() => {});
   }, []);
 
   const studyPath = useMemo(() => 
@@ -122,6 +132,32 @@ export default function DashboardPage() {
           </div>
         </div>
       </header>
+
+      {isOneDrive && (
+        <section className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 shadow-sm">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex gap-4 items-start">
+              <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-600 shadow-sm">
+                <AlertCircle size={20} />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-amber-900">OneDrive Detected</h2>
+                <p className="mt-1 text-sm leading-6 text-amber-800">
+                  Running Node.js projects in OneDrive causes file-locking and build performance issues. 
+                  Please move the project to a local folder like <code className="font-bold">C:\Projects\DCSPrepApp</code>.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/settings"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-amber-200 bg-white px-5 py-3 text-sm font-bold text-amber-700 transition hover:bg-amber-50"
+            >
+              Migration Guide
+              <ChevronRight size={17} />
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="rounded-[2rem] border border-blue-200 bg-blue-50 p-6 shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -326,6 +362,44 @@ export default function DashboardPage() {
         <KnowledgeHeatmap progress={progress} />
         <Leaderboard />
       </div>
+
+      <section className="rounded-[2.5rem] border border-slate-200 bg-white p-10 shadow-sm">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Core Certification Library</h2>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Link
+            href="/certifications/aplus-core-2"
+            className="group flex flex-col rounded-[2rem] border border-slate-200 bg-white p-6 transition-all hover:border-rose-200 hover:shadow-xl hover:shadow-rose-500/5"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 transition-colors group-hover:bg-rose-600 group-hover:text-white">
+              <ShieldCheck size={24} />
+            </div>
+            <h3 className="mt-6 font-bold text-slate-900">A+ Core 2</h3>
+            <p className="mt-2 text-sm text-slate-500">Software, security, and operational procedures.</p>
+            <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
+              <span>74 Lessons</span>
+              <span className="text-rose-600 group-hover:translate-x-1 transition-transform">Start →</span>
+            </div>
+          </Link>
+
+          {certificationExpansion.map((cert) => (
+            <Link
+              key={cert.id}
+              href={`/certifications/${cert.id}`}
+              className="group flex flex-col rounded-[2rem] border border-slate-200 bg-white p-6 transition-all hover:border-slate-900 hover:shadow-xl"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-colors group-hover:bg-slate-900 group-hover:text-white">
+                <ShieldCheck size={24} />
+              </div>
+              <h3 className="mt-6 font-bold text-slate-900">{cert.title.replace('CompTIA ', '')}</h3>
+              <p className="mt-2 text-sm text-slate-500">{cert.description.split('.')[0]}.</p>
+              <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
+                <span>Coming Soon</span>
+                <span className="text-slate-900 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">Explore →</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* Daily Challenge */}
       <section className="rounded-[2.5rem] border border-slate-200 bg-white p-10 shadow-sm">

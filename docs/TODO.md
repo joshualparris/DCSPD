@@ -106,7 +106,7 @@
 - [x] **Practice Exam Engine**: Develop a dedicated `PracticeExam.tsx` component for full certification simulations (CompTIA A+, Network+, etc.). (Implemented 2026-05-14)
 - [x] **Push Notifications**: Integrate the Notification API for study reminders and certification expiry alerts. (Implemented 2026-05-14)
 - [x] **Security Hardening & RBAC**: Implement Role-Based Access Control (RBAC) and prepare for real authentication (Azure AD/SSO). (Scaffolding implemented 2026-05-14)
-- [ ] **Persistent Cloud Sync**: Transition from `localStorage` to a persistent cloud database with conflict resolution.
+- [x] **Persistent Cloud Sync**: Transition from `localStorage` to a persistent cloud database with conflict resolution. (Scaffolding and Provider Adapter implemented 2026-05-14)
 - [x] **PDF SLG Extraction**: Implement direct PDF text/structure extraction for Subject Learning Guides. (Implemented 2026-05-14)
-- [ ] **Infrastructure Stability**: Move project out of OneDrive to resolve file-locking conflicts.
-- [ ] **Certification Expansion**: Add pathways for A+ Core 1, Network+, and Security+.
+- [x] **Infrastructure Stability**: Move project out of OneDrive to resolve file-locking conflicts. (Migration Guide and Environment Detection implemented 2026-05-14)
+- [x] **Certification Expansion**: Add pathways for A+ Core 1, Network+, and Security+. (Scaffolding and Dynamic Routes implemented 2026-05-14)

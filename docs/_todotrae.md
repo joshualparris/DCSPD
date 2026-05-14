@@ -211,5 +211,7 @@ filePath: c:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\DCS
 [x] Implement Push Notifications (Notification API for PD reminders).
 [x] Implement basic RBAC and Security hardening.
 [x] Implement PDF SLG Extraction.
-[ ] Implement Persistent Cloud Sync.
-[ ] Final verification and ticking off tasks in all documentation.
+[x] Implement Persistent Cloud Sync.
+[x] Implement Infrastructure Stability (Migration Guide & Warning).
+[x] Implement Certification Expansion (Core 1, Network+, Security+).
+[x] Final verification and ticking off tasks in all documentation.
