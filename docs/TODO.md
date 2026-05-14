@@ -102,10 +102,10 @@
 
 ## P3: Future Hardening & Production Readiness
 
-- [ ] **Offline Downloads (IndexedDB)**: Implement full offline content storage using IndexedDB for modules and media assets.
-- [ ] **Practice Exam Engine**: Develop a dedicated `PracticeExam.tsx` component for full certification simulations (CompTIA A+, Network+, etc.).
-- [ ] **Push Notifications**: Integrate the Notification API for study reminders and certification expiry alerts.
-- [ ] **Security Hardening & RBAC**: Implement Role-Based Access Control (RBAC) and prepare for real authentication (Azure AD/SSO).
+- [x] **Offline Downloads (IndexedDB)**: Implement full offline content storage using IndexedDB for modules and media assets. (Implemented 2026-05-14)
+- [x] **Practice Exam Engine**: Develop a dedicated `PracticeExam.tsx` component for full certification simulations (CompTIA A+, Network+, etc.). (Implemented 2026-05-14)
+- [x] **Push Notifications**: Integrate the Notification API for study reminders and certification expiry alerts. (Implemented 2026-05-14)
+- [x] **Security Hardening & RBAC**: Implement Role-Based Access Control (RBAC) and prepare for real authentication (Azure AD/SSO). (Scaffolding implemented 2026-05-14)
 - [ ] **Persistent Cloud Sync**: Transition from `localStorage` to a persistent cloud database with conflict resolution.
 - [ ] **PDF SLG Extraction**: Implement direct PDF text/structure extraction for Subject Learning Guides.
 - [ ] **Infrastructure Stability**: Move project out of OneDrive to resolve file-locking conflicts.
