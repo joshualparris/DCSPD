@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import ModuleDetail from '../../../src/components/modules/ModuleDetail';
 import { getModuleById as getBaseModuleById } from '../../../src/data/modules';
 import { getCustomModules } from '../../../src/lib/customModules';
+import { useOfflineDownload } from '../../../src/hooks/useOfflineDownload';
 import type { TrainingModule } from '../../../src/types/training';
 
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
@@ -13,16 +14,36 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
     return getBaseModuleById(params.moduleId);
   });
 
+  const { getDownloadedModule, isReady } = useOfflineDownload();
+
   useEffect(() => {
     setHasMounted(true);
-    if (!moduleData) {
-      // On mount, if not found in base, check custom (client only)
+    
+    async function loadModule() {
+      if (moduleData) return;
+
+      // 1. Try custom modules (client-only)
       const custom = getCustomModules().find(m => m.id === params.moduleId);
       if (custom) {
         setModuleData(custom);
+        return;
+      }
+
+      // 2. Try IndexedDB if ready (offline support)
+      if (isReady) {
+        try {
+          const downloaded = await getDownloadedModule(params.moduleId);
+          if (downloaded) {
+            setModuleData(downloaded);
+          }
+        } catch (err) {
+          console.error('Failed to load offline module', err);
+        }
       }
     }
-  }, [params.moduleId, moduleData]);
+
+    loadModule();
+  }, [params.moduleId, moduleData, isReady, getDownloadedModule]);
 
   if (!hasMounted) {
     return (

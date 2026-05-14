@@ -6,6 +6,7 @@ export const navigationItems = [
   { href: '/scheduler', label: 'PD Scheduler' },
   { href: '/modules', label: 'Modules' },
   { href: '/certifications/aplus-core-2', label: 'A+ Core 2' },
+  { href: '/practice-exam', label: 'Practice Exam' },
   { href: '/scenarios', label: 'Scenario Lab' },
   { href: '/simulations/network', label: 'Network Map' },
   { href: '/simulations/classroom-desk', label: 'Classroom Desk' },

@@ -24,6 +24,8 @@ import AssessmentSession from '../assessment/AssessmentSession';
 import FlashcardDeck from '../flashcards/FlashcardDeck';
 import { addModulePoints, awardBadge, PREDEFINED_BADGES } from '../../lib/gamification';
 import { trackUsageInteraction } from '../../hooks/useUsageTracking';
+import { useOfflineDownload } from '../../hooks/useOfflineDownload';
+import { Download, Trash2, CheckCircle } from 'lucide-react';
 import ModuleQuestionFirst from './ModuleQuestionFirst';
 import ModuleTabs from './ModuleTabs';
 import SectionReader from './SectionReader';
@@ -40,6 +42,21 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
   const [tab, setTab] = useState('Questions First');
   const openedModuleRef = useRef<string | null>(null);
   const route = `/modules/${moduleData.id}`;
+
+  const { downloadedModuleIds, downloadModule, removeModule } = useOfflineDownload();
+  const isDownloaded = downloadedModuleIds.has(moduleData.id);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      await downloadModule(moduleData);
+    } catch (error) {
+      console.error('Download failed', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   useEffect(() => {
     setProgress(ensureModuleProgress(getStoredProgressSnapshot(), moduleData));
@@ -173,6 +190,33 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
                   {tag}
                 </span>
               ))}
+            </div>
+
+            <div className="mt-6 flex items-center gap-3">
+              {isDownloaded ? (
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+                    <CheckCircle size={14} />
+                    Available offline
+                  </span>
+                  <button
+                    onClick={() => removeModule(moduleData.id)}
+                    className="flex items-center gap-1.5 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-xs font-medium text-red-600 transition hover:bg-red-100"
+                  >
+                    <Trash2 size={12} />
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  className="flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
+                >
+                  <Download size={16} />
+                  {isDownloading ? 'Downloading...' : 'Download for offline use'}
+                </button>
+              )}
             </div>
           </div>
 

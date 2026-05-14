@@ -40,6 +40,26 @@ self.addEventListener('activate', (event) => {
 async function networkFirst(request) {
   const cache = await caches.open(CACHE_NAME);
 
+  // Special handling for module pages to support offline access for downloaded modules
+  if (request.url.includes('/modules/') && !request.url.includes('/api/')) {
+    try {
+      const response = await fetch(request);
+      if (response.ok) {
+        cache.put(request, response.clone());
+        return response;
+      }
+    } catch (error) {
+      // Offline: If it's a module page, we try to return the cached shell
+      // The client-side component (ModulePage) will then try to load data from IndexedDB
+      const cached = await cache.match(request);
+      if (cached) return cached;
+      
+      // Fallback to the generic module list page or the base module shell
+      const moduleList = await cache.match('/modules');
+      if (moduleList) return moduleList;
+    }
+  }
+
   try {
     const response = await fetch(request);
     if (response.ok) {

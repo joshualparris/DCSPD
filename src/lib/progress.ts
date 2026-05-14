@@ -193,7 +193,17 @@ export type CertificationAssessmentAttempt = {
   pdEntryId?: string;
 };
 
+export type UserRole = 'learner' | 'senior' | 'admin';
+
+export type UserProfile = {
+  id: string;
+  name: string;
+  role: UserRole;
+  avatar?: string;
+};
+
 export type UserProgress = {
+  profile?: UserProfile;
   lastOpenedModuleId?: string;
   modules: Record<string, ModuleProgress>;
   assessmentAttempts: AssessmentAttempt[];
@@ -223,6 +233,11 @@ const STORAGE_KEY = 'dcsprep_learning_cockpit_v4';
 
 export function getDefaultProgress(): UserProgress {
   return {
+    profile: {
+      id: 'local-user',
+      name: 'Joshua',
+      role: 'learner'
+    },
     modules: {},
     assessmentAttempts: [],
     academicAssessmentAttempts: [],

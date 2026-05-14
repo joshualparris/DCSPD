@@ -2,7 +2,7 @@
 
 import { type ChangeEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3 } from 'lucide-react';
+import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import { 
   MODULE_GENERATION_PROMPT, 
@@ -93,10 +93,33 @@ export default function SettingsPage() {
     message: 'Scheduler settings use the default PD block timetable until saved.'
   });
 
+  const [notificationStatus, setNotificationStatus] = useState<'default' | 'granted' | 'denied'>('default');
+
   useEffect(() => {
     setSchedulerSettings(loadSchedulerSettings());
     setUsageTrackingEnabledState(isUsageTrackingEnabled());
+    
+    if ('Notification' in window) {
+      setNotificationStatus(Notification.permission);
+    }
   }, []);
+
+  async function requestNotificationPermission() {
+    if (!('Notification' in window)) {
+      alert('This browser does not support desktop notifications.');
+      return;
+    }
+
+    const permission = await Notification.requestPermission();
+    setNotificationStatus(permission);
+    
+    if (permission === 'granted') {
+      new Notification('Notifications Enabled', {
+        body: 'You will now receive study reminders and certification alerts.',
+        icon: '/icons/icon.svg'
+      });
+    }
+  }
 
   function handleReset() {
     if (window.confirm('Reset all DCSPrep local progress and logs? This cannot be undone.')) {
@@ -423,6 +446,44 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <Bell size={18} />
+              Push Notifications
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Study reminders and alerts</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Receive browser notifications for scheduled study blocks, flashcard reviews, and certification expiration alerts.
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Permission status: <span className="font-semibold">{notificationStatus}</span>
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={requestNotificationPermission}
+            disabled={notificationStatus === 'granted' || notificationStatus === 'denied'}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              notificationStatus === 'granted' 
+                ? 'bg-emerald-100 text-emerald-700 cursor-default' 
+                : notificationStatus === 'denied'
+                ? 'bg-red-100 text-red-700 cursor-default'
+                : 'bg-slate-900 text-white hover:scale-105 active:scale-95'
+            }`}
+          >
+            {notificationStatus === 'granted' ? (
+              <span className="flex items-center gap-2"><Bell size={16} /> Notifications Active</span>
+            ) : notificationStatus === 'denied' ? (
+              <span className="flex items-center gap-2"><BellOff size={16} /> Notifications Blocked</span>
+            ) : (
+              'Enable Notifications'
+            )}
+          </button>
+        </div>
+      </section>
+
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <div className="max-w-3xl">
           <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Settings</div>

@@ -99,3 +99,14 @@
 - [x] Prefer triage, first-line troubleshooting, evidence capture, communication, and escalation quality over fake-admin practice. Summary: the new modules, scenarios, and focus tools all centre on first-line reasoning and note quality instead of production changes in `src/data/modules.ts`, `src/data/scenarios.ts`, and `app/focus/page.tsx`. Proof: scenario completion now requires a scored escalation note in `app/scenarios/page.tsx`.
 - [x] Do not copy confidential internal DCS procedures, credentials, student details, staff details, or private system data into app content. Summary: the new safe-prompt workflow, knowledge-base guidance, evidence-pack warning, and phishing scenario all explicitly forbid copying live data in `src/components/modules/ModuleQuestionFirst.tsx`, `app/knowledge-base-lab/page.tsx`, and `app/evidence-pack/page.tsx`. Proof: privacy-safe reminders are embedded in those files.
 - [x] Use internal DCS documents, Teams posts, and school-owned resources as source material for practice design, not as content to reproduce verbatim. Summary: the module SQ3R prompts and safe-source workflow now teach abstraction instead of copying in `src/data/modules.ts` and `src/components/modules/ModuleQuestionFirst.tsx`. Proof: the knowledge-base workflow repeats the same rule in `app/knowledge-base-lab/page.tsx`.
+
+## P3: Future Hardening & Production Readiness
+
+- [ ] **Offline Downloads (IndexedDB)**: Implement full offline content storage using IndexedDB for modules and media assets.
+- [ ] **Practice Exam Engine**: Develop a dedicated `PracticeExam.tsx` component for full certification simulations (CompTIA A+, Network+, etc.).
+- [ ] **Push Notifications**: Integrate the Notification API for study reminders and certification expiry alerts.
+- [ ] **Security Hardening & RBAC**: Implement Role-Based Access Control (RBAC) and prepare for real authentication (Azure AD/SSO).
+- [ ] **Persistent Cloud Sync**: Transition from `localStorage` to a persistent cloud database with conflict resolution.
+- [ ] **PDF SLG Extraction**: Implement direct PDF text/structure extraction for Subject Learning Guides.
+- [ ] **Infrastructure Stability**: Move project out of OneDrive to resolve file-locking conflicts.
+- [ ] **Certification Expansion**: Add pathways for A+ Core 1, Network+, and Security+.
