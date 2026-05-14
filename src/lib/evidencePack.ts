@@ -15,6 +15,7 @@ export type EvidencePackOptions = {
   includeReflections: boolean;
   includeFeedbackEvidence: boolean;
   includeReadiness: boolean;
+  managerSafe?: boolean;
 };
 
 function safeLine(text: string) {
@@ -127,27 +128,42 @@ export function generateEvidencePackMarkdown(progress: UserProgress, options: Ev
     : [];
 
   return [
-    '# DCSPrep Professional Development Evidence Pack',
+    `# DCSPrep Professional Development ${options.managerSafe ? 'Executive Summary' : 'Evidence Pack'}`,
     '',
     `Period: ${summary.startDateIso} to ${summary.endDateIso}`,
     '',
-    '## Privacy reminder',
-    'Do not include live ticket details, student names, parent names, staff names, credentials, IP addresses, internal URLs, screenshots, device serials, or confidential DCS procedures.',
-    '',
-    '## Summary',
-    `- Total PD time: ${summary.totalMinutes} minutes`,
-    `- PD entries logged: ${summary.entryCount}`,
-    `- Modules touched: ${modulesWithActivity.length || summary.moduleCount}`,
-    `- Scenarios completed: ${completedScenarioRuns.length}`,
-    `- Practical outputs completed: ${practicalOutputs.length}`,
-    `- Feedback evidence items: ${includeFeedbackEvidence ? feedbackEvidenceCount : 0}`,
-    `- Module quiz feedback items: ${includeFeedbackEvidence ? standardFeedback.length : 0}`,
-    `- Academic PD graded assessments: ${includeFeedbackEvidence ? academicFeedback.length : 0}`,
-    `- Certification graded assessments: ${includeFeedbackEvidence ? certificationFeedback.length : 0}`,
-    `- Roleplay sessions reviewed: ${includeFeedbackEvidence ? roleplayFeedback.length : 0}`,
-    `- Weak areas improved: ${summary.weakAreasImproved.join(', ') || 'None recorded yet'}`,
-    `- Current focus areas: ${summary.currentWeakAreas.join(', ') || 'Not enough evidence yet'}`,
-    '',
+    ...(options.managerSafe
+      ? [
+          '## Executive Overview',
+          `During this period, technical development focused on **${summary.currentWeakAreas.slice(0, 3).join(', ') || 'foundational IT support'}**.`,
+          `Total professional development time recorded: **${summary.totalMinutes} minutes**.`,
+          '',
+          '### Core Competencies Demonstrated',
+          `- **Troubleshooting**: Completed ${completedScenarioRuns.length} multi-step technical simulations.`,
+          `- **Knowledge Base**: Active engagement with ${modulesWithActivity.length || summary.moduleCount} specialized school IT modules.`,
+          `- **Documentation**: Generated ${practicalOutputs.length} practical support outputs and evidence-rich ticket notes.`,
+          `- **Readiness**: Current proficiency tracking shows strongest alignment in **${readiness.sort((a, b) => b.score - a.score)[0]?.label || 'core support'}** domains.`,
+          ''
+        ]
+      : [
+          '## Privacy reminder',
+          'Do not include live ticket details, student names, parent names, staff names, credentials, IP addresses, internal URLs, screenshots, device serials, or confidential DCS procedures.',
+          '',
+          '## Summary',
+          `- Total PD time: ${summary.totalMinutes} minutes`,
+          `- PD entries logged: ${summary.entryCount}`,
+          `- Modules touched: ${modulesWithActivity.length || summary.moduleCount}`,
+          `- Scenarios completed: ${completedScenarioRuns.length}`,
+          `- Practical outputs completed: ${practicalOutputs.length}`,
+          `- Feedback evidence items: ${includeFeedbackEvidence ? feedbackEvidenceCount : 0}`,
+          `- Module quiz feedback items: ${includeFeedbackEvidence ? standardFeedback.length : 0}`,
+          `- Academic PD graded assessments: ${includeFeedbackEvidence ? academicFeedback.length : 0}`,
+          `- Certification graded assessments: ${includeFeedbackEvidence ? certificationFeedback.length : 0}`,
+          `- Roleplay sessions reviewed: ${includeFeedbackEvidence ? roleplayFeedback.length : 0}`,
+          `- Weak areas improved: ${summary.weakAreasImproved.join(', ') || 'None recorded yet'}`,
+          `- Current focus areas: ${summary.currentWeakAreas.join(', ') || 'Not enough evidence yet'}`,
+          ''
+        ]),
     ...(options.includeModules
       ? [
           '## Modules studied',

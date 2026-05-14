@@ -14,6 +14,7 @@ import {
   type PdEntryType,
   type UserProgress
 } from '../../src/lib/progress';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 
 const templates = [
   {
@@ -200,6 +201,18 @@ export default function PdLogPage() {
     };
 
     setProgress((current) => addPdEntry(current, entry));
+    trackUsageInteraction({
+      eventType: 'pd_log_entry_created',
+      route: '/pd-log',
+      label: form.type,
+      contentType: 'evidence',
+      activityCategory: form.type === 'reflection' ? 'reflection' : 'writing',
+      durationSeconds: form.minutes * 60,
+      completed: true,
+      metadata: {
+        resultCount: 1
+      }
+    });
 
     setForm({
       date: getTodayDateKey(),
@@ -218,6 +231,17 @@ export default function PdLogPage() {
 
   async function copyMarkdown() {
     await navigator.clipboard.writeText(summaryMarkdown);
+    trackUsageInteraction({
+      eventType: 'evidence_export_created',
+      route: '/pd-log',
+      label: 'PD summary copied',
+      contentType: 'evidence',
+      activityCategory: 'evidence',
+      completed: true,
+      metadata: {
+        resultCount: monthlyEntries.length
+      }
+    });
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
   }

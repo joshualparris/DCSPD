@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import Topbar from '../src/components/shell/Topbar';
 import Sidebar from '../src/components/shell/Sidebar';
 import PwaRegistration from '../src/components/shell/PwaRegistration';
+import AppUsageTracker from '../src/components/usage/AppUsageTracker';
 
 export const metadata: Metadata = {
   title: 'DCSPrep',
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <PwaRegistration />
+        <AppUsageTracker />
         <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(226,232,240,0.6),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2f7_100%)]">
           <Topbar />
           <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-[280px_minmax(0,1fr)]">

@@ -68,7 +68,7 @@ export function scoreToReviewRating(score: number): ReviewRating {
 export function getDueFlashcards(modules: TrainingModule[], progress: UserProgress) {
   return modules.flatMap((module) =>
     Object.values(progress.modules[module.id]?.flashcards || {}).filter(
-      (card) => isDue(card.dueDateIso)
+      (card) => card.reviewCount > 0 && isDue(card.dueDateIso)
     )
   );
 }

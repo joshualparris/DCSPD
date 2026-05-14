@@ -4,19 +4,28 @@ import { useEffect, useState } from 'react';
 import type { Flashcard } from '../../types/training';
 import type { FlashcardProgress } from '../../lib/progress';
 import { leitnerBoxLabels, type ReviewRating } from '../../lib/spacedRepetition';
+import { trackUsageInteraction } from '../../hooks/useUsageTracking';
 import FlashcardCard from './FlashcardCard';
 
 type FlashcardDeckProps = {
   cards: Flashcard[];
   progress: Record<string, FlashcardProgress>;
   onReview: (cardId: string, rating: ReviewRating) => void;
+  analyticsContext?: {
+    moduleId: string;
+    moduleTitle: string;
+    route: string;
+  };
 };
 
 const ratings: ReviewRating[] = ['again', 'hard', 'good', 'easy'];
 
-export default function FlashcardDeck({ cards, progress, onReview }: FlashcardDeckProps) {
+export default function FlashcardDeck({ cards, progress, onReview, analyticsContext }: FlashcardDeckProps) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const analyticsModuleId = analyticsContext?.moduleId;
+  const analyticsModuleTitle = analyticsContext?.moduleTitle;
+  const analyticsRoute = analyticsContext?.route;
 
   useEffect(() => {
     setFlipped(false);
@@ -24,6 +33,21 @@ export default function FlashcardDeck({ cards, progress, onReview }: FlashcardDe
 
   const card = cards[index];
   const cardProgress = card ? progress[card.id] : undefined;
+
+  useEffect(() => {
+    if (!card || !analyticsModuleId || !analyticsModuleTitle || !analyticsRoute) {
+      return;
+    }
+
+    trackUsageInteraction({
+      eventType: 'flashcard_view',
+      route: analyticsRoute,
+      label: `${analyticsModuleTitle} flashcard`,
+      contentType: 'module',
+      contentId: analyticsModuleId,
+      activityCategory: 'flashcards'
+    });
+  }, [analyticsModuleId, analyticsModuleTitle, analyticsRoute, card]);
 
   if (!card) {
     return (
@@ -52,6 +76,17 @@ export default function FlashcardDeck({ cards, progress, onReview }: FlashcardDe
           <button
             key={rating}
             onClick={() => {
+              if (analyticsContext) {
+                trackUsageInteraction({
+                  eventType: 'flashcard_answered',
+                  route: analyticsContext.route,
+                  label: `${analyticsContext.moduleTitle} flashcard ${rating}`,
+                  contentType: 'module',
+                  contentId: analyticsContext.moduleId,
+                  activityCategory: 'flashcards',
+                  completed: true
+                });
+              }
               onReview(card.id, rating);
               setIndex(index === cards.length - 1 ? 0 : index + 1);
             }}

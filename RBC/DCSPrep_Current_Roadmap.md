@@ -1,6 +1,6 @@
 # DCSPrep Current Roadmap
 
-Updated: 2026-05-08
+Updated: 2026-05-14
 
 This is the current source of truth for what is done, what was upgraded in the latest passes, and what remains open. The app is now a local-first DCS IT professional-development platform with Academic PD, AI grading, evidence logging, roleplay coaching, skill recommendations, certificates, admin tools, simulations, exports, and backup/sync support.
 
@@ -45,6 +45,9 @@ This is the current source of truth for what is done, what was upgraded in the l
 - [x] Added multiple-choice quick checks plus long-form AI feedback to every Core 2 lesson assessment.
 - [x] Added certification assessment attempt storage so Core 2 combined scores, MCQ scores, and long-form AI scores persist in DCSPrep progress and PD evidence.
 - [x] Added Core 2 certification attempts to the Feedback Log and Evidence Pack evidence summaries.
+- [x] Added `/cheat-sheets` for printable, privacy-safe quick-fix support sheets covering ViewBoard/audio, PaperCut, Wi-Fi, login/MFA, onboarding, and website filtering.
+- [x] Added `/ticket-data-import` for synthetic ticket CSV import, category/priority/channel summaries, keyword extraction, privacy warnings, and Markdown export.
+- [x] Added `/recent-updates` plus a dashboard preview so new and changed features link directly to their app routes.
 
 ## Still Open
 
@@ -54,10 +57,10 @@ This is the current source of truth for what is done, what was upgraded in the l
 - [ ] Mobile/offline QA on an actual phone install, offline launch, and route caching.
 - [ ] Live OurDCS API/write integration after governance approval.
 - [ ] Live LMS/HRIS integration or full SCORM package export after system/API decisions.
-- [ ] Quick-fix printable cheat sheets.
+- [x] Quick-fix printable cheat sheets.
 - [ ] Add A+ Core 1 220-1201 as the matching certification pathway.
 - [ ] Add Network+ N10-009 and Security+ SY0-701 pathways with the same read/watch/assess pattern.
-- [ ] Synthetic ticket CSV importer for data-analysis practice.
+- [x] Synthetic ticket CSV importer for data-analysis practice.
 - [ ] Peer review simulation for senior-tech critique.
 - [ ] Social learning features, if a privacy-safe governance model is approved.
 - [ ] Browser push notifications.
@@ -73,4 +76,4 @@ This is the current source of truth for what is done, what was upgraded in the l
 2. Add direct admin publishing for subject drafts, with review/rollback safety.
 3. Replace the local sync adapter with an authenticated cloud database provider.
 4. Run mobile/offline QA on an actual phone and fix any install/cache issues.
-5. Add quick-fix printable cheat sheets and the synthetic ticket CSV importer.
+5. Add A+ Core 1, Network+, and Security+ certification pathways after the current hardening work.

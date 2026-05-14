@@ -12,6 +12,7 @@ import {
   type UserProgress
 } from '../../src/lib/progress';
 import { isDue, leitnerBoxLabels, type ReviewRating } from '../../src/lib/spacedRepetition';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 
 const ratings: ReviewRating[] = ['again', 'hard', 'good', 'easy'];
 
@@ -91,12 +92,20 @@ export default function DueTodayPage() {
                     {leitnerBoxLabels[progress.modules[moduleId]?.flashcards?.[card.id]?.leitnerBox || 1]}
                   </div>
                   <button
-                    onClick={() =>
+                    onClick={() => {
+                      trackUsageInteraction({
+                        eventType: 'flashcard_view',
+                        route: '/due-today',
+                        label: `${moduleTitle} due flashcard`,
+                        contentType: 'module',
+                        contentId: moduleId,
+                        activityCategory: 'flashcards'
+                      });
                       setRevealedCards((current) => ({
                         ...current,
                         [revealKey]: !current[revealKey]
-                      }))
-                    }
+                      }));
+                    }}
                     className="mt-3 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700"
                   >
                     {revealed ? 'Show prompt' : 'Reveal answer'}
@@ -105,9 +114,18 @@ export default function DueTodayPage() {
                     {ratings.map((rating) => (
                       <button
                         key={rating}
-                        onClick={() =>
-                          setProgress((current) => recordFlashcardReview(current, moduleId, card.id, rating))
-                        }
+                        onClick={() => {
+                          trackUsageInteraction({
+                            eventType: 'flashcard_answered',
+                            route: '/due-today',
+                            label: `${moduleTitle} due flashcard ${rating}`,
+                            contentType: 'module',
+                            contentId: moduleId,
+                            activityCategory: 'flashcards',
+                            completed: true
+                          });
+                          setProgress((current) => recordFlashcardReview(current, moduleId, card.id, rating));
+                        }}
                         className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium capitalize text-slate-800"
                       >
                         {rating}

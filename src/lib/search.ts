@@ -2,12 +2,27 @@ import { modules as baseModules } from '../data/modules';
 import { scenarios as baseScenarios } from '../data/scenarios';
 import { academicSubjects as baseAcademicSubjects } from '../data/academicSubjects';
 import { roleplayScenarios as baseRoleplays } from '../data/roleplayScenarios';
-import { getCustomModules, getCustomRoleplays, getCustomScenarios, getCustomAcademic } from './customModules';
+import {
+  getCustomModules,
+  getCustomRoleplays,
+  getCustomScenarios,
+  getCustomAcademic,
+  getCustomPlaybooks,
+  getCustomAssets
+} from './customModules';
 import { AcademicSubject } from '../types/academic';
 import { Scenario } from '../types/scenarios';
 import { TrainingModule } from '../types/training';
 
-export type SearchResultType = 'module' | 'scenario' | 'academic' | 'flashcard' | 'question' | 'roleplay';
+export type SearchResultType =
+  | 'module'
+  | 'scenario'
+  | 'academic'
+  | 'flashcard'
+  | 'question'
+  | 'roleplay'
+  | 'playbook'
+  | 'asset';
 
 export interface SearchResult {
   id: string;
@@ -30,6 +45,8 @@ export function globalSearch(query: string): SearchResult[] {
    const scenarios = [...baseScenarios, ...getCustomScenarios()];
    const academicSubjects = [...baseAcademicSubjects, ...getCustomAcademic()];
    const roleplays = [...baseRoleplays, ...getCustomRoleplays()];
+   const playbooks = getCustomPlaybooks();
+   const assets = getCustomAssets();
 
   // Search Modules
   modules.forEach((m) => {
@@ -139,6 +156,45 @@ export function globalSearch(query: string): SearchResult[] {
         href: `/simulations/roleplay`,
         tags: r.focus,
         context: r.archetype
+      });
+    }
+  });
+
+  // Search Playbooks
+  playbooks.forEach((p) => {
+    if (
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.tags.some((t) => t.toLowerCase().includes(q)) ||
+      p.symptoms.some((s) => s.toLowerCase().includes(q))
+    ) {
+      results.push({
+        id: p.id,
+        type: 'playbook',
+        title: p.title,
+        description: p.description,
+        href: `/playbooks/${p.id}`,
+        tags: p.tags,
+        context: `${p.level} Playbook`
+      });
+    }
+  });
+
+  // Search Assets
+  assets.forEach((a) => {
+    if (
+      a.name.toLowerCase().includes(q) ||
+      a.description.toLowerCase().includes(q) ||
+      a.category.toLowerCase().includes(q) ||
+      a.commonSymptoms.some((s) => s.toLowerCase().includes(q))
+    ) {
+      results.push({
+        id: a.id,
+        type: 'asset',
+        title: a.name,
+        description: a.description,
+        href: `/assets/${a.id}`,
+        context: `DCS Asset Profile: ${a.category}`
       });
     }
   });

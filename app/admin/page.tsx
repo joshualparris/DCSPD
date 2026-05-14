@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ClipboardList, Database, FileInput, Settings2 } from 'lucide-react';
+import { BarChart3, ClipboardList, Database, FileInput, Settings2 } from 'lucide-react';
 
 const adminLinks = [
   {
@@ -19,6 +19,12 @@ const adminLinks = [
     title: 'LMS / HRIS Exports',
     description: 'Generate SCORM-style manifests, HRIS templates, and manager-safe analytics exports.',
     icon: Settings2
+  },
+  {
+    href: '/ticket-data-import',
+    title: 'Synthetic Ticket CSV Import',
+    description: 'Paste fake ticket rows and generate privacy-safe category, priority, channel, and keyword summaries.',
+    icon: BarChart3
   },
   {
     href: '/sync',

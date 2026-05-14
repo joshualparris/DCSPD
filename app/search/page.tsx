@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo, Suspense } from 'react';
+import { useState, useEffect, useMemo, Suspense, useRef } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { globalSearch, SearchResult } from '../../src/lib/search';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -11,6 +12,7 @@ function SearchContent() {
   
   const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<SearchResult[]>([]);
+  const lastTrackedQueryRef = useRef('');
 
   useEffect(() => {
     if (query) {
@@ -19,6 +21,29 @@ function SearchContent() {
       setResults([]);
     }
   }, [query]);
+
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (trimmed.length < 2 || lastTrackedQueryRef.current === trimmed) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      lastTrackedQueryRef.current = trimmed;
+      trackUsageInteraction({
+        eventType: 'search_performed',
+        route: '/search',
+        label: `Search (${trimmed.length} characters)`,
+        contentType: 'search',
+        activityCategory: 'search',
+        metadata: {
+          resultCount: results.length
+        }
+      });
+    }, 600);
+
+    return () => window.clearTimeout(timer);
+  }, [query, results.length]);
 
   const groupedResults = useMemo(() => {
     return results.reduce((acc, result) => {
@@ -86,6 +111,19 @@ function SearchContent() {
                 <Link
                   key={result.id}
                   href={result.href}
+                  onClick={() =>
+                    trackUsageInteraction({
+                      eventType: 'section_view',
+                      route: '/search',
+                      label: `${result.type} result opened`,
+                      contentType: 'search',
+                      contentId: result.id,
+                      activityCategory: 'search',
+                      metadata: {
+                        resultCount: results.length
+                      }
+                    })
+                  }
                   className="group flex flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:border-slate-900 hover:shadow-md"
                 >
                   <div className="flex items-start justify-between">

@@ -272,8 +272,8 @@ Moving from a learning app to a mission-critical DCS Support Companion.
 
 ### 4. Operations & Workflow
 * [ ] **"Common Pitfalls" Tracker**: A dynamic dashboard area highlighting your most frequent assessment mistakes.
-* [ ] **Quick-Fix "Cheat Sheets"**: One-page printable/PDF summaries for high-frequency issues (ViewBoard/PaperCut).
-* [ ] **Bulk Data Importer**: Import synthetic ticket data (CSV) for advanced Data Critical Thinking analysis.
+* [x] **Quick-Fix "Cheat Sheets"**: One-page printable/PDF summaries for high-frequency issues (ViewBoard/PaperCut). Summary: added `/cheat-sheets` with printable Level 1-safe sheets for ViewBoard/audio, PaperCut, Wi-Fi, login/MFA, onboarding, and website filtering. Proof: source data lives in `src/data/cheatSheets.ts` and coverage is tested in `src/tests/cheatSheetsAndTicketImport.test.ts`.
+* [x] **Bulk Data Importer**: Import synthetic ticket data (CSV) for advanced Data Critical Thinking analysis. Summary: added `/ticket-data-import` with pasted/uploaded synthetic CSV parsing, category/priority/channel summaries, keyword extraction, privacy warnings, and Markdown export. Proof: parser logic lives in `src/lib/ticketCsvImport.ts` and is tested in `src/tests/cheatSheetsAndTicketImport.test.ts`.
 * [ ] **Peer Review Simulation**: AI-generated feedback simulating how a senior tech (Paul) would critique your notes.
 * [x] **Supervisor Dashboard**: A read-only analytics view for IT managers to identify skill gaps and evidence patterns.
 
@@ -327,4 +327,4 @@ Every major roadmap item is now implemented in the codebase.
 ### General Maintenance:
 - [ ] Move app out of OneDrive to prevent file locking issues.
 - [ ] Final review of all content for privacy and Level 1 boundaries.
-- [ ] Continue using the "AI Mentor" on the dashboard to guide daily PD.
+- [x] Continue using the "AI Mentor" on the dashboard to guide daily PD. Summary: added a dedicated AI Mentor panel on the dashboard using `getDashboardRecommendation(progress)` so daily PD guidance is visible before the broader recommendation queue. Proof: implemented in `app/page.tsx`.

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { modules } from '../../src/data/modules';
 import { generateEvidencePackMarkdown, type EvidencePackOptions } from '../../src/lib/evidencePack';
 import { getStoredProgressSnapshot, getInitialProgressSnapshot, type UserProgress } from '../../src/lib/progress';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 
 function getTodayDateKey() {
   const now = new Date();
@@ -37,7 +38,8 @@ export default function EvidencePackPage() {
     includePracticalOutputs: true,
     includeReflections: true,
     includeFeedbackEvidence: true,
-    includeReadiness: true
+    includeReadiness: true,
+    managerSafe: false
   }));
 
   useEffect(() => {
@@ -61,8 +63,34 @@ export default function EvidencePackPage() {
 
   async function copyMarkdown() {
     await navigator.clipboard.writeText(markdown);
+    trackUsageInteraction({
+      eventType: 'evidence_export_created',
+      route: '/evidence-pack',
+      label: 'Evidence pack copied',
+      contentType: 'evidence',
+      activityCategory: 'evidence',
+      completed: true,
+      metadata: {
+        resultCount: markdown.length
+      }
+    });
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
+  }
+
+  function downloadEvidencePack() {
+    downloadTextFile(`dcs-prep-evidence-pack-${options.startDateIso}-to-${options.endDateIso}.md`, markdown);
+    trackUsageInteraction({
+      eventType: 'evidence_export_created',
+      route: '/evidence-pack',
+      label: 'Evidence pack downloaded',
+      contentType: 'evidence',
+      activityCategory: 'evidence',
+      completed: true,
+      metadata: {
+        resultCount: markdown.length
+      }
+    });
   }
 
   return (
@@ -87,7 +115,7 @@ export default function EvidencePackPage() {
               {copied ? 'Evidence pack copied' : 'Copy Markdown'}
             </button>
             <button
-              onClick={() => downloadTextFile(`dcs-prep-evidence-pack-${options.startDateIso}-to-${options.endDateIso}.md`, markdown)}
+              onClick={downloadEvidencePack}
               className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white"
             >
               Download .md
@@ -147,6 +175,21 @@ export default function EvidencePackPage() {
                 <span>{label}</span>
               </label>
             ))}
+
+            <div className="pt-4 border-t border-slate-100">
+              <label className="flex items-start gap-3 rounded-2xl bg-blue-50 p-4 text-sm text-blue-700 border border-blue-100">
+                <input
+                  type="checkbox"
+                  checked={options.managerSafe}
+                  onChange={(event) => setOptions((current) => ({ ...current, managerSafe: event.target.checked }))}
+                  className="mt-1 h-4 w-4"
+                />
+                <div>
+                  <span className="font-bold">Manager-safe summary mode</span>
+                  <p className="mt-1 text-xs opacity-80">Strips out technical details and focuses on high-level competency and professional growth.</p>
+                </div>
+              </label>
+            </div>
           </div>
         </div>
 

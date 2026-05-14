@@ -10,6 +10,7 @@ import {
   RoleplayExchange,
   RoleplaySentiment
 } from '../../lib/progress';
+import { trackUsageInteraction } from '../../hooks/useUsageTracking';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -19,12 +20,13 @@ type Message = {
 };
 
 type AiRoleplayChatProps = {
+  roleplayId?: string;
   persona: string;
   scenario: string;
   initialPrompt?: string;
 };
 
-export default function AiRoleplayChat({ persona, scenario, initialPrompt }: AiRoleplayChatProps) {
+export default function AiRoleplayChat({ roleplayId, persona, scenario, initialPrompt }: AiRoleplayChatProps) {
   const [messages, setMessages] = useState<Message[]>(() =>
     initialPrompt ? [{ role: 'assistant', content: initialPrompt }] : []
   );
@@ -34,6 +36,7 @@ export default function AiRoleplayChat({ persona, scenario, initialPrompt }: AiR
   const [sessionStartTime] = useState(Date.now());
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const startedTrackedRef = useRef(false);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -43,6 +46,18 @@ export default function AiRoleplayChat({ persona, scenario, initialPrompt }: AiR
 
   async function sendMessage() {
     if (!input.trim() || loading) return;
+
+    if (!startedTrackedRef.current && !messages.some((message) => message.role === 'user')) {
+      startedTrackedRef.current = true;
+      trackUsageInteraction({
+        eventType: 'roleplay_started',
+        route: '/simulations/roleplay',
+        label: persona,
+        contentType: 'roleplay',
+        contentId: roleplayId,
+        activityCategory: 'roleplay'
+      });
+    }
 
     const userMsg: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMsg]);
@@ -181,6 +196,20 @@ export default function AiRoleplayChat({ persona, scenario, initialPrompt }: AiR
       ).length;
       const topics = extractTopicsFromMessages();
       const satisfactionScore = calculateSatisfactionScore();
+      trackUsageInteraction({
+        eventType: 'roleplay_completed',
+        route: '/simulations/roleplay',
+        label: persona,
+        contentType: 'roleplay',
+        contentId: roleplayId,
+        activityCategory: 'roleplay',
+        durationSeconds,
+        completed: true,
+        score: satisfactionScore,
+        metadata: {
+          resultCount: exchangeCount
+        }
+      });
       
       // Build exchanges array
       const exchanges: RoleplayExchange[] = [];

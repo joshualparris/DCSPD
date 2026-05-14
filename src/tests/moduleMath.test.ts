@@ -30,6 +30,9 @@ describe('moduleMath', () => {
         }
       },
       assessmentAttempts: [],
+      academicAssessmentAttempts: [],
+      certificationAssessmentAttempts: [],
+      roleplayFeedbackAttempts: [],
       scenarioRuns: [],
       pdEntries: [],
       pdLogEntries: [],
@@ -72,6 +75,9 @@ describe('moduleMath', () => {
         }
       },
       assessmentAttempts: [],
+      academicAssessmentAttempts: [],
+      certificationAssessmentAttempts: [],
+      roleplayFeedbackAttempts: [],
       scenarioRuns: [],
       pdEntries: [],
       pdLogEntries: [],

@@ -16,17 +16,19 @@ import {
   TrendingUp,
   AlertCircle,
   Clock,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from 'lucide-react';
 import { modules as baseModules } from '../src/data/modules';
 import { scenarios as baseScenarios } from '../src/data/scenarios';
 import { getDashboardRecommendation, getCurrentWeakFocus } from '../src/lib/readinessMath';
 import { getStoredProgressSnapshot, type UserProgress, saveProgress, completeDailyChallenge } from '../src/lib/progress';
-import { isDue, getTodayDateKey } from '../src/lib/spacedRepetition';
+import { getDueFlashcards, isDue, getTodayDateKey } from '../src/lib/spacedRepetition';
 import { getOverallProgress } from '../src/lib/moduleMath';
 import { getCustomModules, getCustomScenarios } from '../src/lib/customModules';
 import { generateStudyPath } from '../src/lib/studyPath';
 import KnowledgeHeatmap from '../src/components/dashboard/KnowledgeHeatmap';
+import { getRecentUpdates } from '../src/data/recentUpdates';
 
 function getMonthKey(date: Date) {
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
@@ -61,15 +63,17 @@ export default function DashboardPage() {
     );
   }
 
-  const dueFlashcards = allModules.flatMap((module) =>
-    Object.values(progress.modules[module.id]?.flashcards || {}).filter(
-      (card) => isDue(card.dueDateIso)
-    )
-  ).length;
+  const dueFlashcards = getDueFlashcards(allModules, progress).length;
 
-  const dueQuestions = Object.values(progress.weakTopicReviews).filter((review) =>
+  const dueWeakTopics = Object.values(progress.weakTopicReviews).filter((review) =>
     isDue(review.dueDateIso)
   ).length;
+
+  const dueAssessments = progress.assessmentAttempts.filter((attempt) =>
+    isDue(attempt.nextReviewDateIso)
+  ).length;
+
+  const dueNowCount = dueFlashcards + dueWeakTopics + dueAssessments;
 
   const completedScenarios = progress.scenarioRuns.filter((run) => run.completed).length;
   const monthlyMinutes = progress.pdEntries
@@ -77,6 +81,7 @@ export default function DashboardPage() {
     .reduce((sum, entry) => sum + entry.minutes, 0);
   const overallProgress = getOverallProgress(allModules, progress);
   const weakestFocus = getCurrentWeakFocus(progress);
+  const mentorRecommendation = getDashboardRecommendation(progress);
 
   const todayKey = getTodayDateKey();
   const challengeDone = progress.dailyChallenge?.lastCompletedDateIso === todayKey;
@@ -84,6 +89,7 @@ export default function DashboardPage() {
   const allQuestions = allModules.flatMap((m) => m.quiz);
   const dailyQuestionIndex = new Date().getDate() % (allQuestions.length || 1);
   const dailyQuestion = allQuestions[dailyQuestionIndex];
+  const latestUpdates = getRecentUpdates(3);
 
   function handleDailyChallengeComplete() {
     if (!progress) return;
@@ -115,6 +121,71 @@ export default function DashboardPage() {
           </div>
         </div>
       </header>
+
+      <section className="rounded-[2rem] border border-blue-200 bg-blue-50 p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-blue-700">
+              <Target size={18} />
+              AI Mentor
+            </div>
+            <h2 className="mt-2 text-2xl font-bold text-slate-900">{mentorRecommendation.title}</h2>
+            <p className="mt-2 text-sm leading-6 text-blue-950">{mentorRecommendation.detail}</p>
+          </div>
+          <Link
+            href={mentorRecommendation.ctaHref}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
+          >
+            {mentorRecommendation.ctaLabel}
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-500">
+              <Sparkles size={18} />
+              Recent updates
+            </div>
+            <h2 className="mt-2 text-2xl font-bold text-slate-900">New and changed features</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Jump straight into the latest tools and changed workflows.
+            </p>
+          </div>
+          <Link
+            href="/recent-updates"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+          >
+            View all updates
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+
+        <div className="mt-5 grid gap-3 lg:grid-cols-3">
+          {latestUpdates.map((update) => (
+            <Link
+              key={update.id}
+              href={update.links[0]?.href || '/recent-updates'}
+              className="group rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-blue-200 hover:bg-blue-50/40"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-600">
+                  {update.category}
+                </span>
+                <span className="text-xs text-slate-400">{update.dateIso}</span>
+              </div>
+              <h3 className="mt-3 text-base font-bold text-slate-900 group-hover:text-blue-700">{update.title}</h3>
+              <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{update.summary}</p>
+              <div className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-blue-700">
+                {update.links[0]?.label || 'Open update'}
+                <ArrowRight size={13} />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Next Best Move Card */}
@@ -208,7 +279,7 @@ export default function DashboardPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-3xl bg-slate-50 p-6">
-                  <div className="text-3xl font-black text-slate-900">{dueFlashcards + dueQuestions}</div>
+                  <div className="text-3xl font-black text-slate-900">{dueNowCount}</div>
                   <div className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-400">Due Now</div>
                 </div>
                 <div className="rounded-3xl bg-slate-50 p-6">

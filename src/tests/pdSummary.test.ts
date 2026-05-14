@@ -6,6 +6,9 @@ function baseProgress(): UserProgress {
   return {
     modules: {},
     assessmentAttempts: [],
+    academicAssessmentAttempts: [],
+    certificationAssessmentAttempts: [],
+    roleplayFeedbackAttempts: [],
     scenarioRuns: [],
     pdEntries: [],
     pdLogEntries: [],
@@ -76,4 +79,3 @@ describe('pdSummary', () => {
     expect(summary.totalMinutes).toBe(10);
   });
 });
-

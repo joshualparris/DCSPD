@@ -38,20 +38,16 @@ export function generateStudyPath(
   if (progress.weakTopicReviews) {
     Object.entries(progress.weakTopicReviews).forEach(([topic, stats]) => {
       if (stats.averageScore < 60) {
-        const relatedModule = modules.find(m => m.tags.includes(topic) || m.domain.toLowerCase().includes(topic.toLowerCase()));
-        if (relatedModule) {
-          recommendations.push({
-            id: `weak-topic-${topic}`,
-            title: `Repair ${topic} knowledge`,
-            reason: `Your performance in ${topic} is below target (${stats.averageScore.toFixed(0)}%).`,
-            priority: 'critical',
-            estimatedMinutes: relatedModule.estimatedMinutes,
-            actionType: 'complete-module',
-            targetId: relatedModule.id,
-            weakTopic: topic,
-            route: `/modules/${relatedModule.id}`
-          });
-        }
+        recommendations.push({
+          id: `repair-pack-${topic}`,
+          title: `${topic.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Repair Pack`,
+          reason: `Your performance in ${topic} is below target (${stats.averageScore.toFixed(0)}%).`,
+          priority: 'critical',
+          estimatedMinutes: 20, // Estimated total for a repair pack
+          actionType: 'repair-pack',
+          weakTopic: topic,
+          route: `/readiness?repair=${topic}`
+        });
       }
     });
   }

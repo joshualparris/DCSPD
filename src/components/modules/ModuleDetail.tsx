@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getModuleCompletion } from '../../lib/moduleMath';
 import {
   addPdEntry,
@@ -20,6 +20,7 @@ import type { AssessmentAttempt } from '../../types/assessment';
 import type { TrainingModule } from '../../types/training';
 import AssessmentSession from '../assessment/AssessmentSession';
 import FlashcardDeck from '../flashcards/FlashcardDeck';
+import { trackUsageInteraction } from '../../hooks/useUsageTracking';
 import ModuleQuestionFirst from './ModuleQuestionFirst';
 import ModuleTabs from './ModuleTabs';
 import SectionReader from './SectionReader';
@@ -34,11 +35,34 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
   );
   const [hasHydratedProgress, setHasHydratedProgress] = useState(false);
   const [tab, setTab] = useState('Questions First');
+  const openedModuleRef = useRef<string | null>(null);
+  const route = `/modules/${moduleData.id}`;
 
   useEffect(() => {
     setProgress(ensureModuleProgress(getStoredProgressSnapshot(), moduleData));
     setHasHydratedProgress(true);
   }, [moduleData]);
+
+  useEffect(() => {
+    if (openedModuleRef.current === moduleData.id) {
+      return;
+    }
+
+    openedModuleRef.current = moduleData.id;
+    trackUsageInteraction({
+      eventType: 'module_open',
+      route,
+      label: moduleData.title,
+      contentType: 'module',
+      contentId: moduleData.id,
+      activityCategory: 'reading',
+      metadata: {
+        domain: moduleData.domain,
+        level: moduleData.level,
+        source: 'built-in'
+      }
+    });
+  }, [moduleData.domain, moduleData.id, moduleData.level, moduleData.title, route]);
 
   useEffect(() => {
     if (!hasHydratedProgress) {
@@ -56,7 +80,47 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
     : null;
 
   function handleModuleAttempt(attempt: AssessmentAttempt) {
+    trackUsageInteraction({
+      eventType: 'quiz_answered',
+      route,
+      label: `${moduleData.title} quiz question`,
+      contentType: 'module',
+      contentId: moduleData.id,
+      activityCategory: 'quiz',
+      completed: true,
+      score: Math.round(attempt.scoreBreakdown.total * 100),
+      metadata: {
+        domain: attempt.domain,
+        weakTopic: attempt.weakTopic
+      }
+    });
     setProgress((current) => recordAssessmentAttempt(current, attempt));
+  }
+
+  function handleTabChange(nextTab: string) {
+    setTab(nextTab);
+
+    const tabCategory =
+      nextTab === 'Assessment'
+        ? 'quiz'
+        : nextTab === 'Review'
+          ? 'flashcards'
+          : nextTab === 'DCS Application'
+            ? 'building'
+            : 'reading';
+
+    trackUsageInteraction({
+      eventType: nextTab === 'Assessment' ? 'quiz_started' : 'module_section_view',
+      route,
+      label: `${moduleData.title}: ${nextTab}`,
+      contentType: 'module',
+      contentId: moduleData.id,
+      activityCategory: tabCategory,
+      metadata: {
+        domain: moduleData.domain,
+        level: moduleData.level
+      }
+    });
   }
 
   return (
@@ -108,7 +172,7 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
         </div>
       </section>
 
-      <ModuleTabs tabs={['Questions First', 'Review', 'Assessment', 'Reference', 'DCS Application']} onChange={setTab} />
+      <ModuleTabs tabs={['Questions First', 'Review', 'Assessment', 'Reference', 'DCS Application']} onChange={handleTabChange} />
 
       {tab === 'Questions First' ? <ModuleQuestionFirst moduleData={moduleData} /> : null}
 
@@ -121,9 +185,22 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
               title={section.title}
               bodyMarkdown={section.bodyMarkdown}
               takeaway={section.takeaway}
-              onMarkRead={(sectionId) =>
-                setProgress((current) => markSectionRead(current, moduleData.id, sectionId))
-              }
+              onMarkRead={(sectionId) => {
+                trackUsageInteraction({
+                  eventType: 'module_section_view',
+                  route,
+                  label: `${moduleData.title}: ${section.title}`,
+                  contentType: 'module',
+                  contentId: moduleData.id,
+                  activityCategory: 'reading',
+                  completed: true,
+                  metadata: {
+                    domain: moduleData.domain,
+                    level: moduleData.level
+                  }
+                });
+                setProgress((current) => markSectionRead(current, moduleData.id, sectionId));
+              }}
               isRead={Boolean(moduleProgress.sectionsRead[section.id])}
             />
           ))}
@@ -144,6 +221,7 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
             onReview={(cardId, rating) =>
               setProgress((current) => recordFlashcardReview(current, moduleData.id, cardId, rating))
             }
+            analyticsContext={{ moduleId: moduleData.id, moduleTitle: moduleData.title, route }}
           />
         </section>
       ) : null}
@@ -185,6 +263,20 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
                 }
               )
             );
+            trackUsageInteraction({
+              eventType: 'quiz_completed',
+              route,
+              label: `${moduleData.title} quiz complete`,
+              contentType: 'module',
+              contentId: moduleData.id,
+              activityCategory: 'quiz',
+              completed: true,
+              score: average,
+              metadata: {
+                domain: moduleData.domain,
+                level: moduleData.level
+              }
+            });
           }}
         />
       ) : null}
@@ -243,6 +335,19 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
                         const after = Boolean(next.modules[moduleData.id]?.practicalOutputs?.[output.id]);
 
                         if (!before && after) {
+                          trackUsageInteraction({
+                            eventType: 'module_section_view',
+                            route,
+                            label: `Practical output: ${output.title}`,
+                            contentType: 'module',
+                            contentId: moduleData.id,
+                            activityCategory: 'building',
+                            completed: true,
+                            metadata: {
+                              domain: moduleData.domain,
+                              level: moduleData.level
+                            }
+                          });
                           return addPdEntry(next, {
                             id: `pd-output-${moduleData.id}-${output.id}-${Date.now()}`,
                             createdAtIso: new Date().toISOString(),

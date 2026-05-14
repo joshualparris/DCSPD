@@ -325,9 +325,9 @@ For the current source of truth, see `RBC/DCSPrep_Current_Roadmap.md`.
 2. [x] Add subject-specific flashcards generated from the SILO knowledge checks.
 3. [x] Add a practical output submission checklist for each final challenge.
 4. [ ] Add a curated "DCS IT weekly PD path" that mixes Academic PD, DCSPrep modules, scenarios, and evidence outputs.
-5. [ ] Add admin/edit tooling so new SLGs can be imported or reviewed without editing TypeScript manually.
-6. [ ] Add content governance metadata with last-reviewed dates and stale-content warnings.
-7. [ ] Add a PDF SLG parser/import tool for new SLGs.
+5. [x] Add admin/edit tooling so new SLGs can be imported or reviewed without editing TypeScript manually.
+6. [x] Add content governance metadata with last-reviewed dates and stale-content warnings.
+7. [x] Add a PDF SLG parser/import draft tool for new SLGs. Current implementation supports pasted/copied PDF text; full binary PDF extraction remains tracked in `RBC/DCSPrep_Current_Roadmap.md`.
 
 ## Implementation Principle
 

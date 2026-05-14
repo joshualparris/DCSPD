@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AiRoleplayChat from '../../../src/components/ai/AiRoleplayChat';
 import { roleplayScenarios as baseScenarios } from '../../../src/data/roleplayScenarios';
 import { getCustomRoleplays } from '../../../src/lib/customModules';
+import { trackUsageInteraction } from '../../../src/hooks/useUsageTracking';
 
 const pressureStyles = {
   Low: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -16,6 +17,7 @@ export default function RoleplaySimulationPage() {
   const [customScenarios, setCustomScenarios] = useState<any[]>([]);
   const roleplayScenarios = useMemo(() => [...baseScenarios, ...customScenarios], [customScenarios]);
   const [selectedScenarioId, setSelectedScenarioId] = useState(roleplayScenarios[0].id);
+  const openedRoleplayRef = useRef<string | null>(null);
 
   useEffect(() => {
     setCustomScenarios(getCustomRoleplays());
@@ -67,6 +69,26 @@ export default function RoleplaySimulationPage() {
         .join('\n'),
     [selectedScenario]
   );
+
+  useEffect(() => {
+    if (!selectedScenario || openedRoleplayRef.current === selectedScenario.id) {
+      return;
+    }
+
+    openedRoleplayRef.current = selectedScenario.id;
+    trackUsageInteraction({
+      eventType: 'roleplay_open',
+      route: '/simulations/roleplay',
+      label: `${selectedScenario.persona}: ${selectedScenario.issueTitle}`,
+      contentType: 'roleplay',
+      contentId: selectedScenario.id,
+      activityCategory: 'roleplay',
+      metadata: {
+        level: selectedScenario.tier || 'Level 1',
+        source: customScenarios.some((scenario) => scenario.id === selectedScenario.id) ? 'custom' : 'built-in'
+      }
+    });
+  }, [customScenarios, selectedScenario]);
 
   return (
     <div className="space-y-6">
@@ -207,6 +229,7 @@ export default function RoleplaySimulationPage() {
 
           <AiRoleplayChat
             key={selectedScenario.id}
+            roleplayId={selectedScenario.id}
             persona={`${selectedScenario.persona} (${selectedScenario.archetype})`}
             scenario={scenarioPrompt}
             initialPrompt={selectedScenario.initialPrompt}

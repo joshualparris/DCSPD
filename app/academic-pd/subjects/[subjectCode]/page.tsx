@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AcademicAssessmentGrader, {
   type AcademicAssessmentLogPayload
 } from '../../../../src/components/academic/AcademicAssessmentGrader';
@@ -26,6 +26,7 @@ import {
 } from '../../../../src/lib/academicSiloProgress';
 import type { AcademicSubject } from '../../../../src/types/academic';
 import type { AcademicAssessmentItem, AcademicWeeklyModule } from '../../../../src/types/academic';
+import { trackUsageInteraction } from '../../../../src/hooks/useUsageTracking';
 
 interface PageProps {
   params: {
@@ -103,6 +104,7 @@ export default function SubjectPage({ params }: PageProps) {
 
   const [loggedMessage, setLoggedMessage] = useState('');
   const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
+  const openedSubjectRef = useRef<string | null>(null);
 
   useEffect(() => {
     setProgress(getStoredProgressSnapshot());
@@ -118,6 +120,26 @@ export default function SubjectPage({ params }: PageProps) {
   );
   const subjectFlashcards = useMemo(() => (subject ? getAcademicSubjectFlashcards(subject) : []), [subject]);
   const finalChecklist = useMemo(() => (subject ? getAcademicFinalChallengeChecklist(subject) : []), [subject]);
+
+  useEffect(() => {
+    if (!subject || openedSubjectRef.current === subject.id) {
+      return;
+    }
+
+    openedSubjectRef.current = subject.id;
+    trackUsageInteraction({
+      eventType: 'academic_subject_open',
+      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
+      label: `${subject.code} - ${subject.title}`,
+      contentType: 'academic-subject',
+      contentId: subject.id,
+      activityCategory: 'reading',
+      metadata: {
+        level: subject.level,
+        source: subject.sourceStatus === 'placeholder' ? 'unknown' : 'built-in'
+      }
+    });
+  }, [subject]);
 
   const latestAttemptByAssessment = useMemo(() => {
     const latest = new Map<string, AcademicAssessmentAttempt>();
@@ -178,6 +200,21 @@ export default function SubjectPage({ params }: PageProps) {
     : subject.sourceFileName ?? 'Manual catalogue entry';
 
   function toggleSilo(siloId: string) {
+    const isOpening = !expandedSilos.has(siloId);
+    if (subject && isOpening) {
+      trackUsageInteraction({
+        eventType: 'section_view',
+        route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
+        label: `${subject.code} SILO ${siloId}`,
+        contentType: 'academic-subject',
+        contentId: subject.id,
+        activityCategory: 'reading',
+        metadata: {
+          level: subject.level
+        }
+      });
+    }
+
     setExpandedSilos((current) => {
       const next = new Set(current);
       if (next.has(siloId)) {
@@ -190,6 +227,21 @@ export default function SubjectPage({ params }: PageProps) {
   }
 
   function toggleWeek(moduleId: string) {
+    const isOpening = !expandedWeeks.has(moduleId);
+    if (subject && isOpening) {
+      trackUsageInteraction({
+        eventType: 'section_view',
+        route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
+        label: `${subject.code} ${moduleId}`,
+        contentType: 'academic-subject',
+        contentId: subject.id,
+        activityCategory: 'reading',
+        metadata: {
+          level: subject.level
+        }
+      });
+    }
+
     setExpandedWeeks((current) => {
       const next = new Set(current);
       if (next.has(moduleId)) {
@@ -229,6 +281,19 @@ export default function SubjectPage({ params }: PageProps) {
     saveProgress(updatedProgress);
     setProgress(updatedProgress);
     setLoggedMessage(`${minutes} minutes logged as ${type}.`);
+    trackUsageInteraction({
+      eventType: 'pd_log_entry_created',
+      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
+      label: `${subject.code} ${type}`,
+      contentType: 'academic-subject',
+      contentId: subject.id,
+      activityCategory: type === 'practical-output' ? 'building' : 'reading',
+      durationSeconds: minutes * 60,
+      completed: true,
+      metadata: {
+        level: subject.level
+      }
+    });
   }
 
   function logWeeklyAssessment(
@@ -294,6 +359,20 @@ export default function SubjectPage({ params }: PageProps) {
     saveProgress(updatedProgress);
     setProgress(updatedProgress);
     setLoggedMessage(`${module.title} assessment logged with score ${Math.round(payload.score)}/100.`);
+    trackUsageInteraction({
+      eventType: 'quiz_completed',
+      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
+      label: `${subject.code}: ${assessment.title}`,
+      contentType: 'academic-subject',
+      contentId: subject.id,
+      activityCategory: assessment.kind === 'reflection' ? 'reflection' : 'quiz',
+      durationSeconds: assessment.minutes * 60,
+      completed: true,
+      score: Math.round(payload.score),
+      metadata: {
+        level: subject.level
+      }
+    });
   }
 
   function toggleFinalChallengeChecklist(itemId: string) {
@@ -303,6 +382,18 @@ export default function SubjectPage({ params }: PageProps) {
     const updatedProgress = toggleAcademicFinalChallengeChecklistItem(storedProgress, subject.id, itemId);
     saveProgress(updatedProgress);
     setProgress(updatedProgress);
+    trackUsageInteraction({
+      eventType: 'section_view',
+      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
+      label: `${subject.code} final checklist`,
+      contentType: 'academic-subject',
+      contentId: subject.id,
+      activityCategory: 'building',
+      completed: true,
+      metadata: {
+        level: subject.level
+      }
+    });
   }
 
   return (

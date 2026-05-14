@@ -323,7 +323,7 @@ Purpose:
 
 ## Phase 5: Complete the Remaining App Backlog
 
-### Still missing from the source document backlog
+### Source document backlog now implemented
 
 - `/evidence-pack`
 - `Start tiny`
@@ -332,6 +332,8 @@ Purpose:
 - session-end reflection prompts
 - ticket-theme-weighted dashboard recommendations
 - more evidence-based readiness scoring
+
+These items are now complete in the live app. Current open work has moved to `RBC/DCSPrep_Current_Roadmap.md`.
 
 ## Phase 6: Internal Resource Companion Layer
 

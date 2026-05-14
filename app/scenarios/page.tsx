@@ -13,6 +13,7 @@ import {
   saveScenarioRun,
   type UserProgress
 } from '../../src/lib/progress';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 import type { ScenarioChoice, ScenarioRunChoice } from '../../src/types/scenarios';
 
 import { gradeRubric } from '../../src/lib/rubricGrader';
@@ -54,6 +55,17 @@ export default function ScenariosPage() {
     const all = [...baseScenarios, ...custom];
     if (all.length > 0) {
       setSelectedScenarioId(all[0].id);
+      trackUsageInteraction({
+        eventType: 'scenario_open',
+        route: '/scenarios',
+        label: all[0].title,
+        contentType: 'scenario',
+        contentId: all[0].id,
+        activityCategory: 'scenario',
+        metadata: {
+          source: custom.some((entry) => entry.id === all[0].id) ? 'custom' : 'built-in'
+        }
+      });
     }
   }, []);
 
@@ -82,6 +94,20 @@ export default function ScenariosPage() {
     : 0;
 
   function restartScenario(nextScenarioId = scenario.id) {
+    const nextScenario = scenarios.find((entry) => entry.id === nextScenarioId);
+    if (nextScenario) {
+      trackUsageInteraction({
+        eventType: 'scenario_open',
+        route: '/scenarios',
+        label: nextScenario.title,
+        contentType: 'scenario',
+        contentId: nextScenario.id,
+        activityCategory: 'scenario',
+        metadata: {
+          source: customScenarios.some((entry) => entry.id === nextScenario.id) ? 'custom' : 'built-in'
+        }
+      });
+    }
     setSelectedScenarioId(nextScenarioId);
     setStepIndex(0);
     setRunChoices([]);
@@ -93,6 +119,15 @@ export default function ScenariosPage() {
   }
 
   function handleChoice(choice: ScenarioChoice) {
+    trackUsageInteraction({
+      eventType: 'scenario_step_choice',
+      route: '/scenarios',
+      label: `${scenario.title}: step ${stepIndex + 1}`,
+      contentType: 'scenario',
+      contentId: scenario.id,
+      activityCategory: 'scenario',
+      completed: Boolean(choice.correct)
+    });
     setRevealedChoice(choice);
   }
 
@@ -142,6 +177,20 @@ export default function ScenariosPage() {
       context: scenario.title
     });
     setRubricGrade(grade);
+
+    trackUsageInteraction({
+      eventType: 'scenario_completed',
+      route: '/scenarios',
+      label: scenario.title,
+      contentType: 'scenario',
+      contentId: scenario.id,
+      activityCategory: 'scenario',
+      completed: true,
+      score: Math.round((finalAverage / 2) * 100),
+      metadata: {
+        source: customScenarios.some((entry) => entry.id === scenario.id) ? 'custom' : 'built-in'
+      }
+    });
 
     setProgress((current) =>
       addPdEntry(

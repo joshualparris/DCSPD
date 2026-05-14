@@ -8,17 +8,12 @@ Current known issues and limitations.
 
 ### Non-Critical Issues
 
-1. **next.config.mjs Warning**
-   - Description: `experimental.appDir` generates a warning in Next.js 14.2+
-   - Impact: None - app works correctly
-   - Resolution: Remove `experimental.appDir` in future update
-
-2. **npm Audit Warnings**
+1. **npm Audit Warnings**
    - Description: 9 vulnerabilities (5 moderate, 4 high)
    - Impact: None for local development
    - Resolution: Do NOT run `npm audit fix --force` - may break compatibility
 
-3. **OneDrive File Locking**
+2. **OneDrive File Locking**
    - Description: Running app from OneDrive may cause file locking issues
    - Impact: Potential build/sync conflicts
    - Resolution: Consider moving project to local drive for production use

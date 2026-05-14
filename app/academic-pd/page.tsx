@@ -12,6 +12,7 @@ import {
 import { getAcademicSubjectProgress } from '../../src/lib/academicProgress';
 import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../src/lib/progress';
 import { getCustomAcademic } from '../../src/lib/customModules';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 import type { AcademicSubject } from '../../src/types/academic';
 
 const sourceStatusLabels: Record<AcademicSubject['sourceStatus'], string> = {
@@ -35,6 +36,20 @@ function SubjectCard({ subject, progress }: { subject: AcademicSubject; progress
   return (
     <Link
       href={`/academic-pd/subjects/${subject.code.toLowerCase()}`}
+      onClick={() =>
+        trackUsageInteraction({
+          eventType: 'academic_subject_open',
+          route: '/academic-pd',
+          label: `${subject.code} - ${subject.title}`,
+          contentType: 'academic-subject',
+          contentId: subject.id,
+          activityCategory: 'reading',
+          metadata: {
+            level: subject.level,
+            source: subject.sourceStatus === 'placeholder' ? 'unknown' : 'built-in'
+          }
+        })
+      }
       className="block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex flex-wrap items-center gap-2">

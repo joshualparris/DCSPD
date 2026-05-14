@@ -1962,7 +1962,7 @@ const moduleEnhancements: Partial<Record<LegacyTrainingModule['id'], ModuleEnhan
         modelAnswer:
           'Because those systems may still hold access or data risk. Mentioning them helps the authorised owner review the sequence fully without assuming the visible Teams symptom is the whole story.',
         commonMistakes: ['Treating the visible symptom as the entire offboarding scope', 'Assuming mentioning a risk is the same as performing the change'],
-        dcsContext: 'The note should widen the right person’s awareness without widening Josh’s authority.',
+        dcsContext: 'The note should widen the right personâ€™s awareness without widening Joshâ€™s authority.',
         reviewSchedule,
         recommendedModuleId: 'm365-identity-offboarding-basics',
         weakTopic: 'offboarding-sequence',
@@ -2417,7 +2417,7 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'parent-portal-details-updates-q4',
-        prompt: 'A parent says a medical-related detail change is urgent and not visible yet. Explain Josh’s first-line response.',
+        prompt: 'A parent says a medical-related detail change is urgent and not visible yet. Explain Joshâ€™s first-line response.',
         domain: 'Parent Portal details updates',
         difficulty: 'challenge',
         explanation: 'Urgency and privacy should both shape the response.',
@@ -2558,14 +2558,14 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'sentral-support-q4',
-        prompt: 'A teacher says marks are due today and one class is missing from their Sentral view. Explain Josh’s first-line response.',
+        prompt: 'A teacher says marks are due today and one class is missing from their Sentral view. Explain Joshâ€™s first-line response.',
         domain: 'Sentral support',
         difficulty: 'challenge',
         explanation: 'This combines function, scope, and timing.',
         modelAnswer:
           'Clarify the exact class and screen, confirm whether other staff are affected, note the reporting deadline, document safe checks already tried, and escalate quickly with a clear note because the timing makes the impact high.',
         commonMistakes: ['Ignoring the time pressure', 'Logging it as a vague system complaint'],
-        dcsContext: 'Reporting deadlines can raise the urgency without changing Josh’s authority.',
+        dcsContext: 'Reporting deadlines can raise the urgency without changing Joshâ€™s authority.',
         reviewSchedule,
         recommendedModuleId: 'sentral-support',
         weakTopic: 'sentral-support',
@@ -2699,7 +2699,7 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'ourdcs-schoolbox-support-q4',
-        prompt: 'A teacher says students cannot see the class page resources they uploaded. Explain Josh’s first-line response.',
+        prompt: 'A teacher says students cannot see the class page resources they uploaded. Explain Joshâ€™s first-line response.',
         domain: 'OurDCS and Schoolbox support',
         difficulty: 'challenge',
         explanation: 'This can be workflow, visibility, or permission related.',
@@ -2754,7 +2754,7 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Self-service before unsafe shortcuts',
         bodyMarkdown:
-          'If the environment supports self-service reset, use that path where appropriate. Josh should never ask for the user’s password and should treat repeated unexpected prompts or compromise suspicion as a higher-risk workflow.',
+          'If the environment supports self-service reset, use that path where appropriate. Josh should never ask for the userâ€™s password and should treat repeated unexpected prompts or compromise suspicion as a higher-risk workflow.',
         takeaway: 'Safe identity support protects both uptime and trust.'
       },
       {
@@ -2836,7 +2836,7 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'login-and-password-support-q4',
-        prompt: 'A user says the reset did not help and the prompts now feel suspicious. Explain Josh’s next move.',
+        prompt: 'A user says the reset did not help and the prompts now feel suspicious. Explain Joshâ€™s next move.',
         domain: 'Login and password support',
         difficulty: 'challenge',
         explanation: 'The issue may have shifted from routine access help to security-sensitive handling.',
@@ -2977,12 +2977,12 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'permissions-and-access-requests-q4',
-        prompt: 'A new staff member says they can sign in but still lack the folders and software needed for today. Explain Josh’s first-line response.',
+        prompt: 'A new staff member says they can sign in but still lack the folders and software needed for today. Explain Joshâ€™s first-line response.',
         domain: 'Permissions and access',
         difficulty: 'challenge',
         explanation: 'The note should combine urgency with completeness.',
         modelAnswer:
-          'Clarify the exact folders, Teams, or applications missing, capture the staff member’s role and start-day urgency, note any existing approval context, and escalate the request clearly without promising unauthorised broad access.',
+          'Clarify the exact folders, Teams, or applications missing, capture the staff memberâ€™s role and start-day urgency, note any existing approval context, and escalate the request clearly without promising unauthorised broad access.',
         commonMistakes: ['Calling it only a login issue', 'Promising full access without approval context'],
         dcsContext: 'Day-one access issues often need fast but still disciplined handling.',
         reviewSchedule,
@@ -3114,7 +3114,7 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'website-filtering-and-unblock-requests-q4',
-        prompt: 'A teacher needs a blocked site for tomorrow’s lesson. Explain Josh’s note and response.',
+        prompt: 'A teacher needs a blocked site for tomorrowâ€™s lesson. Explain Joshâ€™s note and response.',
         domain: 'Website filtering and unblock requests',
         difficulty: 'challenge',
         explanation: 'Lead time and justification both matter.',
@@ -3205,7 +3205,7 @@ const additionalModules: TrainingModule[] = [
         weakTopic: 'onboarding-workflows',
         options: [
           { id: 'a', label: 'User type, role, start date, campus, and needed systems' },
-          { id: 'b', label: 'Only the person’s first name' },
+          { id: 'b', label: 'Only the personâ€™s first name' },
           { id: 'c', label: 'Assume every user needs the same access' },
           { id: 'd', label: 'Ignore whether they start today or next week' }
         ],
@@ -3246,7 +3246,7 @@ const additionalModules: TrainingModule[] = [
           { id: 'validate', label: 'Day-one validation' }
         ],
         items: [
-          { id: 'start-date', label: 'Confirm the user’s start date and campus', correctCategoryId: 'request' },
+          { id: 'start-date', label: 'Confirm the userâ€™s start date and campus', correctCategoryId: 'request' },
           { id: 'account', label: 'Create or route account setup through the owner path', correctCategoryId: 'provision' },
           { id: 'signin', label: 'Check whether the user can sign in and reach required systems', correctCategoryId: 'validate' },
           { id: 'role', label: 'List the Teams, drives, or apps the role needs', correctCategoryId: 'request' }
@@ -3255,12 +3255,12 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'new-user-onboarding-q4',
-        prompt: 'A prac teacher starts today and can sign in but cannot reach the class resources they were told to use. Explain Josh’s first-line response.',
+        prompt: 'A prac teacher starts today and can sign in but cannot reach the class resources they were told to use. Explain Joshâ€™s first-line response.',
         domain: 'New user onboarding',
         difficulty: 'challenge',
         explanation: 'This is a role-context and day-one validation problem.',
         modelAnswer:
-          'Confirm the prac teacher’s expected class resources and context, capture which systems work already, identify the missing access paths, note start-day urgency, and escalate the specific missing resources rather than logging it as a generic setup failure.',
+          'Confirm the prac teacherâ€™s expected class resources and context, capture which systems work already, identify the missing access paths, note start-day urgency, and escalate the specific missing resources rather than logging it as a generic setup failure.',
         commonMistakes: ['Calling it only a login problem', 'Not naming the class resources that are missing'],
         dcsContext: 'Day-one access notes are strongest when they list exact missing workflows.',
         reviewSchedule,
@@ -3338,7 +3338,7 @@ const additionalModules: TrainingModule[] = [
         difficulty: 'foundation',
         explanation: 'Path clarity comes first.',
         modelAnswer:
-          'Clarify whether the file lives in a Team, a SharePoint site library, or the teacher’s own OneDrive, and what location they expected to open.',
+          'Clarify whether the file lives in a Team, a SharePoint site library, or the teacherâ€™s own OneDrive, and what location they expected to open.',
         commonMistakes: ['Treating every file complaint as generic Teams failure', 'Skipping the path question'],
         dcsContext: 'Platform names get used loosely in daily school support.',
         reviewSchedule,
@@ -3396,7 +3396,7 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'teams-sharepoint-onedrive-support-q4',
-        prompt: 'A staff member says the shared faculty folder shows in the browser but not on their laptop. Explain Josh’s first-line response.',
+        prompt: 'A staff member says the shared faculty folder shows in the browser but not on their laptop. Explain Joshâ€™s first-line response.',
         domain: 'Teams, SharePoint, and OneDrive',
         difficulty: 'challenge',
         explanation: 'This likely points toward local sync rather than total access failure.',
@@ -3537,7 +3537,7 @@ const additionalModules: TrainingModule[] = [
       }),
       scenarioResponse({
         id: 'ipad-jamf-workflow-basics-q4',
-        prompt: 'A shared iPad cart has one device that will not complete the expected login flow after a restart. Explain Josh’s first-line response.',
+        prompt: 'A shared iPad cart has one device that will not complete the expected login flow after a restart. Explain Joshâ€™s first-line response.',
         domain: 'iPad and Jamf support',
         difficulty: 'challenge',
         explanation: 'This combines device context, workflow evidence, and management boundaries.',
@@ -3586,32 +3586,32 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Laptop parts you must recognise',
         bodyMarkdown:
-          'Laptop support is mostly evidence and constraint handling: form factor limits, integrated parts, and time pressure.\n\nCore parts: battery, AC adapter/charger, DC jack, keyboard/trackpad, display panel, webcam/mic, storage (2.5" SATA, M.2 NVMe), RAM (SO-DIMM), Wi‑Fi/Bluetooth card, fans and heat sinks.\n\nA safe first check is usually: power source, charger state, visible damage, and whether the symptom is power, display, storage, or thermal.',
+          'Laptop support is mostly evidence and constraint handling: form factor limits, integrated parts, and time pressure.\n\nCore parts: battery, AC adapter/charger, DC jack, keyboard/trackpad, display panel, webcam/mic, storage (2.5" SATA, M.2 NVMe), RAM (SO-DIMM), Wiâ€‘Fi/Bluetooth card, fans and heat sinks.\n\nA safe first check is usually: power source, charger state, visible damage, and whether the symptom is power, display, storage, or thermal.',
         takeaway: 'Classify the symptom (power/display/storage/thermal) before changing settings.'
       },
       {
         title: 'Upgrades: SSDs, RAM, and what they change',
         bodyMarkdown:
-          'Storage upgrades change perceived speed and reliability. RAM upgrades mainly help multitasking and memory pressure.\n\nIf the device is sluggish:\n- Check storage health and free space first.\n- SSD vs HDD matters dramatically.\n\nIf the device freezes under load:\n- Memory pressure (RAM) is likely.\n\nAlways confirm form factor (SO‑DIMM vs soldered) and interface (SATA vs NVMe) before ordering parts.',
+          'Storage upgrades change perceived speed and reliability. RAM upgrades mainly help multitasking and memory pressure.\n\nIf the device is sluggish:\n- Check storage health and free space first.\n- SSD vs HDD matters dramatically.\n\nIf the device freezes under load:\n- Memory pressure (RAM) is likely.\n\nAlways confirm form factor (SOâ€‘DIMM vs soldered) and interface (SATA vs NVMe) before ordering parts.',
         takeaway: 'Choose upgrades based on symptom + constraints, not guesswork.'
       },
       {
         title: 'Battery and thermal symptoms (Level 1-safe)',
         bodyMarkdown:
-          'Battery symptoms: won’t charge, drains fast, shuts down under load, or runs only on AC.\n\nThermal symptoms: fan noise, throttling/slow performance, shutdowns, or very hot chassis.\n\nSafe actions: check adapter, confirm charging state, check vents/airflow, and document reproducibility. Avoid disassembly unless authorised.',
+          'Battery symptoms: wonâ€™t charge, drains fast, shuts down under load, or runs only on AC.\n\nThermal symptoms: fan noise, throttling/slow performance, shutdowns, or very hot chassis.\n\nSafe actions: check adapter, confirm charging state, check vents/airflow, and document reproducibility. Avoid disassembly unless authorised.',
         takeaway: 'Capture evidence and escalate rather than experimenting under time pressure.'
       }
     ]),
     flashcards: buildFlashcards('a-plus-laptop-hardware-core1', [
       ['What does an M.2 slot commonly host in modern laptops?', 'An SSD (often NVMe PCIe, sometimes SATA depending on the device).'],
-      ['What kind of RAM is common in laptops?', 'SO‑DIMM (or soldered LPDDR in some ultrabooks).'],
+      ['What kind of RAM is common in laptops?', 'SOâ€‘DIMM (or soldered LPDDR in some ultrabooks).'],
       ['What symptom often suggests thermal throttling?', 'Performance slows significantly under load and improves after cooling.'],
       ['What is a safe first step for a laptop that will not power on?', 'Confirm power source/charger state and compare with known-good if available.'],
       ['SSD vs HDD: which gives the biggest everyday speed improvement?', 'SSD.'],
-      ['Name two common laptop radios.', 'Wi‑Fi and Bluetooth.'],
+      ['Name two common laptop radios.', 'Wiâ€‘Fi and Bluetooth.'],
       ['What is the DC jack?', 'The laptop power input port where the charger connects.'],
       ['Why avoid disassembly as Level 1 without approval?', 'It increases risk and may exceed role boundaries.'],
-      ['What does “runs only on AC” often point to?', 'Battery failure or power-path/battery connection issues.'],
+      ['What does â€œruns only on ACâ€ often point to?', 'Battery failure or power-path/battery connection issues.'],
       ['What is one evidence item to capture before escalation for power issues?', 'Exact symptom + charger/LED state + AC vs battery behaviour.']
     ]),
     quiz: [
@@ -3623,7 +3623,7 @@ const additionalModules: TrainingModule[] = [
         explanation: 'Storage speed is a dominant factor for app launch and file access.',
         modelAnswer: 'Replace an HDD with an SSD (or upgrade to a faster SSD if applicable).',
         commonMistakes: ['Assuming RAM is always the first upgrade', 'Skipping evidence about disk behaviour'],
-        dcsContext: 'Many “slow laptop” reports are storage-bound. Preserve evidence and choose the smallest safe fix.',
+        dcsContext: 'Many â€œslow laptopâ€ reports are storage-bound. Preserve evidence and choose the smallest safe fix.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-laptop-hardware-core1',
         weakTopic: 'laptop-mobile-hardware',
@@ -3631,7 +3631,7 @@ const additionalModules: TrainingModule[] = [
           { id: 'a', label: 'Upgrade from HDD to SSD' },
           { id: 'b', label: 'Increase screen resolution' },
           { id: 'c', label: 'Add an external keyboard' },
-          { id: 'd', label: 'Disable Wi‑Fi to improve performance' }
+          { id: 'd', label: 'Disable Wiâ€‘Fi to improve performance' }
         ],
         correctOptionId: 'a'
       }),
@@ -3672,7 +3672,7 @@ const additionalModules: TrainingModule[] = [
       }),
       orderSteps({
         id: 'a-plus-laptop-hardware-q4',
-        prompt: 'Order the safest Level 1 response for “laptop will not power on.”',
+        prompt: 'Order the safest Level 1 response for â€œlaptop will not power on.â€',
         domain: 'A+ Core 1 laptop hardware',
         difficulty: 'stretch',
         explanation: 'Start with power evidence before deeper changes.',
@@ -3721,20 +3721,20 @@ const additionalModules: TrainingModule[] = [
     ],
     dcsRelevance: [
       'Useful for staff BYOD realities and school-managed iPads without mixing real data into PD notes.',
-      'Builds safer judgement around “what Level 1 can do” versus “what needs an MDM owner”.'
+      'Builds safer judgement around â€œwhat Level 1 can doâ€ versus â€œwhat needs an MDM ownerâ€.'
     ],
     sections: buildSections('a-plus-mobile-connectivity-mdm-core1', [
       {
-        title: 'Connection methods: what they’re for',
+        title: 'Connection methods: what theyâ€™re for',
         bodyMarkdown:
-          'Mobile devices connect in multiple layers:\n- USB/USB‑C/Lightning: charging + data + sometimes video/audio.\n- Bluetooth: pairing accessories and short-range data.\n- NFC: extremely short-range tap interactions.\n- Hotspot/tethering: using a phone as an internet connection.\n\nClarify the goal before choosing the connection path.',
+          'Mobile devices connect in multiple layers:\n- USB/USBâ€‘C/Lightning: charging + data + sometimes video/audio.\n- Bluetooth: pairing accessories and short-range data.\n- NFC: extremely short-range tap interactions.\n- Hotspot/tethering: using a phone as an internet connection.\n\nClarify the goal before choosing the connection path.',
         takeaway: 'Clarify goal first: charging, data, audio, or internet.'
       },
       {
-        title: '“It won’t connect” triage patterns',
+        title: 'â€œIt wonâ€™t connectâ€ triage patterns',
         bodyMarkdown:
-          'Wi‑Fi/mobile: capture SSID, signal, error/symptom, and scope (one device or many).\n\nBluetooth: confirm pairing mode, remove/re-pair, and check it is not paired elsewhere.\n\nHotspot: confirm hotspot is enabled and the client is authenticating to the right SSID.',
-        takeaway: 'Evidence beats guessing: SSID/scope for Wi‑Fi and pairing state for Bluetooth.'
+          'Wiâ€‘Fi/mobile: capture SSID, signal, error/symptom, and scope (one device or many).\n\nBluetooth: confirm pairing mode, remove/re-pair, and check it is not paired elsewhere.\n\nHotspot: confirm hotspot is enabled and the client is authenticating to the right SSID.',
+        takeaway: 'Evidence beats guessing: SSID/scope for Wiâ€‘Fi and pairing state for Bluetooth.'
       },
       {
         title: 'MDM and ownership boundaries',
@@ -3746,17 +3746,17 @@ const additionalModules: TrainingModule[] = [
     flashcards: buildFlashcards('a-plus-mobile-connectivity-mdm-core1', [
       ['What does Bluetooth primarily provide?', 'Short-range pairing for accessories and low-power data exchange.'],
       ['What is NFC?', 'Near Field Communication: very short-range tap communication (tags/auth).'],
-      ['What is tethering/hotspot?', 'Using a phone as an internet connection for another device (Wi‑Fi/USB/Bluetooth).'],
+      ['What is tethering/hotspot?', 'Using a phone as an internet connection for another device (Wiâ€‘Fi/USB/Bluetooth).'],
       ['What is MDM?', 'Central management for device configuration, apps, and security policy.'],
       ['BYOD stands for what?', 'Bring Your Own Device (user-owned).'],
       ['COPE means what?', 'Corporate-Owned, Personally Enabled (org-owned, personal use allowed).'],
-      ['First evidence question for “Wi‑Fi won’t connect”?', 'Which SSID, what error/symptom, and is it one device or many?'],
+      ['First evidence question for â€œWiâ€‘Fi wonâ€™t connectâ€?', 'Which SSID, what error/symptom, and is it one device or many?'],
       ['First evidence question for Bluetooth problems?', 'Is it already paired elsewhere and is it in pairing mode/discoverable?']
     ]),
     quiz: [
       mcq({
         id: 'a-plus-mobile-connectivity-q1',
-        prompt: 'Which technology is designed for very short-range “tap” interactions such as tags or quick auth?',
+        prompt: 'Which technology is designed for very short-range â€œtapâ€ interactions such as tags or quick auth?',
         domain: 'A+ Core 1 mobile connectivity',
         difficulty: 'foundation',
         explanation: 'NFC is intentionally short-range.',
@@ -3805,19 +3805,19 @@ const additionalModules: TrainingModule[] = [
         options: [
           { id: 'a', label: 'Using a phone as an internet connection for another device' },
           { id: 'b', label: 'Assigning IPs automatically on a LAN' },
-          { id: 'c', label: 'Encrypting a Wi‑Fi network with WPA3' },
+          { id: 'c', label: 'Encrypting a Wiâ€‘Fi network with WPA3' },
           { id: 'd', label: 'Routing traffic between two subnets' }
         ],
         correctOptionId: 'a'
       }),
       orderSteps({
         id: 'a-plus-mobile-connectivity-q4',
-        prompt: 'Order the best first-line triage for “Bluetooth headset won’t connect.”',
+        prompt: 'Order the best first-line triage for â€œBluetooth headset wonâ€™t connect.â€',
         domain: 'A+ Core 1 mobile connectivity',
         difficulty: 'stretch',
         explanation: 'Pairing state and re-pair fixes are common and safe.',
         modelAnswer: 'Confirm pairing mode, remove old pairing, re-pair, then test and document symptom.',
-        commonMistakes: ['Changing unrelated Wi‑Fi settings', 'Skipping remove/re-pair'],
+        commonMistakes: ['Changing unrelated Wiâ€‘Fi settings', 'Skipping remove/re-pair'],
         dcsContext: 'Fast safe checks matter in classrooms.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-mobile-connectivity-mdm-core1',
@@ -3854,7 +3854,7 @@ const additionalModules: TrainingModule[] = [
       'Describe DNS and DHCP symptoms and how to separate them.'
     ],
     dcsRelevance: [
-      'Helps you write clearer network notes (DNS vs DHCP vs “internet is down”).',
+      'Helps you write clearer network notes (DNS vs DHCP vs â€œinternet is downâ€).',
       'Supports better escalation quality when class time is impacted.'
     ],
     sections: buildSections('a-plus-network-core1-ports-protocols-services', [
@@ -3862,7 +3862,7 @@ const additionalModules: TrainingModule[] = [
         title: 'IP, TCP, UDP (what they do)',
         bodyMarkdown:
           'IP handles addressing and routing between networks. TCP provides reliable, ordered delivery. UDP is simpler and faster but does not guarantee delivery.\n\nPorts identify the application/service endpoint on a host.\n\nSupport habit: decide which layer is failing: IP reachability, name resolution (DNS), address assignment (DHCP), or an application port.',
-        takeaway: 'Layer thinking prevents vague “network is down” notes.'
+        takeaway: 'Layer thinking prevents vague â€œnetwork is downâ€ notes.'
       },
       {
         title: 'Common ports you should recall',
@@ -3897,7 +3897,7 @@ const additionalModules: TrainingModule[] = [
         explanation: 'APIPA often appears when DHCP lease assignment fails.',
         modelAnswer: 'DHCP (address assignment).',
         commonMistakes: ['Calling it DNS', 'Assuming whole-network outage'],
-        dcsContext: 'Keep the note precise: “no DHCP lease / APIPA seen” is better than “internet down.”',
+        dcsContext: 'Keep the note precise: â€œno DHCP lease / APIPA seenâ€ is better than â€œinternet down.â€',
         reviewSchedule,
         recommendedModuleId: 'a-plus-network-core1-ports-protocols-services',
         weakTopic: 'dns-dhcp-gateway',
@@ -3947,7 +3947,7 @@ const additionalModules: TrainingModule[] = [
       }),
       orderSteps({
         id: 'a-plus-network-core1-q4',
-        prompt: 'Order the best troubleshooting split when “websites won’t load.”',
+        prompt: 'Order the best troubleshooting split when â€œwebsites wonâ€™t load.â€',
         domain: 'A+ Core 1 networking',
         difficulty: 'stretch',
         explanation: 'Start with reachability, then name resolution, then app path.',
@@ -3978,18 +3978,18 @@ const additionalModules: TrainingModule[] = [
     id: 'a-plus-wireless-networks-core1',
     title: 'A+ Core 1: Wireless networks',
     description:
-      'Wi‑Fi basics (bands/channels expectations), Bluetooth pairing, and short-range tech like NFC/RFID. Designed for fast, evidence-based support notes.',
+      'Wiâ€‘Fi basics (bands/channels expectations), Bluetooth pairing, and short-range tech like NFC/RFID. Designed for fast, evidence-based support notes.',
     domain: 'Networking',
     level: 'A+',
     estimatedMinutes: 28,
-    tags: ['A+ 220-1201', 'Wi‑Fi', '2.4GHz', '5GHz', 'Bluetooth', 'NFC', 'RFID'],
+    tags: ['A+ 220-1201', 'Wiâ€‘Fi', '2.4GHz', '5GHz', 'Bluetooth', 'NFC', 'RFID'],
     learningObjectives: [
       'Explain 2.4GHz vs 5GHz trade-offs in plain language.',
-      'Capture wireless scope evidence before declaring an “outage”.',
+      'Capture wireless scope evidence before declaring an â€œoutageâ€.',
       'Use a safe pairing triage for Bluetooth devices.'
     ],
     dcsRelevance: [
-      'Helps with room-specific wireless complaints and “works elsewhere” patterns.',
+      'Helps with room-specific wireless complaints and â€œworks elsewhereâ€ patterns.',
       'Improves note quality for classroom connectivity incidents.'
     ],
     sections: buildSections('a-plus-wireless-networks-core1', [
@@ -4002,21 +4002,21 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Scope evidence for wireless issues',
         bodyMarkdown:
-          'Before making claims, capture:\n- where (room/location)\n- what SSID/network\n- one device vs many\n- time pattern\n- comparison device result\n\nWireless faults can be hyper-local. Your note should preserve that scope instead of flattening it into “Wi‑Fi bad”.',
+          'Before making claims, capture:\n- where (room/location)\n- what SSID/network\n- one device vs many\n- time pattern\n- comparison device result\n\nWireless faults can be hyper-local. Your note should preserve that scope instead of flattening it into â€œWiâ€‘Fi badâ€.',
         takeaway: 'Wireless notes must include location + scope + comparison.'
       },
       {
-        title: 'Bluetooth, NFC, RFID (don’t mix them)',
+        title: 'Bluetooth, NFC, RFID (donâ€™t mix them)',
         bodyMarkdown:
           'Bluetooth: pairing for accessories (headsets/keyboards).\n\nNFC: extremely short-range tap interactions.\n\nRFID: identification/tracking (range and implementation vary).\n\nIf you use the wrong term, you choose the wrong troubleshooting path.',
         takeaway: 'Correct terminology prevents wasted troubleshooting.'
       }
     ]),
     flashcards: buildFlashcards('a-plus-wireless-networks-core1', [
-      ['2.4GHz Wi‑Fi is often better at what?', 'Range/penetration (often more congestion).'],
-      ['5GHz Wi‑Fi is often better at what?', 'Higher throughput/less interference (often shorter range).'],
+      ['2.4GHz Wiâ€‘Fi is often better at what?', 'Range/penetration (often more congestion).'],
+      ['5GHz Wiâ€‘Fi is often better at what?', 'Higher throughput/less interference (often shorter range).'],
       ['What are the 3 most important wireless note fields?', 'Location, SSID, and scope (one device vs many).'],
-      ['What is a “comparison device” check?', 'Test a known-good device in the same location on the same SSID.'],
+      ['What is a â€œcomparison deviceâ€ check?', 'Test a known-good device in the same location on the same SSID.'],
       ['Bluetooth is mainly used for what?', 'Accessory pairing and short-range connectivity.'],
       ['NFC is mainly used for what?', 'Tap-based short-range interactions (tags/auth).'],
       ['RFID is mainly used for what?', 'Identification/tracking tags.'],
@@ -4025,7 +4025,7 @@ const additionalModules: TrainingModule[] = [
     quiz: [
       mcq({
         id: 'a-plus-wireless-q1',
-        prompt: 'Which Wi‑Fi band is generally associated with longer range but more congestion in many environments?',
+        prompt: 'Which Wiâ€‘Fi band is generally associated with longer range but more congestion in many environments?',
         domain: 'A+ Core 1 wireless networks',
         difficulty: 'foundation',
         explanation: '2.4GHz tends to travel further and is heavily used.',
@@ -4045,7 +4045,7 @@ const additionalModules: TrainingModule[] = [
       }),
       mcq({
         id: 'a-plus-wireless-q2',
-        prompt: 'A teacher says “Wi‑Fi is bad in this room but fine elsewhere.” What is the strongest first evidence question?',
+        prompt: 'A teacher says â€œWiâ€‘Fi is bad in this room but fine elsewhere.â€ What is the strongest first evidence question?',
         domain: 'A+ Core 1 wireless networks',
         difficulty: 'foundation',
         explanation: 'Scope controls everything that follows.',
@@ -4058,7 +4058,7 @@ const additionalModules: TrainingModule[] = [
         options: [
           { id: 'a', label: 'Do other devices in the same room on the same SSID have the issue?' },
           { id: 'b', label: 'What is the printer model?' },
-          { id: 'c', label: 'What is the user’s password?' },
+          { id: 'c', label: 'What is the userâ€™s password?' },
           { id: 'd', label: 'Which BIOS version is installed?' }
         ],
         correctOptionId: 'a'
@@ -4085,12 +4085,12 @@ const additionalModules: TrainingModule[] = [
       }),
       shortAnswer({
         id: 'a-plus-wireless-q4',
-        prompt: 'List three evidence items you should capture before escalating a “Wi‑Fi bad in one room” report.',
+        prompt: 'List three evidence items you should capture before escalating a â€œWiâ€‘Fi bad in one roomâ€ report.',
         domain: 'A+ Core 1 wireless networks',
         difficulty: 'stretch',
         explanation: 'Wireless issues are often location-specific; evidence must capture that.',
         modelAnswer: 'Room/location, SSID, scope (one device vs many), and comparison device result (any three).',
-        commonMistakes: ['Writing only “Wi‑Fi down”', 'Skipping scope'],
+        commonMistakes: ['Writing only â€œWiâ€‘Fi downâ€', 'Skipping scope'],
         dcsContext: 'Room-based evidence makes escalations actionable.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-wireless-networks-core1',
@@ -4100,7 +4100,7 @@ const additionalModules: TrainingModule[] = [
       })
     ],
     scenarioPrompts: buildScenarioPrompts('a-plus-wireless-networks-core1', [
-      { title: 'Room-specific Wi‑Fi note', prompt: 'Write an escalation note for a room-specific Wi‑Fi issue that impacts learning.' }
+      { title: 'Room-specific Wiâ€‘Fi note', prompt: 'Write an escalation note for a room-specific Wiâ€‘Fi issue that impacts learning.' }
     ]),
     practicalOutputs: buildPracticalOutputs('a-plus-wireless-networks-core1', [
       { title: 'Wireless evidence checklist', description: 'Create a checklist of the evidence fields you always capture for wireless issues.' }
@@ -4117,8 +4117,8 @@ const additionalModules: TrainingModule[] = [
     tags: ['A+ 220-1201', 'router', 'switch', 'AP', 'firewall', 'PoE', 'tools'],
     learningObjectives: [
       'Describe the role of common network devices.',
-      'Choose a simple tool for the evidence you need (cable tester, tone generator, Wi‑Fi analyser, loopback).',
-      'Write a note that separates “device”, “path”, and “scope”.'
+      'Choose a simple tool for the evidence you need (cable tester, tone generator, Wiâ€‘Fi analyser, loopback).',
+      'Write a note that separates â€œdeviceâ€, â€œpathâ€, and â€œscopeâ€.'
     ],
     dcsRelevance: [
       'Useful when escalating room/network-path issues without overclaiming root cause.',
@@ -4134,13 +4134,13 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Tools: match tool to evidence',
         bodyMarkdown:
-          'Cable tester: verifies wiring continuity/ordering.\n\nTone generator + probe: trace a cable through a bundle/patch panel.\n\nWi‑Fi analyser: shows SSIDs, channel use, signal strength.\n\nLoopback plug: test a port/NIC at a basic level.\n\nUse tools to reduce uncertainty; don’t replace evidence with guesses.',
+          'Cable tester: verifies wiring continuity/ordering.\n\nTone generator + probe: trace a cable through a bundle/patch panel.\n\nWiâ€‘Fi analyser: shows SSIDs, channel use, signal strength.\n\nLoopback plug: test a port/NIC at a basic level.\n\nUse tools to reduce uncertainty; donâ€™t replace evidence with guesses.',
         takeaway: 'Tools are for evidence capture, not for showing off.'
       },
       {
         title: 'Structured cabling: patch panels and tracing',
         bodyMarkdown:
-          'Patch panels and wall ports are part of structured cabling. A device may be fine while the path is broken (wrong patch, damaged lead, wrong port).\n\nUse a tone generator/probe to trace, and a cable tester to validate.\n\nWrite notes that describe the path: room port → patch panel → switch → uplink, without claiming root cause.',
+          'Patch panels and wall ports are part of structured cabling. A device may be fine while the path is broken (wrong patch, damaged lead, wrong port).\n\nUse a tone generator/probe to trace, and a cable tester to validate.\n\nWrite notes that describe the path: room port â†’ patch panel â†’ switch â†’ uplink, without claiming root cause.',
         takeaway: 'Path description is evidence; root cause is a separate step.'
       }
     ]),
@@ -4152,7 +4152,7 @@ const additionalModules: TrainingModule[] = [
       ['What is PoE?', 'Power over Ethernet (power delivered via Ethernet cabling).'],
       ['What does a cable tester tell you?', 'Whether the cable is wired/continuous correctly.'],
       ['What does a tone generator help with?', 'Tracing a cable through patch panels/bundles.'],
-      ['What does a Wi‑Fi analyser help with?', 'SSID visibility, signal strength, channel usage.']
+      ['What does a Wiâ€‘Fi analyser help with?', 'SSID visibility, signal strength, channel usage.']
     ]),
     quiz: [
       mcq({
@@ -4162,7 +4162,7 @@ const additionalModules: TrainingModule[] = [
         difficulty: 'foundation',
         explanation: 'An access point bridges wireless clients to wired LAN.',
         modelAnswer: 'Access point.',
-        commonMistakes: ['Choosing router when AP is the direct Wi‑Fi device'],
+        commonMistakes: ['Choosing router when AP is the direct Wiâ€‘Fi device'],
         dcsContext: 'Room issues often relate to AP path; name it correctly in escalations.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-network-devices-tools-core1',
@@ -4182,7 +4182,7 @@ const additionalModules: TrainingModule[] = [
         difficulty: 'foundation',
         explanation: 'Cable testers validate wiring and continuity.',
         modelAnswer: 'Cable tester.',
-        commonMistakes: ['Choosing Wi‑Fi analyser for a cable problem'],
+        commonMistakes: ['Choosing Wiâ€‘Fi analyser for a cable problem'],
         dcsContext: 'Use the simplest tool that answers the evidence question.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-network-devices-tools-core1',
@@ -4190,7 +4190,7 @@ const additionalModules: TrainingModule[] = [
         options: [
           { id: 'a', label: 'Cable tester' },
           { id: 'b', label: 'Punch-down tool' },
-          { id: 'c', label: 'Wi‑Fi analyser' },
+          { id: 'c', label: 'Wiâ€‘Fi analyser' },
           { id: 'd', label: 'Stylus' }
         ],
         correctOptionId: 'a'
@@ -4218,7 +4218,7 @@ const additionalModules: TrainingModule[] = [
         difficulty: 'foundation',
         explanation: 'Tone generator/probe is used to trace cabling paths.',
         modelAnswer: 'Tone generator and probe.',
-        commonMistakes: ['Choosing Wi‑Fi analyser'],
+        commonMistakes: ['Choosing Wiâ€‘Fi analyser'],
         dcsContext: 'Tracing is common in schools when room ports are unclear.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-network-devices-tools-core1',
@@ -4236,26 +4236,26 @@ const additionalModules: TrainingModule[] = [
       { title: 'Room network escalation', prompt: 'Write a note that escalates a likely room/AP/path issue without inventing a root cause.' }
     ]),
     practicalOutputs: buildPracticalOutputs('a-plus-network-devices-tools-core1', [
-      { title: 'Network tools mini-kit', description: 'Draft a small “evidence kit” list and what each tool proves.' }
+      { title: 'Network tools mini-kit', description: 'Draft a small â€œevidence kitâ€ list and what each tool proves.' }
     ])
   }),
   createModule({
     id: 'a-plus-displays-video-core1',
     title: 'A+ Core 1: Displays and video troubleshooting',
     description:
-      'Display types and attributes, plus the practical “display chain” troubleshooting you’ll use in classrooms.',
+      'Display types and attributes, plus the practical â€œdisplay chainâ€ troubleshooting youâ€™ll use in classrooms.',
     domain: 'Endpoint Support',
     level: 'A+',
     estimatedMinutes: 28,
     tags: ['A+ 220-1201', 'LCD', 'OLED', 'resolution', 'refresh rate', 'HDMI', 'DisplayPort'],
     learningObjectives: [
       'Describe key display attributes (resolution, refresh, pixel density, colour).',
-      'Use a “display chain” troubleshooting approach.',
-      'Separate “picture works” from “touch/audio/control” paths in notes.'
+      'Use a â€œdisplay chainâ€ troubleshooting approach.',
+      'Separate â€œpicture worksâ€ from â€œtouch/audio/controlâ€ paths in notes.'
     ],
     dcsRelevance: [
-      'Directly supports ViewBoard/HDMI/USB‑C classroom incidents.',
-      'Improves your ability to preserve “symptom split” evidence for escalation.'
+      'Directly supports ViewBoard/HDMI/USBâ€‘C classroom incidents.',
+      'Improves your ability to preserve â€œsymptom splitâ€ evidence for escalation.'
     ],
     sections: buildSections('a-plus-displays-video-core1', [
       {
@@ -4267,7 +4267,7 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Attributes you should recall',
         bodyMarkdown:
-          'Resolution = pixel dimensions.\n\nRefresh rate = how often the image updates.\n\nPixel density = clarity at a given size.\n\nColour gamut/accuracy = colour capability.\n\nThese influence the “best match” monitor choice and help explain why a display “feels wrong” even when it works.',
+          'Resolution = pixel dimensions.\n\nRefresh rate = how often the image updates.\n\nPixel density = clarity at a given size.\n\nColour gamut/accuracy = colour capability.\n\nThese influence the â€œbest matchâ€ monitor choice and help explain why a display â€œfeels wrongâ€ even when it works.',
         takeaway: 'Know the language: resolution vs refresh vs pixel density.'
       },
       {
@@ -4278,14 +4278,14 @@ const additionalModules: TrainingModule[] = [
       }
     ]),
     flashcards: buildFlashcards('a-plus-displays-video-core1', [
-      ['What is resolution?', 'The pixel dimensions of a display output (e.g., 1920×1080).'],
+      ['What is resolution?', 'The pixel dimensions of a display output (e.g., 1920Ã—1080).'],
       ['What is refresh rate?', 'How often the image updates per second (Hz).'],
       ['What does pixel density affect?', 'Perceived sharpness/clarity.'],
-      ['First 2 checks for “no display”?', 'Power/input selection, then cable/adapter seating.'],
+      ['First 2 checks for â€œno displayâ€?', 'Power/input selection, then cable/adapter seating.'],
       ['What Windows shortcut helps change display mode?', 'Windows + P.'],
-      ['What does “picture works but touch fails” imply?', 'Touch is on a separate path (often USB/control).'],
+      ['What does â€œpicture works but touch failsâ€ imply?', 'Touch is on a separate path (often USB/control).'],
       ['Best way to reduce uncertainty quickly in cabling?', 'Swap to a known-good cable/adapter.'],
-      ['What is a “display chain”?', 'Source device → adapter/cable → display input/source → output mode.']
+      ['What is a â€œdisplay chainâ€?', 'Source device â†’ adapter/cable â†’ display input/source â†’ output mode.']
     ]),
     quiz: [
       mcq({
@@ -4330,7 +4330,7 @@ const additionalModules: TrainingModule[] = [
       }),
       orderSteps({
         id: 'a-plus-displays-q3',
-        prompt: 'Order the fastest “display chain” checks for a no-picture classroom issue.',
+        prompt: 'Order the fastest â€œdisplay chainâ€ checks for a no-picture classroom issue.',
         domain: 'A+ Core 1 displays',
         difficulty: 'stretch',
         explanation: 'Start with power/input, then seating, then mode, then known-good swap.',
@@ -4354,7 +4354,7 @@ const additionalModules: TrainingModule[] = [
         prompt: 'Name two display attributes and what they affect.',
         domain: 'A+ Core 1 displays',
         difficulty: 'stretch',
-        explanation: 'Attributes help explain “works but feels wrong” issues.',
+        explanation: 'Attributes help explain â€œworks but feels wrongâ€ issues.',
         modelAnswer: 'Resolution affects pixel detail; refresh rate affects smoothness; pixel density affects sharpness (any two).',
         commonMistakes: ['Mixing terms with no effect'],
         dcsContext: 'Clear language improves discussions about monitor choices and issues.',
@@ -4369,7 +4369,7 @@ const additionalModules: TrainingModule[] = [
       { title: 'No display in class', prompt: 'Write the classroom note that captures chain checks and current fallback.' }
     ]),
     practicalOutputs: buildPracticalOutputs('a-plus-displays-video-core1', [
-      { title: 'Display chain checklist', description: 'Write a 60-second checklist for “no display” troubleshooting that stays Level 1-safe.' }
+      { title: 'Display chain checklist', description: 'Write a 60-second checklist for â€œno displayâ€ troubleshooting that stays Level 1-safe.' }
     ])
   }),
   createModule({
@@ -4387,7 +4387,7 @@ const additionalModules: TrainingModule[] = [
       'Recall what common RAID levels optimise for.'
     ],
     dcsRelevance: [
-      'Improves “slow vs failing drive” reasoning in device triage.',
+      'Improves â€œslow vs failing driveâ€ reasoning in device triage.',
       'Helps explain data-risk and escalation urgency when storage shows warning signs.'
     ],
     sections: buildSections('a-plus-memory-storage-raid-core1', [
@@ -4395,10 +4395,10 @@ const additionalModules: TrainingModule[] = [
         title: 'RAM vs storage (what they do)',
         bodyMarkdown:
           'RAM is short-term working memory. Storage is long-term data persistence.\n\nLow RAM symptoms: heavy swapping, freezes under multitasking.\n\nStorage symptoms: slow launches, read/write errors, missing drive, corruption warnings, unusual noises (HDD).',
-        takeaway: 'Classify “memory pressure” vs “storage failure” symptoms.'
+        takeaway: 'Classify â€œmemory pressureâ€ vs â€œstorage failureâ€ symptoms.'
       },
       {
-        title: 'Storage types you’ll see',
+        title: 'Storage types youâ€™ll see',
         bodyMarkdown:
           'HDD: spinning disk, slower, mechanical failure risks.\n\nSSD: faster, no moving parts.\n\nNVMe: SSD over PCIe, very fast.\n\nForm factors: 2.5" SATA, M.2.\n\nSupport habit: confirm interface + form factor before ordering parts.',
         takeaway: 'NVMe is an interface/protocol path; M.2 is a form factor.'
@@ -4407,7 +4407,7 @@ const additionalModules: TrainingModule[] = [
         title: 'RAID: the point of the levels',
         bodyMarkdown:
           'RAID 0: speed, no redundancy.\n\nRAID 1: mirror, redundancy.\n\nRAID 5: parity, redundancy with efficiency (needs 3+ drives).\n\nRAID 10 (1+0): mirrored stripes, performance + redundancy.\n\nRAID is not a backup. It is availability/performance design.',
-        takeaway: 'RAID ≠ backup.'
+        takeaway: 'RAID â‰  backup.'
       }
     ]),
     flashcards: buildFlashcards('a-plus-memory-storage-raid-core1', [
@@ -4520,20 +4520,20 @@ const additionalModules: TrainingModule[] = [
     ],
     dcsRelevance: [
       'Supports better triage language when devices fail at boot or show power/thermal symptoms.',
-      'Helps you avoid risky “deep BIOS” changes without evidence/approval.'
+      'Helps you avoid risky â€œdeep BIOSâ€ changes without evidence/approval.'
     ],
     sections: buildSections('a-plus-motherboards-cpu-power-cooling-core1', [
       {
         title: 'Motherboards and form factors',
         bodyMarkdown:
-          'Form factors: ATX, micro‑ATX, ITX.\n\nExpansion: PCIe slots.\n\nConnections: power, storage interfaces, header pins.\n\nSupport habit: capture the exact symptom before opening cases—POST error, beep pattern, no display, or power cycling.',
+          'Form factors: ATX, microâ€‘ATX, ITX.\n\nExpansion: PCIe slots.\n\nConnections: power, storage interfaces, header pins.\n\nSupport habit: capture the exact symptom before opening casesâ€”POST error, beep pattern, no display, or power cycling.',
         takeaway: 'Boot failure notes need the exact startup symptom.'
       },
       {
         title: 'BIOS/UEFI and secure hardware',
         bodyMarkdown:
-          'BIOS/UEFI initialises hardware and starts the boot process. It controls boot order and basic device settings.\n\nTPM (Trusted Platform Module) supports secure key storage and device trust flows.\n\nAs Level 1: avoid experimental BIOS changes; document the symptom and escalate if it’s beyond safe checks.',
-        takeaway: 'BIOS changes are high-impact—capture evidence first.'
+          'BIOS/UEFI initialises hardware and starts the boot process. It controls boot order and basic device settings.\n\nTPM (Trusted Platform Module) supports secure key storage and device trust flows.\n\nAs Level 1: avoid experimental BIOS changes; document the symptom and escalate if itâ€™s beyond safe checks.',
+        takeaway: 'BIOS changes are high-impactâ€”capture evidence first.'
       },
       {
         title: 'Power and cooling symptoms',
@@ -4544,13 +4544,13 @@ const additionalModules: TrainingModule[] = [
     ]),
     flashcards: buildFlashcards('a-plus-motherboards-cpu-power-cooling-core1', [
       ['What does BIOS/UEFI do?', 'Initialises hardware and starts the boot process (controls boot settings).'],
-      ['Name a common motherboard form factor.', 'ATX, micro‑ATX, or ITX.'],
+      ['Name a common motherboard form factor.', 'ATX, microâ€‘ATX, or ITX.'],
       ['What does PCIe provide?', 'Expansion connectivity for add-in cards (GPU/NIC/etc.).'],
       ['What is a TPM?', 'A secure hardware module for storing keys and supporting device trust/security.'],
       ['What symptom suggests thermal throttling?', 'Performance slows under load and improves after cooling.'],
       ['What is a safe first step for random shutdowns?', 'Check power/airflow basics and capture when it happens (under load/heat).'],
       ['What is POST?', 'Power-On Self Test: startup checks that occur before the OS loads.'],
-      ['What is one safe “power evidence” item to capture?', 'LED state, adapter/PSU state, and whether it powers at all or cycles.']
+      ['What is one safe â€œpower evidenceâ€ item to capture?', 'LED state, adapter/PSU state, and whether it powers at all or cycles.']
     ]),
     quiz: [
       mcq({
@@ -4569,7 +4569,7 @@ const additionalModules: TrainingModule[] = [
           { id: 'a', label: 'Initialise hardware and start the boot process' },
           { id: 'b', label: 'Provide DNS resolution' },
           { id: 'c', label: 'Manage printer queues' },
-          { id: 'd', label: 'Encrypt Wi‑Fi traffic' }
+          { id: 'd', label: 'Encrypt Wiâ€‘Fi traffic' }
         ],
         correctOptionId: 'a'
       }),
@@ -4649,7 +4649,7 @@ const additionalModules: TrainingModule[] = [
     learningObjectives: [
       'Differentiate printer technologies (laser/inkjet/thermal/impact).',
       'Recognise maintenance/consumable symptom patterns.',
-      'Write a note that preserves “queue vs device quality vs release” evidence.'
+      'Write a note that preserves â€œqueue vs device quality vs releaseâ€ evidence.'
     ],
     dcsRelevance: [
       'Printing is a high-frequency school support theme; good layer notes reduce repeat work.',
@@ -4663,7 +4663,7 @@ const additionalModules: TrainingModule[] = [
         takeaway: 'Printer type changes the likely failure path.'
       },
       {
-        title: 'Maintenance and “quality vs delivery”',
+        title: 'Maintenance and â€œquality vs deliveryâ€',
         bodyMarkdown:
           'Delivery issues: job stuck, queue full, release/auth issues.\n\nQuality issues: faded prints, streaks, toner rub-off, smudges, misalignment.\n\nIf copying at the device is also bad, it strengthens the device-quality path rather than workstation/queue.',
         takeaway: 'Copy+print scope is a strong device-quality clue.'
@@ -4671,7 +4671,7 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Troubleshooting split: queue, release, device, quality',
         bodyMarkdown:
-          'A useful print note preserves the failure layer:\n- submission/queue (job leaves workstation?)\n- release/auth (Follow‑Me style?)\n- device output (paper path, consumables)\n- quality (streaks, rub-off, faded)\n\nLayer notes prevent endless re-triage.',
+          'A useful print note preserves the failure layer:\n- submission/queue (job leaves workstation?)\n- release/auth (Followâ€‘Me style?)\n- device output (paper path, consumables)\n- quality (streaks, rub-off, faded)\n\nLayer notes prevent endless re-triage.',
         takeaway: 'Write the failure layer in the first line of the note.'
       }
     ]),
@@ -4680,10 +4680,10 @@ const additionalModules: TrainingModule[] = [
       ['What component heats toner onto the page?', 'Fuser.'],
       ['Inkjet printers primarily use what consumable?', 'Ink cartridges / print heads.'],
       ['Thermal printers require what special media?', 'Thermal paper.'],
-      ['What is a strong clue for “device-quality” fault?', 'Copying directly at the device also looks bad.'],
-      ['What is a strong clue for “queue/release” fault?', 'Jobs appear in system but do not release/print as expected.'],
+      ['What is a strong clue for â€œdevice-qualityâ€ fault?', 'Copying directly at the device also looks bad.'],
+      ['What is a strong clue for â€œqueue/releaseâ€ fault?', 'Jobs appear in system but do not release/print as expected.'],
       ['If the queue looks fine but nothing prints, what layer might be failing?', 'Release/authentication or the device itself.'],
-      ['What is a weak print note?', '“Printer broken” with no layer evidence or symptom details.']
+      ['What is a weak print note?', 'â€œPrinter brokenâ€ with no layer evidence or symptom details.']
     ]),
     quiz: [
       mcq({
@@ -4754,7 +4754,7 @@ const additionalModules: TrainingModule[] = [
         explanation: 'This reinforces layer thinking.',
         modelAnswer:
           'Device-quality clue: copying at the device is also bad / toner rub-off / streaks. Queue/release clue: jobs appear submitted but do not release/print (authentication/release stage).',
-        commonMistakes: ['Listing only one layer', 'Calling every issue “driver”'],
+        commonMistakes: ['Listing only one layer', 'Calling every issue â€œdriverâ€'],
         dcsContext: 'Layer evidence reduces rework and improves escalations.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-printers-mfd-core1',
@@ -4767,7 +4767,7 @@ const additionalModules: TrainingModule[] = [
       { title: 'Queue vs device-quality note', prompt: 'Write a note that separates queue/release issues from device-quality issues.' }
     ]),
     practicalOutputs: buildPracticalOutputs('a-plus-printers-mfd-core1', [
-      { title: 'Printer layer checklist', description: 'Create a checklist: workstation → queue → release → device → quality, and what evidence each layer needs.' }
+      { title: 'Printer layer checklist', description: 'Create a checklist: workstation â†’ queue â†’ release â†’ device â†’ quality, and what evidence each layer needs.' }
     ])
   }),
   createModule({
@@ -4785,7 +4785,7 @@ const additionalModules: TrainingModule[] = [
       'Recognise VDI and container concepts at a support level.'
     ],
     dcsRelevance: [
-      'Helps connect “cloud” concepts to real school platforms and support boundaries.',
+      'Helps connect â€œcloudâ€ concepts to real school platforms and support boundaries.',
       'Supports better judgement about what can be fixed locally vs what is vendor/platform-owned.'
     ],
     sections: buildSections('a-plus-virtualization-cloud-core1', [
@@ -4804,7 +4804,7 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Cloud characteristics you should recall',
         bodyMarkdown:
-          'Common characteristics: elasticity (scale), availability (resilience), metered usage, multi-tenancy, and remote accessibility.\n\nIn support notes, the key is not reciting buzzwords — it is stating what is impacted and whether the issue is local device vs platform-side.',
+          'Common characteristics: elasticity (scale), availability (resilience), metered usage, multi-tenancy, and remote accessibility.\n\nIn support notes, the key is not reciting buzzwords â€” it is stating what is impacted and whether the issue is local device vs platform-side.',
         takeaway: 'Write notes that separate local vs platform-side evidence.'
       }
     ]),
@@ -4826,7 +4826,7 @@ const additionalModules: TrainingModule[] = [
         difficulty: 'foundation',
         explanation: 'SaaS is a fully managed application model.',
         modelAnswer: 'SaaS.',
-        commonMistakes: ['Calling everything “cloud” without identifying the model'],
+        commonMistakes: ['Calling everything â€œcloudâ€ without identifying the model'],
         dcsContext: 'In schools, many platforms are SaaS; support notes should respect ownership boundaries.',
         reviewSchedule,
         recommendedModuleId: 'a-plus-virtualization-cloud-core1',
@@ -4854,7 +4854,7 @@ const additionalModules: TrainingModule[] = [
         options: [
           { id: 'a', label: 'Runs directly on the hardware (bare metal)' },
           { id: 'b', label: 'Runs only inside a browser tab' },
-          { id: 'c', label: 'Is a kind of Wi‑Fi standard' },
+          { id: 'c', label: 'Is a kind of Wiâ€‘Fi standard' },
           { id: 'd', label: 'Is a printer driver' }
         ],
         correctOptionId: 'a'
@@ -4874,7 +4874,7 @@ const additionalModules: TrainingModule[] = [
         options: [
           { id: 'a', label: 'Packages apps with dependencies while sharing the host OS kernel' },
           { id: 'b', label: 'Always requires a full guest OS for each instance' },
-          { id: 'c', label: 'Is a Wi‑Fi encryption method' },
+          { id: 'c', label: 'Is a Wiâ€‘Fi encryption method' },
           { id: 'd', label: 'Is a printer maintenance kit' }
         ],
         correctOptionId: 'a'
@@ -4897,10 +4897,10 @@ const additionalModules: TrainingModule[] = [
       })
     ],
     scenarioPrompts: buildScenarioPrompts('a-plus-virtualization-cloud-core1', [
-      { title: 'Local vs SaaS issue note', prompt: 'Write a note that separates “device issue” from “cloud platform issue” without blaming.' }
+      { title: 'Local vs SaaS issue note', prompt: 'Write a note that separates â€œdevice issueâ€ from â€œcloud platform issueâ€ without blaming.' }
     ]),
     practicalOutputs: buildPracticalOutputs('a-plus-virtualization-cloud-core1', [
-      { title: 'Cloud ownership map', description: 'Create a map of “what we manage” vs “what the provider manages” for SaaS/PaaS/IaaS.' }
+      { title: 'Cloud ownership map', description: 'Create a map of â€œwhat we manageâ€ vs â€œwhat the provider managesâ€ for SaaS/PaaS/IaaS.' }
     ])
   }),
   createModule({
@@ -4913,8 +4913,8 @@ const additionalModules: TrainingModule[] = [
     estimatedMinutes: 35,
     tags: ['A+ 220-1201', 'troubleshooting', 'POST', 'BSoD', 'overheating', 'intermittent', 'queues'],
     learningObjectives: [
-      'Use a consistent symptom → scope → safe checks pattern.',
-      'Separate “quality vs delivery” for printers and “DNS vs DHCP vs IP reachability” for networks.',
+      'Use a consistent symptom â†’ scope â†’ safe checks pattern.',
+      'Separate â€œquality vs deliveryâ€ for printers and â€œDNS vs DHCP vs IP reachabilityâ€ for networks.',
       'Write escalation notes that are specific and privacy-safe.'
     ],
     dcsRelevance: [
@@ -4925,7 +4925,7 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'The troubleshooting rhythm',
         bodyMarkdown:
-          'A repeatable rhythm:\n1) classify the symptom (power/display/storage/network/print)\n2) confirm scope (one device vs many)\n3) run the safest reversible checks\n4) record what changed\n5) escalate with evidence if unresolved\n\nYour aim is not to “try everything”. Your aim is to reduce uncertainty safely.',
+          'A repeatable rhythm:\n1) classify the symptom (power/display/storage/network/print)\n2) confirm scope (one device vs many)\n3) run the safest reversible checks\n4) record what changed\n5) escalate with evidence if unresolved\n\nYour aim is not to â€œtry everythingâ€. Your aim is to reduce uncertainty safely.',
         takeaway: 'Troubleshooting is uncertainty reduction, not random experimentation.'
       },
       {
@@ -4943,18 +4943,18 @@ const additionalModules: TrainingModule[] = [
     ]),
     flashcards: buildFlashcards('a-plus-troubleshooting-core1', [
       ['What are the first two steps in good troubleshooting?', 'Classify the symptom, then confirm scope (one vs many).'],
-      ['What makes a “safe first check”?', 'Reversible, low-risk actions (reseat/restart/confirm settings) that preserve evidence.'],
-      ['Best layer split for “websites won’t load”?', 'IP reachability → DNS → app/auth/proxy path.'],
-      ['Best split for printer problems?', 'Queue/submission → release/auth → device output/quality.'],
+      ['What makes a â€œsafe first checkâ€?', 'Reversible, low-risk actions (reseat/restart/confirm settings) that preserve evidence.'],
+      ['Best layer split for â€œwebsites wonâ€™t loadâ€?', 'IP reachability â†’ DNS â†’ app/auth/proxy path.'],
+      ['Best split for printer problems?', 'Queue/submission â†’ release/auth â†’ device output/quality.'],
       ['Why record what changed after a check?', 'Because symptom changes narrow the failure path.'],
       ['What is a weak escalation note?', 'A vague statement with no scope, steps tried, or symptom split.'],
-      ['What is a “comparison check”?', 'Compare with a known-good device or nearby location to control scope.'],
+      ['What is a â€œcomparison checkâ€?', 'Compare with a known-good device or nearby location to control scope.'],
       ['What should you avoid in PD notes?', 'Private/confidential live ticket details, names, credentials, and sensitive identifiers.']
     ]),
     quiz: [
       orderSteps({
         id: 'a-plus-troubleshooting-q1',
-        prompt: 'Order the best first-line response to an unknown “it’s broken” report.',
+        prompt: 'Order the best first-line response to an unknown â€œitâ€™s brokenâ€ report.',
         domain: 'A+ Core 1 troubleshooting',
         difficulty: 'foundation',
         explanation: 'Start with symptom/scope, then safe checks and evidence.',
@@ -4975,7 +4975,7 @@ const additionalModules: TrainingModule[] = [
       }),
       mcq({
         id: 'a-plus-troubleshooting-q2',
-        prompt: 'A user says “the internet is down.” One device works in the staff room; multiple devices fail in one classroom. What is the best scope label?',
+        prompt: 'A user says â€œthe internet is down.â€ One device works in the staff room; multiple devices fail in one classroom. What is the best scope label?',
         domain: 'A+ Core 1 troubleshooting',
         difficulty: 'foundation',
         explanation: 'Evidence suggests a location-specific issue.',
@@ -5047,7 +5047,7 @@ const additionalModules: TrainingModule[] = [
     estimatedMinutes: 15,
     tags: ['communication', 'empathy', 'soft-skills', 'de-escalation'],
     learningObjectives: [
-      'Apply active listening to understand the teacher’s actual classroom pain.',
+      'Apply active listening to understand the teacherâ€™s actual classroom pain.',
       'Communicate technical fixes and limitations in plain English.',
       'Maintain a calm, helpful posture during high-pressure classroom outages.'
     ],
@@ -5169,12 +5169,802 @@ const additionalModules: TrainingModule[] = [
         description: 'Create a list of "Plain English" alternatives for 5 common technical phrases.'
       }
     ])
+  }),
+  createModule({
+    id: 'intune-mdm-administration',
+    title: 'Microsoft Intune and MDM Administration',
+    description:
+      'Understand mobile-device management fundamentals: device enrolment, compliance policies, app deployment, and conditional access. Learn Level 1 triage for MDM issues and safe escalation boundaries.',
+    domain: 'Endpoint Support',
+    level: 'L2',
+    estimatedMinutes: 25,
+    tags: ['Intune', 'MDM', 'device management', 'compliance', 'conditional access'],
+    learningObjectives: [
+      'Explain the role of Intune in managing school devices.',
+      'Recognize common device enrolment and compliance issues.',
+      'Understand when to escalate MDM concerns beyond Level 1 support.',
+      'Describe the purpose of compliance policies and conditional access.'
+    ],
+    dcsRelevance: [
+      'Modern schools rely on Intune to secure and manage student and staff devices.',
+      'Understanding device management reduces user friction and improves security posture.',
+      'First-line triage of MDM issues helps differentiate user error from system problems.'
+    ],
+    sections: buildSections('intune-mdm-administration', [
+      {
+        title: 'What Intune does and why schools use it',
+        bodyMarkdown:
+          'Microsoft Intune is a cloud-based mobile-device management (MDM) solution that allows schools to manage, secure, and monitor devices. Schools use Intune to configure iPads, Windows laptops, and Android devices; enforce security policies; distribute apps; and remotely wipe lost or stolen devices. Understanding the basic flow helps first-line support set expectations and triage issues cleanly.',
+        takeaway: 'Intune is the single source of device configuration and security policy for school devices.'
+      },
+      {
+        title: 'Device enrolment and common blockers',
+        bodyMarkdown:
+          'Device enrolment is the process of registering a school device into Intune management. Staff and students enrol their devices by signing in with their school account and accepting the enrolment prompt. Common blockers include: wrong account used, device already enrolled to another tenant, missing Intune licences, and enrolment profile not published yet. Level 1 can ask which account they used and whether the device shows a management app after enrolment.',
+        takeaway: 'Enrolment blockers often hinge on account identity and enrolment profile readiness, not device hardware.'
+      },
+      {
+        title: 'Compliance policies and what they check',
+        bodyMarkdown:
+          'Intune compliance policies define rules that devices must follow: minimum OS version, encryption enabled, antivirus active, screen lock enabled. When a device fails compliance, the user may lose access to school resources (email, SharePoint, Teams) until the device is brought back into compliance. Level 1 support can check whether the device shows a compliance warning and help users understand the requirement (e.g., "Your device needs to use a PIN to stay protected").',
+        takeaway: 'Compliance failures block access; helping users understand why (security, not punishment) improves buy-in.'
+      },
+      {
+        title: 'Conditional access basics',
+        bodyMarkdown:
+          'Conditional access rules add extra sign-in requirements based on risk or context. Example rules: require MFA from non-managed devices, block sign-in from outside school networks, or require MFA from high-risk sign-in locations. Understanding conditional access helps Level 1 explain why a user suddenly needs extra authentication.',
+        takeaway: 'Conditional access rules adapt security based on context; they are not bugs.'
+      },
+      {
+        title: 'Safe Level 1 MDM triage and escalation',
+        bodyMarkdown:
+          'Safe first questions: Is the device enrolled? Is it currently compliant? When did the issue start? What account was used? Did the device recently update? From here, escalate to Level 2 or the device-management team. Do not attempt policy changes, manual compliance resets, or device unenrollment without clear guidance.',
+        takeaway: 'Level 1 gathers the context; Level 2 or device management makes the changes.'
+      }
+    ]),
+    flashcards: buildFlashcards('intune-mdm-administration', [
+      ['What does Intune do for a school?', 'It manages, secures, and monitors school devices through cloud-based policies and profiles.'],
+      ['What is the enrolment process in Intune?', 'A user signs in with their school account on a device and accepts the enrolment prompt to register it for management.'],
+      ['What is a compliance policy?', 'A set of rules defining OS version, encryption, antivirus, PIN, and other security requirements for devices.'],
+      ['What happens when a device fails compliance?', 'The user may lose access to school resources like email, SharePoint, and Teams until the device meets the policy.'],
+      ['What is conditional access?', 'Rules that add extra sign-in requirements based on risk or context, like MFA from non-managed devices.'],
+      ['Why would a user suddenly need MFA?', 'A conditional access rule may be triggering because of device status, sign-in location, or risk level.'],
+      ['What is the difference between a device and a user sign-in?', 'Device compliance checks the device state; conditional access checks who is signing in and from where.'],
+      ['When should Level 1 escalate an Intune issue?', 'After gathering device enrolment, compliance, account, and timing context, escalate to Level 2 or device management.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'intune-q1',
+        prompt: 'A staff member says their iPad will not access email after an update. You check and find it is enrolled in Intune but the compliance dashboard shows "Non-compliant". What should you do first?',
+        domain: 'Intune and MDM',
+        difficulty: 'foundation',
+        explanation: 'Non-compliance is a signal; help the user understand what is needed.',
+        modelAnswer: 'Explain that the device is not meeting a security requirement and help them see what the policy is asking for (e.g., screen lock, OS version).',
+        commonMistakes: ['Trying to manually reset compliance', 'Assuming the update broke something'],
+        dcsContext: 'Compliance issues often resolve when users understand the requirement, not the fix.',
+        reviewSchedule,
+        recommendedModuleId: 'intune-mdm-administration',
+        weakTopic: 'mdm-group-policy',
+        options: [
+          { id: 'a', label: 'Tell the user to unenroll and re-enroll.' },
+          { id: 'b', label: 'Help the user understand which policy requirement is not met and what it requires.' },
+          { id: 'c', label: 'Immediately escalate without gathering any context.' },
+          { id: 'd', label: 'Assume the device needs a factory reset.' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'intune-q2',
+        prompt: 'Explain in plain English why a device that is not enrolled in Intune might have different access restrictions than an enrolled device.',
+        domain: 'Intune and MDM',
+        difficulty: 'stretch',
+        explanation: 'Enrolment is the gateway to managed security.',
+        modelAnswer:
+          'An enrolled device follows school compliance and security policies managed by Intune; a non-enrolled device does not, so it may trigger conditional access rules that require extra authentication or block access altogether.',
+        commonMistakes: ['Confusing device enrolment with user account creation', 'Assuming all devices are automatically enrolled'],
+        dcsContext: 'Some staff may not realise their device needs enrolment; a clear explanation builds compliance.',
+        reviewSchedule,
+        recommendedModuleId: 'intune-mdm-administration',
+        weakTopic: 'mdm-group-policy',
+        rubric: ['Separates enrolled from non-enrolled', 'Links enrolment to policy', 'Plain English'],
+        keywordHints: ['enrolled', 'policy', 'conditional access', 'security']
+      }),
+      orderSteps({
+        id: 'intune-q3',
+        prompt: 'Order the steps for safe Level 1 triage of an Intune device issue.',
+        domain: 'Intune and MDM',
+        difficulty: 'stretch',
+        explanation: 'Gather context before escalating.',
+        modelAnswer: 'Ask what account they used, confirm whether the device is enrolled, check compliance status, ask when the issue started, then escalate to the device-management team with those details.',
+        commonMistakes: ['Trying to fix policy settings', 'Escalating without context'],
+        dcsContext: 'Good first-line notes save Level 2 time.',
+        reviewSchedule,
+        recommendedModuleId: 'intune-mdm-administration',
+        weakTopic: 'mdm-group-policy',
+        steps: [
+          { id: 'account', label: 'Ask which account they used to sign in' },
+          { id: 'enrolled', label: 'Confirm the device is enrolled in Intune' },
+          { id: 'compliance', label: 'Check whether the device shows compliant or non-compliant' },
+          { id: 'timing', label: 'Ask when the issue started and what changed' },
+          { id: 'escalate', label: 'Escalate to the device-management team with all context' }
+        ],
+        correctOrder: ['account', 'enrolled', 'compliance', 'timing', 'escalate'],
+        rubric: ['Account identity first', 'Enrolment status second', 'Compliance check third']
+      }),
+      scenarioResponse({
+        id: 'intune-q4',
+        prompt: 'A teacher says their Windows laptop suddenly requires MFA when signing into Teams, but it never has before. What is a likely explanation, and how would you explain it to them?',
+        domain: 'Intune and MDM',
+        difficulty: 'challenge',
+        explanation: 'Conditional access rules can change without user awareness.',
+        modelAnswer:
+          'A conditional access policy may have been updated to require MFA in certain situations (e.g., for non-compliant devices or from outside school). Explain that this is a security improvement, help them set up MFA, and escalate if they have device compliance warnings.',
+        commonMistakes: ['Claiming it is a bug', 'Bypassing the MFA requirement'],
+        dcsContext: 'Security policy changes can confuse users; clear communication helps adoption.',
+        reviewSchedule,
+        recommendedModuleId: 'intune-mdm-administration',
+        weakTopic: 'mdm-group-policy',
+        rubric: ['Acknowledges conditional access', 'Frames as security improvement', 'Offers clear next steps']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('intune-mdm-administration', [
+      {
+        title: 'Device enrolment blocker',
+        prompt: 'A new staff member says their personal iPad will not enrol in Intune. Capture the triage questions and write an escalation note.'
+      },
+      {
+        title: 'Compliance policy confusion',
+        prompt: 'A student says they suddenly cannot access Teams because their Chromebook is "not compliant". Explain the issue and help them understand the path forward.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('intune-mdm-administration', [
+      {
+        title: 'Device Enrolment Checklist',
+        description: 'Create a checklist of 5-7 questions to ask when troubleshooting device enrolment issues.'
+      },
+      {
+        title: 'Compliance Policy Plain-English Guide',
+        description: 'Write a one-page guide explaining 3-4 common compliance requirements in language a staff member would understand.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'cybersecurity-awareness-security-risk-judgement',
+    title: 'Cybersecurity Awareness and Incident Response',
+    description:
+      'Understand phishing, password hygiene, two-factor authentication, ransomware basics, and the NIST 800-61 incident response framework. Learn how to recognize threats and report incidents safely.',
+    domain: 'Operations',
+    level: 'L1',
+    estimatedMinutes: 28,
+    tags: ['phishing', 'incident response', 'ransomware', 'MFA', 'NIST 800-61', 'security'],
+    learningObjectives: [
+      'Recognize phishing and social engineering tactics.',
+      'Explain why password hygiene and MFA matter.',
+      'Understand the four phases of incident response: Prepare, Detect, Respond, Recover.',
+      'Know when and how to report a suspected incident.'
+    ],
+    dcsRelevance: [
+      'Schools are increasingly targeted by ransomware and phishing attacks.',
+      'First-line staff are often the first to notice suspicious activity.',
+      'Understanding incident response phases helps staff follow the right escalation path.'
+    ],
+    sections: buildSections('cybersecurity-awareness-security-risk-judgement', [
+      {
+        title: 'Phishing and social engineering tactics',
+        bodyMarkdown:
+          'Phishing is an attempt to trick users into revealing credentials or downloading malware by pretending to be a trusted sender. Common tactics: urgent emails claiming account lockout, fake login pages, requests to "verify" payment info, and attachments with malicious names. Staff should pause before clicking links or downloading attachments and verify the sender independently. Report suspicious emails to the ICT team rather than opening or forwarding them.',
+        takeaway: 'Pause, verify independently, and report rather than click.'
+      },
+      {
+        title: 'Password hygiene and the case for MFA',
+        bodyMarkdown:
+          'Strong passwords (12+ characters, mixed case, numbers, symbols) are harder to guess, but even strong passwords can be stolen. Two-factor authentication (MFA) adds a second factorâ€”usually a code from an authenticator app or phoneâ€”that an attacker cannot easily bypass. MFA is the single most effective way to prevent account takeover. Schools should encourage staff to use MFA everywhere.',
+        takeaway: 'Strong password + MFA is the gold standard; MFA alone is better than a strong password alone.'
+      },
+      {
+        title: 'Ransomware basics and early warning signs',
+        bodyMarkdown:
+          'Ransomware is malware that encrypts files and demands payment for the decryption key. Warning signs: unexpected slow performance, files renamed with unusual extensions, inability to open files, and ransom notes on the desktop. If a user suspects ransomware, they should immediately disconnect the device from the network, power it off, and escalate to ICT. Do not pay the ransom; escalate to Paul or a senior tech.',
+        takeaway: 'Disconnect, power off, escalateâ€”do not attempt to fix it yourself.'
+      },
+      {
+        title: 'NIST 800-61: Prepare, Detect, Respond, Recover',
+        bodyMarkdown:
+          'The NIST Cybersecurity Framework breaks incident response into four phases. Prepare: have a plan, train staff, and test systems. Detect: monitor for suspicious activity and encourage staff to report. Respond: contain the incident, gather evidence, and communicate clearly. Recover: restore systems, learn lessons, and improve. Level 1 support plays a role in all phases: during prepare, raise awareness; during detect, report unusual activity; during respond, follow instructions and preserve evidence; during recover, help restore services.',
+        takeaway: 'You are part of the incident response team; your role is awareness, reporting, and following guidance.'
+      },
+      {
+        title: 'How to report a suspected incident safely',
+        bodyMarkdown:
+          'If you suspect a phishing email, malware, ransomware, or account compromise: do not open suspicious files, do not click links or reply to the sender, do not panic or share details in public chat. Instead: forward the suspicious email to the ICT team, power off the device if malware is suspected, and report the issue via email with a clear subject line (e.g., "Suspected phishing email" or "Suspicious device behavior"). The more specific your report, the faster the team can respond.',
+        takeaway: 'Report early with detail; do not assume it is a false alarm.'
+      }
+    ]),
+    flashcards: buildFlashcards('cybersecurity-awareness-security-risk-judgement', [
+      ['What is phishing?', 'An attempt to trick users into revealing credentials or downloading malware by pretending to be a trusted sender.'],
+      ['What should you do if you receive a suspicious email?', 'Do not click links or open attachments. Report it to the ICT team instead.'],
+      ['Why is MFA important?', 'It adds a second verification step that an attacker cannot easily bypass, even if they have your password.'],
+      ['What are early warning signs of ransomware?', 'Unexpected slow performance, files renamed with unusual extensions, inability to open files, and ransom notes.'],
+      ['What should you do if you suspect ransomware?', 'Disconnect the device from the network, power it off, and escalate to ICT immediately.'],
+      ['What are the four NIST incident response phases?', 'Prepare, Detect, Respond, Recover.'],
+      ['What is your role during the "Detect" phase of incident response?', 'Monitor for unusual activity and report suspicious behavior to the ICT team.'],
+      ['What should you preserve if you suspect a compromise?', 'Evidence: screenshots, timestamps, error messages, and a timeline of what happened.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'cyber-q1',
+        prompt: 'You receive an email from "Microsoft Support" asking you to click a link to "verify your account." What should you do?',
+        domain: 'Cybersecurity',
+        difficulty: 'foundation',
+        explanation: 'Legitimate companies never ask for credentials via email.',
+        modelAnswer: 'Do not click the link. Forward the email to the ICT team and delete it.',
+        commonMistakes: ['Clicking to "just check"', 'Replying to ask if it is real'],
+        dcsContext: 'Phishing is a top threat to schools.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-awareness-security-risk-judgement',
+        weakTopic: 'security-risk-judgement',
+        options: [
+          { id: 'a', label: 'Click the link to verify your account.' },
+          { id: 'b', label: 'Reply to ask if the email is legitimate.' },
+          { id: 'c', label: 'Forward the email to the ICT team and do not click.' },
+          { id: 'd', label: 'Share it in the staff group chat to warn others.' }
+        ],
+        correctOptionId: 'c'
+      }),
+      shortAnswer({
+        id: 'cyber-q2',
+        prompt: 'Explain why MFA is more secure than a strong password alone, in plain English.',
+        domain: 'Cybersecurity',
+        difficulty: 'stretch',
+        explanation: 'MFA defends against credential theft.',
+        modelAnswer:
+          'A strong password is harder to guess, but if it is stolen (e.g., from a data breach), an attacker can still use it. MFA adds a second factor that only you can provide at that moment, so even if your password is stolen, the attacker still cannot get in without that second factor.',
+        commonMistakes: ['Treating MFA as optional', 'Thinking a strong password alone is enough'],
+        dcsContext: 'Credential theft is a major attack vector.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-awareness-security-risk-judgement',
+        weakTopic: 'security-risk-judgement',
+        rubric: ['Separates password from MFA', 'Addresses credential theft', 'Clear language'],
+        keywordHints: ['stolen', 'second factor', 'only you', 'even if']
+      }),
+      orderSteps({
+        id: 'cyber-q3',
+        prompt: 'Order the correct steps if you suspect ransomware on your device.',
+        domain: 'Cybersecurity',
+        difficulty: 'stretch',
+        explanation: 'Immediate containment is critical.',
+        modelAnswer: 'Stop using the device immediately, disconnect it from the network, power it off, then contact ICT.',
+        commonMistakes: ['Trying to fix it yourself', 'Continuing to use the device', 'Powering off before disconnecting'],
+        dcsContext: 'Ransomware spreads; isolation is the priority.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-awareness-security-risk-judgement',
+        weakTopic: 'security-risk-judgement',
+        steps: [
+          { id: 'stop', label: 'Stop using the device immediately' },
+          { id: 'disconnect', label: 'Disconnect the device from the network (Wi-Fi and Ethernet)' },
+          { id: 'power', label: 'Power off the device' },
+          { id: 'escalate', label: 'Contact ICT and provide details of what you observed' }
+        ],
+        correctOrder: ['stop', 'disconnect', 'power', 'escalate'],
+        rubric: ['Stops use first', 'Disconnects before power-off', 'Escalates immediately']
+      }),
+      scenarioResponse({
+        id: 'cyber-q4',
+        prompt: 'A staff member comes to you and says, "My computer is running really slowly and I see strange file names with .enc extensions. What do I do?" Explain your response and what you would tell them.',
+        domain: 'Cybersecurity',
+        difficulty: 'challenge',
+        explanation: 'Ransomware indicators require immediate action.',
+        modelAnswer:
+          'These are classic ransomware signs. Tell them to stop using the device, disconnect it from the network immediately, power it off, and come find you or call ICT. Do not touch any files or try to fix it. Escalate with detail about what you observed.',
+        commonMistakes: ['Trying to open files to check', 'Continuing to use the device', 'Delaying escalation'],
+        dcsContext: 'Rapid response limits damage.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-awareness-security-risk-judgement',
+        weakTopic: 'security-risk-judgement',
+        rubric: ['Recognizes ransomware signs', 'Gives clear containment steps', 'Escalates immediately']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('cybersecurity-awareness-security-risk-judgement', [
+      {
+        title: 'Phishing email report',
+        prompt: 'A staff member forwards you a suspicious email claiming to be from the "school finance team" asking to verify payment details. Write the report you would send to the ICT team.'
+      },
+      {
+        title: 'Ransomware discovery',
+        prompt: 'You walk past a classroom and notice a device displaying a ransom note. Describe the steps you would take and how you would communicate with the teacher.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('cybersecurity-awareness-security-risk-judgement', [
+      {
+        title: 'Phishing Email Indicators Checklist',
+        description: 'Create a visual checklist of 7-10 signs that an email might be phishing.'
+      },
+      {
+        title: 'Incident Reporting Template',
+        description: 'Design a simple form or template for staff to report suspected security incidents with all key fields (what, when, who, device, evidence).'
+      }
+    ])
+  }),
+  createModule({
+    id: 'device-imaging-deployment',
+    title: 'Device Imaging and Deployment Workflows',
+    description:
+      'Learn device imaging fundamentals: planning, base images, reference image creation, deployment methods, and when to use imaging vs. provisioning. Understand the role of imaging in school device fleet management.',
+    domain: 'Endpoint Support',
+    level: 'L2',
+    estimatedMinutes: 26,
+    tags: ['imaging', 'deployment', 'Windows Deployment Services', 'provisioning', 'device fleet'],
+    learningObjectives: [
+      'Understand why schools use device imaging.',
+      'Explain the difference between a base image and a reference image.',
+      'Describe when imaging is appropriate vs. when provisioning is better.',
+      'Recognize common imaging failures and safe escalation points.'
+    ],
+    dcsRelevance: [
+      'Device imaging is a foundational IT operation that enables bulk device deployment.',
+      'Understanding imaging helps support staff assist with device onboarding and troubleshoot deployment issues.',
+      'Schools with efficient imaging workflows deploy updates faster and more safely.'
+    ],
+    sections: buildSections('device-imaging-deployment', [
+      {
+        title: 'What is device imaging and why schools use it',
+        bodyMarkdown:
+          'Device imaging is the process of creating a standardized copy of a configured device and deploying that copy to many devices. Instead of manually configuring 50 Windows laptops, a school creates one "base image" with all required software, settings, and configurations, then deploys it to all 50 devices at once. This saves time, reduces errors, and ensures consistency. Imaging is used for initial device setup and for bulk updates.',
+        takeaway: 'Imaging is about speed, consistency, and scalability.'
+      },
+      {
+        title: 'Base image vs. reference image vs. golden image',
+        bodyMarkdown:
+          'A base image is a clean Windows or macOS install with no custom settings or applications. A reference image is a base image plus all required applications, settings, patches, and configurations. A golden image is a validated reference image that is used for production deployment. The workflow: start with base (clean OS), add software and settings (create reference), test it thoroughly (validate), then use it for deployment (golden).',
+        takeaway: 'Keep the base generic; all school-specific work goes into the reference image.'
+      },
+      {
+        title: 'Deployment methods: imaging vs. provisioning',
+        bodyMarkdown:
+          'Imaging deploys a full image to a device, erasing its current state. Provisioning uses a script or automation to configure a device without completely replacing it. Imaging is faster for initial setup; provisioning is gentler for devices that already have user data. Windows Deployment Services (WDS) is a common imaging tool; Intune or other MDM tools can handle provisioning. Level 1 support should understand which method is being used for each fleet.',
+        takeaway: 'Imaging is for blank devices; provisioning is for updates or devices with data.'
+      },
+      {
+        title: 'Safe imaging workflow and testing',
+        bodyMarkdown:
+          'A safe workflow: build the reference image, test it on a sample device thoroughly (all applications, network shares, printers, device management), document the testing results, then deploy to the wider fleet. Never image a device without a backup of user data. If imaging fails (device does not boot, driver issues, application conflicts), the device can usually be reimaged, but testing beforehand catches most issues.',
+        takeaway: 'Test thoroughly before deployment; preserve user data before imaging.'
+      },
+      {
+        title: 'Common imaging issues and safe escalation',
+        bodyMarkdown:
+          'Common failures: network connectivity during imaging (device disconnects), driver incompatibilities (wrong hardware model for the image), application conflicts (software fails to install or activate), and boot failures (device will not start after imaging). Level 1 support should capture: which device, which image name, at what stage it failed, and any error codes. Do not attempt to fix imaging failures yourself; escalate to the imaging or device management team with these details.',
+        takeaway: 'Document the failure clearly; the team can then troubleshoot from there.'
+      }
+    ]),
+    flashcards: buildFlashcards('device-imaging-deployment', [
+      ['What is device imaging?', 'The process of creating a standardized copy of a configured device and deploying it to many devices.'],
+      ['What is a base image?', 'A clean Windows or macOS install with no custom settings or applications.'],
+      ['What is a reference image?', 'A base image plus all required applications, settings, patches, and configurations for the school.'],
+      ['What is a golden image?', 'A validated reference image that is tested and approved for production deployment.'],
+      ['What is the difference between imaging and provisioning?', 'Imaging replaces the entire device; provisioning configures a device without completely replacing it.'],
+      ['When should you use imaging vs. provisioning?', 'Use imaging for blank devices; use provisioning for updates or devices with existing data.'],
+      ['What is Windows Deployment Services (WDS)?', 'A Windows Server role that enables network-based imaging and deployment of operating systems.'],
+      ['What should you do before reimaging a device with user data?', 'Preserve or back up the user data first, then image the device.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'imaging-q1',
+        prompt: 'A school needs to deploy Windows to 30 new laptops. What is the most efficient approach?',
+        domain: 'Device Imaging',
+        difficulty: 'foundation',
+        explanation: 'Imaging is faster than manual setup.',
+        modelAnswer: 'Create a reference image with all required software and settings, test it on a sample device, then deploy it to all 30 laptops at once using imaging.',
+        commonMistakes: ['Manually configuring each device', 'Skipping the testing phase'],
+        dcsContext: 'Bulk deployment is a core IT operation in schools.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-deployment',
+        weakTopic: 'hardware-troubleshooting',
+        options: [
+          { id: 'a', label: 'Manually set up each of the 30 laptops individually.' },
+          { id: 'b', label: 'Create a reference image, test it on one sample device, then deploy to all 30.' },
+          { id: 'c', label: 'Ask the vendor to pre-load the image.' },
+          { id: 'd', label: 'Image the first 10, then manually configure the rest.' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'imaging-q2',
+        prompt: 'Explain the difference between a base image and a reference image in plain English.',
+        domain: 'Device Imaging',
+        difficulty: 'stretch',
+        explanation: 'The base is bare; the reference is ready.',
+        modelAnswer:
+          'A base image is a clean, minimal Windows or macOS install. A reference image is that base plus all the applications, settings, and configurations a school device needs. Schools deploy the reference image, not the bare base image.',
+        commonMistakes: ['Treating them as the same', 'Deploying a base image to users'],
+        dcsContext: 'Understanding the difference helps you support imaging operations.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-deployment',
+        weakTopic: 'hardware-troubleshooting',
+        rubric: ['Defines base clearly', 'Defines reference clearly', 'Explains why the distinction matters'],
+        keywordHints: ['clean', 'minimal', 'applications', 'settings', 'ready to deploy']
+      }),
+      orderSteps({
+        id: 'imaging-q3',
+        prompt: 'Order the correct steps for a safe device imaging deployment.',
+        domain: 'Device Imaging',
+        difficulty: 'stretch',
+        explanation: 'Testing prevents failures at scale.',
+        modelAnswer: 'Build the reference image, test it on a sample device (verify all software and drivers), document the results, then deploy to the wider fleet.',
+        commonMistakes: ['Skipping testing', 'Deploying without documenting changes'],
+        dcsContext: 'A tested deployment prevents widespread failures.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-deployment',
+        weakTopic: 'hardware-troubleshooting',
+        steps: [
+          { id: 'build', label: 'Build the reference image with required software and settings' },
+          { id: 'test', label: 'Test the reference image on a sample device' },
+          { id: 'verify', label: 'Verify all applications, network shares, and drivers work' },
+          { id: 'document', label: 'Document the image content and test results' },
+          { id: 'deploy', label: 'Deploy the golden image to the wider fleet' }
+        ],
+        correctOrder: ['build', 'test', 'verify', 'document', 'deploy'],
+        rubric: ['Tests before deployment', 'Documents thoroughly', 'Deploys to fleet only after validation']
+      }),
+      scenarioResponse({
+        id: 'imaging-q4',
+        prompt: 'A device fails to boot after imaging. Describe what information you would gather and how you would report the failure to the imaging team.',
+        domain: 'Device Imaging',
+        difficulty: 'challenge',
+        explanation: 'Good troubleshooting data saves the team time.',
+        modelAnswer:
+          'Capture: the device name/asset tag, the image name and version, at what stage it failed (during imaging or at first boot), any error codes or messages, which hardware model it is, and whether other devices from the same batch succeeded or failed. Report all of this with a clear subject line (e.g., "Boot failure after imaging").',
+        commonMistakes: ['Attempting to fix it without gathering details', 'Blaming the image without evidence'],
+        dcsContext: 'Imaging failures are often hardware- or network-specific; details narrow down the cause.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-deployment',
+        weakTopic: 'hardware-troubleshooting',
+        rubric: ['Gathers device details', 'Notes image version and stage', 'Captures error codes', 'Clear escalation note']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('device-imaging-deployment', [
+      {
+        title: 'Reference image testing',
+        prompt: 'You have a new reference image to test. Write a testing checklist that validates the image is ready for production deployment.'
+      },
+      {
+        title: 'Imaging failure',
+        prompt: 'Five devices from a batch of 50 fail to boot after imaging. Describe how you would investigate and what you would report to the imaging team.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('device-imaging-deployment', [
+      {
+        title: 'Imaging Checklist',
+        description: 'Create a step-by-step checklist for preparing a device for imaging and validating the image deployment.'
+      },
+      {
+        title: 'Image Change Log Template',
+        description: 'Design a template for documenting image versions, contents, changes, and test results.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'cloud-fundamentals',
+    title: 'Cloud Fundamentals',
+    description:
+      'Understand cloud computing basics: what the cloud is, cloud service models (IaaS, PaaS, SaaS), deployment models (public, private, hybrid), and how to troubleshoot cloud service issues at Level 1.',
+    domain: 'Cloud and Platforms',
+    level: 'L1',
+    estimatedMinutes: 22,
+    tags: ['cloud', 'SaaS', 'PaaS', 'IaaS', 'Office 365', 'Azure'],
+    learningObjectives: [
+      'Define cloud computing and its benefits.',
+      'Distinguish between IaaS, PaaS, and SaaS.',
+      'Understand public, private, and hybrid cloud models.',
+      'Troubleshoot common cloud service issues safely.'
+    ],
+    dcsRelevance: [
+      'Schools increasingly rely on cloud services like Office 365, Google Workspace, and Intune.',
+      'Understanding cloud models helps staff use services correctly and troubleshoot issues.',
+      'Cloud services shift some IT operations but require new support skills.'
+    ],
+    sections: buildSections('cloud-fundamentals', [
+      {
+        title: 'What is cloud computing?',
+        bodyMarkdown:
+          'Cloud computing is on-demand access to computing resourcesâ€”servers, storage, databases, softwareâ€”delivered over the internet. Instead of owning servers and storage, schools "rent" these resources from providers like Microsoft, Google, or Amazon. Benefits: reduced upfront cost, automatic updates and patches, access from anywhere, and scalability. The trade-off: reliance on internet connectivity and the provider\'s security and availability.',
+        takeaway: 'Cloud = rented computing power delivered over the internet.'
+      },
+      {
+        title: 'Three cloud service models: IaaS, PaaS, SaaS',
+        bodyMarkdown:
+          'Infrastructure as a Service (IaaS): the provider manages servers and storage; you configure the operating system and applications. Example: Azure Virtual Machines. Platform as a Service (PaaS): the provider manages infrastructure and tools; you write applications. Example: Azure App Service. Software as a Service (SaaS): the provider manages everything; you use the application via a browser. Example: Office 365, Google Workspace. Think: IaaS is "rent the hardware", PaaS is "rent the platform", SaaS is "rent the application".',
+        takeaway: 'IaaS = infrastructure, PaaS = platform, SaaS = software.'
+      },
+      {
+        title: 'Cloud deployment models: public, private, hybrid',
+        bodyMarkdown:
+          'Public cloud: the provider\'s infrastructure is shared by many organizations. Lower cost but less control. Example: Microsoft Office 365. Private cloud: dedicated infrastructure for one organization. Higher cost but more control. Example: on-premises Intune or SharePoint. Hybrid cloud: combination of public and private, with integration between them. Example: local file servers plus cloud Office 365. Schools often use hybrid: some services in the cloud, some on-premises.',
+        takeaway: 'Public = shared and cheaper, Private = dedicated and controlled, Hybrid = both.'
+      },
+      {
+        title: 'Common cloud service blockers at Level 1',
+        bodyMarkdown:
+          'Common issues: no internet connection (cannot access cloud services at all), account access problems (user cannot sign in), data sync issues (files not appearing across devices), and service outages (the provider\'s service is down). Level 1 triage: confirm the internet connection is working, confirm the user can sign in, check whether other users are experiencing the same issue, then check the provider\'s status page. Escalate if the issue is on the provider\'s side or requires account/permission changes.',
+        takeaway: 'Internet, authentication, sync, and availability are the main failure points.'
+      },
+      {
+        title: 'Safe Level 1 cloud troubleshooting',
+        bodyMarkdown:
+          'Do not attempt to change cloud settings, permissions, or configurations without guidance. Instead: confirm internet connectivity, verify the user can authenticate, check for service outages, compare with other users to establish scope, and escalate with this context. Cloud service troubleshooting often requires Level 2 or vendor support because settings and data are managed in the cloud, not on the local device.',
+        takeaway: 'Cloud issues often need cloud-side investigation; gather context and escalate.'
+      }
+    ]),
+    flashcards: buildFlashcards('cloud-fundamentals', [
+      ['What is cloud computing?', 'On-demand access to computing resources (servers, storage, software) delivered over the internet.'],
+      ['What does IaaS stand for?', 'Infrastructure as a Serviceâ€”the provider manages servers and storage; you manage the operating system and applications.'],
+      ['What does PaaS stand for?', 'Platform as a Serviceâ€”the provider manages infrastructure and tools; you write applications.'],
+      ['What does SaaS stand for?', 'Software as a Serviceâ€”the provider manages everything; you use the application via a browser.'],
+      ['What is an example of SaaS?', 'Office 365, Google Workspace, Teams, SharePoint Online.'],
+      ['What is public cloud?', 'Shared infrastructure managed by a provider and used by many organizations.'],
+      ['What is private cloud?', 'Dedicated infrastructure for one organization, with more control but higher cost.'],
+      ['What is the difference between public and hybrid cloud?', 'Public is entirely cloud-based; hybrid combines on-premises and cloud services with integration between them.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'cloud-q1',
+        prompt: 'A staff member cannot access their Office 365 email from home. The internet connection is working. What should you check next?',
+        domain: 'Cloud Fundamentals',
+        difficulty: 'foundation',
+        explanation: 'Authentication is the gateway to cloud services.',
+        modelAnswer: 'Confirm they can sign in to the Office 365 portal with their credentials. If sign-in fails, the issue is authentication; if it succeeds, the issue may be browser, cache, or client setup.',
+        commonMistakes: ['Assuming it is internet connectivity', 'Trying to change cloud settings without guidance'],
+        dcsContext: 'Office 365 is a SaaSâ€”sign-in is the key.',
+        reviewSchedule,
+        recommendedModuleId: 'cloud-fundamentals',
+        weakTopic: 'cloud-models',
+        options: [
+          { id: 'a', label: 'Verify they can sign in to the Office 365 portal with their username and password.' },
+          { id: 'b', label: 'Tell them to restart their computer and try again.' },
+          { id: 'c', label: 'Assume their account is disabled.' },
+          { id: 'd', label: 'Try to reset their cloud permissions.' }
+        ],
+        correctOptionId: 'a'
+      }),
+      shortAnswer({
+        id: 'cloud-q2',
+        prompt: 'Explain the difference between IaaS and SaaS in a way a teacher would understand.',
+        domain: 'Cloud Fundamentals',
+        difficulty: 'stretch',
+        explanation: 'IaaS is the building, SaaS is the finished house.',
+        modelAnswer:
+          'IaaS is like renting a server from the cloud; you still have to set it up and configure it yourself. SaaS is like using Office 365 or Teamsâ€”the whole application is ready to use; you just sign in. With SaaS, the provider handles all the setup, updates, and maintenance.',
+        commonMistakes: ['Conflating IaaS and SaaS', 'Confusing them with on-premises services'],
+        dcsContext: 'Schools mostly use SaaS; understanding the difference helps with support conversations.',
+        reviewSchedule,
+        recommendedModuleId: 'cloud-fundamentals',
+        weakTopic: 'cloud-models',
+        rubric: ['Uses analogies', 'Separates "build it yourself" from "use it as-is"', 'Mentions updates and maintenance'],
+        keywordHints: ['rent the server', 'ready to use', 'updates', 'maintenance']
+      }),
+      orderSteps({
+        id: 'cloud-q3',
+        prompt: 'Order the safe first-line troubleshooting steps for a cloud service access issue.',
+        domain: 'Cloud Fundamentals',
+        difficulty: 'stretch',
+        explanation: 'Diagnose before escalating.',
+        modelAnswer: 'Confirm internet is working, verify the user can sign in, check whether others are affected, check the provider\'s status page, then escalate with context.',
+        commonMistakes: ['Jumping to escalation without checking basics', 'Assuming outage without verification'],
+        dcsContext: 'Good triage prevents unnecessary escalations.',
+        reviewSchedule,
+        recommendedModuleId: 'cloud-fundamentals',
+        weakTopic: 'cloud-models',
+        steps: [
+          { id: 'internet', label: 'Confirm internet connectivity is working' },
+          { id: 'signin', label: 'Verify the user can sign in with their credentials' },
+          { id: 'scope', label: 'Ask whether other users can access the service' },
+          { id: 'status', label: 'Check the provider\'s status page for outages' },
+          { id: 'escalate', label: 'Escalate with context about what you\'ve checked' }
+        ],
+        correctOrder: ['internet', 'signin', 'scope', 'status', 'escalate'],
+        rubric: ['Checks internet first', 'Verifies authentication', 'Determines scope', 'Checks status before claiming outage']
+      }),
+      scenarioResponse({
+        id: 'cloud-q4',
+        prompt: 'A teacher says, "I uploaded a document to OneDrive this morning, but it is not appearing on my laptop." The internet is working. Describe your response and how you would troubleshoot this.',
+        domain: 'Cloud Fundamentals',
+        difficulty: 'challenge',
+        explanation: 'Sync issues require patience and context gathering.',
+        modelAnswer:
+          'Explain that OneDrive syncs files from the cloud to the device when you sign in. Verify they are signed in on the laptop, check whether the file appears on the web (office.com), wait a few minutes for sync, check whether the sync client shows any errors, then escalate if the file is in the cloud but not syncing locally.',
+        commonMistakes: ['Assuming the file is lost', 'Attempting to manually sync without understanding'],
+        dcsContext: 'Cloud sync is a common source of confusion.',
+        reviewSchedule,
+        recommendedModuleId: 'cloud-fundamentals',
+        weakTopic: 'cloud-models',
+        rubric: ['Explains sync behavior', 'Checks web access', 'Allows time for sync', 'Escalates with context']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('cloud-fundamentals', [
+      {
+        title: 'Office 365 sign-in issue',
+        prompt: 'A new staff member cannot sign in to their email on their home computer, but another staff member using the same Wi-Fi can. Describe how you would troubleshoot and escalate.'
+      },
+      {
+        title: 'Cloud sync delay',
+        prompt: 'A teacher says files uploaded to Teams are not appearing on their device. Write an explanation and troubleshooting steps you would provide.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('cloud-fundamentals', [
+      {
+        title: 'Cloud Service Troubleshooting Flowchart',
+        description: 'Create a decision tree for troubleshooting cloud service access issues, covering internet, authentication, scope, and status checks.'
+      },
+      {
+        title: 'Office 365 / Cloud Service Quick Reference',
+        description: 'Design a one-page quick-reference guide for the main cloud services the school uses (Outlook, Teams, SharePoint, OneDrive), including their purpose and common issues.'
+      }
+    ])
   })
 ];
 
 export const modules: TrainingModule[] = [
   ...baseModules.map((module) => enhanceModule(module, moduleEnhancements[module.id])),
-  ...additionalModules
+  ...additionalModules,
+  createModule({
+    id: 'accessibility-assistive-technology',
+    title: 'Accessibility and Assistive Technology',
+    description:
+      'Learn Web Content Accessibility Guidelines (WCAG) fundamentals, assistive technology, and how to support users with visual, auditory, motor, or cognitive disabilities. Understand legal requirements and inclusive design principles.',
+    domain: 'Endpoint Support',
+    level: 'L1',
+    estimatedMinutes: 24,
+    tags: ['accessibility', 'WCAG', 'assistive tech', 'screen readers', 'inclusive design'],
+    learningObjectives: [
+      'Understand WCAG 2.1 accessibility standards and their purpose.',
+      'Recognize common assistive technologies and their use cases.',
+      'Support users with disabilities safely and respectfully.',
+      'Identify accessibility barriers and know how to report them.'
+    ],
+    dcsRelevance: [
+      'Schools have a legal obligation to provide accessible technology and services.',
+      'Many students and staff have disabilities; supporting them is part of inclusive education.',
+      'Accessible design benefits everyone, not just users with disabilities.'
+    ],
+    sections: buildSections('accessibility-assistive-technology', [
+      {
+        title: 'WCAG 2.1 and accessibility standards',
+        bodyMarkdown:
+          'The Web Content Accessibility Guidelines (WCAG) are international standards for accessible web and digital content. WCAG 2.1 has three levels: A (minimum), AA (standard), and AAA (enhanced). Schools should aim for AA compliance. The guidelines cover four principles: Perceivable (content can be sensed), Operable (users can navigate), Understandable (content is clear), and Robust (works with assistive tech). Examples: images need alt text (Perceivable), buttons need keyboard access (Operable), language is clear (Understandable), and code is valid (Robust).',
+        takeaway: 'WCAG AA is the standard; all four principles matter.'
+      },
+      {
+        title: 'Common assistive technologies',
+        bodyMarkdown:
+          'Screen readers: software that reads text aloud for blind users (NVDA, JAWS, iOS VoiceOver). Magnifiers: enlarge text for low-vision users. Speech-to-text: users speak to control devices (Windows Narrator, iOS Voice Control). Captions: text of audio for deaf or hard-of-hearing users. Switch access: allows users with limited mobility to control devices. Predictive text: helps users with dyslexia or motor disabilities. High-contrast themes: help users with low vision. Level 1 support should be familiar with these and know when to suggest them to users.',
+        takeaway: 'Assistive tech is available; know what is available and how to enable it.'
+      },
+      {
+        title: 'Supporting users with disabilities',
+        bodyMarkdown:
+          'Listen and ask: if a user says they have a disability or need accommodation, listen without judgment and ask what would help. Provide options: multiple ways to do the same task (keyboard, mouse, touch). Use plain language: avoid jargon and keep sentences short. Test with users: involve users with disabilities in designing and testing solutions. Avoid assumptions: do not assume all users experience technology the same way. Level 1 support can enable high-contrast themes, activate screen readers, provide captions, and connect users with accessibility resources.',
+        takeaway: 'Listen, ask, and provide options.'
+      },
+      {
+        title: 'Accessibility barriers and how to report them',
+        bodyMarkdown:
+          'Common barriers: no alt text on images, keyboard navigation not working, no captions on videos, poor colour contrast, inaccessible forms, confusing navigation, and missing ARIA labels. If you encounter an accessibility barrier: document what the barrier is, which device or service is affected, which user cannot complete the task, and what assistive technology they were using. Report it to the development or operations team so it can be fixed.',
+        takeaway: 'Document barriers clearly; they can usually be fixed.'
+      },
+      {
+        title: 'Legal and ethical responsibility',
+        bodyMarkdown:
+          'Schools have a legal obligation under disability discrimination laws to provide equal access to digital services. Beyond legal obligation, accessibility is about respect and inclusion. Students and staff with disabilities should be able to use school technology just as easily as anyone else. Making technology accessible is not "special treatment"; it is basic fairness and smart design that helps everyone.',
+        takeaway: 'Accessibility is a legal requirement and a human responsibility.'
+      }
+    ]),
+    flashcards: buildFlashcards('accessibility-assistive-technology', [
+      ['What is WCAG?', 'Web Content Accessibility Guidelinesâ€”international standards for accessible web and digital content.'],
+      ['What does WCAG AA mean?', 'The standard level of accessibility compliance that schools should aim for.'],
+      ['What are the four WCAG principles?', 'Perceivable (content can be sensed), Operable (navigable), Understandable (clear), Robust (works with assistive tech).'],
+      ['What is a screen reader?', 'Software that reads text aloud for blind or low-vision users (examples: NVDA, JAWS, VoiceOver).'],
+      ['What is alt text?', 'Text description of an image that screen readers read aloud and appears if the image does not load.'],
+      ['Why are captions important?', 'Captions provide the text of audio for deaf or hard-of-hearing users.'],
+      ['What is high-contrast theme?', 'A visual setting that increases the contrast between text and background, helpful for low-vision users.'],
+      ['What should you do if a user says they need accessibility support?', 'Listen without judgment, ask what would help, and provide options or connect them with resources.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'a11y-q1',
+        prompt: 'A student using a screen reader cannot access a form on the school website. The form buttons have no labels. What is the accessibility barrier?',
+        domain: 'Accessibility',
+        difficulty: 'foundation',
+        explanation: 'Screen readers need text labels to read buttons aloud.',
+        modelAnswer: 'The buttons are missing ARIA labels or text descriptions, so the screen reader cannot tell the user what each button does. This violates WCAG Operable principle.',
+        commonMistakes: ['Assuming the student should "just use a mouse"', 'Blaming the user instead of the design'],
+        dcsContext: 'Many students rely on screen readers; unlabeled buttons are a major barrier.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-assistive-technology',
+        weakTopic: 'communication',
+        options: [
+          { id: 'a', label: 'The student should just use a mouse instead of a screen reader.' },
+          { id: 'b', label: 'The buttons are missing text labels or ARIA descriptions; the screen reader cannot identify them.' },
+          { id: 'c', label: 'Screen readers do not support forms; the student needs different software.' },
+          { id: 'd', label: 'The school should disable the form for screen reader users.' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'a11y-q2',
+        prompt: 'Explain the difference between alt text and a caption, and when each is used.',
+        domain: 'Accessibility',
+        difficulty: 'stretch',
+        explanation: 'Alt text is for images; captions are for audio or video.',
+        modelAnswer:
+          'Alt text is a text description of an image that screen readers read aloud. Captions are the text of audio or video content for deaf or hard-of-hearing users. Use alt text on every image; use captions on every video or audio recording.',
+        commonMistakes: ['Using alt text for video', 'Forgetting captions', 'Writing unhelpful alt text like "image"'],
+        dcsContext: 'Both are required for WCAG AA compliance.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-assistive-technology',
+        weakTopic: 'communication',
+        rubric: ['Distinguishes alt text and captions', 'Explains use cases', 'Mentions WCAG compliance'],
+        keywordHints: ['image', 'audio', 'screen reader', 'deaf', 'description']
+      }),
+      orderSteps({
+        id: 'a11y-q3',
+        prompt: 'Order the steps for making a simple document more accessible.',
+        domain: 'Accessibility',
+        difficulty: 'stretch',
+        explanation: 'Perceivable and Understandable matter for documents.',
+        modelAnswer: 'Use clear heading hierarchy, ensure high colour contrast, add alt text to images, use plain language, test with a screen reader, then ask a user with a disability for feedback.',
+        commonMistakes: ['Skipping colour contrast', 'Not testing with assistive tech'],
+        dcsContext: 'Many documents are not accessible; these steps fix most issues.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-assistive-technology',
+        weakTopic: 'communication',
+        steps: [
+          { id: 'headings', label: 'Use clear heading hierarchy (Heading 1, 2, 3)' },
+          { id: 'contrast', label: 'Ensure text and background have high colour contrast' },
+          { id: 'alt', label: 'Add alt text to all images' },
+          { id: 'language', label: 'Use plain language and short sentences' },
+          { id: 'test', label: 'Test with a screen reader' },
+          { id: 'feedback', label: 'Ask a user with a disability for feedback' }
+        ],
+        correctOrder: ['headings', 'contrast', 'alt', 'language', 'test', 'feedback'],
+        rubric: ['Addresses Perceivable and Understandable', 'Tests with assistive tech', 'Seeks user feedback']
+      }),
+      scenarioResponse({
+        id: 'a11y-q4',
+        prompt: 'A teacher shows you a video on the school website but tells you it has no captions. A deaf student in their class cannot access the lesson. Explain what is missing and how you would report it.',
+        domain: 'Accessibility',
+        difficulty: 'challenge',
+        explanation: 'Captions are legally required and ethically essential.',
+        modelAnswer:
+          'The video is missing captions, which is a WCAG Perceivable barrier. This violates accessibility standards and may violate disability law. Report it to the content team with the video link, note that it lacks captions, and escalate that a student cannot access the lesson without them. Captions should be added before the next class.',
+        commonMistakes: ['Telling the student to find another video', 'Delaying the report'],
+        dcsContext: 'Videos without captions lock deaf students out of learning.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-assistive-technology',
+        weakTopic: 'communication',
+        rubric: ['Identifies missing captions', 'Frames as legal and ethical issue', 'Escalates for urgent fix']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('accessibility-assistive-technology', [
+      {
+        title: 'Supporting a screen reader user',
+        prompt: 'A student using a screen reader needs help accessing an online learning platform. Describe how you would support them and what you would look for in terms of accessibility.'
+      },
+      {
+        title: 'Reporting an accessibility barrier',
+        prompt: 'You find that a school form is not keyboard navigable. Write a report explaining the barrier and how it affects users.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('accessibility-assistive-technology', [
+      {
+        title: 'Accessibility Audit Checklist',
+        description: 'Create a checklist for auditing a simple webpage or document for WCAG AA compliance (headings, alt text, contrast, captions, keyboard navigation).'
+      },
+      {
+        title: 'Assistive Technology Quick Reference',
+        description: 'Design a one-page guide listing common assistive technologies available in Windows and macOS, with instructions for enabling them.'
+      }
+    ])
+  })
 ];
 
 export function getModuleById(moduleId: string) {

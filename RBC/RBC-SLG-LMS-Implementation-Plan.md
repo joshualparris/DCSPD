@@ -1288,7 +1288,7 @@ Next best expansion steps:
 2. [ ] Add direct admin publishing so subjects, resources, assessments, and weekly blocks can be updated without editing TypeScript.
 3. [ ] Add authenticated cloud database sync across devices.
 4. [ ] Run mobile/offline QA on a phone and document the install/offline behaviour.
-5. [ ] Add quick-fix printable cheat sheets and synthetic ticket CSV import.
+5. [x] Add quick-fix printable cheat sheets and synthetic ticket CSV import. Implemented via `/cheat-sheets`, `/ticket-data-import`, `src/data/cheatSheets.ts`, and `src/lib/ticketCsvImport.ts`.
 
 ## Public source links checked while preparing this plan
 

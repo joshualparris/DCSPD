@@ -25,6 +25,7 @@ export type ReadinessScore = {
     practicalOutputs: number;
     weakAreaPenalty: number;
   };
+  practicalSkills: string[];
 };
 
 function average(values: number[]) {
@@ -189,7 +190,8 @@ function getAreaScore(area: ReadinessArea, progress: UserProgress): ReadinessSco
       flashcards: clampScore(flashcard.score),
       practicalOutputs: clampScore(practicalAverage),
       weakAreaPenalty: clampScore(weakTopicPenalty)
-    }
+    },
+    practicalSkills: (area as any).practicalSkills || []
   };
 }
 

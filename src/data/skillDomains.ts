@@ -41,6 +41,7 @@ export type ReadinessArea = {
   moduleIds: string[];
   focusTerms: string[];
   weakTopics: WeakTopicKey[];
+  practicalSkills?: string[];
 };
 
 export const readinessProfiles = {
@@ -50,56 +51,64 @@ export const readinessProfiles = {
       label: 'Hardware',
       moduleIds: ['printer-troubleshooting', 'classroom-display-viewboard-troubleshooting'],
       focusTerms: ['Printer', 'ViewBoard', 'device'],
-      weakTopics: ['printer-symptoms']
+      weakTopics: ['printer-symptoms'],
+      practicalSkills: ['ViewBoard cable triage', 'MFD error code diagnosis', 'Asset label tracking']
     },
     {
       id: 'windows-tools',
       label: 'Windows tools',
       moduleIds: ['dcs-it-support-foundations', 'ticket-notes-escalation-quality'],
       focusTerms: ['Windows', 'troubleshooting'],
-      weakTopics: ['ticket-quality']
+      weakTopics: ['ticket-quality'],
+      practicalSkills: ['Jira ticket drafting', 'L1 vs L2 boundary judgement', 'Safe action selection']
     },
     {
       id: 'command-line',
       label: 'Command line',
       moduleIds: ['dns-dhcp-gateway-ip-basics'],
       focusTerms: ['ipconfig', 'ping', 'nslookup'],
-      weakTopics: ['dns-dhcp-gateway']
+      weakTopics: ['dns-dhcp-gateway'],
+      practicalSkills: ['Evidence gathering via CMD', 'Network path verification', 'IP conflict detection']
     },
     {
       id: 'security-basics',
       label: 'Security basics',
       moduleIds: ['m365-identity-offboarding-basics', 'ticket-notes-escalation-quality'],
       focusTerms: ['security', 'phishing', 'privacy'],
-      weakTopics: ['security-risk-judgement']
+      weakTopics: ['security-risk-judgement'],
+      practicalSkills: ['Staff account security triage', 'Privacy-safe ticket writing', 'Phishing report handling']
     },
     {
       id: 'networking-concepts',
       label: 'Networking concepts',
       moduleIds: ['ports-and-protocols', 'dns-dhcp-gateway-ip-basics', 'vlans-network-segmentation'],
       focusTerms: ['network', 'VLAN', 'protocol'],
-      weakTopics: ['ports-protocols', 'dns-dhcp-gateway', 'vlan-firewall-rules']
+      weakTopics: ['ports-protocols', 'dns-dhcp-gateway', 'vlan-firewall-rules'],
+      practicalSkills: ['SSID selection advice', 'Wired vs Wireless triage', 'Basic VLAN troubleshooting']
     },
     {
       id: 'ports-protocols',
       label: 'Ports and protocols',
       moduleIds: ['ports-and-protocols'],
       focusTerms: ['port', 'protocol'],
-      weakTopics: ['ports-protocols']
+      weakTopics: ['ports-protocols'],
+      practicalSkills: ['Port-based service triage', 'HTTP/HTTPS/DNS verification']
     },
     {
       id: 'printers',
       label: 'Printers and peripherals',
       moduleIds: ['printer-troubleshooting'],
       focusTerms: ['printer'],
-      weakTopics: ['printer-symptoms']
+      weakTopics: ['printer-symptoms'],
+      practicalSkills: ['PaperCut account triage', 'Printer driver verification', 'Physical jam clearance']
     },
     {
       id: 'mobile-cloud',
       label: 'Mobile, cloud, and virtualisation',
       moduleIds: ['cloud-models-saas-paas-iaas-daas', 'mdm-intune-group-policy-concepts'],
       focusTerms: ['cloud', 'Intune', 'mobile'],
-      weakTopics: ['cloud-models', 'mdm-group-policy']
+      weakTopics: ['cloud-models', 'mdm-group-policy'],
+      practicalSkills: ['Intune sync verification', 'iPad Jamf check-in', 'Cloud app access triage']
     },
     {
       id: 'professional-judgement',

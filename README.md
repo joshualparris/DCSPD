@@ -15,12 +15,15 @@ The app should stay privacy-safe while becoming more relevant to the actual DCS 
 ## Current App Areas
 
 - Professional Development Dashboard
+- Recent Updates
 - Modules
 - Scenario Lab
 - Due Today
 - Structured assessment
 - PD log
 - Error log
+- Printable quick-fix cheat sheets
+- Synthetic ticket CSV data lab
 - Readiness profiles
 - Trainer guide
 - Settings
@@ -84,7 +87,8 @@ Current audit and backlog documents:
 
 - [`docs/jira-vs-dcsprep-audit.md`](docs/jira-vs-dcsprep-audit.md)
 - [`docs/dcsprep-upskilling-roadmap.md`](docs/dcsprep-upskilling-roadmap.md)
-- [`TODO.md`](TODO.md)
+- [`docs/TODO.md`](docs/TODO.md)
+- [`toDOlist.md`](toDOlist.md)
 
 These documents map the app against the DCS Jira analysis, identify missing or shallow training areas, and define the next implementation priorities.
 

@@ -1,7 +1,8 @@
 "use client";
 
-import { type ChangeEvent, useState } from 'react';
-import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive } from 'lucide-react';
+import { type ChangeEvent, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3 } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import { 
   MODULE_GENERATION_PROMPT, 
@@ -33,6 +34,23 @@ import type { Scenario } from '../../src/types/scenarios';
 import type { AcademicSubject } from '../../src/types/academic';
 import type { TroubleshootingPlaybook } from '../../src/types/playbooks';
 import type { DcsAssetProfile } from '../../src/types/assets';
+import {
+  DEFAULT_SCHEDULER_SETTINGS,
+  loadSchedulerSettings,
+  resetSchedulerSettings,
+  saveSchedulerSettings,
+  type SchedulerBlockId,
+  type SchedulerSettings
+} from '../../src/hooks/useScheduler';
+import {
+  clearUsageEvents,
+  exportUsageEvents,
+  importUsageEvents,
+  isUsageTrackingEnabled,
+  parseUsageEventsImport,
+  setUsageTrackingEnabled
+} from '../../src/lib/usageAnalytics';
+import { trackUsageInteraction } from '../../src/hooks/useUsageTracking';
 
 export default function SettingsPage() {
   const [aiStatus, setAiStatus] = useState<{
@@ -58,6 +76,27 @@ export default function SettingsPage() {
     state: 'idle',
     message: 'No module uploaded yet.'
   });
+  const [schedulerSettings, setSchedulerSettings] = useState<SchedulerSettings>(DEFAULT_SCHEDULER_SETTINGS);
+  const [usageTrackingEnabled, setUsageTrackingEnabledState] = useState(true);
+  const [usageStatus, setUsageStatus] = useState<{
+    state: 'idle' | 'ok' | 'error';
+    message: string;
+  }>({
+    state: 'idle',
+    message: 'Usage analytics are stored locally in this browser.'
+  });
+  const [schedulerStatus, setSchedulerStatus] = useState<{
+    state: 'idle' | 'ok';
+    message: string;
+  }>({
+    state: 'idle',
+    message: 'Scheduler settings use the default PD block timetable until saved.'
+  });
+
+  useEffect(() => {
+    setSchedulerSettings(loadSchedulerSettings());
+    setUsageTrackingEnabledState(isUsageTrackingEnabled());
+  }, []);
 
   function handleReset() {
     if (window.confirm('Reset all DCSPrep local progress and logs? This cannot be undone.')) {
@@ -101,6 +140,14 @@ export default function SettingsPage() {
       }
 
       saveProgress(parsed.progress);
+      trackUsageInteraction({
+        eventType: 'settings_import',
+        route: '/settings',
+        label: 'Progress backup imported',
+        contentType: 'settings',
+        activityCategory: 'settings',
+        completed: true
+      });
       setBackupStatus({
         state: 'ok',
         message: 'Backup imported. Reloading the app so every page uses the restored progress.'
@@ -138,6 +185,21 @@ export default function SettingsPage() {
     try {
       const text = await file.text();
       const data = JSON.parse(text);
+      const trackCustomImport = (contentKind: string, contentId?: string, itemCount = 1) => {
+        trackUsageInteraction({
+          eventType: 'custom_content_imported',
+          route: '/settings',
+          label: contentKind,
+          contentType: 'settings',
+          contentId,
+          activityCategory: 'settings',
+          completed: true,
+          metadata: {
+            source: 'custom',
+            resultCount: itemCount
+          }
+        });
+      };
 
       // Simple heuristic to detect type
       if (data.sections && data.learningObjectives) {
@@ -163,21 +225,27 @@ export default function SettingsPage() {
           });
         }
         saveCustomModule(trainingModule as TrainingModule);
+        trackCustomImport('Training module', data.id);
         setModuleStatus({ state: 'ok', message: `Training Module "${data.title}" uploaded!` });
       } else if (data.persona && data.itChallenge) {
         saveCustomRoleplay(data as RoleplayScenario);
+        trackCustomImport('Roleplay scenario', data.id);
         setModuleStatus({ state: 'ok', message: `Roleplay Scenario "${data.persona}" uploaded!` });
       } else if (data.steps && data.initialReport) {
         saveCustomScenario(data as Scenario);
+        trackCustomImport('Scenario lab', data.id);
         setModuleStatus({ state: 'ok', message: `Scenario Lab "${data.title}" uploaded!` });
       } else if (data.silos && data.dcsBridges) {
         saveCustomAcademic(data as AcademicSubject);
+        trackCustomImport('Academic subject', data.id);
         setModuleStatus({ state: 'ok', message: `Academic Subject "${data.title}" uploaded!` });
       } else if (data.safeChecks && data.escalationTriggers) {
         saveCustomPlaybook(data as TroubleshootingPlaybook);
+        trackCustomImport('Support playbook', data.id);
         setModuleStatus({ state: 'ok', message: `Troubleshooting Playbook "${data.title}" uploaded!` });
       } else if (data.category && data.level1Boundaries) {
         saveCustomAsset(data as DcsAssetProfile);
+        trackCustomImport('Asset profile', data.id);
         setModuleStatus({ state: 'ok', message: `Asset Profile "${data.name}" uploaded!` });
       } else {
         setModuleStatus({ state: 'error', message: 'Unknown JSON format. Could not detect data type.' });
@@ -198,6 +266,124 @@ export default function SettingsPage() {
         message: 'All custom content deleted.'
       });
     }
+  }
+
+  function updateSchedulerBlock(blockId: SchedulerBlockId, field: 'startTime' | 'endTime', value: string) {
+    setSchedulerSettings((current) => ({
+      ...current,
+      blocks: current.blocks.map((block) => (block.id === blockId ? { ...block, [field]: value } : block))
+    }));
+  }
+
+  function updateStudyContext(field: keyof SchedulerSettings['studyContext'], value: string) {
+    setSchedulerSettings((current) => ({
+      ...current,
+      studyContext: {
+        ...current.studyContext,
+        [field]: value
+      }
+    }));
+  }
+
+  function handleSaveSchedulerSettings() {
+    saveSchedulerSettings(schedulerSettings);
+    setSchedulerStatus({
+      state: 'ok',
+      message: 'PD Scheduler timetable and study context saved locally.'
+    });
+  }
+
+  function handleResetSchedulerSettings() {
+    resetSchedulerSettings();
+    setSchedulerSettings(DEFAULT_SCHEDULER_SETTINGS);
+    setSchedulerStatus({
+      state: 'ok',
+      message: 'PD Scheduler settings reset to the research-backed defaults.'
+    });
+  }
+
+  function downloadUsageAnalytics() {
+    const json = exportUsageEvents();
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `dcsprep-usage-analytics-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setUsageStatus({
+      state: 'ok',
+      message: 'Usage analytics exported as local JSON.'
+    });
+  }
+
+  async function importUsageAnalytics(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const parsed = parseUsageEventsImport(text);
+
+      if (!parsed.ok) {
+        setUsageStatus({
+          state: 'error',
+          message: parsed.error
+        });
+        event.target.value = '';
+        return;
+      }
+
+      importUsageEvents(text);
+      setUsageStatus({
+        state: 'ok',
+        message: `${parsed.events.length} usage analytics events imported.`
+      });
+      trackUsageInteraction({
+        eventType: 'settings_import',
+        route: '/settings',
+        label: 'Usage analytics imported',
+        contentType: 'settings',
+        activityCategory: 'settings',
+        completed: true,
+        metadata: {
+          resultCount: parsed.events.length
+        }
+      });
+      event.target.value = '';
+    } catch {
+      setUsageStatus({
+        state: 'error',
+        message: 'Could not read the selected usage analytics file.'
+      });
+      event.target.value = '';
+    }
+  }
+
+  function handleClearUsageAnalytics() {
+    if (!window.confirm('Clear local usage analytics events? Existing learning progress will remain.')) {
+      return;
+    }
+
+    clearUsageEvents();
+    setUsageStatus({
+      state: 'ok',
+      message: 'Usage analytics events cleared. Tracking setting was not changed.'
+    });
+  }
+
+  function handleToggleUsageTracking() {
+    const nextEnabled = !usageTrackingEnabled;
+    setUsageTrackingEnabled(nextEnabled);
+    setUsageTrackingEnabledState(nextEnabled);
+    setUsageStatus({
+      state: 'ok',
+      message: nextEnabled
+        ? 'Usage analytics tracking is enabled locally.'
+        : 'Usage analytics tracking is disabled. Existing events remain until cleared.'
+    });
   }
 
   async function runAiHealthCheck() {
@@ -255,6 +441,175 @@ export default function SettingsPage() {
           This app is for personal PD. Do not enter sensitive DCS, student, staff, parent, network, credential,
           or incident details.
         </p>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <BarChart3 size={18} />
+              Usage analytics
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Local-only learning insights</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Tracks interaction metadata only: routes, content IDs, activity type, duration, completion, and scores
+              already available from progress. It does not store full ticket notes, reflections, roleplay messages, or
+              private typed content in the analytics log.
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Status: {usageTrackingEnabled ? 'tracking enabled locally' : 'tracking disabled'}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleToggleUsageTracking}
+            className={`rounded-full px-4 py-2 text-sm font-medium ${
+              usageTrackingEnabled ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-700'
+            }`}
+          >
+            {usageTrackingEnabled ? 'Disable tracking' : 'Enable tracking'}
+          </button>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <Link
+            href="/usage-insights"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+          >
+            <BarChart3 size={16} />
+            View Usage Insights
+          </Link>
+          <button
+            type="button"
+            onClick={downloadUsageAnalytics}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700"
+          >
+            <Download size={16} />
+            Export usage analytics JSON
+          </button>
+          <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700">
+            <Upload size={16} />
+            Import usage analytics JSON
+            <input type="file" accept="application/json,.json" onChange={importUsageAnalytics} className="sr-only" />
+          </label>
+          <button
+            type="button"
+            onClick={handleClearUsageAnalytics}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white"
+          >
+            <Trash2 size={16} />
+            Clear usage analytics
+          </button>
+        </div>
+
+        <div
+          className={`mt-5 rounded-2xl p-4 text-sm ${
+            usageStatus.state === 'error'
+              ? 'bg-red-50 text-red-800'
+              : usageStatus.state === 'ok'
+                ? 'bg-emerald-50 text-emerald-800'
+                : 'bg-slate-50 text-slate-700'
+          }`}
+        >
+          {usageStatus.message}
+        </div>
+      </section>
+
+      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <CalendarClock size={18} />
+              PD Scheduler
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Timetable and study context</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              These local settings feed the real-time scheduler page. The defaults match the Thursday/Friday PD block
+              structure and current A+ Core 2 focus.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={handleSaveSchedulerSettings}
+              className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+            >
+              <Save size={16} />
+              Save scheduler settings
+            </button>
+            <button
+              type="button"
+              onClick={handleResetSchedulerSettings}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700"
+            >
+              <RotateCcw size={16} />
+              Reset defaults
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {schedulerSettings.blocks.map((block) => (
+            <div key={block.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+              <div className="font-semibold text-slate-900">{block.label}</div>
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <label className="text-sm text-slate-700">
+                  Start
+                  <input
+                    type="time"
+                    value={block.startTime}
+                    onChange={(event) => updateSchedulerBlock(block.id, 'startTime', event.target.value)}
+                    className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+                  />
+                </label>
+                <label className="text-sm text-slate-700">
+                  End
+                  <input
+                    type="time"
+                    value={block.endTime}
+                    onChange={(event) => updateSchedulerBlock(block.id, 'endTime', event.target.value)}
+                    className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+                  />
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {(
+            [
+              ['certificationFocus', 'Certification focus'],
+              ['currentTopic', 'Current topic'],
+              ['remainingVideo', 'Remaining video'],
+              ['videoSource', 'Primary video source'],
+              ['flashcardSource', 'Flashcard/SRS source'],
+              ['flashcardHref', 'Flashcard route'],
+              ['applicationSource', 'Application tasks'],
+              ['applicationHref', 'Application route'],
+              ['buildingTasks', 'Building tasks'],
+              ['writingTasks', 'Writing tasks'],
+              ['breakActivities', 'Break activities']
+            ] as Array<[keyof SchedulerSettings['studyContext'], string]>
+          ).map(([field, label]) => (
+            <label key={field} className="text-sm text-slate-700">
+              {label}
+              <input
+                value={schedulerSettings.studyContext[field]}
+                onChange={(event) => updateStudyContext(field, event.target.value)}
+                className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900"
+              />
+            </label>
+          ))}
+        </div>
+
+        <div
+          className={`mt-5 rounded-2xl p-4 text-sm ${
+            schedulerStatus.state === 'ok' ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-50 text-slate-700'
+          }`}
+        >
+          {schedulerStatus.message}
+        </div>
       </section>
 
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
