@@ -16,6 +16,44 @@ export type RecentUpdate = {
 
 export const recentUpdates: RecentUpdate[] = [
   {
+    id: 'mid-assessment-persistence',
+    dateIso: '2026-05-14',
+    title: 'Mid-assessment persistence',
+    summary:
+      'Added state saving for module quizzes. You can now leave an assessment midway and resume exactly where you left off.',
+    category: 'Added',
+    impact: 'Reduces frustration when support tasks interrupt learning; progress is never lost.',
+    links: [
+      { label: 'Open Modules', href: '/modules', kind: 'feature' }
+    ]
+  },
+  {
+    id: 'new-learning-modules-may',
+    dateIso: '2026-05-14',
+    title: 'Modern IT Support modules',
+    summary:
+      'Added 4 new modules: Cybersecurity Awareness, Device Imaging, Accessibility/Inclusive Design, and Soft Skills.',
+    category: 'Added',
+    impact: 'Expands coverage into critical domains for modern school IT environments.',
+    links: [
+      { label: 'Cybersecurity module', href: '/modules/cybersecurity-basics', kind: 'workflow' },
+      { label: 'Imaging module', href: '/modules/device-imaging-workflows', kind: 'workflow' }
+    ]
+  },
+  {
+    id: 'mindfulness-and-gamification',
+    dateIso: '2026-05-14',
+    title: 'Mindfulness and Gamification',
+    summary:
+      'Added a Mindfulness Pause component, weekly Leaderboard, and sidebar stats for points and streaks.',
+    category: 'Added',
+    impact: 'Improves focus and motivation during PD sessions with interactive rewards and breathing exercises.',
+    links: [
+      { label: 'Open Dashboard', href: '/', kind: 'feature' },
+      { label: 'Modules Page', href: '/modules', kind: 'workflow' }
+    ]
+  },
+  {
     id: 'quick-fix-cheat-sheets',
     dateIso: '2026-05-14',
     title: 'Printable quick-fix cheat sheets',
