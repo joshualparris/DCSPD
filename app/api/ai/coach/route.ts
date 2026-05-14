@@ -20,7 +20,26 @@ const CoachResponseSchema = z.object({
   missing: z.array(z.string()),
   riskNotes: z.array(z.string()),
   betterAnswer: z.string(),
-  nextPractice: z.string()
+  nextPractice: z.string(),
+  rubricGrade: z.object({
+    score: z.number(),
+    maxScore: z.number(),
+    percentage: z.number(),
+    level: z.enum(['needs-work', 'developing', 'competent', 'strong', 'excellent']),
+    strengths: z.array(z.string()),
+    missing: z.array(z.string()),
+    privacyFlags: z.array(z.string()),
+    escalationFeedback: z.array(z.string()),
+    improvedExample: z.string().optional(),
+    criteriaResults: z.array(z.object({
+      criterionId: z.string(),
+      label: z.string(),
+      met: z.boolean(),
+      pointsAwarded: z.number(),
+      pointsPossible: z.number(),
+      feedback: z.string()
+    }))
+  }).optional()
 });
 
 /**
@@ -134,6 +153,7 @@ export async function POST(request: Request) {
     'If the answer misses required success criteria, name the missing criteria clearly.',
     'Do not give low scores for wording differences when meaning is correct.',
     'If redactionSummary indicates many redactions, mention uncertainty but still score based on remaining meaning.',
+    'If a rubric is provided (in the "rubric" field), you MUST also perform a detailed criterion-by-criterion analysis and return it in the "rubricGrade" field.',
     'CRITICAL: You must return ONLY a single JSON object. No conversational filler, no introductory text, no markdown formatting outside the JSON.',
     'CRITICAL: You must return ALL fields in the JSON even if they are empty arrays or placeholder strings.',
     'For "freeform" context (learning plans), use the "betterAnswer" field for the main 7-day plan text.',
@@ -144,7 +164,26 @@ export async function POST(request: Request) {
       missing: ['string'],
       riskNotes: ['string'],
       betterAnswer: 'string',
-      nextPractice: 'string'
+      nextPractice: 'string',
+      rubricGrade: {
+        score: 0,
+        maxScore: 0,
+        percentage: 0,
+        level: 'excellent',
+        strengths: ['string'],
+        missing: ['string'],
+        privacyFlags: ['string'],
+        escalationFeedback: ['string'],
+        improvedExample: 'string',
+        criteriaResults: [{
+          criterionId: 'string',
+          label: 'string',
+          met: true,
+          pointsAwarded: 1,
+          pointsPossible: 1,
+          feedback: 'string'
+        }]
+      }
     })
   ].join('\n');
 

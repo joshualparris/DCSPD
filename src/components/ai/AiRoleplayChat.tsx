@@ -27,9 +27,7 @@ type AiRoleplayChatProps = {
 };
 
 export default function AiRoleplayChat({ roleplayId, persona, scenario, initialPrompt }: AiRoleplayChatProps) {
-  const [messages, setMessages] = useState<Message[]>(() =>
-    initialPrompt ? [{ role: 'assistant', content: initialPrompt }] : []
-  );
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +35,30 @@ export default function AiRoleplayChat({ roleplayId, persona, scenario, initialP
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const startedTrackedRef = useRef(false);
+
+  useEffect(() => {
+    const progress = getStoredProgressSnapshot();
+    const existingAttempt = progress.roleplayFeedbackAttempts
+      .filter(a => a.persona === persona && a.scenario === scenario)
+      .sort((a, b) => new Date(b.createdAtIso).getTime() - new Date(a.createdAtIso).getTime())[0];
+
+    if (existingAttempt && existingAttempt.exchanges.length > 0) {
+      // Restore from history
+      const historyMessages: Message[] = [];
+      existingAttempt.exchanges.forEach(ex => {
+        historyMessages.push({ role: 'user', content: ex.userMessage });
+        historyMessages.push({ 
+          role: 'assistant', 
+          content: ex.botReply, 
+          coachNotes: ex.coachNotes, 
+          sentiment: ex.sentiment 
+        });
+      });
+      setMessages(historyMessages);
+    } else if (initialPrompt) {
+      setMessages([{ role: 'assistant', content: initialPrompt }]);
+    }
+  }, [persona, scenario, initialPrompt]);
 
   useEffect(() => {
     if (scrollRef.current) {

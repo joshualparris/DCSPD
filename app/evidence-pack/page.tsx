@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { Printer, Download, Copy, FileText, CheckCircle2 } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import { generateEvidencePackMarkdown, type EvidencePackOptions } from '../../src/lib/evidencePack';
 import { getStoredProgressSnapshot, getInitialProgressSnapshot, type UserProgress } from '../../src/lib/progress';
@@ -93,6 +94,53 @@ export default function EvidencePackPage() {
     });
   }
 
+  function printEvidencePack() {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    // Very basic markdown to HTML conversion for printing
+    const html = markdown
+      .split('\n')
+      .map(line => {
+        if (line.startsWith('# ')) return `<h1 style="font-family: sans-serif; color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">${line.slice(2)}</h1>`;
+        if (line.startsWith('## ')) return `<h2 style="font-family: sans-serif; color: #1e293b; margin-top: 30px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">${line.slice(3)}</h2>`;
+        if (line.startsWith('### ')) return `<h3 style="font-family: sans-serif; color: #334155; margin-top: 20px;">${line.slice(4)}</h3>`;
+        if (line.startsWith('- ')) return `<li style="font-family: sans-serif; color: #475569; margin-bottom: 8px; line-height: 1.5;">${line.slice(2)}</li>`;
+        if (line.trim() === '') return '<br/>';
+        return `<p style="font-family: sans-serif; color: #475569; line-height: 1.6;">${line}</p>`;
+      })
+      .join('');
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>DCSPrep Evidence Pack</title>
+          <style>
+            @media print {
+              body { padding: 20px; }
+              h1, h2, h3 { page-break-after: avoid; }
+              li { page-break-inside: avoid; }
+            }
+            body { max-width: 800px; margin: 0 auto; padding: 40px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+          </style>
+        </head>
+        <body>
+          <div style="text-align: right; margin-bottom: 20px; font-size: 12px; color: #94a3b8; font-family: sans-serif;">
+            Generated via DCSPrep App on ${new Date().toLocaleDateString()}
+          </div>
+          ${html}
+          <script>
+            window.onload = () => {
+              window.print();
+              // window.close(); // Optional: close window after print dialog
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  }
+
   return (
     <div className="space-y-6">
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
@@ -110,15 +158,24 @@ export default function EvidencePackPage() {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={copyMarkdown}
-              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700"
+              className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50 active:scale-95"
             >
+              <Copy size={16} />
               {copied ? 'Evidence pack copied' : 'Copy Markdown'}
             </button>
             <button
               onClick={downloadEvidencePack}
-              className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white"
+              className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50 active:scale-95"
             >
+              <Download size={16} />
               Download .md
+            </button>
+            <button
+              onClick={printEvidencePack}
+              className="flex items-center gap-2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white transition hover:scale-105 active:scale-95 shadow-lg shadow-slate-900/10"
+            >
+              <Printer size={16} />
+              Print / Save as PDF
             </button>
           </div>
         </div>

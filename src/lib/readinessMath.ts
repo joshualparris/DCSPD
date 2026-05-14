@@ -226,12 +226,30 @@ export function getDashboardRecommendation(progress: UserProgress) {
   const completedScenarios = progress.scenarioRuns.filter((run) => run.completed).length;
   const focusSessions = progress.focusSessions.length;
 
+  // Dynamic Study Path logic: prioritize weakest readiness areas
+  const allProfiles = [
+    ...getReadinessProfile('aPlus', progress),
+    ...getReadinessProfile('level2', progress),
+    ...getReadinessProfile('schoolItManager', progress)
+  ];
+  const weakestProfile = allProfiles.sort((a, b) => a.score - b.score)[0];
+
   if (focusSessions === 0) {
     return {
       title: 'Start one tiny focus session',
       detail: 'Pick one micro-task, run a short timer, and finish with a reflection so the app starts collecting real evidence instead of light estimates.',
       ctaHref: '/focus',
       ctaLabel: 'Open focus support'
+    };
+  }
+
+  // If we have a very weak area (below 40%), prioritize it heavily
+  if (weakestProfile && weakestProfile.score < 40 && weakestProfile.nextAction) {
+    return {
+      title: `Improve your ${weakestProfile.label} readiness`,
+      detail: `Your readiness in ${weakestProfile.label} is currently ${Math.round(weakestProfile.score)}%. Focus on ${weakestProfile.weakestArea} to build stronger evidence.`,
+      ctaHref: weakestProfile.nextAction.href,
+      ctaLabel: weakestProfile.nextAction.label
     };
   }
 

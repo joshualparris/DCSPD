@@ -13,6 +13,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { getCustomAssets } from '../../../../src/lib/customModules';
+import { dcsAssets } from '../../../../src/data/assets';
 import type { DcsAssetProfile } from '../../../../src/types/assets';
 
 export default function AssetDetailPage({ params }: { params: { id: string } }) {
@@ -22,7 +23,8 @@ export default function AssetDetailPage({ params }: { params: { id: string } }) 
   useEffect(() => {
     setHasMounted(true);
     const custom = getCustomAssets().find(a => a.id === params.id);
-    setAsset(custom);
+    const builtIn = dcsAssets.find(a => a.id === params.id);
+    setAsset(custom || builtIn);
   }, [params.id]);
 
   if (!hasMounted) return null;

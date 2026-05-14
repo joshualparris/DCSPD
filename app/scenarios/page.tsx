@@ -44,6 +44,7 @@ export default function ScenariosPage() {
   const [noteSubmitted, setNoteSubmitted] = useState(false);
   const [savedNoteAverage, setSavedNoteAverage] = useState<number | null>(null);
   const [rubricGrade, setRubricGrade] = useState<RubricGrade | null>(null);
+  const [isAiGrading, setIsAiGrading] = useState(false);
 
   useEffect(() => {
     setProgress(getStoredProgressSnapshot());
@@ -163,20 +164,49 @@ export default function ScenariosPage() {
 
   const finished = stepIndex >= scenario.steps.length;
 
-  function submitScenarioNote() {
+  async function submitScenarioNote() {
     if (!noteReady) {
       return;
     }
 
-    const finalAverage = noteAverage;
+    setIsAiGrading(true);
+    let finalRubricGrade: RubricGrade;
 
-    // Automatic Deterministic Grading
-    const grade = gradeRubric({
-      text: escalationNote,
-      rubric: scenario.noteRubric.map((r: any) => ({ id: r.id, label: r.label, description: r.description })),
-      context: scenario.title
-    });
-    setRubricGrade(grade);
+    try {
+      // 1. Try AI-Powered Rubric Grading via Coach API
+      const aiResult = await requestAiCoachFeedback({
+        contextType: 'ticket-note',
+        scenarioId: scenario.id,
+        prompt: scenario.jiraNotePrompt,
+        userAnswer: escalationNote,
+        modelAnswer: scenario.ticketNoteExample,
+        rubric: scenario.noteRubric.map((r: any) => `${r.label}: ${r.description}`),
+        extraContext: `Scenario: ${scenario.title}\nRisk note: ${scenario.riskNote}`
+      });
+
+      if (aiResult.ok && aiResult.feedback.rubricGrade) {
+        finalRubricGrade = aiResult.feedback.rubricGrade;
+      } else {
+        // Fallback to Deterministic Grading if AI fails or doesn't return rubricGrade
+        finalRubricGrade = gradeRubric({
+          text: escalationNote,
+          rubric: scenario.noteRubric.map((r: any) => ({ id: r.id, label: r.label, description: r.description })),
+          context: scenario.title
+        });
+      }
+    } catch (error) {
+      console.error('AI Grading failed, falling back to deterministic:', error);
+      finalRubricGrade = gradeRubric({
+        text: escalationNote,
+        rubric: scenario.noteRubric.map((r: any) => ({ id: r.id, label: r.label, description: r.description })),
+        context: scenario.title
+      });
+    }
+
+    setRubricGrade(finalRubricGrade);
+    setIsAiGrading(false);
+
+    const finalAverage = noteAverage;
 
     trackUsageInteraction({
       eventType: 'scenario_completed',
@@ -204,7 +234,7 @@ export default function ScenariosPage() {
           noteScores,
           noteAverage: finalAverage,
           completed: true,
-          rubricGrade: grade
+          rubricGrade: finalRubricGrade
         }),
         {
           id: `pd-scenario-${scenario.id}-${Date.now()}`,
@@ -214,7 +244,7 @@ export default function ScenariosPage() {
           minutes: scenario.estimatedMinutes,
           moduleIds: scenario.recommendedModuleIds,
           scenarioIds: [scenario.id],
-          evidenceSummary: `Completed a scenario run and recorded a note score of ${Math.round((finalAverage / 2) * 100)}%. Grade level: ${grade.level}.`,
+          evidenceSummary: `Completed a scenario run and recorded a note score of ${Math.round((finalAverage / 2) * 100)}%. Grade level: ${finalRubricGrade.level}.`,
           reflection: undefined,
           privacyChecked: true
         }
@@ -407,12 +437,19 @@ export default function ScenariosPage() {
 
               <button
                 onClick={submitScenarioNote}
-                disabled={!noteReady}
-                className={`rounded-full px-4 py-2 text-sm ${
-                  noteReady ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-500'
+                disabled={!noteReady || isAiGrading}
+                className={`flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-all ${
+                  noteReady && !isAiGrading ? 'bg-slate-900 text-white hover:scale-105 active:scale-95' : 'bg-slate-200 text-slate-500 cursor-not-allowed'
                 }`}
               >
-                Save note and complete scenario
+                {isAiGrading ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-500 border-t-transparent" />
+                    Analyzing and saving...
+                  </>
+                ) : (
+                  'Save note and complete scenario'
+                )}
               </button>
             </div>
           ) : (

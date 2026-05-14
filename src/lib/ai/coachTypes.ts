@@ -1,3 +1,5 @@
+import { RubricGrade } from '../../types/grading';
+
 export type AiCoachInput = {
   contextType: 'scenario' | 'ticket-note' | 'short-answer' | 'practical-output' | 'freeform';
   moduleId?: string;
@@ -18,5 +20,6 @@ export type AiCoachFeedback = {
   riskNotes: string[];
   betterAnswer: string;
   nextPractice: string;
+  rubricGrade?: RubricGrade;
 };
 

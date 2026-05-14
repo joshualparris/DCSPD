@@ -96,6 +96,7 @@ export default function AssessmentSession({
   const [draft, setDraft] = useState<DraftResponse | null>(questions[initialIndex] ? buildInitialDraft(questions[initialIndex]) : null);
   const [reviewMode, setReviewMode] = useState(false);
   const [sessionAttempts, setSessionAttempts] = useState<AssessmentAttempt[]>(initialAttempts);
+  const [isAiGrading, setIsAiGrading] = useState(false);
 
   const question = questions[currentIndex];
   const sessionComplete = currentIndex >= questions.length;
@@ -266,19 +267,51 @@ export default function AssessmentSession({
     });
   }
 
-  function advanceWithAttempt() {
+  async function advanceWithAttempt() {
     if (!draft) {
       return;
     }
 
-    let rubricGrade: RubricGrade | undefined = undefined;
+    setIsAiGrading(true);
+    let finalRubricGrade: RubricGrade | undefined = undefined;
+
     if (question.type === 'short-answer' && question.rubric) {
-      rubricGrade = gradeRubric({
-        text: draft.answerText || '',
-        rubric: question.rubric,
-        keywordHints: question.keywordHints,
-        context: question.prompt
-      });
+      try {
+        // Try AI grading first
+        const aiResult = await requestAiCoachFeedback({
+          contextType: 'short-answer',
+          moduleId: question.recommendedModuleId,
+          prompt: question.prompt,
+          userAnswer: [
+            draft.answerText?.trim() ? `Answer:\n${draft.answerText.trim()}\n` : '',
+            draft.reasoning.trim() ? `Reasoning:\n${draft.reasoning.trim()}\n` : '',
+            draft.judgement.trim() ? `Judgement:\n${draft.judgement.trim()}\n` : ''
+          ].filter(Boolean).join('\n').trim(),
+          modelAnswer: question.modelAnswer,
+          rubric: question.rubric,
+          extraContext: `DCS context: ${question.dcsContext}`
+        });
+
+        if (aiResult.ok && aiResult.feedback.rubricGrade) {
+          finalRubricGrade = aiResult.feedback.rubricGrade;
+        } else {
+          // Fallback to deterministic
+          finalRubricGrade = gradeRubric({
+            text: draft.answerText || '',
+            rubric: question.rubric,
+            keywordHints: question.keywordHints,
+            context: question.prompt
+          });
+        }
+      } catch (error) {
+        console.error('AI Grading failed in session, falling back:', error);
+        finalRubricGrade = gradeRubric({
+          text: draft.answerText || '',
+          rubric: question.rubric,
+          keywordHints: question.keywordHints,
+          context: question.prompt
+        });
+      }
     }
 
     const finalAttempt = createAssessmentAttempt({
@@ -289,14 +322,15 @@ export default function AssessmentSession({
     });
 
     // Inject rubric grade if calculated
-    if (rubricGrade) {
-      finalAttempt.rubricGrade = rubricGrade;
+    if (finalRubricGrade) {
+      finalAttempt.rubricGrade = finalRubricGrade;
     }
 
     const nextAttempts = [...sessionAttempts, finalAttempt];
 
     onRecordAttempt?.(finalAttempt);
     setSessionAttempts(nextAttempts);
+    setIsAiGrading(false);
 
     if (currentIndex === questions.length - 1) {
       onSessionComplete?.(nextAttempts);
@@ -665,8 +699,21 @@ export default function AssessmentSession({
             >
               Edit answer
             </button>
-            <button onClick={advanceWithAttempt} className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white">
-              Save and continue
+            <button
+              onClick={advanceWithAttempt}
+              disabled={isAiGrading}
+              className={`flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all ${
+                isAiGrading ? 'bg-slate-200 text-slate-500 cursor-not-allowed' : 'bg-slate-900 text-white hover:scale-105 active:scale-95'
+              }`}
+            >
+              {isAiGrading ? (
+                <>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-500 border-t-transparent" />
+                  Analyzing and saving...
+                </>
+              ) : (
+                'Save and continue'
+              )}
             </button>
           </div>
         </div>

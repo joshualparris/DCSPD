@@ -30,16 +30,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="DCSPrep" />
       </head>
-      <body>
+      <body className="dark:bg-slate-950 transition-colors">
         <PwaRegistration />
         <AppUsageTracker />
-        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(226,232,240,0.6),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2f7_100%)]">
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(226,232,240,0.6),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2f7_100%)] dark:bg-none dark:bg-slate-950">
           <Topbar />
           <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-[280px_minmax(0,1fr)]">
             <Sidebar />
             <div className="min-w-0">{children}</div>
           </main>
-          <footer className="border-t border-slate-200 bg-white/80 px-4 py-5 text-sm text-slate-500">
+          <footer className="border-t border-slate-200 bg-white/80 px-4 py-5 text-sm text-slate-500 dark:bg-slate-900/80 dark:border-slate-800 dark:text-slate-400">
             <div className="mx-auto max-w-7xl">
               DCSPrep is a personal PD tool. Keep all entries privacy-safe and free of real student, staff,
               credential, or network details.

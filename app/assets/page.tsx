@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { HardDrive, ChevronRight, Search, Plus, Filter, Tag } from 'lucide-react';
 import { getCustomAssets } from '../../src/lib/customModules';
+import { dcsAssets } from '../../src/data/assets';
 import type { DcsAssetProfile } from '../../src/types/assets';
 
 export default function AssetsPage() {
@@ -16,15 +17,17 @@ export default function AssetsPage() {
     setCustomAssets(getCustomAssets());
   }, []);
 
+  const allAssets = useMemo(() => [...dcsAssets, ...customAssets], [customAssets]);
+
   const filteredAssets = useMemo(() => {
-    if (!searchQuery) return customAssets;
+    if (!searchQuery) return allAssets;
     const q = searchQuery.toLowerCase();
-    return customAssets.filter(a => 
+    return allAssets.filter(a => 
       a.name.toLowerCase().includes(q) || 
       a.description.toLowerCase().includes(q) ||
       a.category.toLowerCase().includes(q)
     );
-  }, [customAssets, searchQuery]);
+  }, [allAssets, searchQuery]);
 
   if (!hasMounted) return null;
 

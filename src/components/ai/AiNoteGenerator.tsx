@@ -1,6 +1,5 @@
-"use client";
-
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Mic, MicOff, Wand2, Loader2, AlertCircle } from 'lucide-react';
 
 type AiNoteGeneratorProps = {
   scenarioTitle: string;
@@ -19,8 +18,61 @@ export default function AiNoteGenerator({
 }: AiNoteGeneratorProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Voice states
+  const [isListening, setIsIsListening] = useState(false);
+  const [voiceSupported, setIsVoiceSupported] = useState(false);
+  const recognitionRef = useRef<any>(null);
 
-  async function generateNote() {
+  useEffect(() => {
+    // Check for Web Speech API support
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      setIsVoiceSupported(true);
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-AU'; // Default to Australian English for DCS context
+
+      recognition.onresult = (event: any) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (transcript) {
+          onNoteGenerated((draftNote ? draftNote + ' ' : '') + transcript);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error', event.error);
+        setIsIsListening(false);
+        setError(`Voice error: ${event.error}`);
+      };
+
+      recognition.onend = () => {
+        setIsIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+  }, [onNoteGenerated, draftNote]);
+
+  function toggleListening() {
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      setError(null);
+      try {
+        recognitionRef.current?.start();
+        setIsIsListening(true);
+      } catch (err) {
+        console.error('Failed to start recognition', err);
+      }
+    }
+  }
+
+  async function generateNote(voiceInput = false) {
     setLoading(true);
     setError(null);
 
@@ -32,7 +84,8 @@ export default function AiNoteGenerator({
           scenarioTitle,
           initialReport,
           userChoices,
-          draftNote
+          draftNote,
+          voiceInput
         })
       });
 
@@ -51,25 +104,49 @@ export default function AiNoteGenerator({
   }
 
   return (
-    <div className="space-y-3">
-      <button
-        onClick={generateNote}
-        disabled={loading}
-        className="flex items-center gap-2 rounded-xl bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:opacity-50"
-      >
-        {loading ? (
-          <>
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-700 border-t-transparent" />
-            Generating Jira Note...
-          </>
-        ) : (
-          <>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z"/></svg>
-            Convert Draft to Professional Jira Note
-          </>
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={() => generateNote(false)}
+          disabled={loading || isListening}
+          className="flex items-center gap-2 rounded-xl bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:opacity-50"
+        >
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Wand2 size={16} />
+          )}
+          {loading ? 'Generating Jira Note...' : 'Convert to Professional Note'}
+        </button>
+
+        {voiceSupported && (
+          <button
+            onClick={toggleListening}
+            disabled={loading}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
+              isListening 
+                ? 'bg-rose-100 text-rose-700 hover:bg-rose-200 animate-pulse' 
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+            }`}
+          >
+            {isListening ? <MicOff size={16} /> : <Mic size={16} />}
+            {isListening ? 'Stop Dictating' : 'Dictate Note'}
+          </button>
         )}
-      </button>
-      {error && <p className="text-xs text-rose-600 font-medium">{error}</p>}
+      </div>
+      
+      {error && (
+        <div className="flex items-center gap-2 text-xs text-rose-600 font-medium bg-rose-50 p-2 rounded-lg">
+          <AlertCircle size={14} />
+          {error}
+        </div>
+      )}
+
+      {isListening && (
+        <p className="text-xs text-slate-500 italic">
+          Listening... speak clearly to draft your ticket note.
+        </p>
+      )}
     </div>
   );
 }

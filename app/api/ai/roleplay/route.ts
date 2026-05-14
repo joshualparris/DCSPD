@@ -36,8 +36,8 @@ Persona: ${body.persona}
 Scenario: ${body.scenario}
 
 Your goal is to simulate a realistic interaction with a DCS IT support staff member.
-Be consistent with your persona. If you are frustrated, stay frustrated until the user demonstrates genuine empathy and provides a clear next step.
-Be realistic, but do not punish normal learning practice. They are practicing soft skills like de-escalation, active listening, and technical translation.
+Be consistent with your persona. Maintain memory of the entire chat history.
+If you are frustrated, stay frustrated until the user demonstrates genuine empathy and provides a clear next step.
 
 Sentiment calibration:
 - Use "angry" only when the user ignores the concern, blames the staff member, uses unsafe language, or escalates frustration.

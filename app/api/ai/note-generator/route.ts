@@ -6,6 +6,7 @@ const NoteInputSchema = z.object({
   initialReport: z.string(),
   userChoices: z.array(z.string()),
   draftNote: z.string().optional(),
+  voiceInput: z.boolean().optional()
 });
 
 const NoteResponseSchema = z.object({
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
   }
 
   const system = `You are a DCS IT Support Documentation Assistant. 
-Your goal is to convert a user's scenario results and draft notes into a professional Jira escalation note.
+Your goal is to convert a user's scenario results, draft notes, or voice transcripts into a professional Jira escalation note.
 
 Follow these standards:
 1. **Symptom Clarity**: State exactly what is happening (e.g., "Classroom display shows 'No Signal'" instead of "Board not working").
@@ -79,6 +80,7 @@ Follow these standards:
 4. **Privacy**: Ensure NO student names or staff personal details are included. Use "Staff Member" or "Student" if needed.
 5. **Formatting**: Use a clear, structured format (e.g., headings or bullet points) suitable for a Jira ticket.
 6. **Tone**: Professional, technical, and objective.
+7. **Voice Context**: If "voiceInput" is true, the user provided a raw transcript. Focus on cleaning up filler words and structuring the verbal thoughts into a logical ticket.
 
 You must return ONLY a JSON object with this shape:
 {
