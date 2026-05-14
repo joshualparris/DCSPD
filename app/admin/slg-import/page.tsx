@@ -73,8 +73,8 @@ export default function SlgImportPage() {
               Parse pasted SLG text into a subject draft
             </h1>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              Paste text copied from an SLG PDF. The parser detects subject code, SILOs, and week rows, then creates a
-              draft JSON package for admin review. Full binary PDF extraction is still a later hardening step.
+              Upload an SLG PDF or paste copied text. The parser detects subject code, SILOs, and week rows, then creates
+              a draft JSON package for admin review.
             </p>
           </div>
           <div className="rounded-3xl bg-slate-100 px-5 py-4 text-sm text-slate-700">

@@ -120,5 +120,5 @@
 - [x] **DCS Asset Catalog**: Comprehensive searchable reference library for common DCS hardware. (Implemented 2026-05-14)
 - [x] **Multi-Step Roleplay Memory**: Enabling AI personas to maintain state and memory across roleplay sessions. (Implemented 2026-05-14)
 - [x] **Dark Mode & Accessibility**: Implementation of a global dark mode toggle. (Implemented 2026-05-14)
-- [ ] **Interactive Network Map**: Connecting the network diagram hotspots directly to diagnostic modules and troubleshooting tasks.
-- [ ] **Custom Content Editor**: A UI-based form in Settings to edit custom modules and roleplays without needing to touch raw JSON files.
+- [x] **Interactive Network Map**: Connecting the network diagram hotspots directly to diagnostic modules and troubleshooting tasks. (Implemented 2026-05-14 via SVG learning hotspots, node inspector links, and `networkLearningHotspots` coverage.)
+- [x] **Custom Content Editor**: A UI-based form in Settings to edit custom modules and roleplays without needing to touch raw JSON files. (Implemented 2026-05-14 via `/admin/custom-content`, Admin Hub entry, Settings shortcut, and local custom-content save/export.)

@@ -242,7 +242,7 @@ I checked the Markdown/text docs, TODOs, roadmap files, known issues, inline TOD
 Use [RBC/DCSPrep_Current_Roadmap.md](<C:/Users/joshua.parris/OneDrive - Dubbo Christian School/Documents/DCSPrepApp/RBC/DCSPrep_Current_Roadmap.md:51>) as the current source of truth. Some older docs are stale and still list items that are now implemented.
 
 **Still Left**
-- Full binary PDF SLG extraction. Current SLG import only handles pasted/copied text.
+- [x] Full binary PDF SLG extraction. Implemented 2026-05-14 via PDF upload on `/admin/slg-import` and `src/lib/pdfExtraction.ts`.
 - Direct admin publishing from draft JSON into `academicSubjects.ts` or a safer source catalogue.
 - Authenticated cloud database sync with user identity, conflict handling, and backups. Current `/sync` is only a local server snapshot.
 - Real phone PWA/offline QA, then fix any install/cache/mobile issues found.
@@ -250,7 +250,7 @@ Use [RBC/DCSPrep_Current_Roadmap.md](<C:/Users/joshua.parris/OneDrive - Dubbo Ch
 - [x] Quick-fix printable cheat sheets for common issues like ViewBoard, PaperCut, Wi-Fi, login support. Implemented 2026-05-14 via `/cheat-sheets`, `src/data/cheatSheets.ts`, and `src/tests/cheatSheetsAndTicketImport.test.ts`.
 - Certification expansions: A+ Core 1 220-1201, Network+ N10-009, Security+ SY0-701.
 - [x] Synthetic ticket CSV importer for data-analysis practice. Implemented 2026-05-14 via `/ticket-data-import`, `src/lib/ticketCsvImport.ts`, and `src/tests/cheatSheetsAndTicketImport.test.ts`.
-- Peer review / senior-tech critique simulation.
+- [x] Peer review / senior-tech critique simulation. Implemented 2026-05-14 via `/peer-review` using the privacy-safe AI Coach rubric flow.
 - Optional social learning, leaderboard, push notifications, audio summaries, dark mode/high contrast, ambient sounds.
 - Final privacy and Level 1 boundary review across all content.
 - User testing with IT staff, content review, deployment/training.

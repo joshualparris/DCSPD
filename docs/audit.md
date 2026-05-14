@@ -126,7 +126,7 @@ The custom content system allows for complete extensibility via JSON file upload
 3. **Multi-Step Roleplays**: Allow Roleplay bots to "remember" state across multiple sessions for long-running incidents.
 4. **Manager Evidence Export**: Add a "One-Click PDF" for the Evidence Pack for easier sharing with Paul/IT Manager.
 5. **Real-time SLG Import**: Improve the `slg-import` tool to handle raw PDF uploads (currently manual/placeholder).
-6. **Network Sim Integration**: Connect the `simulations/network` map to actual troubleshooting tasks.
+6. **Network Sim Integration**: Done 2026-05-14. The `simulations/network` map now links nodes to diagnostic modules and troubleshooting tasks.
 7. **DCS-SSO Simulation**: Practice password resets and MFA troubleshooting in a fake Sentral/Azure portal.
 8. **Interactive Rubrics**: Make the Scenario Lab rubrics clickable for AI feedback.
 9. **Spaced Repetition Push**: Browser notifications for "Items Due Today."
@@ -136,7 +136,7 @@ The custom content system allows for complete extensibility via JSON file upload
 
 ## Recommended Next 10 Features
 1. **AI Rubric Grader**: Automated scoring for short-answer questions.
-2. **Custom Content Editor**: A UI-based form to edit custom modules without touching JSON files.
+2. **Custom Content Editor**: Done 2026-05-14. `/admin/custom-content` provides a form-based editor for custom modules and roleplays.
 3. **DCS Asset Catalog**: A searchable reference for common school hardware (ViewBoards, specific laptop models).
 4. **Incident Post-Mortems**: A section for recording and reflecting on *real* school incidents (privacy-safe).
 5. **Certification Goal Tracker**: Link modules to specific A+ or Microsoft exam objectives.
@@ -144,7 +144,7 @@ The custom content system allows for complete extensibility via JSON file upload
 7. **Collaborative Content**: Allow sharing custom JSON modules via a "Community" tab.
 8. **Dark Mode**: High-contrast mode for long study sessions.
 9. **Voice-to-Note**: Use the browser's speech API to draft ticket notes.
-10. **Interactive Network Map**: Clickable hotspots on the network diagram that link to diagnostic modules.
+10. **Interactive Network Map**: Done 2026-05-14. Network nodes now expose clickable learning hotspots.
 
 ## Questions or Unknowns
 - **AI API Keys**: Is there a shared key or is it user-provided? (Currently handled via server-side environment variables).

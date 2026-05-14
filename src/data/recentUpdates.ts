@@ -16,6 +16,33 @@ export type RecentUpdate = {
 
 export const recentUpdates: RecentUpdate[] = [
   {
+    id: 'network-hotspots-custom-content-editor',
+    dateIso: '2026-05-14',
+    title: 'Network hotspots and custom content editor',
+    summary:
+      'Linked the network topology nodes to relevant diagnostic modules and added a form-based editor for custom modules and roleplay personas.',
+    category: 'Added',
+    impact: 'Makes simulations more navigable and lets custom DCSPrep content be created without hand-writing JSON.',
+    links: [
+      { label: 'Network Map', href: '/simulations/network', kind: 'feature' },
+      { label: 'Custom Content Editor', href: '/admin/custom-content', kind: 'admin' },
+      { label: 'Admin Hub', href: '/admin', kind: 'admin' }
+    ]
+  },
+  {
+    id: 'senior-tech-peer-review',
+    dateIso: '2026-05-14',
+    title: 'Senior-tech peer review simulation',
+    summary:
+      'Added a Paul-style ticket-note review workflow that critiques scope, evidence, privacy, escalation quality, and handover value.',
+    category: 'Added',
+    impact: 'Gives ticket writing a realistic senior-tech review loop without using real tickets or private operational details.',
+    links: [
+      { label: 'Peer Review', href: '/peer-review', kind: 'workflow' },
+      { label: 'Feedback Log', href: '/feedback-log', kind: 'evidence' }
+    ]
+  },
+  {
     id: 'production-readiness-and-growth',
     dateIso: '2026-05-14',
     title: 'Production Readiness & Advanced Growth',

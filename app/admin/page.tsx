@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BarChart3, ClipboardList, Database, FileInput, Settings2 } from 'lucide-react';
+import { BarChart3, ClipboardList, Database, FileInput, PencilRuler, Settings2 } from 'lucide-react';
 
 const adminLinks = [
   {
@@ -13,6 +13,12 @@ const adminLinks = [
     title: 'Content Governance',
     description: 'Review source status, last-reviewed dates, stale content, and admin subject draft edits.',
     icon: ClipboardList
+  },
+  {
+    href: '/admin/custom-content',
+    title: 'Custom Content Editor',
+    description: 'Create privacy-safe modules and roleplay personas with forms, then save them directly into DCSPrep.',
+    icon: PencilRuler
   },
   {
     href: '/admin/integrations',

@@ -11,6 +11,7 @@ export const navigationItems = [
   { href: '/simulations/network', label: 'Network Map' },
   { href: '/simulations/classroom-desk', label: 'Classroom Desk' },
   { href: '/simulations/roleplay', label: 'Roleplay Bot' },
+  { href: '/peer-review', label: 'Peer Review' },
   { href: '/voice-to-ticket', label: 'Voice-to-Ticket' },
   { href: '/hardware', label: 'Hardware' },
   { href: '/cheat-sheets', label: 'Cheat Sheets' },

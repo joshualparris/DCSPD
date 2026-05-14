@@ -778,6 +778,13 @@ export default function SettingsPage() {
           You can use an LLM (like Claude or ChatGPT) to generate new content for almost any part of DCSPrep. 
           Copy a prompt template below, generate the JSON in your LLM, and upload the file.
         </p>
+        <Link
+          href="/admin/custom-content"
+          className="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+        >
+          <Save size={16} />
+          Open form editor
+        </Link>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <button

@@ -1284,7 +1284,7 @@ Completed implementation tasks:
 
 Next best expansion steps:
 
-1. [ ] Add full binary PDF text extraction for SLG import.
+1. [x] Add full binary PDF text extraction for SLG import. Implemented 2026-05-14 via `/admin/slg-import`.
 2. [ ] Add direct admin publishing so subjects, resources, assessments, and weekly blocks can be updated without editing TypeScript.
 3. [ ] Add authenticated cloud database sync across devices.
 4. [ ] Run mobile/offline QA on a phone and document the install/offline behaviour.

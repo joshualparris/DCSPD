@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { initialNetworkNodes, dcsVlans, NetworkNode } from '../../data/networkSim';
+import { initialNetworkNodes, dcsVlans, networkLearningHotspots, NetworkNode } from '../../data/networkSim';
 
 export default function NetworkMap() {
   const [nodes] = useState<NetworkNode[]>(initialNetworkNodes);
@@ -11,6 +11,7 @@ export default function NetworkMap() {
 
   const selectedNode = nodes.find(n => n.id === selectedNodeId);
   const pingTarget = nodes.find(n => n.id === pingTargetId);
+  const selectedHotspot = selectedNode ? networkLearningHotspots.find((hotspot) => hotspot.nodeId === selectedNode.id) : null;
 
   function handleNodeClick(nodeId: string) {
     if (selectedNodeId && selectedNodeId !== nodeId) {
@@ -74,35 +75,53 @@ export default function NetworkMap() {
 
           {/* Nodes */}
           {nodes.map(node => (
-            <g 
-              key={node.id} 
-              transform={`translate(${node.x},${node.y})`}
-              onClick={() => handleNodeClick(node.id)}
-              className="cursor-pointer group"
-            >
-              <circle
-                r="24"
-                fill={selectedNodeId === node.id ? "#0f172a" : pingTargetId === node.id ? "#6366f1" : "white"}
-                stroke={selectedNodeId === node.id ? "#0f172a" : "#cbd5e1"}
-                strokeWidth="2"
-                className="transition-colors duration-200 group-hover:stroke-slate-900"
-              />
-              <text
-                y="40"
-                textAnchor="middle"
-                className="text-[10px] font-bold uppercase tracking-wider fill-slate-500 group-hover:fill-slate-900"
+            <g key={node.id} transform={`translate(${node.x},${node.y})`}>
+              <g 
+                onClick={() => handleNodeClick(node.id)}
+                className="cursor-pointer group"
               >
-                {node.label}
-              </text>
-              {node.type === 'router' && (
-                <path d="M-8,-8 L8,8 M-8,8 L8,-8" stroke={selectedNodeId === node.id ? "white" : "#64748b"} strokeWidth="2" />
-              )}
-              {node.type === 'switch' && (
-                <rect x="-8" y="-8" width="16" height="16" fill={selectedNodeId === node.id ? "white" : "#94a3b8"} rx="2" />
-              )}
-              {node.type === 'device' && (
-                <circle r="6" fill={selectedNodeId === node.id ? "white" : "#cbd5e1"} />
-              )}
+                <circle
+                  r="24"
+                  fill={selectedNodeId === node.id ? "#0f172a" : pingTargetId === node.id ? "#6366f1" : "white"}
+                  stroke={selectedNodeId === node.id ? "#0f172a" : "#cbd5e1"}
+                  strokeWidth="2"
+                  className="transition-colors duration-200 group-hover:stroke-slate-900"
+                />
+                <text
+                  y="40"
+                  textAnchor="middle"
+                  className="text-[10px] font-bold uppercase tracking-wider fill-slate-500 group-hover:fill-slate-900"
+                >
+                  {node.label}
+                </text>
+                {node.type === 'router' && (
+                  <path d="M-8,-8 L8,8 M-8,8 L8,-8" stroke={selectedNodeId === node.id ? "white" : "#64748b"} strokeWidth="2" />
+                )}
+                {node.type === 'switch' && (
+                  <rect x="-8" y="-8" width="16" height="16" fill={selectedNodeId === node.id ? "white" : "#94a3b8"} rx="2" />
+                )}
+                {node.type === 'device' && (
+                  <circle r="6" fill={selectedNodeId === node.id ? "white" : "#cbd5e1"} />
+                )}
+              </g>
+              {networkLearningHotspots.some((hotspot) => hotspot.nodeId === node.id) ? (
+                <a
+                  href={networkLearningHotspots.find((hotspot) => hotspot.nodeId === node.id)?.href}
+                  aria-label={`Open learning task for ${node.label}`}
+                  onClick={(event) => event.stopPropagation()}
+                  className="group/link cursor-pointer"
+                >
+                  <circle cx="18" cy="-18" r="9" fill="#4f46e5" className="group-hover/link:fill-slate-900" />
+                  <text
+                    x="18"
+                    y="-14"
+                    textAnchor="middle"
+                    className="pointer-events-none fill-white text-[10px] font-bold"
+                  >
+                    ?
+                  </text>
+                </a>
+              ) : null}
             </g>
           ))}
         </svg>
@@ -140,6 +159,16 @@ export default function NetworkMap() {
                   Tip: Click another node to attempt a &quot;ping&quot; simulation from this device.
                 </p>
               </div>
+              {selectedHotspot ? (
+                <a
+                  href={selectedHotspot.href}
+                  className="block rounded-2xl border border-indigo-100 bg-indigo-50 p-4 text-sm transition hover:border-indigo-200 hover:bg-indigo-100"
+                >
+                  <div className="text-xs font-bold uppercase tracking-widest text-indigo-600">Learning hotspot</div>
+                  <div className="mt-2 font-semibold text-indigo-950">{selectedHotspot.label}</div>
+                  <p className="mt-2 text-xs leading-5 text-indigo-800">{selectedHotspot.task}</p>
+                </a>
+              ) : null}
             </div>
           ) : (
             <p className="mt-4 text-sm text-slate-500 italic">Select a node on the map to inspect details.</p>

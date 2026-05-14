@@ -48,10 +48,13 @@ This is the current source of truth for what is done, what was upgraded in the l
 - [x] Added `/cheat-sheets` for printable, privacy-safe quick-fix support sheets covering ViewBoard/audio, PaperCut, Wi-Fi, login/MFA, onboarding, and website filtering.
 - [x] Added `/ticket-data-import` for synthetic ticket CSV import, category/priority/channel summaries, keyword extraction, privacy warnings, and Markdown export.
 - [x] Added `/recent-updates` plus a dashboard preview so new and changed features link directly to their app routes.
+- [x] Added network-map learning hotspots so topology nodes link directly to relevant diagnostic modules.
+- [x] Added `/admin/custom-content` for form-based custom module and roleplay creation without hand-editing JSON.
+- [x] Added `/peer-review` for Paul-style senior-tech critique of ticket notes and escalation quality.
 
 ## Still Open
 
-- [ ] Full binary PDF text extraction for SLG import, not just pasted/copied PDF text.
+- [x] Full binary PDF text extraction for SLG import, not just pasted/copied PDF text.
 - [ ] Direct publish workflow from admin draft JSON into the Academic PD source catalogue.
 - [ ] Authenticated cloud database sync across devices with user identity, backups, and conflict handling.
 - [ ] Mobile/offline QA on an actual phone install, offline launch, and route caching.
@@ -61,7 +64,7 @@ This is the current source of truth for what is done, what was upgraded in the l
 - [ ] Add A+ Core 1 220-1201 as the matching certification pathway.
 - [ ] Add Network+ N10-009 and Security+ SY0-701 pathways with the same read/watch/assess pattern.
 - [x] Synthetic ticket CSV importer for data-analysis practice.
-- [ ] Peer review simulation for senior-tech critique.
+- [x] Peer review simulation for senior-tech critique.
 - [ ] Social learning features, if a privacy-safe governance model is approved.
 - [ ] Browser push notifications.
 - [ ] LMS/HRIS integration or SCORM export.

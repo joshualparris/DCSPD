@@ -252,7 +252,7 @@ Moving from a learning app to a mission-critical DCS Support Companion.
 * [x] **AI Support Note Generator**: Convert scenario answers into perfectly formatted Jira escalation notes.
 * [x] **AI Roleplay Bot**: Practice soft skills with an AI that roleplays as frustrated teachers or confused parents.
 * [x] **PDF SLG Parser Draft Tool**: Paste/copied SLG PDF text and convert it into a structured draft with SILOs and weekly topics.
-* [ ] **Full Binary PDF SLG Extraction**: Extract text directly from uploaded PDFs rather than requiring pasted PDF text.
+* [x] **Full Binary PDF SLG Extraction**: Extract text directly from uploaded PDFs rather than requiring pasted PDF text. Implemented 2026-05-14 via `/admin/slg-import`.
 * [x] **Automated KB Export**: One-click export of Lab articles into OurDCS-ready markdown/HTML formats.
 
 ### 2. Interactive Simulations
@@ -274,7 +274,7 @@ Moving from a learning app to a mission-critical DCS Support Companion.
 * [ ] **"Common Pitfalls" Tracker**: A dynamic dashboard area highlighting your most frequent assessment mistakes.
 * [x] **Quick-Fix "Cheat Sheets"**: One-page printable/PDF summaries for high-frequency issues (ViewBoard/PaperCut). Summary: added `/cheat-sheets` with printable Level 1-safe sheets for ViewBoard/audio, PaperCut, Wi-Fi, login/MFA, onboarding, and website filtering. Proof: source data lives in `src/data/cheatSheets.ts` and coverage is tested in `src/tests/cheatSheetsAndTicketImport.test.ts`.
 * [x] **Bulk Data Importer**: Import synthetic ticket data (CSV) for advanced Data Critical Thinking analysis. Summary: added `/ticket-data-import` with pasted/uploaded synthetic CSV parsing, category/priority/channel summaries, keyword extraction, privacy warnings, and Markdown export. Proof: parser logic lives in `src/lib/ticketCsvImport.ts` and is tested in `src/tests/cheatSheetsAndTicketImport.test.ts`.
-* [ ] **Peer Review Simulation**: AI-generated feedback simulating how a senior tech (Paul) would critique your notes.
+* [x] **Peer Review Simulation**: AI-generated feedback simulating how a senior tech (Paul) would critique your notes. Implemented 2026-05-14 via `/peer-review`.
 * [x] **Supervisor Dashboard**: A read-only analytics view for IT managers to identify skill gaps and evidence patterns.
 
 ### 5. Engagement & UX
