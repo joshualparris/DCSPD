@@ -53,7 +53,7 @@ export const recentUpdates: RecentUpdate[] = [
     impact: 'Improves app stability and ensures learning can continue without an internet connection.',
     links: [
       { label: 'Settings', href: '/settings', kind: 'feature' },
-      { label: 'Migration Guide', href: '/MIGRATION_GUIDE.md', kind: 'source' }
+      { label: 'Migration Guide', href: '/migration-guide', kind: 'source' }
     ]
   },
   {

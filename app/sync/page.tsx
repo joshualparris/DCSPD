@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { Download, Upload, Cloud, Server, Settings as SettingsIcon } from 'lucide-react';
 import { modules } from '../../src/data/modules';
@@ -31,16 +31,7 @@ export default function SyncPage() {
   
   const syncManager = useMemo(() => new SyncManager(syncSettings.cloudUrl), [syncSettings.cloudUrl]);
 
-  useEffect(() => {
-    saveSyncSettings(syncSettings.provider, syncSettings.cloudUrl);
-  }, [syncSettings]);
-
-  useEffect(() => {
-    setProgress(getStoredProgressSnapshot(modules));
-    refreshServerSnapshot();
-  }, [syncSettings.provider]);
-
-  async function refreshServerSnapshot() {
+  const refreshServerSnapshot = useCallback(async () => {
     try {
       const payload = await syncManager.fetch(syncSettings.provider);
       if (payload.ok) {
@@ -51,7 +42,16 @@ export default function SyncPage() {
       console.error('Failed to fetch server snapshot', error);
       return null;
     }
-  }
+  }, [syncManager, syncSettings.provider]);
+
+  useEffect(() => {
+    saveSyncSettings(syncSettings.provider, syncSettings.cloudUrl);
+  }, [syncSettings]);
+
+  useEffect(() => {
+    setProgress(getStoredProgressSnapshot(modules));
+    refreshServerSnapshot();
+  }, [syncSettings.provider, refreshServerSnapshot]);
 
   async function pushProgress() {
     setStatus({ state: 'working', message: `Saving local browser progress to ${syncSettings.provider}...` });

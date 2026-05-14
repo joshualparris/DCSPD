@@ -12,9 +12,9 @@ import {
   User,
   ExternalLink
 } from 'lucide-react';
-import { getCustomAssets } from '../../../../src/lib/customModules';
-import { dcsAssets } from '../../../../src/data/assets';
-import type { DcsAssetProfile } from '../../../../src/types/assets';
+import { getCustomAssets } from '../../../src/lib/customModules';
+import { dcsAssets } from '../../../src/data/assets';
+import type { DcsAssetProfile } from '../../../src/types/assets';
 
 export default function AssetDetailPage({ params }: { params: { id: string } }) {
   const [hasMounted, setHasMounted] = useState(false);

@@ -13,8 +13,8 @@ import {
   Copy,
   ExternalLink
 } from 'lucide-react';
-import { getCustomPlaybooks } from '../../../../src/lib/customModules';
-import type { TroubleshootingPlaybook } from '../../../../src/types/playbooks';
+import { getCustomPlaybooks } from '../../../src/lib/customModules';
+import type { TroubleshootingPlaybook } from '../../../src/types/playbooks';
 
 export default function PlaybookDetailPage({ params }: { params: { id: string } }) {
   const [hasMounted, setHasMounted] = useState(false);

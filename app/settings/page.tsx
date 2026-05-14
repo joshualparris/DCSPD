@@ -1,8 +1,8 @@
 "use client";
 
-import { type ChangeEvent, useEffect, useState } from 'react';
+import React, { type ChangeEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff, RefreshCcw, AlertTriangle } from 'lucide-react';
+import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff, RefreshCcw, AlertTriangle, FileText } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import { getSyncSettings, saveSyncSettings, type SyncProvider } from '../../src/lib/sync/syncManager';
 import { 
@@ -466,14 +466,13 @@ export default function SettingsPage() {
               resolve file-locking and sync conflicts.
             </p>
           </div>
-          <a
-            href="/MIGRATION_GUIDE.md"
-            download
+          <Link
+            href="/migration-guide"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-600 px-6 py-3 text-sm font-medium text-white hover:bg-amber-700 transition-colors shadow-lg"
           >
-            <Download size={18} />
-            Download Migration Guide
-          </a>
+            <FileText size={18} />
+            View Migration Guide
+          </Link>
         </div>
       </section>
 
