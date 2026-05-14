@@ -1,11 +1,10 @@
-import * as pdfjsLib from 'pdfjs-dist';
-
-// Use the local worker file from the package
-// Note: In Next.js, you might need to copy this file to the public folder 
-// or use a CDN if the local resolution fails during build.
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-
 export async function extractTextFromPdf(file: File): Promise<string> {
+  // Dynamic import to avoid SSR issues with pdfjs-dist
+  const pdfjsLib = await import('pdfjs-dist');
+  
+  // Configure worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   let fullText = '';

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import type { TrainingModule } from '../../types/training';
+import type { TrainingModule } from '../types/training';
 
 // Database name and version
 const DB_NAME = 'DCSPrepOffline';
