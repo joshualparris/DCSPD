@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createAssessmentAttempt, getDefaultSelfRating } from '../../lib/scoring';
 import { gradeRubric } from '../../lib/rubricGrader';
 import type { RubricGrade } from '../../types/grading';
+import { requestAiCoachFeedback } from '../../lib/ai/coachClient';
 import type {
   AssessmentAttempt,
   AssessmentQuestion,

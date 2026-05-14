@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import Link from 'next/link';
 import { Download, Upload, Cloud, Server, Settings as SettingsIcon } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import {
@@ -12,7 +13,7 @@ import {
   type ProgressBackup,
   type UserProgress
 } from '../../src/lib/progress';
-import { SyncManager, getSyncSettings, type SyncProvider } from '../../src/lib/sync/syncManager';
+import { SyncManager, getSyncSettings, saveSyncSettings, type SyncProvider } from '../../src/lib/sync/syncManager';
 
 type SyncStatus = {
   state: 'idle' | 'working' | 'ok' | 'error';

@@ -2,7 +2,7 @@
 
 import { type ChangeEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff, CloudSync, AlertTriangle } from 'lucide-react';
+import { Copy, Download, RotateCcw, Trash2, Upload, MessageSquare, Microscope, BookOpen, GraduationCap, ClipboardList, HardDrive, CalendarClock, Save, BarChart3, Bell, BellOff, RefreshCcw, AlertTriangle } from 'lucide-react';
 import { modules } from '../../src/data/modules';
 import { getSyncSettings, saveSyncSettings, type SyncProvider } from '../../src/lib/sync/syncManager';
 import { 
@@ -481,7 +481,7 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
-              <CloudSync size={18} />
+              <RefreshCcw size={18} />
               Cloud Sync Configuration
             </div>
             <h2 className="mt-3 text-2xl font-semibold text-slate-900">Remote database endpoint</h2>

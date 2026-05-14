@@ -18,6 +18,7 @@ import type { ScenarioChoice, ScenarioRunChoice } from '../../src/types/scenario
 
 import { gradeRubric } from '../../src/lib/rubricGrader';
 import type { RubricGrade } from '../../src/types/grading';
+import { requestAiCoachFeedback } from '../../src/lib/ai/coachClient';
 import { 
   AlertCircle, 
   CheckCircle2, 
