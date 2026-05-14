@@ -105,7 +105,14 @@ export default function AssessmentSession({
       return;
     }
 
-    setDraft(buildInitialDraft(question));
+    // Only reset draft if it's NOT the initial load OR if we're moving to a NEW question
+    // that isn't the one we resumed to.
+    setDraft((prevDraft) => {
+      if (prevDraft && prevDraft.questionId === question.id) {
+        return prevDraft;
+      }
+      return buildInitialDraft(question);
+    });
     setReviewMode(false);
   }, [currentIndex, question]);
 

@@ -205,6 +205,7 @@ filePath: c:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\DCS
 [x] Implement Gamification enhancements (Leaderboard, Points/Streak display in Sidebar).
 [x] Implement Social Challenges and Task-specific badges (Cyber Guardian, Imaging Pro, etc.).
 [x] Implement mid-assessment persistence for module quizzes.
+[x] Update Recent Updates page with latest features.
 [ ] Enhance PWA features (Offline Downloads, Push Notifications).
 [ ] Implement Security and Accessibility improvements (RBAC, SSO, Accessibility Audit fixes).
-[ ] Final verification and ticking off tasks in all documentation.
+[x] Final verification and ticking off tasks in all documentation.

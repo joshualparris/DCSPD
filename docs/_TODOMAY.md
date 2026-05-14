@@ -170,13 +170,18 @@ https://www.quickstart.com/blog/cloud-computing/6-advantages-of-comptia-a-certif
 https://www.articulate.com/blog/8-e-learning-platform-security-best-practices-how-to-protect-learner-data/
 
 
-📋 Outstanding To-Do Items
-P0 (Stability) - 1 Remaining
- Move the app out of OneDrive if file locking keeps happening
-Impact: File locking issues during npm run dev and builds can occur
-Status: Not done yet, but workaround exists (exclude .next from sync)
-All Other P0-P7 Items - COMPLETED ✓
-Everything else in the optimized roadmap is marked complete, including:
+1. Content coverage gaps (✓ Partially Done - Added Cybersecurity, Imaging, Accessibility, Soft Skills)
+2. Gamified progression and badges (✓ Done - Added Leaderboard, streaks, and task-specific badges)
+3. Mobile and offline access (✓ Basic PWA Implemented)
+4. Depth and cognitive load (✓ Done - Focus mode and reflection journal)
+5. Context switching (✓ Done - Focus mode implemented)
+6. Offline features (✓ Basic PWA Implemented)
+7. Expanding content areas (✓ Done - Added Cybersecurity, Imaging, Accessibility, Soft Skills)
+8. Emotional and embodied learning (✓ Done - Added Mindfulness Pause)
+9. External certifications (✓ CompTIA A+ Done)
+10. Accessibility and security (✓ Partially Done - Basic Accessibility added)
+
+Mid-assessment persistence (✓ Done - Implemented 2026-05-14)
 
 P0: Build stability, lock package versions, ensure build/dev/test work
 P1: Core DCS IT cockpit, question-first learning engine, highest-priority modules (8 domains)
