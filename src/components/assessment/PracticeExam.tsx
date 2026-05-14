@@ -16,7 +16,7 @@ export default function PracticeExam() {
     return [...strictQuestionBank]
       .sort(() => Math.random() - 0.5)
       .slice(0, 20);
-  }, [examStarted]);
+  }, []); // Only shuffle once per component mount
 
   if (!examStarted) {
     return (
@@ -82,7 +82,7 @@ export default function PracticeExam() {
             <div className="flex gap-3">
               <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-rose-500" />
               <p className="text-sm text-slate-600">
-                <span className="font-bold text-slate-900">Reasoning Depth:</span> Correctness is not enough. You must explain the "why" to pass the reasoning threshold.
+                <span className="font-bold text-slate-900">Reasoning Depth:</span> Correctness is not enough. You must explain the &quot;why&quot; to pass the reasoning threshold.
               </p>
             </div>
             <div className="flex gap-3">
