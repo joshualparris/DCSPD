@@ -206,8 +206,10 @@ filePath: c:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\DCS
 [x] Implement Social Challenges and Task-specific badges (Cyber Guardian, Imaging Pro, etc.).
 [x] Implement mid-assessment persistence for module quizzes.
 [x] Update Recent Updates page with latest features.
-[ ] Implement Offline Downloads (IndexedDB storage for modules).
-[ ] Implement Push Notifications (Notification API for PD reminders).
-[ ] Implement Practice Exam component (PracticeExam.tsx).
-[ ] Implement basic RBAC and Security hardening.
+[x] Implement Practice Exam component (PracticeExam.tsx).
+[x] Implement Offline Downloads (IndexedDB storage for modules).
+[x] Implement Push Notifications (Notification API for PD reminders).
+[x] Implement basic RBAC and Security hardening.
+[x] Implement PDF SLG Extraction.
+[ ] Implement Persistent Cloud Sync.
 [ ] Final verification and ticking off tasks in all documentation.

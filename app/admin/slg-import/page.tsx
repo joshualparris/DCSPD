@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from 'react';
-import { Clipboard, Download, FileText } from 'lucide-react';
+import { Clipboard, Download, FileText, Upload, Loader2 } from 'lucide-react';
 import { buildAcademicSubjectDraftJson, parseSlgTextDraft } from '../../../src/lib/slgImport';
+import { extractTextFromPdf } from '../../../src/lib/pdfExtraction';
 
 const sampleText = `CSE1PE Programming Environment
 Subject Intended Learning Outcomes
@@ -33,8 +34,27 @@ function downloadText(filename: string, text: string) {
 export default function SlgImportPage() {
   const [sourceFileName, setSourceFileName] = useState('SLG-draft.pdf');
   const [text, setText] = useState(sampleText);
+  const [isExtracting, setIsExtracting] = useState(false);
+
   const draft = useMemo(() => parseSlgTextDraft(text, sourceFileName), [text, sourceFileName]);
   const draftJson = useMemo(() => buildAcademicSubjectDraftJson(draft), [draft]);
+
+  async function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setSourceFileName(file.name);
+    setIsExtracting(true);
+    try {
+      const extractedText = await extractTextFromPdf(file);
+      setText(extractedText);
+    } catch (error) {
+      console.error('PDF extraction failed', error);
+      alert('Failed to extract text from PDF. Please check the file or try pasting text manually.');
+    } finally {
+      setIsExtracting(false);
+    }
+  }
 
   async function copyDraft() {
     await navigator.clipboard.writeText(draftJson);
@@ -65,14 +85,31 @@ export default function SlgImportPage() {
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_430px]">
         <div className="space-y-4">
-          <label className="block rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
-            <span className="text-sm font-semibold text-slate-900">Source filename</span>
-            <input
-              value={sourceFileName}
-              onChange={(event) => setSourceFileName(event.target.value)}
-              className="mt-3 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            />
-          </label>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+              <span className="text-sm font-semibold text-slate-900">Source filename</span>
+              <input
+                value={sourceFileName}
+                onChange={(event) => setSourceFileName(event.target.value)}
+                className="mt-3 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+              />
+            </label>
+
+            <label className="flex cursor-pointer flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-slate-200 bg-white p-5 shadow-sm transition-colors hover:border-slate-400">
+              <div className="flex flex-col items-center gap-2">
+                {isExtracting ? (
+                  <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+                ) : (
+                  <Upload className="h-6 w-6 text-slate-400" />
+                )}
+                <span className="text-sm font-semibold text-slate-900">
+                  {isExtracting ? 'Extracting text...' : 'Upload SLG PDF'}
+                </span>
+                <span className="text-xs text-slate-500">Auto-populates text area</span>
+              </div>
+              <input type="file" accept=".pdf" onChange={handleFileUpload} className="sr-only" disabled={isExtracting} />
+            </label>
+          </div>
 
           <label className="block rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
             <span className="text-sm font-semibold text-slate-900">Pasted SLG text</span>
