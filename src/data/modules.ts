@@ -1296,6 +1296,296 @@ const baseModules: LegacyTrainingModule[] = [
     ]
   },
   {
+    id: 'cybersecurity-basics',
+    title: 'Cybersecurity Awareness and Incident Response',
+    description:
+      'Understand modern school cyber threats, phishing tactics, and the NIST 800-61 incident response framework.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 20,
+    tags: ['phishing', 'passwords', 'NIST 800-61', 'incident response'],
+    learningObjectives: [
+      'Recognise common phishing tactics and social engineering signals.',
+      'Explain the importance of password hygiene and MFA in a school context.',
+      'Map the four phases of the NIST 800-61 incident response framework.'
+    ],
+    dcsRelevance: [
+      'Protects student and staff data from evolving social engineering threats.',
+      'Aligns with the Texas School Safety Center recommendations for K-12 districts.',
+      'Builds a safer "before, during, and after" posture for school cyber incidents.'
+    ],
+    sections: [
+      {
+        id: 'cyber-1',
+        title: 'Phishing and Social Engineering',
+        bodyMarkdown: `Phishing is an attempt to trick users into revealing credentials or downloading malware. In schools, this often looks like fake "urgent" IT alerts, spoofed principal emails, or fraudulent invoice requests.\n\nStaff should pause before clicking links, verify the sender's actual email address (not just the display name), and report suspicious messages immediately instead of deleting them.`
+      },
+      {
+        id: 'cyber-2',
+        title: 'Password Hygiene and MFA',
+        bodyMarkdown: `Strong passwords and Multi-Factor Authentication (MFA) are the first line of defense. Reusing passwords across personal and school accounts creates a significant risk.\n\nMFA adds a second layer that prevents many credential-based attacks even if a password is leaked. At DCS, MFA is a critical requirement for protecting the M365 tenant.`
+      },
+      {
+        id: 'cyber-3',
+        title: 'NIST 800-61 Incident Response',
+        bodyMarkdown: `The NIST 800-61 framework defines four phases: Preparation, Detection & Analysis, Containment, Eradication & Recovery, and Post-Incident Activity.\n\nLevel 1 support focuses heavily on Detection and early Containment (e.g., isolating a device) while preserving evidence for senior ICT staff.`
+      }
+    ],
+    flashcards: [
+      { id: 'cyber-f1', front: 'What is the goal of phishing?', back: 'To trick users into revealing credentials or installing malware.' },
+      { id: 'cyber-f2', front: 'What should a staff member check before clicking a link?', back: "The sender's actual email address and the target URL destination." },
+      { id: 'cyber-f3', front: 'Why is MFA important?', back: 'It provides a second layer of security beyond just a password.' },
+      { id: 'cyber-f4', front: 'What are the four phases of NIST 800-61?', back: 'Preparation, Detection & Analysis, Containment/Eradication/Recovery, and Post-Incident Activity.' },
+      { id: 'cyber-f5', front: 'What is Josh’s primary role in a cyber incident?', back: 'Early detection, basic containment, and evidence-safe escalation.' },
+      { id: 'cyber-f6', front: 'Should Josh delete a suspicious email for a user?', back: 'No. Report it through official channels to preserve the evidence for analysis.' }
+    ],
+    quiz: [
+      mcq({
+        id: 'cyber-q1',
+        prompt: 'A staff member receives an email from the "Principal" asking for an urgent bank transfer. What is the best first step?',
+        domain: 'Cybersecurity',
+        difficulty: 'foundation',
+        explanation: 'Business Email Compromise (BEC) often uses authority to create false urgency.',
+        modelAnswer: 'Verify the sender independently and report it as a potential phishing attempt. Do not act on the request.',
+        commonMistakes: ['Replying to the email', 'Assuming the Principal is really asking', 'Not verifying the sender'],
+        dcsContext: 'DCS Principal will never ask for urgent bank transfers via email.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        options: [
+          { id: 'a', label: 'Reply immediately to show efficiency' },
+          { id: 'b', label: 'Verify the sender and report the email' },
+          { id: 'c', label: 'Delete the email so no one else sees it' },
+          { id: 'd', label: 'Forward it to the whole staff as a warning' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'cyber-q2',
+        prompt: 'Briefly explain the "Containment" phase of incident response for a suspected infected laptop.',
+        domain: 'Cybersecurity',
+        difficulty: 'stretch',
+        explanation: 'Containment stops the damage from spreading.',
+        modelAnswer: 'Containment involves isolating the affected device from the network (Wi-Fi/Ethernet) to prevent the spread of malware or unauthorized access, while keeping the device powered on if needed for forensics.',
+        commonMistakes: ['Shutting down immediately (losing memory forensics)', 'Leaving it on the Wi-Fi'],
+        dcsContext: 'Containment is a critical Level 1 response step.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        rubric: ['Mentions network isolation', 'Explains purpose (preventing spread)', 'Mentions evidence preservation'],
+        keywordHints: ['isolate', 'network', 'spread', 'evidence']
+      })
+    ],
+    scenarioPrompts: [
+      {
+        id: 'cyber-s1',
+        title: 'Suspicious Link Clicked',
+        prompt: 'A teacher admits they clicked a link in a suspicious email and entered their M365 password. Work through the first 5 minutes of response.'
+      }
+    ],
+    practicalOutputs: [
+      {
+        id: 'cyber-p1',
+        title: 'Cyber Incident Report Template',
+        description: 'Draft a simple form Josh can use to capture the who, what, and when of a suspected security incident.'
+      }
+    ]
+  },
+  {
+    id: 'device-imaging-workflows',
+    title: 'Device Imaging and Deployment Workflows',
+    description:
+      'Learn the difference between imaging and provisioning, and how to plan a deployment workflow for school devices.',
+    domain: 'Endpoint Support',
+    level: 'L2',
+    estimatedMinutes: 20,
+    tags: ['imaging', 'WDS', 'provisioning', 'deployment'],
+    learningObjectives: [
+      'Distinguish between traditional heavy imaging and modern provisioning.',
+      'Explain the role of Windows Deployment Services (WDS) and reference images.',
+      'Document a deployment workflow for a new batch of staff laptops.'
+    ],
+    dcsRelevance: [
+      'Reduces manual setup time for large batches of student or staff devices.',
+      'Ensures consistent software baselines across the school campus.',
+      'Prepares Josh for large-scale refresh projects and lab deployments.'
+    ],
+    sections: [
+      {
+        id: 'imaging-1',
+        title: 'Imaging vs. Provisioning',
+        bodyMarkdown: `Traditional imaging involves capturing a complete "snapshot" of a configured OS and pushing it to other devices. Modern provisioning (like Windows Autopilot) applies settings and apps to a "clean" factory OS over the air.\n\nImaging is faster for local labs with heavy software; provisioning is better for remote or mobile staff devices.`
+      },
+      {
+        id: 'imaging-2',
+        title: 'Windows Deployment Services (WDS)',
+        bodyMarkdown: `WDS allows you to deploy Windows over the network using PXE boot. It typically uses a "boot image" to start the process and an "install image" containing the actual OS.\n\nKeeping base images generic and updated is a best practice to avoid driver conflicts.`
+      },
+      {
+        id: 'imaging-3',
+        title: 'Deployment Workflows',
+        bodyMarkdown: `A successful deployment starts with planning: choosing the software baseline, testing drivers, creating a reference image, and documenting the post-imaging steps (like domain join or asset tagging).`
+      }
+    ],
+    flashcards: [
+      { id: 'imaging-f1', front: 'What is PXE boot used for?', back: 'To boot a device from the network for imaging/deployment.' },
+      { id: 'imaging-f2', front: 'What is a "reference image"?', back: 'A template OS containing the baseline software and settings for deployment.' },
+      { id: 'imaging-f3', front: 'Imaging vs Provisioning: which is "over-the-air"?', back: 'Provisioning (e.g., Autopilot).' },
+      { id: 'imaging-f4', front: 'Why keep base images generic?', back: 'To reduce driver conflicts and make the image compatible with more hardware models.' }
+    ],
+    quiz: [
+      mcq({
+        id: 'imaging-q1',
+        prompt: 'Which tool is most likely used for network-based OS deployment in a Windows environment?',
+        domain: 'Imaging',
+        difficulty: 'foundation',
+        explanation: 'WDS is the standard Windows role for network deployments.',
+        modelAnswer: 'WDS (Windows Deployment Services) handles network boot and image delivery.',
+        commonMistakes: ['Using consumer tools like Disk Management', 'Manual USB installs for 30+ devices'],
+        dcsContext: 'DCS uses network-based deployment for fleet efficiency.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-workflows',
+        weakTopic: 'laptop-mobile-hardware',
+        options: [
+          { id: 'a', label: 'Windows Update' },
+          { id: 'b', label: 'WDS (Windows Deployment Services)' },
+          { id: 'c', label: 'Disk Management' },
+          { id: 'd', label: 'File Explorer' }
+        ],
+        correctOptionId: 'b'
+      })
+    ],
+    scenarioPrompts: [
+      {
+        id: 'imaging-s1',
+        title: 'Lab Refresh Planning',
+        prompt: 'You need to refresh 30 PCs in the Senior Lab. Outline the steps from driver testing to final domain join.'
+      }
+    ],
+    practicalOutputs: [
+      {
+        id: 'imaging-p1',
+        title: 'Device Setup Checklist',
+        description: 'Create a post-imaging checklist to ensure every device is named, joined, and tagged correctly.'
+      }
+    ]
+  },
+  {
+    id: 'accessibility-inclusive-design',
+    title: 'Accessibility and Inclusive Design',
+    description:
+      'Learn how to design and support e-learning and IT services that work for everyone, including those with impairments.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 15,
+    tags: ['WCAG', 'accessibility', 'inclusive design', 'assistive tech'],
+    learningObjectives: [
+      'Explain the core principles of WCAG (Perceivable, Operable, Understandable, Robust).',
+      'Identify common assistive technologies used in schools (screen readers, high contrast).',
+      'Apply accessibility checks like alt-text and color contrast to digital content.'
+    ],
+    dcsRelevance: [
+      'Ensures all students and staff can access learning materials regardless of ability.',
+      'Supports the school’s legal and ethical commitment to inclusive education.',
+      'Improves the usability of DCSPrep and other internal portals.'
+    ],
+    sections: [
+      {
+        id: 'access-1',
+        title: 'WCAG Principles',
+        bodyMarkdown: `The Web Content Accessibility Guidelines (WCAG) are built on four pillars: POUR.\n\n- **Perceivable**: Users must be able to see or hear the content.\n- **Operable**: Users must be able to navigate and interact with it (e.g., keyboard only).\n- **Understandable**: The language and UI must be clear.\n- **Robust**: It must work across different browsers and assistive tools.`
+      },
+      {
+        id: 'access-2',
+        title: 'Assistive Technologies',
+        bodyMarkdown: `School IT supports many assistive tools: Screen readers (NVDA, JAWS), Screen magnifiers, High-contrast themes, and Switch access for motor impairments.\n\nUnderstanding how these tools "read" a page helps IT staff troubleshoot layout or navigation issues.`
+      }
+    ],
+    flashcards: [
+      { id: 'access-f1', front: 'What does "POUR" stand for in accessibility?', back: 'Perceivable, Operable, Understandable, Robust.' },
+      { id: 'access-f2', front: 'Why is alt-text important?', back: 'It allows screen readers to describe images to users with visual impairments.' },
+      { id: 'access-f3', front: 'What is a "keyboard-only" user?', back: 'Someone who navigates without a mouse, often due to motor impairments.' }
+    ],
+    quiz: [
+      mcq({
+        id: 'access-q1',
+        prompt: 'Which WCAG principle ensures that users can navigate a site using only a keyboard?',
+        domain: 'Accessibility',
+        difficulty: 'foundation',
+        explanation: 'Operability covers navigation and interface interaction.',
+        modelAnswer: 'Operable.',
+        commonMistakes: ['Confusing Operable with Perceivable'],
+        dcsContext: 'Keyboard navigation is a core requirement for inclusive school tools.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-inclusive-design',
+        weakTopic: 'soft-skills',
+        options: [
+          { id: 'a', label: 'Perceivable' },
+          { id: 'b', label: 'Operable' },
+          { id: 'c', label: 'Understandable' },
+          { id: 'd', label: 'Robust' }
+        ],
+        correctOptionId: 'b'
+      })
+    ],
+    scenarioPrompts: [],
+    practicalOutputs: []
+  },
+  {
+    id: 'communication-soft-skills',
+    title: 'Communication and Soft Skills for IT',
+    description:
+      'Master the art of interacting with teachers, students, and parents during high-pressure support incidents.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 15,
+    tags: ['communication', 'empathy', 'active listening', 'de-escalation'],
+    learningObjectives: [
+      'Practise active listening to understand the "real" problem behind user frustration.',
+      'Explain technical issues in plain English without patronising the user.',
+      'Maintain a calm and professional posture during classroom emergencies.'
+    ],
+    dcsRelevance: [
+      'Reduces friction between ICT and teaching staff.',
+      'Builds trust in the IT support team across the school community.',
+      'Ensures that support incidents are handled with empathy and clarity.'
+    ],
+    sections: [
+      {
+        id: 'soft-1',
+        title: 'The "Support Heart"',
+        bodyMarkdown: `Effective IT support is 50% technical and 50% relational. When a teacher’s display fails mid-lesson, they aren't just facing a technical fault; they are facing a loss of control and time.\n\nAcknowledging the impact ("I understand this is frustrating during class") often helps more than jumping straight into settings.`
+      },
+      {
+        id: 'soft-2',
+        title: 'Translating Technical Jargon',
+        bodyMarkdown: `Avoid using terms like "DHCP lease," "VLAN," or "SSID" with non-technical users unless necessary. Instead, use analogies: "The laptop is having trouble getting its digital ID," or "The Wi-Fi channel is a bit crowded right now."`
+      }
+    ],
+    flashcards: [
+      { id: 'soft-f1', front: 'What is active listening?', back: 'Fully concentrating on, understanding, and responding to what the user is saying.' },
+      { id: 'soft-f2', front: 'How should you explain a delay to a teacher?', back: 'Acknowledge the impact, state the next step, and provide a realistic timeframe.' }
+    ],
+    quiz: [
+      scenarioResponse({
+        id: 'soft-q1',
+        prompt: 'A teacher is visibly upset because their laptop won’t connect to the ViewBoard 2 minutes before a lesson. How do you open the conversation?',
+        domain: 'Soft Skills',
+        difficulty: 'foundation',
+        explanation: 'Empathy first, then diagnostics.',
+        modelAnswer: 'Acknowledge the pressure: "I can see this is stressful right before class. Let’s take a quick look at the cable and input together to see if we can get you running fast."',
+        commonMistakes: ['Jumping straight to settings without talking', 'Ignoring the teacher'],
+        dcsContext: 'DCS teachers value empathy as much as technical speed.',
+        reviewSchedule,
+        recommendedModuleId: 'communication-soft-skills',
+        weakTopic: 'communication',
+        rubric: ['Shows empathy', 'Calm tone', 'Focuses on immediate resolution']
+      })
+    ],
+    scenarioPrompts: [],
+    practicalOutputs: []
+  },
+  {
     id: 'ticket-notes-escalation-quality',
     title: 'Ticket Notes and Escalation Quality',
     description:
@@ -5167,6 +5457,97 @@ const additionalModules: TrainingModule[] = [
       {
         title: 'Communication Cheat Sheet',
         description: 'Create a list of "Plain English" alternatives for 5 common technical phrases.'
+      }
+    ])
+  }),
+  createModule({
+    id: 'cybersecurity-basics',
+    title: 'Cybersecurity Awareness and Incident Response',
+    description:
+      'Understand modern school cyber threats, phishing tactics, and the NIST 800-61 incident response framework.',
+    domain: 'Operations',
+    level: 'DCS Context',
+    estimatedMinutes: 20,
+    tags: ['phishing', 'passwords', 'NIST 800-61', 'incident response'],
+    learningObjectives: [
+      'Recognise common phishing tactics and social engineering signals.',
+      'Explain the importance of password hygiene and MFA in a school context.',
+      'Map the four phases of the NIST 800-61 incident response framework.'
+    ],
+    dcsRelevance: [
+      'Protects student and staff data from evolving social engineering threats.',
+      'Aligns with the Texas School Safety Center recommendations for K-12 districts.',
+      'Builds a safer "before, during, and after" posture for school cyber incidents.'
+    ],
+    sections: buildSections('cybersecurity-basics', [
+      {
+        title: 'Phishing and Social Engineering',
+        bodyMarkdown: `Phishing is an attempt to trick users into revealing credentials or downloading malware. In schools, this often looks like fake "urgent" IT alerts, spoofed principal emails, or fraudulent invoice requests.\n\nStaff should pause before clicking links, verify the sender's actual email address (not just the display name), and report suspicious messages immediately instead of deleting them.`
+      },
+      {
+        title: 'Password Hygiene and MFA',
+        bodyMarkdown: `Strong passwords and Multi-Factor Authentication (MFA) are the first line of defense. Reusing passwords across personal and school accounts creates a significant risk.\n\nMFA adds a second layer that prevents many credential-based attacks even if a password is leaked. At DCS, MFA is a critical requirement for protecting the M365 tenant.`
+      },
+      {
+        title: 'NIST 800-61 Incident Response',
+        bodyMarkdown: `The NIST 800-61 framework defines four phases: Preparation, Detection & Analysis, Containment, Eradication & Recovery, and Post-Incident Activity.\n\nLevel 1 support focuses heavily on Detection and early Containment (e.g., isolating a device) while preserving evidence for senior ICT staff.`
+      }
+    ]),
+    flashcards: buildFlashcards('cybersecurity-basics', [
+      ['What is the goal of phishing?', 'To trick users into revealing credentials or installing malware.'],
+      ['What should a staff member check before clicking a link?', "The sender's actual email address and the target URL destination."],
+      ['Why is MFA important?', 'It provides a second layer of security beyond just a password.'],
+      ['What are the four phases of NIST 800-61?', 'Preparation, Detection & Analysis, Containment/Eradication/Recovery, and Post-Incident Activity.'],
+      ['What is Josh’s primary role in a cyber incident?', 'Early detection, basic containment, and evidence-safe escalation.'],
+      ['Should Josh delete a suspicious email for a user?', 'No. Report it through official channels to preserve the evidence for analysis.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'cyber-q1',
+        prompt: 'A staff member receives an email from the "Principal" asking for an urgent bank transfer. What is the best first step?',
+        domain: 'Cybersecurity',
+        difficulty: 'foundation',
+        explanation: 'Business Email Compromise (BEC) often uses authority to create false urgency.',
+        modelAnswer: 'Verify the sender independently and report it as a potential phishing attempt. Do not act on the request.',
+        commonMistakes: ['Replying to the email', 'Assuming the Principal is really asking', 'Not verifying the sender'],
+        dcsContext: 'DCS Principal will never ask for urgent bank transfers via email.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        options: [
+          { id: 'a', label: 'Reply immediately to show efficiency' },
+          { id: 'b', label: 'Verify the sender and report the email' },
+          { id: 'c', label: 'Delete the email so no one else sees it' },
+          { id: 'd', label: 'Forward it to the whole staff as a warning' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'cyber-q2',
+        prompt: 'Briefly explain the "Containment" phase of incident response for a suspected infected laptop.',
+        domain: 'Cybersecurity',
+        difficulty: 'stretch',
+        explanation: 'Containment stops the damage from spreading.',
+        modelAnswer: 'Containment involves isolating the affected device from the network (Wi-Fi/Ethernet) to prevent the spread of malware or unauthorized access, while keeping the device powered on if needed for forensics.',
+        commonMistakes: ['Shutting down immediately (losing memory forensics)', 'Leaving it on the Wi-Fi'],
+        dcsContext: 'Containment is a critical Level 1 response step.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        rubric: ['Mentions network isolation', 'Explains purpose (preventing spread)', 'Mentions evidence preservation'],
+        keywordHints: ['isolate', 'network', 'spread', 'evidence']
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('cybersecurity-basics', [
+      {
+        title: 'Suspicious Link Clicked',
+        prompt: 'A teacher admits they clicked a link in a suspicious email and entered their M365 password. Work through the first 5 minutes of response.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('cybersecurity-basics', [
+      {
+        title: 'Cyber Incident Report Template',
+        description: 'Draft a simple form Josh can use to capture the who, what, and when of a suspected security incident.'
       }
     ])
   }),

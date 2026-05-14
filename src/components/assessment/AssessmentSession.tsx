@@ -22,6 +22,9 @@ type AssessmentSessionProps = {
   description?: string;
   onRecordAttempt?: (attempt: AssessmentAttempt) => void;
   onSessionComplete?: (attempts: AssessmentAttempt[]) => void;
+  initialIndex?: number;
+  initialAttempts?: AssessmentAttempt[];
+  onProgressUpdate?: (currentIndex: number, attempts: AssessmentAttempt[]) => void;
 };
 
 type DraftResponse = AssessmentResponse & {
@@ -84,12 +87,15 @@ export default function AssessmentSession({
   title,
   description,
   onRecordAttempt,
-  onSessionComplete
+  onSessionComplete,
+  initialIndex = 0,
+  initialAttempts = [],
+  onProgressUpdate
 }: AssessmentSessionProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [draft, setDraft] = useState<DraftResponse | null>(questions[0] ? buildInitialDraft(questions[0]) : null);
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [draft, setDraft] = useState<DraftResponse | null>(questions[initialIndex] ? buildInitialDraft(questions[initialIndex]) : null);
   const [reviewMode, setReviewMode] = useState(false);
-  const [sessionAttempts, setSessionAttempts] = useState<AssessmentAttempt[]>([]);
+  const [sessionAttempts, setSessionAttempts] = useState<AssessmentAttempt[]>(initialAttempts);
 
   const question = questions[currentIndex];
   const sessionComplete = currentIndex >= questions.length;
@@ -291,7 +297,9 @@ export default function AssessmentSession({
       return;
     }
 
-    setCurrentIndex(currentIndex + 1);
+    const nextIndex = currentIndex + 1;
+    onProgressUpdate?.(nextIndex, nextAttempts);
+    setCurrentIndex(nextIndex);
   }
 
   return (

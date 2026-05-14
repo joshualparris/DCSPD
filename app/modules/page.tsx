@@ -6,6 +6,7 @@ import { modules as baseModules } from '../../src/data/modules';
 import { getModuleCompletion } from '../../src/lib/moduleMath';
 import { getInitialProgressSnapshot, getStoredProgressSnapshot, type UserProgress } from '../../src/lib/progress';
 import { getCustomModules } from '../../src/lib/customModules';
+import MindfulnessPause from '../../src/components/mindfulness/MindfulnessPause';
 
 export default function ModulesPage() {
   const [hasMounted, setHasMounted] = useState(false);
@@ -67,20 +68,25 @@ export default function ModulesPage() {
         </div>
       </section>
 
-      <div className="grid gap-4 xl:grid-cols-2">
-        {modules.map((module) => (
-          <ModuleCard
-            key={module.id}
-            id={module.id}
-            title={module.title}
-            description={module.description}
-            domain={module.domain}
-            level={module.level}
-            estimatedMinutes={module.estimatedMinutes}
-            tags={module.tags}
-            progress={getModuleCompletion(module.id, progress, module)}
-          />
-        ))}
+      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div className="grid gap-4">
+          {modules.map((module) => (
+            <ModuleCard
+              key={module.id}
+              id={module.id}
+              title={module.title}
+              description={module.description}
+              domain={module.domain}
+              level={module.level}
+              estimatedMinutes={module.estimatedMinutes}
+              tags={module.tags}
+              progress={getModuleCompletion(module.id, progress, module)}
+            />
+          ))}
+        </div>
+        <aside className="space-y-6">
+          <MindfulnessPause />
+        </aside>
       </div>
     </div>
   );

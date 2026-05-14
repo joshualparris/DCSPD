@@ -28,6 +28,7 @@ import { getOverallProgress } from '../src/lib/moduleMath';
 import { getCustomModules, getCustomScenarios } from '../src/lib/customModules';
 import { generateStudyPath } from '../src/lib/studyPath';
 import KnowledgeHeatmap from '../src/components/dashboard/KnowledgeHeatmap';
+import Leaderboard from '../src/components/dashboard/Leaderboard';
 import { getRecentUpdates } from '../src/data/recentUpdates';
 
 function getMonthKey(date: Date) {
@@ -321,7 +322,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <KnowledgeHeatmap progress={progress} />
+      <div className="grid gap-8 lg:grid-cols-3">
+        <KnowledgeHeatmap progress={progress} />
+        <Leaderboard />
+      </div>
 
       {/* Daily Challenge */}
       <section className="rounded-[2.5rem] border border-slate-200 bg-white p-10 shadow-sm">

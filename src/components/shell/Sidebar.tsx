@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navigationItems } from './navigation';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getGamificationData } from '../../lib/gamification';
+import { Trophy, Flame } from 'lucide-react';
 
 function isActive(pathname: string, href: string) {
   if (href === '/') {
@@ -18,6 +20,14 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const [points, setPoints] = useState(0);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    const data = getGamificationData();
+    setPoints(data.totalPoints);
+    setStreak(data.currentStreak);
+  }, [pathname]);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -32,6 +42,23 @@ export default function Sidebar() {
       <div className="border-b border-slate-100 pb-4">
         <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">DCSPrep</div>
         <div className="mt-2 text-lg font-semibold text-slate-900">Professional Development Dashboard</div>
+        
+        <div className="mt-4 flex gap-2">
+          <div className="flex flex-1 items-center gap-2 rounded-2xl bg-amber-50 p-3 text-amber-700">
+            <Trophy size={16} />
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider opacity-70">Points</div>
+              <div className="text-sm font-bold leading-none">{points}</div>
+            </div>
+          </div>
+          <div className="flex flex-1 items-center gap-2 rounded-2xl bg-orange-50 p-3 text-orange-700">
+            <Flame size={16} />
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider opacity-70">Streak</div>
+              <div className="text-sm font-bold leading-none">{streak}d</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="mt-4">

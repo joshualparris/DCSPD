@@ -13,6 +13,8 @@ import {
   recordFlashcardReview,
   recordModuleQuizAttempt,
   saveProgress,
+  saveActiveAssessment,
+  clearActiveAssessment,
   togglePracticalOutput,
   type UserProgress
 } from '../../lib/progress';
@@ -20,6 +22,7 @@ import type { AssessmentAttempt } from '../../types/assessment';
 import type { TrainingModule } from '../../types/training';
 import AssessmentSession from '../assessment/AssessmentSession';
 import FlashcardDeck from '../flashcards/FlashcardDeck';
+import { addModulePoints, awardBadge, PREDEFINED_BADGES } from '../../lib/gamification';
 import { trackUsageInteraction } from '../../hooks/useUsageTracking';
 import ModuleQuestionFirst from './ModuleQuestionFirst';
 import ModuleTabs from './ModuleTabs';
@@ -74,6 +77,23 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
 
   const moduleProgress = progress.modules[moduleData.id];
   const completion = getModuleCompletion(moduleData.id, progress, moduleData);
+
+  useEffect(() => {
+    if (completion === 100) {
+      addModulePoints(moduleData.id);
+
+      // Check for specific badges
+      if (moduleData.id === 'cybersecurity-basics') {
+        awardBadge(PREDEFINED_BADGES.CYBER_GUARDIAN);
+      } else if (moduleData.id === 'device-imaging-workflows') {
+        awardBadge(PREDEFINED_BADGES.IMAGING_PRO);
+      } else if (moduleData.id === 'accessibility-inclusive-design') {
+        awardBadge(PREDEFINED_BADGES.INCLUSIVE_DESIGNER);
+      } else if (moduleData.id === 'communication-soft-skills') {
+        awardBadge(PREDEFINED_BADGES.SUPPORT_HEART);
+      }
+    }
+  }, [completion, moduleData.id]);
 
   const latestQuizScore = moduleProgress.quizAttempts.length
     ? moduleProgress.quizAttempts[moduleProgress.quizAttempts.length - 1].score
@@ -232,6 +252,11 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
           source="module-quiz"
           title={`${moduleData.title} assessment`}
           description="Record confidence first, then provide the answer, explanation, and judgement required for structured review."
+          initialIndex={moduleProgress.activeAssessment?.currentIndex}
+          initialAttempts={moduleProgress.activeAssessment?.attempts}
+          onProgressUpdate={(idx, attempts) => {
+            setProgress((current) => saveActiveAssessment(current, moduleData.id, idx, attempts));
+          }}
           onRecordAttempt={handleModuleAttempt}
           onSessionComplete={(attempts) => {
             const average = attempts.length

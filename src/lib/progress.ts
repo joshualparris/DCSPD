@@ -30,6 +30,11 @@ export type ModuleProgress = {
   flashcards: Record<string, FlashcardProgress>;
   quizAttempts: ModuleQuizAttempt[];
   practicalOutputs: Record<string, boolean>;
+  activeAssessment?: {
+    currentIndex: number;
+    attempts: AssessmentAttempt[];
+    lastUpdatedIso: string;
+  };
 };
 
 export type PDLogEntry = {
@@ -642,7 +647,49 @@ export function recordModuleQuizAttempt(
       ...progress.modules,
       [moduleId]: {
         ...moduleProgress,
-        quizAttempts: [...moduleProgress.quizAttempts, attempt]
+        quizAttempts: [...moduleProgress.quizAttempts, attempt],
+        activeAssessment: undefined // Clear active assessment on completion
+      }
+    }
+  };
+}
+
+export function saveActiveAssessment(
+  progress: UserProgress,
+  moduleId: string,
+  currentIndex: number,
+  attempts: AssessmentAttempt[]
+): UserProgress {
+  const moduleProgress = progress.modules[moduleId];
+  if (!moduleProgress) return progress;
+
+  return {
+    ...progress,
+    modules: {
+      ...progress.modules,
+      [moduleId]: {
+        ...moduleProgress,
+        activeAssessment: {
+          currentIndex,
+          attempts,
+          lastUpdatedIso: new Date().toISOString()
+        }
+      }
+    }
+  };
+}
+
+export function clearActiveAssessment(progress: UserProgress, moduleId: string): UserProgress {
+  const moduleProgress = progress.modules[moduleId];
+  if (!moduleProgress) return progress;
+
+  return {
+    ...progress,
+    modules: {
+      ...progress.modules,
+      [moduleId]: {
+        ...moduleProgress,
+        activeAssessment: undefined
       }
     }
   };
