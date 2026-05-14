@@ -16,6 +16,47 @@ export type RecentUpdate = {
 
 export const recentUpdates: RecentUpdate[] = [
   {
+    id: 'production-readiness-and-growth',
+    dateIso: '2026-05-14',
+    title: 'Production Readiness & Advanced Growth',
+    summary:
+      'Major update adding AI Rubric Grading, Practice Exam Engine, Voice-to-Ticket dictation, Global Dark Mode, and Cloud Sync adapters.',
+    category: 'Added',
+    impact: 'Transitions the app from a learning tool to a professional-grade, AI-enhanced productivity platform.',
+    links: [
+      { label: 'Practice Exam', href: '/practice-exam', kind: 'feature' },
+      { label: 'Asset Catalog', href: '/assets', kind: 'feature' },
+      { label: 'Cloud Sync', href: '/sync', kind: 'admin' },
+      { label: 'Evidence Pack', href: '/evidence-pack', kind: 'evidence' }
+    ]
+  },
+  {
+    id: 'ai-coach-evolution',
+    dateIso: '2026-05-14',
+    title: 'AI Coach Evolution',
+    summary:
+      'Implemented detailed rubric analysis for ticket notes and assessments. Added voice dictation support for drafting professional Jira notes.',
+    category: 'Changed',
+    impact: 'Provides deeper, more objective feedback on soft skills and documentation quality.',
+    links: [
+      { label: 'Scenario Lab', href: '/scenarios', kind: 'workflow' },
+      { label: 'Assessment Center', href: '/modules', kind: 'workflow' }
+    ]
+  },
+  {
+    id: 'infrastructure-and-pwa-hardening',
+    dateIso: '2026-05-14',
+    title: 'Infrastructure & PWA Hardening',
+    summary:
+      'Added IndexedDB offline storage for modules, Push Notifications for study reminders, and OneDrive environment detection.',
+    category: 'Added',
+    impact: 'Improves app stability and ensures learning can continue without an internet connection.',
+    links: [
+      { label: 'Settings', href: '/settings', kind: 'feature' },
+      { label: 'Migration Guide', href: '/MIGRATION_GUIDE.md', kind: 'source' }
+    ]
+  },
+  {
     id: 'mid-assessment-persistence',
     dateIso: '2026-05-14',
     title: 'Mid-assessment persistence',
