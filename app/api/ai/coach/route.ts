@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { normaliseCoachResponse } from '../../../../src/lib/ai/coachResponse';
 
 const CoachInputSchema = z.object({
   contextType: z.enum(['scenario', 'ticket-note', 'short-answer', 'practical-output', 'freeform']),
@@ -12,34 +13,6 @@ const CoachInputSchema = z.object({
   weakTopic: z.string().optional(),
   extraContext: z.string().optional(),
   redactionSummary: z.string().optional()
-});
-
-const CoachResponseSchema = z.object({
-  score: z.number(),
-  strengths: z.array(z.string()),
-  missing: z.array(z.string()),
-  riskNotes: z.array(z.string()),
-  betterAnswer: z.string(),
-  nextPractice: z.string(),
-  rubricGrade: z.object({
-    score: z.number(),
-    maxScore: z.number(),
-    percentage: z.number(),
-    level: z.enum(['needs-work', 'developing', 'competent', 'strong', 'excellent']),
-    strengths: z.array(z.string()),
-    missing: z.array(z.string()),
-    privacyFlags: z.array(z.string()),
-    escalationFeedback: z.array(z.string()),
-    improvedExample: z.string().optional(),
-    criteriaResults: z.array(z.object({
-      criterionId: z.string(),
-      label: z.string(),
-      met: z.boolean(),
-      pointsAwarded: z.number(),
-      pointsPossible: z.number(),
-      feedback: z.string()
-    }))
-  }).optional()
 });
 
 /**
@@ -81,8 +54,6 @@ function extractJson(text: string) {
   }
 }
 
-const FALLBACK_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'] as const;
-
 function pickModelSequence(configuredModel: string) {
   // Prefer the current best-performing Groq model
   const bestModel = 'llama-3.3-70b-versatile';
@@ -101,6 +72,7 @@ async function callGroq(apiKey: string, model: string, userPayload: unknown, sys
     body: JSON.stringify({
       model,
       temperature: 0.1, // Lower temperature for more consistent JSON
+      max_tokens: 1400,
       response_format: { type: 'json_object' }, // Explicit JSON mode
       messages: [
         { role: 'system', content: system },
@@ -192,23 +164,22 @@ export async function POST(request: Request) {
     const attempt = await callGroq(apiKey, model, parsedBody, system);
 
     if (attempt.ok) {
+      let text = '{}';
       try {
         const data = JSON.parse(attempt.rawText);
-        const text = data?.choices?.[0]?.message?.content ?? '{}';
+        text = data?.choices?.[0]?.message?.content ?? '{}';
         
         console.log('--- RAW AI RESPONSE START ---');
         console.log(text);
         console.log('--- RAW AI RESPONSE END ---');
 
         const json = extractJson(text);
-        const safe = CoachResponseSchema.parse(json);
+        const safe = normaliseCoachResponse(json, parsedBody);
         return NextResponse.json(safe);
       } catch (err) {
-        console.error('AI JSON Parse Error:', err);
-        return NextResponse.json(
-          { error: 'AI coaching returned an invalid response. Try again.' },
-          { status: 502 }
-        );
+        console.error('AI response repair path used:', err);
+        const repaired = normaliseCoachResponse({ betterAnswer: text }, parsedBody);
+        return NextResponse.json(repaired);
       }
     }
 

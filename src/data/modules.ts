@@ -1337,7 +1337,17 @@ const baseModules: LegacyTrainingModule[] = [
       { id: 'cyber-f3', front: 'Why is MFA important?', back: 'It provides a second layer of security beyond just a password.' },
       { id: 'cyber-f4', front: 'What are the four phases of NIST 800-61?', back: 'Preparation, Detection & Analysis, Containment/Eradication/Recovery, and Post-Incident Activity.' },
       { id: 'cyber-f5', front: 'What is Josh’s primary role in a cyber incident?', back: 'Early detection, basic containment, and evidence-safe escalation.' },
-      { id: 'cyber-f6', front: 'Should Josh delete a suspicious email for a user?', back: 'No. Report it through official channels to preserve the evidence for analysis.' }
+      { id: 'cyber-f6', front: 'Should Josh delete a suspicious email for a user?', back: 'No. Report it through official channels to preserve the evidence for analysis.' },
+      {
+        id: 'cyber-f7',
+        front: 'What details should be captured for a suspected compromise?',
+        back: 'Time reported, symptoms, affected account/device, actions already taken, and who has been notified.'
+      },
+      {
+        id: 'cyber-f8',
+        front: 'Why isolate a potentially infected device?',
+        back: 'To limit spread while preserving device state for senior ICT review.'
+      }
     ],
     quiz: [
       mcq({
@@ -1374,6 +1384,41 @@ const baseModules: LegacyTrainingModule[] = [
         weakTopic: 'security-risk-judgement',
         rubric: ['Mentions network isolation', 'Explains purpose (preventing spread)', 'Mentions evidence preservation'],
         keywordHints: ['isolate', 'network', 'spread', 'evidence']
+      }),
+      mcq({
+        id: 'cyber-q3',
+        prompt: 'A user reports a suspicious sign-in prompt after clicking a link. Which evidence is safest to capture first?',
+        domain: 'Cybersecurity',
+        difficulty: 'foundation',
+        explanation: 'Capture observable, privacy-safe facts before changing state or deleting evidence.',
+        modelAnswer: 'Capture the time, account/device affected, prompt wording or screenshot if approved, and any actions already taken.',
+        commonMistakes: ['Asking for the password', 'Deleting the email immediately', 'Resetting everything before evidence is captured'],
+        dcsContext: 'DCS support notes should preserve evidence without collecting secrets.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        options: [
+          { id: 'a', label: 'The user password' },
+          { id: 'b', label: 'Time, affected account/device, symptoms, and actions taken' },
+          { id: 'c', label: 'A forwarded copy to all staff' },
+          { id: 'd', label: 'A private copy of the user mailbox' }
+        ],
+        correctOptionId: 'b'
+      }),
+      scenarioResponse({
+        id: 'cyber-q4',
+        prompt: 'A teacher thinks they entered their password into a fake Microsoft sign-in page. Write the first three support actions.',
+        domain: 'Cybersecurity',
+        difficulty: 'stretch',
+        explanation: 'The first response should reduce risk, preserve evidence, and escalate quickly.',
+        modelAnswer:
+          'Ask the teacher to stop using the session, capture the time/link/context without collecting the password, isolate or secure affected devices if needed, and escalate urgently to senior ICT for account protection and review.',
+        commonMistakes: ['Asking them to type the password again', 'Treating it as a normal forgotten password', 'Deleting the email before escalation'],
+        dcsContext: 'Credential exposure can affect the wider M365 tenant, so fast escalation matters.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        rubric: ['Stops further risk', 'Preserves evidence safely', 'Escalates urgently']
       })
     ],
     scenarioPrompts: [
@@ -1431,7 +1476,11 @@ const baseModules: LegacyTrainingModule[] = [
       { id: 'imaging-f1', front: 'What is PXE boot used for?', back: 'To boot a device from the network for imaging/deployment.' },
       { id: 'imaging-f2', front: 'What is a "reference image"?', back: 'A template OS containing the baseline software and settings for deployment.' },
       { id: 'imaging-f3', front: 'Imaging vs Provisioning: which is "over-the-air"?', back: 'Provisioning (e.g., Autopilot).' },
-      { id: 'imaging-f4', front: 'Why keep base images generic?', back: 'To reduce driver conflicts and make the image compatible with more hardware models.' }
+      { id: 'imaging-f4', front: 'Why keep base images generic?', back: 'To reduce driver conflicts and make the image compatible with more hardware models.' },
+      { id: 'imaging-f5', front: 'What should be tested before a lab image rollout?', back: 'Drivers, network boot, required apps, domain join, updates, and printing/display basics.' },
+      { id: 'imaging-f6', front: 'What is a pilot device?', back: 'A small test device used to prove the deployment process before the full batch.' },
+      { id: 'imaging-f7', front: 'Why record asset tags during deployment?', back: 'They link the physical device to support history, location, and ownership.' },
+      { id: 'imaging-f8', front: 'When should imaging be escalated?', back: 'When boot, driver, licensing, or domain-join failures repeat across multiple devices.' }
     ],
     quiz: [
       mcq({
@@ -1453,6 +1502,58 @@ const baseModules: LegacyTrainingModule[] = [
           { id: 'd', label: 'File Explorer' }
         ],
         correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'imaging-q2',
+        prompt: 'Why should a reference image be tested on more than one hardware model before a rollout?',
+        domain: 'Imaging',
+        difficulty: 'foundation',
+        explanation: 'Different models may need different drivers, firmware settings, or post-install steps.',
+        modelAnswer:
+          'Testing across models helps catch driver, network, display, storage, and domain-join issues before the image is used on a full lab or staff batch.',
+        commonMistakes: ['Assuming one successful device proves the whole fleet', 'Skipping driver validation'],
+        dcsContext: 'DCS deployments often span mixed device models and classroom use cases.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-workflows',
+        weakTopic: 'laptop-mobile-hardware',
+        rubric: ['Mentions driver differences', 'Mentions pre-rollout risk reduction', 'Connects testing to fleet deployment'],
+        keywordHints: ['drivers', 'models', 'test', 'rollout', 'fleet']
+      }),
+      orderSteps({
+        id: 'imaging-q3',
+        prompt: 'Put the deployment workflow in the safest order.',
+        domain: 'Imaging',
+        difficulty: 'foundation',
+        explanation: 'A safe rollout proves the image before broad deployment.',
+        modelAnswer: 'Plan requirements, build/test the image, pilot on a small device set, then deploy and document outcomes.',
+        commonMistakes: ['Deploying first then testing', 'Skipping documentation'],
+        dcsContext: 'A staged rollout reduces classroom disruption.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-workflows',
+        weakTopic: 'laptop-mobile-hardware',
+        steps: [
+          { id: 'plan', label: 'Confirm requirements and device scope' },
+          { id: 'build', label: 'Build and test the reference image' },
+          { id: 'pilot', label: 'Pilot on a small set of devices' },
+          { id: 'deploy', label: 'Deploy broadly and document exceptions' }
+        ],
+        correctOrder: ['plan', 'build', 'pilot', 'deploy'],
+        rubric: ['Plans first', 'Tests before deployment', 'Documents exceptions']
+      }),
+      scenarioResponse({
+        id: 'imaging-q4',
+        prompt: 'A lab image works on 20 devices but fails network boot on 5. What should the support note include before escalation?',
+        domain: 'Imaging',
+        difficulty: 'stretch',
+        explanation: 'Escalation is stronger when the pattern is clear.',
+        modelAnswer:
+          'List the affected asset tags/models, error messages, network port/location, whether PXE starts, steps already tried, and the working comparison devices.',
+        commonMistakes: ['Only writing "imaging failed"', 'Not separating affected and working models'],
+        dcsContext: 'Fleet deployment notes need enough pattern detail for senior ICT to act quickly.',
+        reviewSchedule,
+        recommendedModuleId: 'device-imaging-workflows',
+        weakTopic: 'laptop-mobile-hardware',
+        rubric: ['Captures asset/model pattern', 'Captures error and location', 'Includes attempted steps and comparisons']
       })
     ],
     scenarioPrompts: [
@@ -1499,12 +1600,22 @@ const baseModules: LegacyTrainingModule[] = [
         id: 'access-2',
         title: 'Assistive Technologies',
         bodyMarkdown: `School IT supports many assistive tools: Screen readers (NVDA, JAWS), Screen magnifiers, High-contrast themes, and Switch access for motor impairments.\n\nUnderstanding how these tools "read" a page helps IT staff troubleshoot layout or navigation issues.`
+      },
+      {
+        id: 'access-3',
+        title: 'Practical Accessibility Checks',
+        bodyMarkdown: `Level 1 checks should be simple and observable: can the page be used with a keyboard, does every important image have useful alt text, is colour contrast readable, and do links or buttons make sense out of context?\n\nWhen a barrier affects learning, document the exact page, device/browser, assistive tool, user impact, and any safe workaround before escalation.`
       }
     ],
     flashcards: [
       { id: 'access-f1', front: 'What does "POUR" stand for in accessibility?', back: 'Perceivable, Operable, Understandable, Robust.' },
       { id: 'access-f2', front: 'Why is alt-text important?', back: 'It allows screen readers to describe images to users with visual impairments.' },
-      { id: 'access-f3', front: 'What is a "keyboard-only" user?', back: 'Someone who navigates without a mouse, often due to motor impairments.' }
+      { id: 'access-f3', front: 'What is a "keyboard-only" user?', back: 'Someone who navigates without a mouse, often due to motor impairments.' },
+      { id: 'access-f4', front: 'What does colour contrast support?', back: 'Readable content for users with low vision, colour blindness, or difficult screen conditions.' },
+      { id: 'access-f5', front: 'Why should link text be descriptive?', back: 'Screen reader users may navigate by links alone, so "click here" gives poor context.' },
+      { id: 'access-f6', front: 'What should be captured when escalating an accessibility barrier?', back: 'Page/app, device/browser, assistive tool, user impact, reproduction steps, and workaround tried.' },
+      { id: 'access-f7', front: 'What is an assistive technology?', back: 'A tool that helps someone access digital content, such as a screen reader, magnifier, or switch device.' },
+      { id: 'access-f8', front: 'Why test with keyboard navigation?', back: 'It reveals whether users can reach and operate controls without a mouse.' }
     ],
     quiz: [
       mcq({
@@ -1526,10 +1637,73 @@ const baseModules: LegacyTrainingModule[] = [
           { id: 'd', label: 'Robust' }
         ],
         correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'access-q2',
+        prompt: 'A student cannot use an online task because the next button is only visible by colour. What should the support note include?',
+        domain: 'Accessibility',
+        difficulty: 'foundation',
+        explanation: 'Accessibility notes should describe the barrier and impact without exposing private student information.',
+        modelAnswer:
+          'Record the page/app, device/browser, the visual-only cue, learning impact, any safe workaround, and escalate with a clear accessibility barrier description.',
+        commonMistakes: ['Only writing "student cannot use site"', 'Including unnecessary personal details'],
+        dcsContext: 'Inclusive support protects privacy while making the barrier actionable.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-inclusive-design',
+        weakTopic: 'soft-skills',
+        rubric: ['Names the barrier', 'Captures impact safely', 'Includes technical context and escalation'],
+        keywordHints: ['barrier', 'impact', 'page', 'device', 'escalate']
+      }),
+      mcq({
+        id: 'access-q3',
+        prompt: 'Which support action best checks whether a page is operable?',
+        domain: 'Accessibility',
+        difficulty: 'foundation',
+        explanation: 'Operable means users can navigate and interact with the interface.',
+        modelAnswer: 'Try navigating and using the page with the keyboard only.',
+        commonMistakes: ['Only checking whether the page looks attractive', 'Only testing on a large monitor'],
+        dcsContext: 'Keyboard-only checks are a practical Level 1 accessibility test.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-inclusive-design',
+        weakTopic: 'soft-skills',
+        options: [
+          { id: 'a', label: 'Use only the mouse and trackpad' },
+          { id: 'b', label: 'Navigate the key workflow with the keyboard only' },
+          { id: 'c', label: 'Lower the screen brightness' },
+          { id: 'd', label: 'Change the wallpaper' }
+        ],
+        correctOptionId: 'b'
+      }),
+      scenarioResponse({
+        id: 'access-q4',
+        prompt: 'A teacher reports that a PDF worksheet is unreadable by a screen reader. What first-line response should Josh give?',
+        domain: 'Accessibility',
+        difficulty: 'stretch',
+        explanation: 'The response should acknowledge impact, gather usable evidence, and escalate for remediation.',
+        modelAnswer:
+          'Acknowledge the learning impact, identify the PDF and affected workflow, test whether text can be selected or read, note the assistive tool/browser, offer a safe temporary alternative if available, and escalate for accessible remediation.',
+        commonMistakes: ['Blaming the user tool', 'Ignoring the lesson impact', 'Sending the same inaccessible PDF again'],
+        dcsContext: 'Accessible learning materials are part of reliable school IT support.',
+        reviewSchedule,
+        recommendedModuleId: 'accessibility-inclusive-design',
+        weakTopic: 'soft-skills',
+        rubric: ['Acknowledges impact', 'Captures technical evidence', 'Escalates for accessible remediation']
       })
     ],
-    scenarioPrompts: [],
-    practicalOutputs: []
+    scenarioPrompts: [
+      {
+        id: 'access-s1',
+        title: 'Screen Reader Barrier',
+        prompt: 'A student using a screen reader cannot complete a portal task. Gather privacy-safe evidence and prepare an escalation note.'
+      }
+    ],
+    practicalOutputs: [
+      {
+        id: 'access-p1',
+        title: 'Accessibility Support Checklist',
+        description: 'Create a Level 1 checklist for keyboard, alt text, contrast, screen reader, and escalation evidence checks.'
+      }
+    ]
   },
   {
     id: 'communication-soft-skills',
@@ -1560,11 +1734,22 @@ const baseModules: LegacyTrainingModule[] = [
         id: 'soft-2',
         title: 'Translating Technical Jargon',
         bodyMarkdown: `Avoid using terms like "DHCP lease," "VLAN," or "SSID" with non-technical users unless necessary. Instead, use analogies: "The laptop is having trouble getting its digital ID," or "The Wi-Fi channel is a bit crowded right now."`
+      },
+      {
+        id: 'soft-3',
+        title: 'Closing the Loop',
+        bodyMarkdown: `Good support communication ends with clarity: what was checked, what changed, what remains unresolved, who owns the next step, and when the user should expect an update.\n\nA calm close-out turns a stressful interruption into a trustworthy support experience, even when the technical fix needs escalation.`
       }
     ],
     flashcards: [
       { id: 'soft-f1', front: 'What is active listening?', back: 'Fully concentrating on, understanding, and responding to what the user is saying.' },
-      { id: 'soft-f2', front: 'How should you explain a delay to a teacher?', back: 'Acknowledge the impact, state the next step, and provide a realistic timeframe.' }
+      { id: 'soft-f2', front: 'How should you explain a delay to a teacher?', back: 'Acknowledge the impact, state the next step, and provide a realistic timeframe.' },
+      { id: 'soft-f3', front: 'What should come before technical questions in a stressful support moment?', back: 'A brief acknowledgement of the impact and pressure the user is under.' },
+      { id: 'soft-f4', front: 'Why avoid jargon with non-technical users?', back: 'It can confuse or embarrass the user and hide the practical next step.' },
+      { id: 'soft-f5', front: 'What is a good close-out statement?', back: 'A summary of what was checked, current status, owner, next step, and expected update.' },
+      { id: 'soft-f6', front: 'What does de-escalation sound like?', back: 'Calm tone, specific next action, realistic timeframe, and no blame.' },
+      { id: 'soft-f7', front: 'How should uncertainty be communicated?', back: 'Be honest about what is known, what is being checked, and when the user will hear back.' },
+      { id: 'soft-f8', front: 'Why repeat the problem back to the user?', back: 'It confirms understanding and often reveals missing context before troubleshooting begins.' }
     ],
     quiz: [
       scenarioResponse({
@@ -1580,10 +1765,73 @@ const baseModules: LegacyTrainingModule[] = [
         recommendedModuleId: 'communication-soft-skills',
         weakTopic: 'communication',
         rubric: ['Shows empathy', 'Calm tone', 'Focuses on immediate resolution']
+      }),
+      mcq({
+        id: 'soft-q2',
+        prompt: 'Which opening response is strongest when a teacher reports a projector failure during class?',
+        domain: 'Soft Skills',
+        difficulty: 'foundation',
+        explanation: 'A strong response acknowledges pressure and moves quickly into a safe first check.',
+        modelAnswer: 'Acknowledge the disruption and offer a quick, specific next step.',
+        commonMistakes: ['Using jargon immediately', 'Sounding dismissive', 'Blaming the teacher'],
+        dcsContext: 'Classroom support needs calm, practical communication under time pressure.',
+        reviewSchedule,
+        recommendedModuleId: 'communication-soft-skills',
+        weakTopic: 'communication',
+        options: [
+          { id: 'a', label: 'It is probably user error; restart everything.' },
+          { id: 'b', label: 'I can see this is interrupting class. I will check the input and cable first.' },
+          { id: 'c', label: 'This is a DHCP issue.' },
+          { id: 'd', label: 'Please log a ticket and wait.' }
+        ],
+        correctOptionId: 'b'
+      }),
+      shortAnswer({
+        id: 'soft-q3',
+        prompt: 'Write a two-sentence update for a staff member when a fix will take longer than expected.',
+        domain: 'Soft Skills',
+        difficulty: 'foundation',
+        explanation: 'Good updates are clear, accountable, and respectful of the user impact.',
+        modelAnswer:
+          'Thanks for your patience; I have checked the basic settings and this needs a deeper review. I have escalated it with the details we found and will update you by the agreed time.',
+        commonMistakes: ['Overpromising', 'Giving no owner or timeframe', 'Using unexplained technical language'],
+        dcsContext: 'Teachers need clear ownership and timing so they can plan around the issue.',
+        reviewSchedule,
+        recommendedModuleId: 'communication-soft-skills',
+        weakTopic: 'communication',
+        rubric: ['Acknowledges delay', 'States next step and owner', 'Gives a realistic update point'],
+        keywordHints: ['delay', 'next step', 'owner', 'time', 'update']
+      }),
+      scenarioResponse({
+        id: 'soft-q4',
+        prompt: 'A parent is frustrated because they cannot access a school portal. How should Josh keep the conversation professional and useful?',
+        domain: 'Soft Skills',
+        difficulty: 'stretch',
+        explanation: 'External support interactions need empathy, boundaries, and careful evidence gathering.',
+        modelAnswer:
+          'Acknowledge the frustration, avoid blame, confirm the exact portal and symptom, collect privacy-safe contact and device context, explain the next step, and escalate if access or identity changes are required.',
+        commonMistakes: ['Discussing private account details without verification', 'Arguing about blame', 'Promising instant access changes'],
+        dcsContext: 'Parent-facing support needs calm boundaries and privacy-safe escalation.',
+        reviewSchedule,
+        recommendedModuleId: 'communication-soft-skills',
+        weakTopic: 'communication',
+        rubric: ['Shows empathy', 'Maintains privacy boundaries', 'Clarifies next step']
       })
     ],
-    scenarioPrompts: [],
-    practicalOutputs: []
+    scenarioPrompts: [
+      {
+        id: 'soft-s1',
+        title: 'Frustrated Teacher Before Class',
+        prompt: 'A teacher is anxious because a display issue may disrupt the lesson. Practise an opening response, first check, and close-out update.'
+      }
+    ],
+    practicalOutputs: [
+      {
+        id: 'soft-p1',
+        title: 'Support Conversation Script Bank',
+        description: 'Create short scripts for opening, clarifying, delaying, escalating, and closing common school IT support conversations.'
+      }
+    ]
   },
   {
     id: 'ticket-notes-escalation-quality',
@@ -5499,7 +5747,9 @@ const additionalModules: TrainingModule[] = [
       ['Why is MFA important?', 'It provides a second layer of security beyond just a password.'],
       ['What are the four phases of NIST 800-61?', 'Preparation, Detection & Analysis, Containment/Eradication/Recovery, and Post-Incident Activity.'],
       ['What is Josh’s primary role in a cyber incident?', 'Early detection, basic containment, and evidence-safe escalation.'],
-      ['Should Josh delete a suspicious email for a user?', 'No. Report it through official channels to preserve the evidence for analysis.']
+      ['Should Josh delete a suspicious email for a user?', 'No. Report it through official channels to preserve the evidence for analysis.'],
+      ['What should Level 1 support capture for a suspected compromise?', 'Time reported, symptoms, affected device/account, actions already taken, and who has been notified.'],
+      ['Why should a potentially infected device be isolated before deeper troubleshooting?', 'Isolation limits spread while preserving the device state for senior ICT review.']
     ]),
     quiz: [
       mcq({
@@ -5536,6 +5786,41 @@ const additionalModules: TrainingModule[] = [
         weakTopic: 'security-risk-judgement',
         rubric: ['Mentions network isolation', 'Explains purpose (preventing spread)', 'Mentions evidence preservation'],
         keywordHints: ['isolate', 'network', 'spread', 'evidence']
+      }),
+      mcq({
+        id: 'cyber-q3',
+        prompt: 'Which detail is safest and most useful to capture for a suspected phishing click?',
+        domain: 'Cybersecurity',
+        difficulty: 'foundation',
+        explanation: 'Useful evidence is factual and privacy-safe, not secret or speculative.',
+        modelAnswer: 'Capture time, user-reported action, affected account/device, message/link context, and any visible warning.',
+        commonMistakes: ['Asking for the password', 'Deleting evidence', 'Broadcasting the incident widely'],
+        dcsContext: 'Cyber notes should help senior ICT act without exposing secrets.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        options: [
+          { id: 'a', label: 'The password the user typed' },
+          { id: 'b', label: 'Time, affected device/account, action taken, and message context' },
+          { id: 'c', label: 'A public warning with the staff member named' },
+          { id: 'd', label: 'A guess about who sent the email' }
+        ],
+        correctOptionId: 'b'
+      }),
+      scenarioResponse({
+        id: 'cyber-q4',
+        prompt: 'A staff member entered credentials into a suspicious form. Describe the first response and escalation note.',
+        domain: 'Cybersecurity',
+        difficulty: 'stretch',
+        explanation: 'Credential exposure needs quick containment and evidence-safe escalation.',
+        modelAnswer:
+          'Tell the staff member to stop using the suspicious session, capture the time/link/context without collecting the password, secure or isolate affected devices if needed, and escalate urgently with the affected account, actions taken, and evidence location.',
+        commonMistakes: ['Asking the user to repeat the password', 'Waiting until the end of the day', 'Deleting the original email'],
+        dcsContext: 'A compromised account can affect M365, files, and communication across the school.',
+        reviewSchedule,
+        recommendedModuleId: 'cybersecurity-basics',
+        weakTopic: 'security-risk-judgement',
+        rubric: ['Stops further risk', 'Preserves evidence safely', 'Escalates with actionable detail']
       })
     ],
     scenarioPrompts: buildScenarioPrompts('cybersecurity-basics', [

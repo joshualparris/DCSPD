@@ -35,6 +35,7 @@ export default function AiCoachPanel({ input, enabled = true, debounceMs = 900, 
 
   const key = useMemo(() => stableKey(input), [input]);
   const answerLength = input.userAnswer?.trim().length ?? 0;
+  const showConfigAdvice = Boolean(error && /not configured|GROQ_API_KEY|503/i.test(error));
 
   useEffect(() => {
     if (!enabled) {
@@ -99,13 +100,13 @@ export default function AiCoachPanel({ input, enabled = true, debounceMs = 900, 
         </div>
         <div className="rounded-3xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
           {status === 'loading'
-            ? 'Coaching…'
+            ? 'Coaching...'
             : status === 'ready'
             ? 'Updated'
             : status === 'error'
             ? 'Unavailable'
             : answerLength < minChars
-            ? `Type ${minChars - answerLength} more char(s)…`
+            ? `Type ${minChars - answerLength} more char(s)...`
             : 'Waiting'}
         </div>
       </div>
@@ -118,10 +119,12 @@ export default function AiCoachPanel({ input, enabled = true, debounceMs = 900, 
       {status === 'error' ? (
         <div className="mt-4 rounded-3xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           {error || 'AI coaching is unavailable right now.'}
-          <div className="mt-2 text-amber-800">
-            If this is your first time enabling it, add <code className="rounded bg-amber-100 px-1">GROQ_API_KEY</code> to{' '}
-            <code className="rounded bg-amber-100 px-1">.env.local</code> and restart dev server.
-          </div>
+          {showConfigAdvice ? (
+            <div className="mt-2 text-amber-800">
+              If this is your first time enabling it, add <code className="rounded bg-amber-100 px-1">GROQ_API_KEY</code> to{' '}
+              <code className="rounded bg-amber-100 px-1">.env.local</code> and restart dev server.
+            </div>
+          ) : null}
         </div>
       ) : null}
 
@@ -200,7 +203,7 @@ export default function AiCoachPanel({ input, enabled = true, debounceMs = 900, 
                       <div className="text-[10px] font-bold uppercase tracking-widest text-rose-500">Privacy & Risk Flags</div>
                       <ul className="mt-2 space-y-1">
                         {feedback.rubricGrade.privacyFlags.map((flag, i) => (
-                          <li key={i} className="text-xs font-medium text-rose-800">• {flag}</li>
+                          <li key={i} className="text-xs font-medium text-rose-800">- {flag}</li>
                         ))}
                       </ul>
                     </div>
@@ -226,4 +229,3 @@ export default function AiCoachPanel({ input, enabled = true, debounceMs = 900, 
     </section>
   );
 }
-
