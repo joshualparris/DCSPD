@@ -23,18 +23,17 @@ import {
   saveCustomAsset
 } from '../../src/lib/customModules';
 import {
+  expandCustomContentPayload,
+  prepareCustomContentImport,
+  type PreparedCustomContentImport
+} from '../../src/lib/customContentImport';
+import {
   getStoredProgressSnapshot,
   parseProgressBackupJson,
   resetProgress,
   saveProgress,
   serializeProgressBackup
 } from '../../src/lib/progress';
-import type { TrainingModule } from '../../src/types/training';
-import type { RoleplayScenario } from '../../src/data/roleplayScenarios';
-import type { Scenario } from '../../src/types/scenarios';
-import type { AcademicSubject } from '../../src/types/academic';
-import type { TroubleshootingPlaybook } from '../../src/types/playbooks';
-import type { DcsAssetProfile } from '../../src/types/assets';
 import {
   DEFAULT_SCHEDULER_SETTINGS,
   loadSchedulerSettings,
@@ -71,7 +70,7 @@ export default function SettingsPage() {
   });
 
   const [moduleStatus, setModuleStatus] = useState<{
-    state: 'idle' | 'ok' | 'error';
+    state: 'idle' | 'ok' | 'warning' | 'error';
     message: string;
   }>({
     state: 'idle',
@@ -208,84 +207,98 @@ export default function SettingsPage() {
     }
   }
 
-  async function importCustomData(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const text = await file.text();
-      const data = JSON.parse(text);
-      const trackCustomImport = (contentKind: string, contentId?: string, itemCount = 1) => {
-        trackUsageInteraction({
-          eventType: 'custom_content_imported',
-          route: '/settings',
-          label: contentKind,
-          contentType: 'settings',
-          contentId,
-          activityCategory: 'settings',
-          completed: true,
-          metadata: {
-            source: 'custom',
-            resultCount: itemCount
-          }
-        });
-      };
-
-      // Simple heuristic to detect type
-      if (data.sections && data.learningObjectives) {
-        // Ensure mandatory fields exist for rendering
-        const trainingModule = {
-          modulePattern: {
-            diagnosticQuestions: [],
-            explainBackPrompt: { id: 'eb', title: 'Explain it back', prompt: 'P' },
-            cornellPrompt: { id: 'c', title: 'Cornell', prompt: 'P' },
-            sq3rPrompt: { id: 's', title: 'SQ3R', prompt: 'P' }
-          },
-          scenarioPrompts: [],
-          practicalOutputs: [],
-          ...data
-        };
-        // Normalize rubric if needed (AI often makes it an object)
-        if (trainingModule.quiz) {
-          trainingModule.quiz = trainingModule.quiz.map((q: any) => {
-            if (q.type === 'short-answer' && Array.isArray(q.rubric) && typeof q.rubric[0] === 'object') {
-              return { ...q, rubric: q.rubric.map((r: any) => r.criterion || r.label || JSON.stringify(r)) };
-            }
-            return q;
-          });
-        }
-        saveCustomModule(trainingModule as TrainingModule);
-        trackCustomImport('Training module', data.id);
-        setModuleStatus({ state: 'ok', message: `Training Module "${data.title}" uploaded!` });
-      } else if (data.persona && data.itChallenge) {
-        saveCustomRoleplay(data as RoleplayScenario);
-        trackCustomImport('Roleplay scenario', data.id);
-        setModuleStatus({ state: 'ok', message: `Roleplay Scenario "${data.persona}" uploaded!` });
-      } else if (data.steps && data.initialReport) {
-        saveCustomScenario(data as Scenario);
-        trackCustomImport('Scenario lab', data.id);
-        setModuleStatus({ state: 'ok', message: `Scenario Lab "${data.title}" uploaded!` });
-      } else if (data.silos && data.dcsBridges) {
-        saveCustomAcademic(data as AcademicSubject);
-        trackCustomImport('Academic subject', data.id);
-        setModuleStatus({ state: 'ok', message: `Academic Subject "${data.title}" uploaded!` });
-      } else if (data.safeChecks && data.escalationTriggers) {
-        saveCustomPlaybook(data as TroubleshootingPlaybook);
-        trackCustomImport('Support playbook', data.id);
-        setModuleStatus({ state: 'ok', message: `Troubleshooting Playbook "${data.title}" uploaded!` });
-      } else if (data.category && data.level1Boundaries) {
-        saveCustomAsset(data as DcsAssetProfile);
-        trackCustomImport('Asset profile', data.id);
-        setModuleStatus({ state: 'ok', message: `Asset Profile "${data.name}" uploaded!` });
-      } else {
-        setModuleStatus({ state: 'error', message: 'Unknown JSON format. Could not detect data type.' });
-      }
-      
-      event.target.value = '';
-    } catch (e) {
-      setModuleStatus({ state: 'error', message: 'Invalid JSON file.' });
-      event.target.value = '';
+  function savePreparedCustomContent(imported: Extract<PreparedCustomContentImport, { ok: true }>) {
+    switch (imported.kind) {
+      case 'training-module':
+        saveCustomModule(imported.item);
+        break;
+      case 'roleplay-scenario':
+        saveCustomRoleplay(imported.item);
+        break;
+      case 'scenario-lab':
+        saveCustomScenario(imported.item);
+        break;
+      case 'academic-subject':
+        saveCustomAcademic(imported.item);
+        break;
+      case 'support-playbook':
+        saveCustomPlaybook(imported.item);
+        break;
+      case 'asset-profile':
+        saveCustomAsset(imported.item);
+        break;
     }
+  }
+
+  async function importCustomData(event: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    if (!files.length) return;
+
+    const importedItems: string[] = [];
+    const failedItems: string[] = [];
+
+    const trackCustomImport = (contentKind: string, contentId?: string, itemCount = 1) => {
+      trackUsageInteraction({
+        eventType: 'custom_content_imported',
+        route: '/settings',
+        label: contentKind,
+        contentType: 'settings',
+        contentId,
+        activityCategory: 'settings',
+        completed: true,
+        metadata: {
+          source: 'custom',
+          resultCount: itemCount
+        }
+      });
+    };
+
+    for (const file of files) {
+      try {
+        const text = await file.text();
+        const payload = JSON.parse(text) as unknown;
+        const importCandidates = expandCustomContentPayload(payload);
+
+        importCandidates.forEach((candidate, index) => {
+          const result = prepareCustomContentImport(candidate);
+          const sourceLabel = importCandidates.length > 1 ? `${file.name} item ${index + 1}` : file.name;
+
+          if (!result.ok) {
+            failedItems.push(`${sourceLabel}: ${result.error}`);
+            return;
+          }
+
+          savePreparedCustomContent(result);
+          trackCustomImport(result.contentKind, result.contentId);
+          importedItems.push(`${result.contentKind} "${result.displayName}"`);
+        });
+      } catch {
+        failedItems.push(`${file.name}: Invalid JSON file.`);
+      }
+    }
+
+    const visibleImports = importedItems.slice(0, 3).join(', ');
+    const hiddenImportCount = importedItems.length - 3;
+    const successMessage = importedItems.length
+      ? `Uploaded ${importedItems.length} custom item${importedItems.length === 1 ? '' : 's'}: ${visibleImports}${
+          hiddenImportCount > 0 ? `, and ${hiddenImportCount} more` : ''
+        }.`
+      : '';
+
+    const visibleFailures = failedItems.slice(0, 3).join(' ');
+    const hiddenFailureCount = failedItems.length - 3;
+    const failureMessage = failedItems.length
+      ? `${failedItems.length} item${failedItems.length === 1 ? '' : 's'} failed: ${visibleFailures}${
+          hiddenFailureCount > 0 ? ` ${hiddenFailureCount} more failed.` : ''
+        }`
+      : '';
+
+    setModuleStatus({
+      state: failedItems.length ? (importedItems.length ? 'warning' : 'error') : 'ok',
+      message: [successMessage, failureMessage].filter(Boolean).join(' ')
+    });
+
+    event.target.value = '';
   }
 
   function handleClearCustomModules() {
@@ -840,8 +853,8 @@ export default function SettingsPage() {
         <div className="mt-8 flex flex-col items-center gap-4">
           <label className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white hover:bg-slate-800 transition-colors">
             <Upload size={18} />
-            Upload generated JSON file
-            <input type="file" accept="application/json,.json" onChange={importCustomData} className="sr-only" />
+            Upload generated JSON files
+            <input type="file" accept="application/json,.json" multiple onChange={importCustomData} className="sr-only" />
           </label>
 
           <button
@@ -857,6 +870,8 @@ export default function SettingsPage() {
           className={`mt-6 rounded-2xl p-4 text-sm ${
             moduleStatus.state === 'error'
               ? 'bg-red-50 text-red-800'
+              : moduleStatus.state === 'warning'
+                ? 'bg-amber-50 text-amber-800'
               : moduleStatus.state === 'ok'
                 ? 'bg-emerald-50 text-emerald-800'
                 : 'bg-slate-50 text-slate-700'

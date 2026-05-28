@@ -48,8 +48,10 @@ function extractJson(text: string) {
       }
     }
 
-    // Last resort: log what failed and throw
-    console.error('FAILED TO PARSE AI RESPONSE:', text);
+    // Last resort: log what failed and throw (dev only)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('FAILED TO PARSE AI RESPONSE:', text);
+    }
     throw new Error('Could not extract valid JSON from AI response.');
   }
 }
@@ -62,7 +64,9 @@ function pickModelSequence(configuredModel: string) {
 }
 
 async function callGroq(apiKey: string, model: string, userPayload: unknown, system: string) {
-  console.log(`Calling Groq with model: ${model}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`Calling Groq with model: ${model}`);
+  }
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -169,15 +173,19 @@ export async function POST(request: Request) {
         const data = JSON.parse(attempt.rawText);
         text = data?.choices?.[0]?.message?.content ?? '{}';
         
-        console.log('--- RAW AI RESPONSE START ---');
-        console.log(text);
-        console.log('--- RAW AI RESPONSE END ---');
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('--- RAW AI RESPONSE START ---');
+          console.log(text);
+          console.log('--- RAW AI RESPONSE END ---');
+        }
 
         const json = extractJson(text);
         const safe = normaliseCoachResponse(json, parsedBody);
         return NextResponse.json(safe);
       } catch (err) {
-        console.error('AI response repair path used:', err);
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('AI response repair path used:', err);
+        }
         const repaired = normaliseCoachResponse({ betterAnswer: text }, parsedBody);
         return NextResponse.json(repaired);
       }
