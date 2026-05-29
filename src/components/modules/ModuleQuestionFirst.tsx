@@ -121,7 +121,7 @@ export default function ModuleQuestionFirst({
           recallValue={recallDrafts[moduleData.modulePattern.sq3rPrompt.id]}
           onRecallChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.sq3rPrompt.id, text)}
         />
-        {moduleData.modulePattern.memoryPrompt ? (
+        {moduleData.modulePattern.memoryPrompt && (
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
             <div className="text-sm font-semibold text-slate-900">{moduleData.modulePattern.memoryPrompt.title}</div>
             <p className="mt-3 text-sm leading-7 text-slate-700">{moduleData.modulePattern.memoryPrompt.prompt}</p>
@@ -136,10 +136,10 @@ export default function ModuleQuestionFirst({
               onChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.memoryPrompt!.id, text)}
             />
           </div>
-        ) : null}
+        )}
       </section>
 
-      {exercise ? (
+      {exercise && (
         <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
           <h3 className="text-2xl font-semibold text-slate-900">{exercise.title}</h3>
           <p className="mt-3 text-sm leading-7 text-slate-600">{exercise.prompt}</p>
@@ -180,9 +180,9 @@ export default function ModuleQuestionFirst({
             </div>
           </div>
         </section>
-      ) : null}
+      )}
 
-      {moduleData.modulePattern.safePromptWorkflow ? (
+      {moduleData.modulePattern.safePromptWorkflow && (
         <section className="rounded-[2rem] border border-emerald-200 bg-emerald-50 p-6 shadow-sm">
           <div className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Safe prompt workflow</div>
           <h3 className="mt-3 text-2xl font-semibold text-emerald-950">
@@ -204,7 +204,7 @@ export default function ModuleQuestionFirst({
             Privacy reminder: {moduleData.modulePattern.safePromptWorkflow.privacyReminder}
           </p>
         </section>
-      ) : null}
+      )}
 
       <section className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
