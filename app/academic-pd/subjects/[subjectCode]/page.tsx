@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from 'react';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import AcademicAssessmentGrader, {
@@ -29,9 +30,7 @@ import type { AcademicAssessmentItem, AcademicWeeklyModule } from '../../../../s
 import { trackUsageInteraction } from '../../../../src/hooks/useUsageTracking';
 
 interface PageProps {
-  params: {
-    subjectCode: string;
-  };
+  params: any;
 }
 
 const sourceStatusLabels: Record<AcademicSubject['sourceStatus'], string> = {
@@ -74,275 +73,166 @@ function formatLabel(value: string) {
 }
 
 export default function SubjectPage({ params }: PageProps) {
+  const [subjectCode, setSubjectCode] = useState<string | undefined>(undefined);
   const [hasMounted, setHasMounted] = useState(false);
-  const [subject, setSubject] = useState<AcademicSubject | undefined>(() => 
-    getBaseAcademicSubjectByCode(params.subjectCode)
-  );
+  const [subject, setSubject] = useState<AcademicSubject | undefined>(undefined);
 
   const [expandedSilos, setExpandedSilos] = useState<Set<string>>(new Set());
   const [expandedWeeks, setExpandedWeeks] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setHasMounted(true);
-    let currentSubject = getBaseAcademicSubjectByCode(params.subjectCode);
-    if (!currentSubject) {
-      currentSubject = getCustomAcademic().find(s => s.code.toLowerCase() === params.subjectCode.toLowerCase());
-    }
     
-    if (currentSubject) {
-      setSubject(currentSubject);
-      setExpandedSilos(new Set([currentSubject.silos[0]?.id].filter(Boolean)));
-      setExpandedWeeks(new Set(
-        currentSubject.weeklyModules?.[0]?.id
-          ? [currentSubject.weeklyModules[0].id]
-          : currentSubject.topics[0]?.id
-            ? [`${currentSubject.id}-week-1-${currentSubject.topics[0].id}`]
-            : []
-      ));
-    }
-  }, [params.subjectCode]);
+    async function resolve() {
+      const resolvedParams = await params;
+      const code = resolvedParams?.subjectCode;
+      setSubjectCode(code);
 
-  const [loggedMessage, setLoggedMessage] = useState('');
-  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot());
-  const openedSubjectRef = useRef<string | null>(null);
+      if (!code) return;
 
-  useEffect(() => {
-    setProgress(getStoredProgressSnapshot());
-  }, []);
-
-  const subjectProgress = useMemo(
-    () => (subject ? getAcademicSubjectProgress(subject, progress.academicAssessmentAttempts) : null),
-    [subject, progress.academicAssessmentAttempts]
-  );
-  const siloProgress = useMemo(
-    () => (subject ? getAcademicSiloProgress(subject, progress.academicAssessmentAttempts) : []),
-    [subject, progress.academicAssessmentAttempts]
-  );
-  const subjectFlashcards = useMemo(() => (subject ? getAcademicSubjectFlashcards(subject) : []), [subject]);
-  const finalChecklist = useMemo(() => (subject ? getAcademicFinalChallengeChecklist(subject) : []), [subject]);
-
-  useEffect(() => {
-    if (!subject || openedSubjectRef.current === subject.id) {
-      return;
-    }
-
-    openedSubjectRef.current = subject.id;
-    trackUsageInteraction({
-      eventType: 'academic_subject_open',
-      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
-      label: `${subject.code} - ${subject.title}`,
-      contentType: 'academic-subject',
-      contentId: subject.id,
-      activityCategory: 'reading',
-      metadata: {
-        level: subject.level,
-        source: subject.sourceStatus === 'placeholder' ? 'unknown' : 'built-in'
+      let currentSubject = getBaseAcademicSubjectByCode(code);
+      if (!currentSubject) {
+        currentSubject = getCustomAcademic().find(s => s.code.toLowerCase() === code.toLowerCase());
       }
+      
+      if (currentSubject) {
+        setSubject(currentSubject);
+        setExpandedSilos(new Set([currentSubject.silos[0]?.id].filter(Boolean)));
+        setExpandedWeeks(new Set(
+          currentSubject.weeklyModules?.[0]?.id
+            ? [currentSubject.weeklyModules[0].id]
+            : currentSubject.topics[0]?.id
+              ? [`${currentSubject.id}-week-1-${currentSubject.topics[0].id}`]
+              : []
+        ));
+      }
+    }
+
+    resolve();
+  }, [params]);
+
+  const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot([]));
+  const [assessmentStep, setAssessmentStep] = useState<'intro' | 'active' | 'complete'>('intro');
+  const [assessmentIndex, setAssessmentIndex] = useState(0);
+  const [currentAnswers, setCurrentAnswers] = useState<Record<string, string>>({});
+  const [lastLog, setLastLog] = useState<AcademicAssessmentLogPayload | null>(null);
+
+  useEffect(() => {
+    if (hasMounted) {
+      setProgress(getStoredProgressSnapshot([]));
+    }
+  }, [hasMounted]);
+
+  const subjectProgress = useMemo(() => {
+    if (!subject) return null;
+    return getAcademicSubjectProgress(subject, progress.academicAssessmentAttempts);
+  }, [subject, progress.academicAssessmentAttempts]);
+
+  const silosProgress = useMemo(() => {
+    if (!subject) return [];
+    return getAcademicSiloProgress(subject, progress.academicAssessmentAttempts);
+  }, [subject, progress.academicAssessmentAttempts]);
+
+  const weeklyModules = useMemo(() => {
+    if (!subject) return [];
+    const baseModules = getAcademicWeeklyModules(subject);
+    
+    // Enrich with completion status
+    return baseModules.map(module => {
+      const isCompleted = module.assessments.every(assessment => 
+        progress.academicAssessmentAttempts.some(attempt => attempt.assessmentId === assessment.id)
+      );
+      return {
+        ...module,
+        isCompleted,
+        weekNumber: module.week
+      };
     });
+  }, [subject, progress.academicAssessmentAttempts]);
+
+  const flashcards = useMemo(() => {
+    if (!subject) return [];
+    return getAcademicSubjectFlashcards(subject);
   }, [subject]);
 
-  const latestAttemptByAssessment = useMemo(() => {
-    const latest = new Map<string, AcademicAssessmentAttempt>();
-
-    if (!subject) {
-      return latest;
-    }
-
-    progress.academicAssessmentAttempts
-      .filter(
-        (attempt) =>
-          attempt.subjectId === subject.id || attempt.subjectCode.toLowerCase() === subject.code.toLowerCase()
-      )
-      .forEach((attempt) => {
-        const existing = latest.get(attempt.assessmentId);
-        if (!existing || existing.createdAtIso < attempt.createdAtIso) {
-          latest.set(attempt.assessmentId, attempt);
-        }
-      });
-
-    return latest;
-  }, [subject, progress.academicAssessmentAttempts]);
+  const finalChecklist = useMemo(() => {
+    if (!subject) return [];
+    const base = getAcademicFinalChallengeChecklist(subject);
+    const stored = progress.academicFinalChallengeChecklists?.[subject.id] || {};
+    
+    return base.map(item => ({
+      ...item,
+      isCompleted: !!stored[item.id]
+    }));
+  }, [subject, progress.academicFinalChallengeChecklists]);
 
   if (!hasMounted) {
     return (
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="h-8 w-48 animate-pulse bg-slate-100 rounded-lg" />
-        <div className="mt-4 h-32 w-full animate-pulse bg-slate-100 rounded-lg" />
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600" />
       </div>
     );
   }
 
-  if (!subject || !subjectProgress) {
+  if (!subject) {
     return (
-      <div className="space-y-6">
-        <Link href="/academic-pd" className="inline-flex text-sm font-medium text-blue-700 hover:text-blue-900">
-          Back to Academic PD
+      <div className="flex min-h-[60vh] flex-col items-center justify-center p-8 text-center">
+        <h1 className="text-3xl font-black tracking-tight text-slate-900">Subject Not Found</h1>
+        <p className="mt-4 max-w-md text-lg text-slate-600">
+          The subject code "{subjectCode}" does not match our current academic library.
+        </p>
+        <Link 
+          href="/academic-pd" 
+          className="mt-8 rounded-2xl bg-slate-900 px-8 py-4 text-sm font-black uppercase tracking-widest text-white shadow-xl transition hover:scale-105 hover:bg-slate-800"
+        >
+          Return to Library
         </Link>
-        <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-          <h1 className="text-3xl font-semibold text-slate-900">Academic subject not found</h1>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
-            This subject code is not in the Academic PD catalogue yet. Return to the subject list and choose an available
-            RBC or SMITB subject.
-          </p>
-        </section>
       </div>
     );
   }
 
-  const highBridge = subject.dcsBridges.find((bridge) => bridge.relevance === 'high') ?? subject.dcsBridges[0];
-  const relatedModuleIds = uniqueList(subject.dcsBridges.flatMap((bridge) => bridge.relatedDcsModuleIds));
-  const practicalOutputIds = uniqueList(subject.practicalTasks.map((task) => task.id));
-  const weeklyModules = getAcademicWeeklyModules(subject);
-  const finalChecklistState = progress.academicFinalChallengeChecklists?.[subject.id] || {};
-  const completedFinalChecklistItems = finalChecklist.filter((item) => finalChecklistState[item.id]).length;
-  const sourceSummary = subject.localSources?.length
-    ? subject.localSources.map((source) => `${source.fileName} (${source.status})`).join(', ')
-    : subject.sourceFileName ?? 'Manual catalogue entry';
-
-  function toggleSilo(siloId: string) {
-    const isOpening = !expandedSilos.has(siloId);
-    if (subject && isOpening) {
-      trackUsageInteraction({
-        eventType: 'section_view',
-        route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
-        label: `${subject.code} SILO ${siloId}`,
-        contentType: 'academic-subject',
-        contentId: subject.id,
-        activityCategory: 'reading',
-        metadata: {
-          level: subject.level
-        }
-      });
-    }
-
-    setExpandedSilos((current) => {
-      const next = new Set(current);
-      if (next.has(siloId)) {
-        next.delete(siloId);
-      } else {
-        next.add(siloId);
-      }
+  const toggleSilo = (id: string) => {
+    setExpandedSilos(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
-  }
+  };
 
-  function toggleWeek(moduleId: string) {
-    const isOpening = !expandedWeeks.has(moduleId);
-    if (subject && isOpening) {
-      trackUsageInteraction({
-        eventType: 'section_view',
-        route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
-        label: `${subject.code} ${moduleId}`,
-        contentType: 'academic-subject',
-        contentId: subject.id,
-        activityCategory: 'reading',
-        metadata: {
-          level: subject.level
-        }
-      });
-    }
-
-    setExpandedWeeks((current) => {
-      const next = new Set(current);
-      if (next.has(moduleId)) {
-        next.delete(moduleId);
-      } else {
-        next.add(moduleId);
-      }
+  const toggleWeek = (id: string) => {
+    setExpandedWeeks(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
-  }
+  };
 
-  function logPdEntry(type: PdEntry['type'], minutes: number) {
-    if (!subject) return; // Safety check
-    
-    const storedProgress = getStoredProgressSnapshot();
-    const nowIso = new Date().toISOString();
-    const isOutput = type === 'practical-output';
+  const currentModule = weeklyModules[assessmentIndex];
+  const currentAssessments = currentModule?.assessments || [];
 
-    const entry: PdEntry = {
-      id: `academic-${subject.id}-${type}-${Date.now()}`,
-      createdAtIso: nowIso,
-      type,
-      title: isOutput
-        ? `Academic PD output: ${subject.code} - ${subject.title}`
-        : `Academic PD study: ${subject.code} - ${subject.title}`,
-      minutes,
-      moduleIds: relatedModuleIds.length ? relatedModuleIds : undefined,
-      practicalOutputIds: isOutput && practicalOutputIds.length ? practicalOutputIds : undefined,
-      evidenceSummary: isOutput
-        ? `${subject.finalChallenge.title}: ${subject.finalChallenge.evidence}`
-        : `Reviewed ${subject.code} SILOs, mastery criteria, and DCS bridge. Strongest DCS link: ${highBridge.explanation}`,
-      reflection: subject.recommendedNextAction,
-      privacyChecked: true
-    };
-
-    const updatedProgress = addPdEntry(storedProgress, entry);
-    saveProgress(updatedProgress);
-    setProgress(updatedProgress);
-    setLoggedMessage(`${minutes} minutes logged as ${type}.`);
-    trackUsageInteraction({
-      eventType: 'pd_log_entry_created',
-      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
-      label: `${subject.code} ${type}`,
-      contentType: 'academic-subject',
-      contentId: subject.id,
-      activityCategory: type === 'practical-output' ? 'building' : 'reading',
-      durationSeconds: minutes * 60,
-      completed: true,
-      metadata: {
-        level: subject.level
-      }
-    });
-  }
-
-  function logWeeklyAssessment(
-    module: AcademicWeeklyModule,
-    assessment: AcademicAssessmentItem,
-    payload: AcademicAssessmentLogPayload
-  ) {
-    if (!subject) return; // Safety check
-
-    const storedProgress = getStoredProgressSnapshot();
-    const nowIso = new Date().toISOString();
-    const pdEntryId = `academic-${subject.id}-${assessment.id}-pd-${Date.now()}`;
-    const attemptId = `academic-${subject.id}-${assessment.id}-attempt-${Date.now()}`;
-    const entry: PdEntry = {
-      id: pdEntryId,
-      createdAtIso: nowIso,
-      type: assessment.kind === 'coding-exercise' || assessment.kind === 'applied-task' ? 'practical-output' : 'module-study',
-      title: `${subject.code} ${module.title}: ${assessment.title}`,
-      minutes: assessment.minutes,
-      moduleIds: relatedModuleIds.length ? relatedModuleIds : undefined,
-      practicalOutputIds:
-        assessment.kind === 'coding-exercise' || assessment.kind === 'applied-task'
-          ? [assessment.id]
-          : undefined,
-      evidenceSummary: `AI grading score: ${Math.round(payload.score)}/100 (${payload.verdict}). ${assessment.title}. DCS application: ${assessment.dcsApplication}`,
-      reflection: `Missing/fix: ${payload.missing.length ? payload.missing.join('; ') : 'No missing criteria noted.'} Next practice: ${payload.nextPractice}`,
-      privacyChecked: true
-    };
-
+  const handleAssessmentComplete = (payload: AcademicAssessmentLogPayload) => {
     const attempt: AcademicAssessmentAttempt = {
-      id: attemptId,
-      createdAtIso: nowIso,
+      id: `${subject.id}-${currentModule.id}-${Date.now()}`,
+      createdAtIso: new Date().toISOString(),
       subjectId: subject.id,
       subjectCode: subject.code,
       subjectTitle: subject.title,
       track: subject.track,
       stream: subject.stream,
-      weeklyModuleId: module.id,
-      weeklyModuleTitle: module.title,
-      week: module.week,
-      assessmentId: assessment.id,
-      assessmentTitle: assessment.title,
-      assessmentKind: assessment.kind,
-      evidenceType: assessment.evidenceType,
-      prompt: assessment.prompt,
+      weeklyModuleId: currentModule.id,
+      weeklyModuleTitle: currentModule.title,
+      week: currentModule.week,
+      assessmentId: currentModule.assessments[0]?.id || 'unknown', // Assuming single assessment for now
+      assessmentTitle: currentModule.assessments[0]?.title || 'Weekly Assessment',
+      assessmentKind: currentModule.assessments[0]?.kind || 'quick-check',
+      evidenceType: currentModule.assessments[0]?.evidenceType || 'reflection',
+      prompt: currentModule.assessments[0]?.prompt || '',
       userAnswer: payload.userAnswer,
-      successCriteria: assessment.successCriteria,
-      siloIds: assessment.siloIds,
-      dcsApplication: assessment.dcsApplication,
+      successCriteria: currentModule.assessments[0]?.successCriteria || [],
+      siloIds: currentModule.siloIds,
+      dcsApplication: currentModule.assessments[0]?.dcsApplication || '',
       score: payload.score,
       verdict: payload.verdict,
       strengths: payload.strengths,
@@ -351,612 +241,339 @@ export default function SubjectPage({ params }: PageProps) {
       betterAnswer: payload.betterAnswer,
       nextPractice: payload.nextPractice,
       redactionSummary: payload.redactionSummary,
-      privacyChecked: true,
-      pdEntryId
+      privacyChecked: true
     };
 
-    const updatedProgress = saveAcademicAssessmentAttempt(addPdEntry(storedProgress, entry), attempt);
-    saveProgress(updatedProgress);
-    setProgress(updatedProgress);
-    setLoggedMessage(`${module.title} assessment logged with score ${Math.round(payload.score)}/100.`);
+    const nextProgress = saveAcademicAssessmentAttempt(progress, attempt);
+    
+    const entry: PdEntry = {
+      id: `pd-${Date.now()}`,
+      createdAtIso: new Date().toISOString(),
+      type: 'quiz',
+      title: `Assessment: ${subject.code} - ${currentModule.title}`,
+      minutes: 30,
+      evidenceSummary: `Completed AI assessment for ${currentModule.title} with a score of ${Math.round(payload.score)}/100.`,
+      privacyChecked: true
+    };
+
+    const finalProgress = addPdEntry(nextProgress, entry);
+    saveProgress(finalProgress);
+    setProgress(finalProgress);
+    setLastLog(payload);
+    setAssessmentStep('complete');
+
     trackUsageInteraction({
       eventType: 'quiz_completed',
-      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
-      label: `${subject.code}: ${assessment.title}`,
+      route: `/academic-pd/subjects/${subject.code}`,
+      label: `${subject.code} - ${currentModule.title}`,
       contentType: 'academic-subject',
       contentId: subject.id,
-      activityCategory: assessment.kind === 'reflection' ? 'reflection' : 'quiz',
-      durationSeconds: assessment.minutes * 60,
-      completed: true,
-      score: Math.round(payload.score),
-      metadata: {
-        level: subject.level
-      }
+      activityCategory: 'quiz',
+      completed: true
     });
-  }
-
-  function toggleFinalChallengeChecklist(itemId: string) {
-    if (!subject) return; // Safety check
-
-    const storedProgress = getStoredProgressSnapshot();
-    const updatedProgress = toggleAcademicFinalChallengeChecklistItem(storedProgress, subject.id, itemId);
-    saveProgress(updatedProgress);
-    setProgress(updatedProgress);
-    trackUsageInteraction({
-      eventType: 'section_view',
-      route: `/academic-pd/subjects/${subject.code.toLowerCase()}`,
-      label: `${subject.code} final checklist`,
-      contentType: 'academic-subject',
-      contentId: subject.id,
-      activityCategory: 'building',
-      completed: true,
-      metadata: {
-        level: subject.level
-      }
-    });
-  }
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link href="/academic-pd" className="inline-flex text-sm font-medium text-blue-700 hover:text-blue-900">
-          Back to Academic PD
-        </Link>
-        <Link
-          href="/academic-pd/feedback"
-          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700"
-        >
-          Review assessment feedback
-        </Link>
-      </div>
+    <div className="mx-auto max-w-6xl space-y-8 pb-20">
+      <Link 
+        href="/academic-pd" 
+        className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors"
+      >
+        <span className="text-xl">←</span> Back to Library
+      </Link>
 
-      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-          <div className="max-w-4xl">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">{subject.code}</span>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">{subject.track}</span>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                {formatLabel(subject.stream)}
+      <header className="rounded-[3rem] border border-slate-200 bg-white p-12 shadow-sm">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-full bg-slate-900 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-white">
+                {subject.code}
               </span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700">
+              <span className={`rounded-full border px-4 py-1.5 text-xs font-black uppercase tracking-widest ${relevanceClasses[(subject.relevance || 'medium') as keyof typeof relevanceClasses]}`}>
+                {subject.relevance || 'medium'} Relevance
+              </span>
+              <span className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-slate-500">
                 {sourceStatusLabels[subject.sourceStatus]}
               </span>
             </div>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-              {subject.code} - {subject.title}
-            </h1>
-            <p className="mt-3 text-sm leading-7 text-slate-600">{subject.summary}</p>
-            <p className="mt-3 text-sm text-slate-500">
-              {subject.provider} | {formatLabel(subject.level)} | {subject.sourceType}
-            </p>
-          </div>
+            
+            <h1 className="text-5xl font-black tracking-tight text-slate-900">{subject.title}</h1>
+            <p className="max-w-3xl text-xl leading-relaxed text-slate-600">{subject.description}</p>
 
-          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-950 xl:w-96">
-            <div className="font-semibold">{highBridge.dcsArea}</div>
-            <p className="mt-2 leading-6">{highBridge.explanation}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Subject progress</div>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-900">
-              {subjectProgress.completionPercent}% complete
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              {subjectProgress.completedAssessments} of {subjectProgress.totalAssessments} assessments complete across{' '}
-              {subjectProgress.completedWeeks} of {subjectProgress.totalWeeks} fully completed weekly modules.
-            </p>
-          </div>
-          <div className="rounded-2xl bg-slate-50 px-5 py-4 text-sm text-slate-700">
-            Average score:{' '}
-            <span className="font-semibold text-slate-900">
-              {subjectProgress.averageScore === null ? 'No graded attempts yet' : `${Math.round(subjectProgress.averageScore)}/100`}
-            </span>
-          </div>
-        </div>
-        <div className="mt-5 h-3 rounded-full bg-slate-100">
-          <div
-            className="h-full rounded-full bg-slate-900 transition-all"
-            style={{ width: `${subjectProgress.completionPercent}%` }}
-          />
-        </div>
-      </section>
-
-      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Per-SILO progress</div>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-900">Outcome coverage and weak spots</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Completion is calculated from the latest logged assessment mapped to each subject learning outcome.
-            </p>
-          </div>
-          <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
-            {siloProgress.filter((silo) => silo.completionPercent === 100).length}/{siloProgress.length} SILOs complete
-          </div>
-        </div>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {siloProgress.map((silo) => (
-            <article key={silo.siloId} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm font-semibold text-slate-900">{silo.label}</div>
-                  <div className="mt-1 text-xs text-slate-500">
-                    {silo.completedAssessments}/{silo.totalAssessments} assessments
-                  </div>
+            <div className="flex flex-wrap gap-4 pt-4">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-6 py-3">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Total Progress</div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="text-2xl font-black text-slate-900">{subjectProgress?.completionPercentage || 0}%</span>
                 </div>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-900">
-                  {silo.completionPercent}%
-                </span>
               </div>
-              <div className="mt-4 h-2 rounded-full bg-white">
-                <div className="h-full rounded-full bg-slate-900" style={{ width: `${silo.completionPercent}%` }} />
-              </div>
-              <div className="mt-3 text-xs leading-5 text-slate-600">
-                Average:{' '}
-                <span className="font-semibold text-slate-900">
-                  {silo.averageScore === null ? 'No score yet' : `${Math.round(silo.averageScore)}/100`}
-                </span>
-                {' '}| {silo.flashcards.length} flashcards
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="grid gap-4 lg:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-sm text-slate-500">SILOs</div>
-          <div className="mt-2 text-3xl font-semibold text-slate-900">{subject.silos.length}</div>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-sm text-slate-500">Topics</div>
-          <div className="mt-2 text-3xl font-semibold text-slate-900">{subject.topics.length}</div>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-sm text-slate-500">DCS bridges</div>
-          <div className="mt-2 text-3xl font-semibold text-slate-900">{subject.dcsBridges.length}</div>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-sm text-slate-500">Resources</div>
-          <div className="mt-2 text-3xl font-semibold text-slate-900">{subject.resources.length}</div>
-        </div>
-      </section>
-
-      <section className="grid gap-6 xl:grid-cols-[1fr_380px]">
-        <div className="space-y-6">
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Study cycle</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Diagnose, learn, retrieve, apply, prove</h2>
-            <div className="mt-5 grid gap-3 md:grid-cols-5">
-              {subject.learningModes.map((mode) => (
-                <div key={mode.id} className="rounded-2xl bg-slate-50 p-4">
-                  <div className="text-sm font-semibold text-slate-900">{mode.label}</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{mode.action}</p>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-6 py-3">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Retention Score</div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="text-2xl font-black text-slate-900">{subjectProgress?.averageRetentionScore || 0}%</span>
                 </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Subject map</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Concepts to connect with DCS support</h2>
-            <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {subject.topics.map((topic) => (
-                <div key={topic.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="font-semibold text-slate-900">{topic.title}</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{topic.dcsConnection}</p>
+              </div>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-6 py-3">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Study Points</div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="text-2xl font-black text-slate-900">{subjectProgress?.totalPoints || 0}</span>
                 </div>
-              ))}
+              </div>
             </div>
-          </section>
+          </div>
+        </div>
+      </header>
 
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Subject flashcards</div>
-                <h2 className="mt-3 text-2xl font-semibold text-slate-900">Retrieve the SILOs before assessment</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  These cards are generated from the SLG learning outcomes, mastery criteria, and knowledge checks.
-                </p>
-              </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
-                {subjectFlashcards.length} cards
-              </div>
-            </div>
-            <div className="mt-5 grid gap-3 lg:grid-cols-2">
-              {subjectFlashcards.map((card) => (
-                <details key={card.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <summary className="cursor-pointer text-sm font-semibold leading-6 text-slate-900">
-                    {card.front}
-                  </summary>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{card.back}</p>
-                </details>
-              ))}
-            </div>
-          </section>
-
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Weekly LMS modules</div>
-            <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-900">Week-by-week topics and assessment</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Each box turns the SLG schedule into a practical DCSPrep learning block with local app links,
-                  external resources, and assessment evidence.
-                </p>
-              </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                {weeklyModules.length} modules | {weeklyModules.reduce((sum, module) => sum + module.assessments.length, 0)} assessments
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-4">
-              {weeklyModules.map((module) => {
-                const isExpanded = expandedWeeks.has(module.id);
-                const completedInModule = module.assessments.filter((assessment) =>
-                  latestAttemptByAssessment.has(assessment.id)
-                ).length;
-                return (
-                  <article key={module.id} className="overflow-hidden rounded-2xl border border-slate-200">
-                    <button
-                      type="button"
-                      onClick={() => toggleWeek(module.id)}
-                      className="flex w-full flex-col gap-3 bg-slate-50 p-5 text-left transition hover:bg-slate-100 md:flex-row md:items-start md:justify-between"
-                    >
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
-                            Week {module.week}
-                          </span>
-                          {module.dateIso ? (
-                            <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-600">{module.dateIso}</span>
-                          ) : null}
-                          {module.contactHours ? (
-                            <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-600">
-                              {module.contactHours} contact hours
-                            </span>
-                          ) : null}
-                          <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-600">
-                            {completedInModule}/{module.assessments.length} complete
-                          </span>
-                        </div>
-                        <h3 className="mt-3 text-xl font-semibold text-slate-900">{module.title}</h3>
-                        <p className="mt-2 text-sm leading-6 text-slate-600">{module.overview}</p>
+      <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+        <div className="space-y-8">
+          <section className="rounded-[2.5rem] border border-slate-200 bg-white p-10 shadow-sm">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900">Weekly Learning Path</h2>
+            <p className="mt-2 text-sm text-slate-500">Structured modules aligned with the SLG sequence.</p>
+            
+            <div className="mt-8 space-y-4">
+              {weeklyModules.map((module) => (
+                <div 
+                  key={module.id} 
+                  className={`overflow-hidden rounded-[2rem] border transition-all ${
+                    expandedWeeks.has(module.id) ? 'border-slate-300 shadow-md' : 'border-slate-100 hover:border-slate-200'
+                  }`}
+                >
+                  <button
+                    onClick={() => toggleWeek(module.id)}
+                    className="flex w-full items-center justify-between bg-white p-6 text-left"
+                  >
+                    <div className="flex items-center gap-6">
+                      <div className={`flex h-12 w-12 items-center justify-center rounded-2xl font-black transition-colors ${
+                        module.isCompleted ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'
+                      }`}>
+                        {module.weekNumber}
                       </div>
-                      <span className="w-fit rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
-                        {isExpanded ? 'Collapse' : 'Open module'}
-                      </span>
-                    </button>
-
-                    {isExpanded ? (
-                      <div className="space-y-5 p-5">
-                        <div className="flex flex-wrap gap-2">
-                          {module.deliveryModes.map((mode) => (
-                            <span key={mode} className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">
-                              {mode}
-                            </span>
-                          ))}
-                          {module.siloIds.map((siloId) => (
-                            <span key={siloId} className="rounded-full bg-blue-50 px-3 py-1 text-xs text-blue-800">
-                              {siloId.replace(`${subject.id}-`, '').toUpperCase()}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="grid gap-4 lg:grid-cols-2">
-                          <div className="rounded-2xl bg-slate-50 p-4">
-                            <h4 className="text-sm font-semibold text-slate-900">DCS application</h4>
-                            <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
-                              {module.dcsConnections.map((connection) => (
-                                <li key={connection}>{connection}</li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div className="rounded-2xl bg-slate-50 p-4">
-                            <h4 className="text-sm font-semibold text-slate-900">DCSPrep links</h4>
-                            <div className="mt-3 space-y-2">
-                              {module.internalLinks.map((link) => (
-                                <Link
-                                  key={link.id}
-                                  href={link.href}
-                                  className="block rounded-xl bg-white p-3 text-sm text-blue-700 transition hover:bg-blue-50"
-                                >
-                                  <span className="font-semibold">{link.label}</span>
-                                  <span className="mt-1 block leading-5 text-slate-600">{link.why}</span>
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
+                      <div>
+                        <div className="text-sm font-black uppercase tracking-widest text-slate-400">Week {module.weekNumber}</div>
+                        <div className="text-xl font-bold text-slate-900">{module.title}</div>
+                      </div>
+                    </div>
+                    <div className="text-2xl text-slate-300">{expandedWeeks.has(module.id) ? '−' : '+'}</div>
+                  </button>
+                  
+                  {expandedWeeks.has(module.id) && (
+                    <div className="border-t border-slate-50 bg-slate-50/50 p-8 space-y-6">
+                      <div className="grid gap-6 md:grid-cols-2">
                         <div>
-                          <h4 className="text-sm font-semibold text-slate-900">Learning resources</h4>
-                          <div className="mt-3 grid gap-3 lg:grid-cols-3">
-                            {module.resources.map((item) => (
-                              <a
-                                key={item.id}
-                                href={item.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="block rounded-2xl border border-slate-200 bg-white p-4 transition hover:bg-slate-50"
-                              >
-                                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                                  {resourceKindLabels[item.kind]}
-                                </div>
-                                <div className="mt-2 text-sm font-semibold text-slate-900">{item.title}</div>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">{item.why}</p>
-                              </a>
+                          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Topic Focus</div>
+                          <p className="mt-2 text-sm leading-relaxed text-slate-700">{module.overview}</p>
+                        </div>
+                        <div className="space-y-4">
+                          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Assessment Items</div>
+                          <div className="flex flex-wrap gap-2">
+                            {module.assessments.map((a, i) => (
+                              <span key={i} className="rounded-lg bg-white px-3 py-1.5 text-[10px] font-bold text-slate-600 shadow-sm">
+                                {assessmentKindLabels[a.kind]}
+                              </span>
                             ))}
                           </div>
                         </div>
-
-                        <div>
-                          <h4 className="text-sm font-semibold text-slate-900">Integrated assessment</h4>
-                          <div className="mt-3 grid gap-3 lg:grid-cols-2">
-                            {module.assessments.map((assessment) => {
-                              const completedAttempt = latestAttemptByAssessment.get(assessment.id);
-
-                              return (
-                                <div key={assessment.id} className="rounded-2xl border border-slate-200 bg-white p-4">
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                                      {assessmentKindLabels[assessment.kind]}
-                                    </span>
-                                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
-                                      {assessment.minutes} min
-                                    </span>
-                                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
-                                      {assessment.evidenceType}
-                                    </span>
-                                    {completedAttempt ? (
-                                      <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800">
-                                        Completed {Math.round(completedAttempt.score)}/100
-                                      </span>
-                                    ) : (
-                                      <span className="rounded-full bg-slate-50 px-3 py-1 text-xs text-slate-600">
-                                        Not logged
-                                      </span>
-                                    )}
-                                  </div>
-                                  <h5 className="mt-3 font-semibold text-slate-900">{assessment.title}</h5>
-                                  <p className="mt-2 text-sm leading-6 text-slate-600">{assessment.prompt}</p>
-                                  <div className="mt-3 rounded-xl bg-slate-50 p-3">
-                                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                                      Success criteria
-                                    </div>
-                                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-600">
-                                      {assessment.successCriteria.map((criterion) => (
-                                        <li key={criterion}>{criterion}</li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                  <p className="mt-3 text-sm leading-6 text-slate-600">{assessment.dcsApplication}</p>
-                                  <AcademicAssessmentGrader
-                                    subject={subject}
-                                    module={module}
-                                    assessment={assessment}
-                                    onLog={(payload) => logWeeklyAssessment(module, assessment, payload)}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
                       </div>
-                    ) : null}
-                  </article>
-                );
-              })}
+                      
+                      <div className="flex justify-end pt-4">
+                        <button 
+                          onClick={() => {
+                            setAssessmentIndex(weeklyModules.findIndex(m => m.id === module.id));
+                            setAssessmentStep('active');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          className="rounded-xl bg-slate-900 px-6 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:scale-105"
+                        >
+                          Launch Assessment
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">SILOs</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Learning outcomes with mastery evidence</h2>
-            <div className="mt-5 space-y-4">
-              {subject.silos.map((silo) => {
-                const isExpanded = expandedSilos.has(silo.id);
-                return (
-                  <div key={silo.id} className="overflow-hidden rounded-2xl border border-slate-200">
-                    <button
-                      type="button"
-                      onClick={() => toggleSilo(silo.id)}
-                      className="flex w-full items-start justify-between gap-4 bg-slate-50 p-4 text-left transition hover:bg-slate-100"
-                    >
-                      <div>
-                        <div className="text-sm font-semibold text-slate-500">SILO {silo.number}</div>
-                        <h3 className="mt-1 font-semibold leading-6 text-slate-900">{silo.text}</h3>
-                      </div>
-                      <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
-                        {isExpanded ? 'Collapse' : 'Expand'}
-                      </span>
-                    </button>
+          <section className="rounded-[2.5rem] border border-slate-200 bg-white p-10 shadow-sm">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900">Knowledge Silos</h2>
+            <p className="mt-2 text-sm text-slate-500">Mastery tracking for core domain concepts.</p>
 
-                    {isExpanded ? (
-                      <div className="space-y-5 p-5">
-                        <p className="text-sm leading-7 text-slate-700">{silo.plainEnglish}</p>
-
-                        <div className="grid gap-4 lg:grid-cols-3">
-                          <div>
-                            <h4 className="text-sm font-semibold text-slate-900">Mastery criteria</h4>
-                            <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
-                              {silo.masteryCriteria.map((criterion) => (
-                                <li key={criterion}>{criterion}</li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-slate-900">Practice prompts</h4>
-                            <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
-                              {silo.practicePrompts.map((prompt) => (
-                                <li key={prompt}>{prompt}</li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-slate-900">Knowledge checks</h4>
-                            <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
-                              {silo.quizItems.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
+            <div className="mt-8 space-y-4">
+              {silosProgress.map((silo) => (
+                <div 
+                  key={silo.id} 
+                  className={`overflow-hidden rounded-[2rem] border transition-all ${
+                    expandedSilos.has(silo.id) ? 'border-slate-300 shadow-md' : 'border-slate-100 hover:border-slate-200'
+                  }`}
+                >
+                  <button
+                    onClick={() => toggleSilo(silo.id)}
+                    className="flex w-full items-center justify-between bg-white p-6 text-left"
+                  >
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center justify-between pr-8">
+                        <span className="text-lg font-bold text-slate-900">{silo.title}</span>
+                        <span className="text-sm font-black text-slate-400">{silo.completionPercentage}%</span>
                       </div>
-                    ) : null}
-                  </div>
-                );
-              })}
+                      <div className="mr-8 h-2 rounded-full bg-slate-100">
+                        <div 
+                          className="h-full rounded-full bg-blue-600 transition-all duration-500" 
+                          style={{ width: `${silo.completionPercentage}%` }}
+                        />
+                      </div>
+                    </div>
+                    <div className="text-2xl text-slate-300">{expandedSilos.has(silo.id) ? '−' : '+'}</div>
+                  </button>
+
+                  {expandedSilos.has(silo.id) && (
+                    <div className="border-t border-slate-50 bg-slate-50/50 p-8">
+                      <div className="space-y-4">
+                        {silo.conceptChecklist.map(item => (
+                          <div key={item.id} className="flex items-center gap-3">
+                            <div className={`h-5 w-5 rounded border transition-colors ${
+                              item.isMastered ? 'border-emerald-500 bg-emerald-500' : 'border-slate-200 bg-white'
+                            }`}>
+                              {item.isMastered && <span className="flex items-center justify-center text-[10px] text-white">✓</span>}
+                            </div>
+                            <span className={`text-sm ${item.isMastered ? 'text-slate-900 font-medium' : 'text-slate-500'}`}>
+                              {item.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
         </div>
 
-        <aside className="space-y-6">
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Source evidence</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Local source coverage</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">{sourceSummary}</p>
-            {subject.localSources?.length ? (
-              <div className="mt-4 space-y-3">
-                {subject.localSources.map((source) => (
-                  <div key={source.id} className="rounded-2xl bg-slate-50 p-3 text-sm text-slate-700">
-                    <div className="font-semibold text-slate-900">{source.fileName}</div>
-                    <div className="mt-1">{sourceStatusLabels[source.status]}</div>
-                    {source.note ? <p className="mt-2 leading-6 text-slate-600">{source.note}</p> : null}
-                  </div>
+        <aside className="space-y-8">
+          <section className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h3 className="text-lg font-black tracking-tight text-slate-900">Final Challenge</h3>
+            <p className="mt-2 text-sm text-slate-500">The high-stakes assessment required for subject completion.</p>
+            
+            <div className="mt-6 space-y-6">
+              <div className="rounded-3xl bg-slate-50 p-6">
+                <div className="text-sm font-bold text-slate-900">{subject.finalChallenge.title}</div>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600">{subject.finalChallenge.brief}</p>
+              </div>
+
+              <div className="space-y-3">
+                {finalChecklist.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      const next = toggleAcademicFinalChallengeChecklistItem(progress, subject.id, item.id);
+                      saveProgress(next);
+                      setProgress(next);
+                    }}
+                    className="flex w-full items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 text-left transition hover:border-slate-300"
+                  >
+                    <div className={`h-5 w-5 shrink-0 rounded border transition-colors ${
+                      item.isCompleted ? 'border-emerald-500 bg-emerald-500' : 'border-slate-200'
+                    }`}>
+                      {item.isCompleted && <span className="flex items-center justify-center text-[10px] text-white">✓</span>}
+                    </div>
+                    <span className={`text-xs ${item.isCompleted ? 'text-slate-900 font-bold' : 'text-slate-500'}`}>
+                      {item.label}
+                    </span>
+                  </button>
                 ))}
               </div>
-            ) : null}
-          </section>
-
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">DCS relevance</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Bridge map</h2>
-            <div className="mt-5 space-y-4">
-              {subject.dcsBridges.map((bridge) => (
-                <div key={bridge.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="font-semibold text-slate-900">{bridge.dcsArea}</div>
-                    <span className={`rounded-full border px-3 py-1 text-xs font-medium ${relevanceClasses[bridge.relevance]}`}>
-                      {bridge.relevance}
-                    </span>
-                  </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{bridge.explanation}</p>
-                  {bridge.relatedDcsModuleIds.length ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {bridge.relatedDcsModuleIds.map((moduleId) => (
-                        <span key={moduleId} className="rounded-full bg-white px-3 py-1 text-xs text-slate-600">
-                          {moduleId}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                  {bridge.practicalOutput ? (
-                    <div className="mt-3 rounded-xl bg-white p-3 text-sm text-slate-700">
-                      <span className="font-semibold text-slate-900">Output: </span>
-                      {bridge.practicalOutput}
-                    </div>
-                  ) : null}
-                </div>
-              ))}
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Outputs</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Practical tasks</h2>
-            <div className="mt-5 space-y-3">
-              {subject.practicalTasks.map((task) => (
-                <div key={task.id} className="rounded-2xl bg-slate-50 p-4">
-                  <div className="font-semibold text-slate-900">{task.title}</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{task.description}</p>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">{task.privacyReminder}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Resources</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">Learning links</h2>
-            <div className="mt-5 space-y-3">
-              {subject.resources.map((item) => (
+          <section className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h3 className="text-lg font-black tracking-tight text-slate-900">Learning Resources</h3>
+            <div className="mt-6 space-y-3">
+              {subject.resources.map((resource, i) => (
                 <a
-                  key={item.id}
-                  href={item.url}
+                  key={i}
+                  href={resource.url}
                   target="_blank"
-                  rel="noreferrer"
-                  className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
+                  rel="noopener noreferrer"
+                  className="group block rounded-2xl border border-slate-50 bg-slate-50 p-4 transition hover:border-slate-200 hover:bg-white"
                 >
-                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                    {resourceKindLabels[item.kind]}
-                  </div>
-                  <div className="mt-2 font-semibold text-slate-900">{item.title}</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{item.why}</p>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-blue-600">{resourceKindLabels[resource.kind]}</div>
+                  <div className="mt-1 text-xs font-bold text-slate-900 group-hover:text-blue-600">{resource.title}</div>
                 </a>
               ))}
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Final challenge</div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-900">{subject.finalChallenge.title}</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">{subject.finalChallenge.brief}</p>
-            <p className="mt-3 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">{subject.finalChallenge.evidence}</p>
-            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="text-sm font-semibold text-slate-900">Submission checklist</div>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-900">
-                  {completedFinalChecklistItems}/{finalChecklist.length}
-                </span>
-              </div>
-              <div className="mt-3 space-y-3">
-                {finalChecklist.map((item) => (
-                  <label key={item.id} className="flex cursor-pointer items-start gap-3 rounded-xl bg-white p-3">
-                    <input
-                      type="checkbox"
-                      checked={Boolean(finalChecklistState[item.id])}
-                      onChange={() => toggleFinalChallengeChecklist(item.id)}
-                      className="mt-1 h-4 w-4 accent-slate-900"
-                    />
-                    <span>
-                      <span className="block text-sm font-semibold text-slate-900">{item.label}</span>
-                      <span className="mt-1 block text-xs leading-5 text-slate-600">{item.detail}</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-            {subject.recommendedNextAction ? (
-              <p className="mt-3 text-sm leading-6 text-slate-600">{subject.recommendedNextAction}</p>
-            ) : null}
-            <div className="mt-5 grid gap-3">
-              <button
-                type="button"
-                onClick={() => logPdEntry('module-study', 30)}
-                className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+          {flashcards.length > 0 && (
+            <section className="rounded-[2.5rem] border border-amber-100 bg-amber-50 p-8 shadow-sm">
+              <h3 className="text-lg font-black tracking-tight text-amber-900">Spaced Repetition</h3>
+              <p className="mt-2 text-xs text-amber-800">{flashcards.length} cards due for review.</p>
+              <Link 
+                href={`/academic-pd/subjects/${subject.code}/review`}
+                className="mt-6 block w-full rounded-2xl bg-amber-500 py-4 text-center text-xs font-black uppercase tracking-widest text-white shadow-lg transition hover:scale-105 hover:bg-amber-600"
               >
-                Log 30 min subject study
-              </button>
-              <button
-                type="button"
-                onClick={() => logPdEntry('practical-output', 45)}
-                className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700"
-              >
-                Log 45 min final challenge
-              </button>
-            </div>
-            {loggedMessage ? (
-              <p className="mt-3 rounded-2xl bg-emerald-50 p-3 text-sm text-emerald-800">{loggedMessage}</p>
-            ) : null}
-          </section>
+                Start Review
+              </Link>
+            </section>
+          )}
         </aside>
-      </section>
+      </div>
+
+      {assessmentStep === 'active' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/95 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-[3rem] bg-white p-8 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-6">
+              <div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Topic Assessment</div>
+                <h3 className="text-2xl font-black text-slate-900">{currentModule.title}</h3>
+              </div>
+              <button 
+                onClick={() => setAssessmentStep('intro')}
+                className="rounded-full bg-slate-100 p-2 text-slate-400 hover:bg-slate-200 hover:text-slate-900"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="mt-8">
+              <AcademicAssessmentGrader
+                subject={subject}
+                module={currentModule}
+                assessment={currentAssessments[0]} // Use the first assessment
+                onLog={handleAssessmentComplete}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {assessmentStep === 'complete' && lastLog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/95 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[3rem] bg-white p-12 text-center shadow-2xl">
+            <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-100 text-4xl text-emerald-600">
+              ✓
+            </div>
+            <h3 className="mt-8 text-3xl font-black text-slate-900">Assessment Complete</h3>
+            <p className="mt-4 text-lg text-slate-600">You earned 50 study points!</p>
+            
+            <div className="mt-12 rounded-3xl bg-slate-50 p-8 text-left">
+              <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Better Answer Guide</div>
+              <div className="mt-4 prose prose-slate prose-sm max-w-none text-slate-700 whitespace-pre-wrap">
+                {lastLog.betterAnswer}
+              </div>
+            </div>
+
+            <button 
+              onClick={() => {
+                setAssessmentStep('intro');
+                setLastLog(null);
+              }}
+              className="mt-12 w-full rounded-2xl bg-slate-900 py-5 text-sm font-black uppercase tracking-widest text-white shadow-xl transition hover:scale-105 hover:bg-slate-800"
+            >
+              Return to Path
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

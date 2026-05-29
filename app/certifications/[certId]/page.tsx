@@ -1,14 +1,25 @@
 "use client";
 
-import { useMemo } from 'react';
+import * as React from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { certificationExpansion } from '../../../src/data/certificationExpansion';
 import { ShieldCheck, BookOpen, Clock, ExternalLink, ArrowLeft } from 'lucide-react';
 
-export default function CertificationPlaceholderPage({ params }: { params: { certId: string } }) {
+export default function CertificationPlaceholderPage({ params }: { params: any }) {
+  const [certId, setCertId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    async function resolve() {
+      const resolvedParams = await params;
+      setCertId(resolvedParams?.certId);
+    }
+    resolve();
+  }, [params]);
+
   const cert = useMemo(() => 
-    certificationExpansion.find(c => c.id === params.certId), 
-    [params.certId]
+    certificationExpansion.find(c => c.id === certId), 
+    [certId]
   );
 
   if (!cert) {
@@ -99,22 +110,22 @@ export default function CertificationPlaceholderPage({ params }: { params: { cer
         <section className="rounded-[2.5rem] border border-slate-200 bg-white p-10 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900">DCS Context</h2>
           <div className="mt-6 space-y-4">
-            <p className="text-sm leading-7 text-slate-600">
-              This certification aligns with our Level 2 growth goals. Mastery of these domains will help you 
-              transition from triage and escalation to deeper technical resolution and architecture.
+            <p className="text-sm leading-relaxed text-slate-600">
+              This certification aligns with the following DCS operational requirements:
             </p>
             <ul className="space-y-3">
-              {[
-                'Standard DCS BYOD troubleshooting',
-                'Advanced network segmentation & VLAN rules',
-                'Server-side identity management (Entra ID)',
-                'Automated device deployment (Intune)'
-              ].map(item => (
-                <li key={item} className="flex gap-3 text-sm text-slate-700">
-                  <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" />
-                  {item}
-                </li>
-              ))}
+              <li className="flex gap-3 text-sm font-medium text-slate-700">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                Standardised troubleshooting patterns
+              </li>
+              <li className="flex gap-3 text-sm font-medium text-slate-700">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                Evidence-based escalation notes
+              </li>
+              <li className="flex gap-3 text-sm font-medium text-slate-700">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                Safe Level 1 operating boundaries
+              </li>
             </ul>
           </div>
         </section>

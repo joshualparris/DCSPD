@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { 
@@ -16,16 +17,27 @@ import {
 import { getCustomPlaybooks } from '../../../src/lib/customModules';
 import type { TroubleshootingPlaybook } from '../../../src/types/playbooks';
 
-export default function PlaybookDetailPage({ params }: { params: { id: string } }) {
+export default function PlaybookDetailPage({ params }: { params: any }) {
+  const [id, setId] = useState<string | undefined>(undefined);
   const [hasMounted, setHasMounted] = useState(false);
   const [playbook, setPlaybook] = useState<TroubleshootingPlaybook | undefined>(undefined);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
-    const custom = getCustomPlaybooks().find(p => p.id === params.id);
-    setPlaybook(custom);
-  }, [params.id]);
+    
+    async function resolve() {
+      const resolvedParams = await params;
+      const resolvedId = resolvedParams?.id;
+      setId(resolvedId);
+
+      if (!resolvedId) return;
+      const custom = getCustomPlaybooks().find(p => p.id === resolvedId);
+      setPlaybook(custom);
+    }
+    
+    resolve();
+  }, [params]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -108,103 +120,87 @@ export default function PlaybookDetailPage({ params }: { params: { id: string } 
             </div>
           </section>
 
-          {/* Ticket Template */}
-          <section className="rounded-[2rem] border border-slate-200 bg-slate-900 p-10 text-white shadow-sm">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-blue-400">
-                <Info size={24} />
-                <h2 className="text-2xl font-bold text-white">Jira / Ticket Template</h2>
-              </div>
-              <button 
-                onClick={() => copyToClipboard(playbook.ticketTemplate)}
-                className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-bold hover:bg-white/20 transition-all"
-              >
-                {copied ? 'Copied!' : 'Copy Template'}
-                <Copy size={14} />
-              </button>
+          {/* Symptoms Section */}
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-10 shadow-sm">
+            <div className="flex items-center gap-3 text-indigo-600">
+              <HelpCircle size={24} />
+              <h2 className="text-2xl font-bold text-slate-900">Common Symptoms</h2>
             </div>
-            <div className="mt-8 rounded-2xl bg-white/5 p-6 font-mono text-sm leading-relaxed text-slate-300 border border-white/10">
-              {playbook.ticketTemplate}
-            </div>
+            
+            <ul className="mt-8 space-y-4">
+              {playbook.symptoms.map((symptom, i) => (
+                <li key={i} className="flex gap-3 text-slate-600">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" />
+                  {symptom}
+                </li>
+              ))}
+            </ul>
           </section>
         </div>
 
-        <div className="space-y-8">
-          {/* Symptoms & Questions */}
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <div className="flex items-center gap-3 text-amber-600">
-              <HelpCircle size={24} />
-              <h2 className="text-xl font-bold text-slate-900">Triage</h2>
-            </div>
-            
-            <div className="mt-6 space-y-6">
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Common Symptoms</h4>
-                <ul className="mt-3 space-y-2">
-                  {playbook.symptoms.map((s, i) => (
-                    <li key={i} className="text-sm text-slate-600">• {s}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Ask First</h4>
-                <ul className="mt-3 space-y-2">
-                  {playbook.firstQuestions.map((q, i) => (
-                    <li key={i} className="text-sm font-medium text-slate-900">“{q}”</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* Boundaries */}
+        <aside className="space-y-8">
+          {/* Boundaries Section */}
           <section className="rounded-[2rem] border border-rose-100 bg-rose-50 p-8 shadow-sm">
             <div className="flex items-center gap-3 text-rose-600">
               <AlertTriangle size={24} />
               <h2 className="text-xl font-bold text-rose-900">Boundaries</h2>
             </div>
-            
-            <div className="mt-6 space-y-6">
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-rose-400">Do Not Do</h4>
-                <ul className="mt-3 space-y-2">
-                  {playbook.doNotDo.map((d, i) => (
-                    <li key={i} className="text-sm font-medium text-rose-800">• {d}</li>
-                  ))}
-                </ul>
+            <p className="mt-4 text-sm text-rose-800 leading-relaxed">
+              Do not attempt these actions at Level 1 without direct approval or supervision:
+            </p>
+            <ul className="mt-6 space-y-4">
+              {playbook.doNotDo.map((item, i) => (
+                <li key={i} className="flex gap-3 text-sm font-medium text-rose-800">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-400" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Quick Note Template */}
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 text-slate-900">
+                <Info size={24} />
+                <h2 className="text-xl font-bold">Handoff Note</h2>
               </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-rose-400">Escalate If...</h4>
-                <ul className="mt-3 space-y-2">
-                  {playbook.escalationTriggers.map((t, i) => (
-                    <li key={i} className="text-sm text-rose-800">• {t}</li>
-                  ))}
-                </ul>
-              </div>
+              <button
+                onClick={() => copyToClipboard(playbook.ticketTemplate)}
+                className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
+                title="Copy template"
+              >
+                <Copy size={18} />
+              </button>
+            </div>
+            <div className="mt-6 rounded-2xl bg-slate-50 p-6">
+              <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-700 font-mono">
+                {playbook.ticketTemplate}
+              </pre>
             </div>
           </section>
 
-          {/* Related Content */}
+          {/* Related Training */}
           {(playbook.relatedModuleIds?.length || playbook.relatedScenarioIds?.length) && (
             <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-slate-900">Related Training</h2>
-              <div className="mt-6 space-y-3">
-                {playbook.relatedModuleIds?.map(id => (
-                  <Link key={id} href={`/modules/${id}`} className="flex items-center justify-between rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                    Module: {id}
-                    <ExternalLink size={14} />
-                  </Link>
-                ))}
-                {playbook.relatedScenarioIds?.map(id => (
-                  <Link key={id} href={`/scenarios`} className="flex items-center justify-between rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                    Scenario: {id}
-                    <ExternalLink size={14} />
+              <div className="flex items-center gap-3 text-slate-900">
+                <ExternalLink size={24} />
+                <h2 className="text-xl font-bold">Related Training</h2>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {playbook.relatedModuleIds?.map(moduleId => (
+                  <Link 
+                    key={moduleId}
+                    href={`/modules/${moduleId}`}
+                    className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    Training Module
                   </Link>
                 ))}
               </div>
             </section>
           )}
-        </div>
+        </aside>
       </div>
     </div>
   );

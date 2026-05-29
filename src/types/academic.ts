@@ -34,12 +34,14 @@ export type AcademicSubject = {
   track: AcademicTrack;
   level: AcademicLevel;
   stream: AcademicStream;
+  relevance?: "high" | "medium" | "low"; // Optional for UI
   yearLevel?: string;
   sourceType: "SLG" | "Study Plan" | "Manual";
   sourceFileName?: string;
   sourceStatus: AcademicSourceStatus;
   localSources?: AcademicSource[];
   summary: string;
+  description?: string; // Optional for UI
   topics: AcademicTopic[];
   silos: AcademicSilo[];
   dcsBridges: DcsBridge[];

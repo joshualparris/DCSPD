@@ -11,13 +11,21 @@ export type AcademicSiloFlashcard = {
 
 export type AcademicSiloProgress = {
   siloId: string;
+  id: string; // For UI compatibility
   siloNumber: number;
   label: string;
+  title: string; // For UI compatibility
   completedAssessments: number;
   totalAssessments: number;
   completionPercent: number;
+  completionPercentage: number; // For UI compatibility
   averageScore: number | null;
   flashcards: AcademicSiloFlashcard[];
+  conceptChecklist: {
+    id: string;
+    label: string;
+    isMastered: boolean;
+  }[];
 };
 
 function average(values: number[]) {
@@ -72,21 +80,30 @@ export function getAcademicSiloProgress(
       module.assessments.filter((assessment) => assessment.siloIds.includes(silo.id))
     );
     const relatedAssessmentIds = new Set(relatedAssessments.map((assessment) => assessment.id));
+    const totalAssessments = relatedAssessments.length;
     const completedAttempts = Array.from(latestByAssessment.values()).filter((attempt) =>
       relatedAssessmentIds.has(attempt.assessmentId)
     );
-    const totalAssessments = relatedAssessments.length;
     const completedAssessments = completedAttempts.length;
+    const completionPercent = totalAssessments ? Math.round((completedAssessments / totalAssessments) * 100) : 0;
 
     return {
       siloId: silo.id,
+      id: silo.id,
       siloNumber: silo.number,
       label: `SILO ${silo.number}`,
+      title: silo.text || `SILO ${silo.number}`,
       completedAssessments,
       totalAssessments,
-      completionPercent: totalAssessments ? Math.round((completedAssessments / totalAssessments) * 100) : 0,
+      completionPercent,
+      completionPercentage: completionPercent,
       averageScore: average(completedAttempts.map((attempt) => attempt.score)),
-      flashcards: flashcards.filter((card) => card.siloId === silo.id)
+      flashcards: flashcards.filter((card) => card.siloId === silo.id),
+      conceptChecklist: silo.masteryCriteria.map((criterion, index) => ({
+        id: `${silo.id}-mastery-${index}`,
+        label: criterion,
+        isMastered: completedAssessments > index // Simple heuristic for mastery
+      }))
     };
   });
 }

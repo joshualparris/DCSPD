@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { 
@@ -16,16 +17,27 @@ import { getCustomAssets } from '../../../src/lib/customModules';
 import { dcsAssets } from '../../../src/data/assets';
 import type { DcsAssetProfile } from '../../../src/types/assets';
 
-export default function AssetDetailPage({ params }: { params: { id: string } }) {
+export default function AssetDetailPage({ params }: { params: any }) {
+  const [id, setId] = useState<string | undefined>(undefined);
   const [hasMounted, setHasMounted] = useState(false);
   const [asset, setAsset] = useState<DcsAssetProfile | undefined>(undefined);
 
   useEffect(() => {
     setHasMounted(true);
-    const custom = getCustomAssets().find(a => a.id === params.id);
-    const builtIn = dcsAssets.find(a => a.id === params.id);
-    setAsset(custom || builtIn);
-  }, [params.id]);
+    
+    async function resolve() {
+      const resolvedParams = await params;
+      const resolvedId = resolvedParams?.id;
+      setId(resolvedId);
+
+      if (!resolvedId) return;
+      const custom = getCustomAssets().find(a => a.id === resolvedId);
+      const builtIn = dcsAssets.find(a => a.id === resolvedId);
+      setAsset(custom || builtIn);
+    }
+    
+    resolve();
+  }, [params]);
 
   if (!hasMounted) return null;
 
@@ -99,55 +111,58 @@ export default function AssetDetailPage({ params }: { params: { id: string } }) 
           </ul>
         </section>
 
-        <section className="rounded-[2rem] border border-amber-100 bg-amber-50 p-8 shadow-sm">
-          <div className="flex items-center gap-3 text-amber-600">
-            <ShieldCheck size={24} />
-            <h2 className="text-xl font-bold text-amber-900">Privacy & Support</h2>
-          </div>
-          <div className="mt-6 space-y-6">
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-amber-500">Privacy Notes</h4>
-              <ul className="mt-3 space-y-2">
-                {asset.privacyNotes.map((note, i) => (
-                  <li key={i} className="text-sm text-amber-800">• {note}</li>
-                ))}
-              </ul>
+        {asset.privacyNotes && asset.privacyNotes.length > 0 && (
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center gap-3 text-indigo-600">
+              <ShieldCheck size={24} />
+              <h2 className="text-xl font-bold text-slate-900">Privacy Notes</h2>
             </div>
-            {asset.escalationOwner && (
-              <div className="flex items-center gap-3 rounded-2xl bg-white p-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
-                  <User size={20} />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Escalation Owner</div>
-                  <div className="text-sm font-bold text-slate-900">{asset.escalationOwner}</div>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Related Content */}
-        {(asset.relatedPlaybookIds?.length || asset.relatedModuleIds?.length) && (
-          <section className="md:col-span-2 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-900">Connected Workflows</h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {asset.relatedPlaybookIds?.map(id => (
-                <Link key={id} href={`/playbooks/${id}`} className="flex items-center justify-between rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-600 hover:bg-rose-50 hover:text-rose-600 transition-all">
-                  Playbook: {id}
-                  <ExternalLink size={14} />
-                </Link>
+            <ul className="mt-6 space-y-4">
+              {asset.privacyNotes.map((note, i) => (
+                <li key={i} className="flex gap-3 text-sm text-slate-600">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" />
+                  {note}
+                </li>
               ))}
+            </ul>
+          </section>
+        )}
+      </div>
+
+      <footer className="grid gap-8 lg:grid-cols-2">
+        {asset.escalationOwner && (
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center gap-3 text-slate-900">
+              <User size={24} />
+              <h2 className="text-xl font-bold">Escalation</h2>
+            </div>
+            <div className="mt-6 space-y-2">
+              <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">Primary Owner / Escalation</div>
+              <p className="text-lg font-semibold text-slate-900">{asset.escalationOwner}</p>
+            </div>
+          </section>
+        )}
+
+        {(asset.relatedModuleIds?.length || asset.relatedScenarioIds?.length) && (
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center gap-3 text-slate-900">
+              <ExternalLink size={24} />
+              <h2 className="text-xl font-bold">Related Training</h2>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
               {asset.relatedModuleIds?.map(id => (
-                <Link key={id} href={`/modules/${id}`} className="flex items-center justify-between rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                  Module: {id}
-                  <ExternalLink size={14} />
+                <Link 
+                  key={id}
+                  href={`/modules/${id}`}
+                  className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  Training Module
                 </Link>
               ))}
             </div>
           </section>
         )}
-      </div>
+      </footer>
     </div>
   );
 }

@@ -15,20 +15,26 @@ export const legacyModuleAliases: Record<string, string> = {
   'ict-helpdesk-101': 'ticket-notes-escalation-quality'
 };
 
-export const modules: TrainingModule[] = [
-  ...foundationsModules,
-  ...networkingModules,
-  ...endpointModules,
-  ...identityModules,
-  ...cloudModules,
-  ...operationsModules,
-  ...aplusModules,
-  ...accessibilityModules
-];
+// We use a function to avoid static initialization order issues
+export function getAllBaseModules(): TrainingModule[] {
+  return [
+    ...foundationsModules,
+    ...networkingModules,
+    ...endpointModules,
+    ...identityModules,
+    ...cloudModules,
+    ...operationsModules,
+    ...aplusModules,
+    ...accessibilityModules
+  ];
+}
+
+export const modules = getAllBaseModules();
 
 export function getModuleById(moduleId: string) {
+  if (!moduleId) return undefined;
   const resolvedId = legacyModuleAliases[moduleId] || moduleId;
-  return modules.find((module) => module.id === resolvedId);
+  return getAllBaseModules().find((module) => module.id === resolvedId);
 }
 
 // Helper for SSR and fast lookup of basic module info

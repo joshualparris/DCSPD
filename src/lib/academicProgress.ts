@@ -8,6 +8,9 @@ export type AcademicSubjectProgress = {
   completedAssessments: number;
   totalAssessments: number;
   completionPercent: number;
+  completionPercentage: number; // For UI compatibility
+  averageRetentionScore: number; // For UI compatibility
+  totalPoints: number; // For UI compatibility
   completedWeeks: number;
   totalWeeks: number;
   averageScore: number | null;
@@ -58,12 +61,17 @@ export function getAcademicSubjectProgress(
     module.assessments.every((assessment) => latestByAssessment.has(assessment.id))
   ).length;
 
+  const completionPercent = totalAssessments ? Math.round((completedAssessments / totalAssessments) * 100) : 0;
+
   return {
     subjectId: subject.id,
     subjectCode: subject.code,
     completedAssessments,
     totalAssessments,
-    completionPercent: totalAssessments ? Math.round((completedAssessments / totalAssessments) * 100) : 0,
+    completionPercent,
+    completionPercentage: completionPercent,
+    averageRetentionScore: average(scores) ? Math.round(average(scores)!) : 0,
+    totalPoints: completedAssessments * 10, // Basic point system
     completedWeeks,
     totalWeeks: weeklyModules.length,
     averageScore: average(scores),

@@ -5422,8 +5422,15 @@ export const academicSubjects: AcademicSubject[] = [
   }
 ];
 
-export function getAcademicSubjectByCode(subjectCode: string) {
-  return academicSubjects.find((subject) => subject.code.toLowerCase() === subjectCode.toLowerCase());
+export function getAcademicSubjectByCode(subjectCode: string): AcademicSubject | undefined {
+  const subject = academicSubjects.find((s) => s.code.toLowerCase() === subjectCode.toLowerCase());
+  if (!subject) return undefined;
+
+  return {
+    ...subject,
+    relevance: (subject as any).relevance || subject.dcsBridges[0]?.relevance || 'medium',
+    description: (subject as any).description || subject.summary
+  } as AcademicSubject;
 }
 
 export function getAcademicTrackSubjects(track: AcademicSubject['track'], subjects = academicSubjects) {
