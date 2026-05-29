@@ -42,18 +42,27 @@ function multipleChoiceFor(
   return [
     {
       id: `${slug(title)}-mcq-concept`,
-      prompt: `For ${certificationLabel}, what is the best way to study ${title}?`,
+      prompt: `Which statement best describes ${title} in the context of ${certificationLabel}?`,
       options: [
-        { id: 'a', text: 'Memorise the term only, then skip application.' },
+        {
+          id: 'a',
+          text: `A high-level definition of ${title} that does not explain how it changes DCS troubleshooting or escalation.`
+        },
         {
           id: 'b',
-          text: `Define the concept, connect it to ${objectiveId} ${objectiveTitle}, and practise support decisions aligned with ${sectionTitle}.`
+          text: `A DCS support example showing how ${title} changes symptoms, safe checks, and escalation decisions.`
         },
-        { id: 'c', text: 'Copy private DCS operational details into your answer.' },
-        { id: 'd', text: 'Skip it unless it names a school system directly.' }
+        {
+          id: 'c',
+          text: `A memorised phrase about ${title} without practical application to a support scenario.`
+        },
+        {
+          id: 'd',
+          text: `A real school ticket or private system detail used to describe ${title}.`
+        }
       ],
       correctOptionId: 'b',
-      explanation: `${title} should be learned through the ${sectionTitle} domain and translated into safe DCS support judgement.`
+      explanation: `The best answer links ${title} to real support symptoms, safe checks, and escalation judgment for ${sectionTitle}.`
     },
     {
       id: `${slug(title)}-mcq-boundary`,
@@ -61,17 +70,17 @@ function multipleChoiceFor(
       options: [
         {
           id: 'a',
-          text: 'A synthetic scenario with safe checks, escalation point, and a clear privacy boundary.'
+          text: `A synthetic scenario that explains ${title}, shows safe checks, and includes a privacy boundary.`
         },
         {
           id: 'b',
-          text: 'A copied real ticket with staff, student, or credential details.'
+          text: `A copied real ticket with staff, student, or credential details.`
         },
-        { id: 'c', text: 'A vague sentence with no DCS application.' },
+        { id: 'c', text: 'A vague sentence with no DCS support application.' },
         { id: 'd', text: 'A production change described step by step.' }
       ],
       correctOptionId: 'a',
-      explanation: `Evidence for ${certificationLabel} must stay privacy-safe, synthetic, and relevant to ${title}.`
+      explanation: `Evidence should be synthetic, privacy-safe, and clearly connected to ${title}.`
     },
     {
       id: `${slug(title)}-mcq-evidence`,
@@ -89,7 +98,7 @@ function multipleChoiceFor(
         { id: 'd', text: 'The user password for later investigation.' }
       ],
       correctOptionId: 'a',
-      explanation: `Strong ${certificationLabel} notes separate symptom, scope, safe checks, and escalation without private data.`
+      explanation: `Strong evidence separates symptom, scope, safe checks, and escalation without private data.`
     }
   ];
 }

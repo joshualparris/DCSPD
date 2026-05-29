@@ -341,27 +341,27 @@ function multipleChoiceFor(sectionId: string, sectionTitle: string, objectiveId:
   return [
     {
       id: `${slug(title)}-mcq-concept`,
-      prompt: `What is the best way to study ${title} for A+ Core 2 and DCS support work?`,
+      prompt: `Which statement best describes ${title} in a DCS Core 2 support context?`,
       options: [
         {
           id: 'a',
-          text: `Memorise the term only, then move on to the next video.`
+          text: `A definition of ${title} without explaining how it affects support symptoms or escalation decisions.`
         },
         {
           id: 'b',
-          text: `Define the concept, connect it to ${objectiveId} ${objectiveTitle}, and practise how it changes real support decisions.`
+          text: `An example that shows how ${title} changes the way you troubleshoot, document, or escalate a school IT issue.`
         },
         {
           id: 'c',
-          text: `Treat it as a DCS-specific procedure and copy private internal details into the answer.`
+          text: `A memorised phrase about ${title} with no practical classroom support application.`
         },
         {
           id: 'd',
-          text: `Skip it unless it directly mentions a school system by name.`
+          text: `A private ticket description that mentions real staff names or system details.`
         }
       ],
       correctOptionId: 'b',
-      explanation: `${title} should be learned as a concept inside ${sectionTitle}, then translated into safe DCS troubleshooting or documentation decisions.`
+      explanation: `${title} is strongest when applied to real support symptoms and safe checks, not just memorised language.`
     },
     sectionDecisionQuestion(sectionId, title),
     {
@@ -370,7 +370,7 @@ function multipleChoiceFor(sectionId: string, sectionTitle: string, objectiveId:
       options: [
         {
           id: 'a',
-          text: 'A fake classroom support scenario that names the concept, safe checks, escalation point, and privacy boundary.'
+          text: `A synthetic functional scenario that names ${title}, safe checks, escalation, and a privacy boundary.`
         },
         {
           id: 'b',
