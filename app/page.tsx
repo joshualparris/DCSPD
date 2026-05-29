@@ -30,6 +30,7 @@ import { getCustomModules, getCustomScenarios } from '../src/lib/customModules';
 import { generateStudyPath } from '../src/lib/studyPath';
 import KnowledgeHeatmap from '../src/components/dashboard/KnowledgeHeatmap';
 import Leaderboard from '../src/components/dashboard/Leaderboard';
+import CommonPitfalls from '../src/components/dashboard/CommonPitfalls';
 import { getRecentUpdates } from '../src/data/recentUpdates';
 
 function getMonthKey(date: Date) {
@@ -339,6 +340,8 @@ export default function DashboardPage() {
               <ChevronRight size={18} />
             </Link>
           </section>
+
+          <CommonPitfalls progress={progress} />
 
           <section className="rounded-[2.5rem] border border-slate-200 bg-slate-900 p-10 text-white shadow-sm">
             <div className="flex items-center gap-3 text-blue-400">
