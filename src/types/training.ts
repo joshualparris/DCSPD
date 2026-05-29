@@ -15,6 +15,7 @@ export type Section = {
   title: string;
   bodyMarkdown: string;
   takeaway?: string;
+  quickReadSummary?: string; // For micro-learning
 };
 
 export type Flashcard = {
@@ -105,4 +106,5 @@ export type TrainingModule = {
   modulePattern: ModulePattern;
   scenarioPrompts: ScenarioPrompt[];
   practicalOutputs: PracticalOutput[];
+  microLearningSummary?: string; // High-level 1-minute summary
 };

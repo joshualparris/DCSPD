@@ -164,7 +164,7 @@ describe('evidencePack', () => {
 
     const markdown = generateEvidencePackMarkdown(progress, defaultOptions);
 
-    expect(markdown).toContain('# DCSPrep Professional Development Evidence Pack');
+    expect(markdown).toContain('# ITPrep Professional Development Evidence Pack');
     expect(markdown).toContain('## Privacy reminder');
     expect(markdown).toContain('## Summary');
     expect(markdown).toContain('## Reflections (privacy-checked)');

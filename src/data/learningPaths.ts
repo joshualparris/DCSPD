@@ -21,7 +21,7 @@ export const learningPaths: LearningPath[] = [
     moduleIds: [
       'dcs-it-support-foundations',
       'soft-skills-dcs-support',
-      'ticket-notes-escalation-quality',
+      'login-and-password-support',
       'permissions-and-access-requests'
     ],
     certificationLabel: 'DCS Level 1 Ready',

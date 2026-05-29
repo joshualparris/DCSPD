@@ -1,6 +1,6 @@
 # DCSPrep Current Roadmap
 
-Updated: 2026-05-14
+Updated: 2026-05-29
 
 This is the current source of truth for what is done, what was upgraded in the latest passes, and what remains open. The app is now a local-first DCS IT professional-development platform with Academic PD, AI grading, evidence logging, roleplay coaching, skill recommendations, certificates, admin tools, simulations, exports, and backup/sync support.
 
@@ -55,19 +55,21 @@ This is the current source of truth for what is done, what was upgraded in the l
 ## Still Open
 
 - [x] Full binary PDF text extraction for SLG import, not just pasted/copied PDF text.
-- [ ] Direct publish workflow from admin draft JSON into the Academic PD source catalogue.
+- [x] Direct publish workflow from admin draft JSON into the custom Academic PD catalogue (`/admin/slg-import`, localStorage rollback).
 - [ ] Authenticated cloud database sync across devices with user identity, backups, and conflict handling.
 - [ ] Mobile/offline QA on an actual phone install, offline launch, and route caching.
 - [ ] Live OurDCS API/write integration after governance approval.
 - [ ] Live LMS/HRIS integration or full SCORM package export after system/API decisions.
 - [x] Quick-fix printable cheat sheets.
-- [ ] Add A+ Core 1 220-1201 as the matching certification pathway.
-- [ ] Add Network+ N10-009 and Security+ SY0-701 pathways with the same read/watch/assess pattern.
+- [x] Add A+ Core 1 220-1201 pathway with read/watch/assess lessons (`/certifications/aplus-core-1`).
+- [x] Add Network+ N10-009 and Security+ SY0-701 pathways with the same pattern.
 - [x] Synthetic ticket CSV importer for data-analysis practice.
 - [x] Peer review simulation for senior-tech critique.
+- [x] Curated weekly PD path mixing modules, scenarios, certification, Academic PD, and evidence (`/weekly-pd-path`).
+- [x] GitHub Actions CI (`lint`, `tsc`, `vitest`, `next build`).
 - [ ] Social learning features, if a privacy-safe governance model is approved.
-- [ ] Browser push notifications.
-- [ ] LMS/HRIS integration or SCORM export.
+- [ ] Browser push notifications (scaffold exists; production policy still open).
+- [ ] Full Professor Messer lesson-index import for Core 1 / Network+ / Security+ (current pathways use domain lesson blocks).
 
 ## Not In This Slice
 
@@ -75,8 +77,8 @@ This is the current source of truth for what is done, what was upgraded in the l
 
 ## Recommended Next Order
 
-1. Add full binary PDF text extraction for SLG import.
-2. Add direct admin publishing for subject drafts, with review/rollback safety.
-3. Replace the local sync adapter with an authenticated cloud database provider.
-4. Run mobile/offline QA on an actual phone and fix any install/cache issues.
-5. Add A+ Core 1, Network+, and Security+ certification pathways after the current hardening work.
+1. Replace the local sync adapter with an authenticated cloud database provider.
+2. Run mobile/offline QA on an actual phone and fix any install/cache issues.
+3. Expand Core 1 / Network+ / Security+ lesson indexes to full video-level coverage like Core 2.
+4. Live OurDCS and LMS/HRIS integrations after governance/API decisions.
+5. Final privacy and Level 1 boundary review across all content.

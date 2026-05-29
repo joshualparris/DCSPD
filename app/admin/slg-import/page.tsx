@@ -1,9 +1,17 @@
 "use client";
 
 import { useMemo, useState } from 'react';
-import { Clipboard, Download, FileText, Upload, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Clipboard, Download, FileText, Upload, Loader2, Rocket, Undo2 } from 'lucide-react';
 import { buildAcademicSubjectDraftJson, parseSlgTextDraft } from '../../../src/lib/slgImport';
 import { extractTextFromPdf } from '../../../src/lib/pdfExtraction';
+import {
+  draftPackageFromSlgImport,
+  listPublishableWarnings,
+  publishAcademicDraft,
+  publishAcademicDraftFromJson
+} from '../../../src/lib/academicPublish';
+import { getCustomAcademic, removeCustomAcademicByCode, saveCustomAcademic } from '../../../src/lib/customModules';
 
 const sampleText = `CSE1PE Programming Environment
 Subject Intended Learning Outcomes
@@ -35,9 +43,47 @@ export default function SlgImportPage() {
   const [sourceFileName, setSourceFileName] = useState('SLG-draft.pdf');
   const [text, setText] = useState(sampleText);
   const [isExtracting, setIsExtracting] = useState(false);
+  const [publishMessage, setPublishMessage] = useState('');
+  const [publishedSubjects, setPublishedSubjects] = useState(() => getCustomAcademic());
 
   const draft = useMemo(() => parseSlgTextDraft(text, sourceFileName), [text, sourceFileName]);
   const draftJson = useMemo(() => buildAcademicSubjectDraftJson(draft), [draft]);
+  const draftPackage = useMemo(() => draftPackageFromSlgImport(draft), [draft]);
+  const publishWarnings = useMemo(() => listPublishableWarnings(draftPackage), [draftPackage]);
+
+  function refreshPublished() {
+    setPublishedSubjects(getCustomAcademic());
+  }
+
+  function handlePublishFromDraft() {
+    const result = publishAcademicDraft(draftPackage);
+    if (!result.ok) {
+      setPublishMessage(result.errors.join(' '));
+      return;
+    }
+    saveCustomAcademic(result.subject);
+    refreshPublished();
+    setPublishMessage(
+      `Published ${result.subject.code} to the custom Academic PD catalogue. Open /academic-pd/subjects/${result.subject.code} to review.`
+    );
+  }
+
+  function handlePublishFromJson() {
+    const result = publishAcademicDraftFromJson(draftJson);
+    if (!result.ok) {
+      setPublishMessage(result.errors.join(' '));
+      return;
+    }
+    saveCustomAcademic(result.subject);
+    refreshPublished();
+    setPublishMessage(`Published ${result.subject.code} from draft JSON.`);
+  }
+
+  function handleUnpublish(code: string) {
+    removeCustomAcademicByCode(code);
+    refreshPublished();
+    setPublishMessage(`Removed custom catalogue entry for ${code}. Built-in subjects are unchanged.`);
+  }
 
   async function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -181,6 +227,78 @@ export default function SlgImportPage() {
                 <Download size={16} />
                 Download
               </button>
+              <button
+                type="button"
+                onClick={handlePublishFromDraft}
+                disabled={draft.subjectCode === 'UNKNOWN'}
+                className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-sm font-medium text-white disabled:bg-slate-300"
+              >
+                <Rocket size={16} />
+                Publish to catalogue
+              </button>
+              <button
+                type="button"
+                onClick={handlePublishFromJson}
+                className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-900"
+              >
+                Publish JSON
+              </button>
+            </div>
+            {publishWarnings.length ? (
+              <div className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm text-amber-900">
+                <div className="font-semibold">Before publishing</div>
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  {publishWarnings.map((warning) => (
+                    <li key={warning}>{warning}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {publishMessage ? (
+              <p className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">{publishMessage}</p>
+            ) : null}
+          </section>
+
+          <section className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Published custom subjects</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              These live in browser localStorage and appear alongside built-in Academic PD subjects. Unpublish removes
+              only the custom copy.
+            </p>
+            <div className="mt-4 space-y-3">
+              {publishedSubjects.length ? (
+                publishedSubjects.map((subject) => (
+                  <div
+                    key={subject.id}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-slate-50 p-4"
+                  >
+                    <div>
+                      <div className="font-semibold text-slate-900">
+                        {subject.code} — {subject.title}
+                      </div>
+                      <div className="text-xs text-slate-500">{subject.weeklyModules?.length || 0} weekly modules</div>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Link
+                        href={`/academic-pd/subjects/${subject.code}`}
+                        className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-200"
+                      >
+                        Open
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleUnpublish(subject.code)}
+                        className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-medium text-rose-700 ring-1 ring-rose-200"
+                      >
+                        <Undo2 size={14} />
+                        Unpublish
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-slate-500">No custom subjects published yet.</p>
+              )}
             </div>
           </section>
         </aside>

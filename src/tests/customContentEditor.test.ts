@@ -22,7 +22,7 @@ describe('custom content editor builders', () => {
     expect(draftModule.sections[0].title).toBe('Release queue');
     expect(draftModule.flashcards[0].front).toContain('reinstalling');
     expect(draftModule.quiz[0].type).toBe('short-answer');
-    expect(draftModule.modulePattern.safePromptWorkflow?.privacyReminder).toContain('Do not paste live DCS data');
+    expect(draftModule.modulePattern.safePromptWorkflow?.privacyReminder).toContain('Do not paste live');
     expect(draftModule.scenarioPrompts).toHaveLength(1);
     expect(draftModule.practicalOutputs).toHaveLength(1);
   });

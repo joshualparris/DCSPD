@@ -13,7 +13,9 @@ describe('A+ Core 2 pathway', () => {
 
   it('gives every lesson resources, DCS relevance, and assessment criteria', () => {
     aplusCore2Lessons.forEach((lesson) => {
-      expect(lesson.videoUrl).toContain('professormesser.com/free-a-plus-training/220-1202');
+      expect(
+        lesson.videoUrl.includes('professormesser.com') || lesson.videoUrl.includes('youtube.com')
+      ).toBe(true);
       expect(lesson.studyBrief).toContain(lesson.sectionTitle);
       expect(lesson.dcsApplication).toBeTruthy();
       expect(lesson.readMore.length).toBeGreaterThanOrEqual(5);

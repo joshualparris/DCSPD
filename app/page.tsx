@@ -396,8 +396,8 @@ export default function DashboardPage() {
               <h3 className="mt-6 font-bold text-slate-900">{cert.title.replace('CompTIA ', '')}</h3>
               <p className="mt-2 text-sm text-slate-500">{cert.description.split('.')[0]}.</p>
               <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
-                <span>Coming Soon</span>
-                <span className="text-slate-900 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">Explore →</span>
+                <span>{cert.objectives.length} domains</span>
+                <span className="text-slate-900 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">Start →</span>
               </div>
             </Link>
           ))}

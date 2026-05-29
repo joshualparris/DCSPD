@@ -57,6 +57,14 @@ export const clearCustomScenarios = () => localStorage.removeItem(KEYS.SCENARIOS
 // Academic Subjects
 export const getCustomAcademic = () => getCustomData<AcademicSubject>(KEYS.ACADEMIC);
 export const saveCustomAcademic = (a: AcademicSubject) => saveCustomData(KEYS.ACADEMIC, a);
+export const removeCustomAcademicByCode = (code: string) => {
+  if (typeof window === 'undefined') return;
+  const normalized = code.toUpperCase();
+  const items = getCustomData<AcademicSubject>(KEYS.ACADEMIC).filter(
+    (subject) => subject.code.toUpperCase() !== normalized
+  );
+  localStorage.setItem(KEYS.ACADEMIC, JSON.stringify(items));
+};
 export const clearCustomAcademic = () => localStorage.removeItem(KEYS.ACADEMIC);
 
 // Playbooks
