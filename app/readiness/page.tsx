@@ -147,9 +147,9 @@ function ProfileCard({
                   <div className="mt-1 text-base font-bold text-blue-400">{score.weakestArea === 'None' ? 'Area is solid!' : score.weakestArea}</div>
                 </div>
 
-                {score.weakestArea !== 'None' ? (
+                {score.weakestArea !== 'None' && score.weakestTopic ? (
                   <button
-                    onClick={() => onShowRepair(score.weakestArea as WeakTopicKey)}
+                    onClick={() => onShowRepair(score.weakestTopic)}
                     className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 py-3 text-xs font-bold hover:bg-blue-500 transition-all"
                   >
                     Launch Repair Pack

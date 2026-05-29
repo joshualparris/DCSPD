@@ -2,6 +2,7 @@ import { readinessProfiles, weakTopicLabels, type ReadinessArea } from '../data/
 import { modules } from '../data/modules';
 import { scenarios } from '../data/scenarios';
 import { getModuleCompletion } from './moduleMath';
+import type { WeakTopicKey } from '../types/assessment';
 import type { UserProgress } from './progress';
 
 export type ReadinessScore = {
@@ -13,6 +14,7 @@ export type ReadinessScore = {
   evidenceCount: number;
   note: string;
   weakestArea: string;
+  weakestTopic: WeakTopicKey;
   nextAction?: {
     label: string;
     href: string;
@@ -63,13 +65,16 @@ function getWeakestArea(area: ReadinessArea, progress: UserProgress) {
 
   const weakest = related[0];
   if (!weakest) {
+    const fallbackTopic = area.weakTopics[0];
     return {
-      label: weakTopicLabels[area.weakTopics[0]] ?? 'Ports and protocols',
+      topic: fallbackTopic,
+      label: weakTopicLabels[fallbackTopic] ?? 'Ports and protocols',
       recommendedModuleId: area.moduleIds[0]
     };
   }
 
   return {
+    topic: weakest.topic,
     label: weakTopicLabels[weakest.topic] ?? weakest.topic,
     recommendedModuleId: weakest.recommendedModuleId
   };
@@ -182,6 +187,7 @@ function getAreaScore(area: ReadinessArea, progress: UserProgress): ReadinessSco
       : 'Indicative estimate based on module coverage only'
     ,
     weakestArea: weakest.label,
+    weakestTopic: weakest.topic,
     nextAction,
     drivers: {
       assessment: clampScore(assessmentAverage),
