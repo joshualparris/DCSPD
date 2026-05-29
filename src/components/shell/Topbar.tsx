@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Moon, Sun } from 'lucide-react';
-import { navigationItems } from './navigation';
+import { mobileNavigationItems } from './navigation';
 import { APP_NAME, APP_SUPPORT_PRIORITIZATION_NOTE } from '../../config/appConfig';
 
 function isActive(pathname: string, href: string) {
@@ -79,7 +79,7 @@ export default function Topbar() {
         </div>
 
         <nav className="mt-4 flex gap-2 overflow-x-auto pb-1 md:hidden">
-          {navigationItems.map((item) => {
+          {mobileNavigationItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
               <Link

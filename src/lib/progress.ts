@@ -92,6 +92,22 @@ export type WeakTopicReview = {
   averageScore: number;
 };
 
+export type ProgressBadge = {
+  id: string;
+  name: string;
+  description: string;
+  earnedAtIso: string;
+};
+
+export type GamificationState = {
+  totalPoints: number;
+  currentStreak: number;
+  bestStreak: number;
+  lastActivityDateIso: string;
+  badges: ProgressBadge[];
+  awardedPointEvents: Record<string, boolean>;
+};
+
 export type FocusMode = 'start-tiny' | 'focus-20' | 'overwhelmed';
 
 export type FocusSession = {
@@ -220,6 +236,7 @@ export type UserProgress = {
   focusSessions: FocusSession[];
   playbookAttempts?: Record<string, { completedAtIso: string; note?: string }>;
   assetInteractions?: Record<string, { lastViewedAtIso: string; count: number }>;
+  gamification: GamificationState;
   streak?: {
     current: number;
     best: number;
@@ -232,6 +249,7 @@ export type UserProgress = {
 };
 
 const STORAGE_KEY = 'dcsprep_learning_cockpit_v4';
+const LEGACY_GAMIFICATION_STORAGE_KEY = 'dcsprep-gamification';
 
 export function getDefaultProgress(): UserProgress {
   return {
@@ -252,7 +270,19 @@ export function getDefaultProgress(): UserProgress {
     weakTopicReviews: {},
     focusSessions: [],
     playbookAttempts: {},
-    assetInteractions: {}
+    assetInteractions: {},
+    gamification: getDefaultGamificationState()
+  };
+}
+
+export function getDefaultGamificationState(): GamificationState {
+  return {
+    totalPoints: 0,
+    currentStreak: 0,
+    bestStreak: 0,
+    lastActivityDateIso: '',
+    badges: [],
+    awardedPointEvents: {}
   };
 }
 
@@ -348,6 +378,85 @@ function normalizeModuleProgress(value: unknown, module?: TrainingModule): Modul
   };
 }
 
+function normalizeGamificationState(value: unknown): GamificationState {
+  if (!value || typeof value !== 'object') {
+    return getDefaultGamificationState();
+  }
+
+  const candidate = value as Partial<GamificationState>;
+
+  return {
+    totalPoints: typeof candidate.totalPoints === 'number' ? candidate.totalPoints : 0,
+    currentStreak: typeof candidate.currentStreak === 'number' ? candidate.currentStreak : 0,
+    bestStreak: typeof candidate.bestStreak === 'number' ? candidate.bestStreak : 0,
+    lastActivityDateIso: typeof candidate.lastActivityDateIso === 'string' ? candidate.lastActivityDateIso : '',
+    badges: Array.isArray(candidate.badges) ? (candidate.badges as ProgressBadge[]) : [],
+    awardedPointEvents:
+      candidate.awardedPointEvents && typeof candidate.awardedPointEvents === 'object'
+        ? (candidate.awardedPointEvents as Record<string, boolean>)
+        : {}
+  };
+}
+
+function normalizeLegacyGamification(): GamificationState {
+  if (typeof window === 'undefined') {
+    return getDefaultGamificationState();
+  }
+
+  try {
+    const raw = window.localStorage.getItem(LEGACY_GAMIFICATION_STORAGE_KEY);
+    if (!raw) {
+      return getDefaultGamificationState();
+    }
+
+    const parsed = JSON.parse(raw) as {
+      totalPoints?: number;
+      currentStreak?: number;
+      longestStreak?: number;
+      lastActivityDate?: number;
+      badges?: Array<{ id: string; name: string; description: string; earnedAt: number }>;
+    };
+
+    return {
+      totalPoints: typeof parsed.totalPoints === 'number' ? parsed.totalPoints : 0,
+      currentStreak: typeof parsed.currentStreak === 'number' ? parsed.currentStreak : 0,
+      bestStreak: typeof parsed.longestStreak === 'number' ? parsed.longestStreak : 0,
+      lastActivityDateIso:
+        typeof parsed.lastActivityDate === 'number' ? new Date(parsed.lastActivityDate).toISOString() : '',
+      badges: Array.isArray(parsed.badges)
+        ? parsed.badges.map((badge) => ({
+            id: badge.id,
+            name: badge.name,
+            description: badge.description,
+            earnedAtIso: badge.earnedAt ? new Date(badge.earnedAt).toISOString() : new Date().toISOString()
+          }))
+        : [],
+      awardedPointEvents: {}
+    };
+  } catch {
+    return getDefaultGamificationState();
+  }
+}
+
+function migrateLegacyProgressGamification(candidate: Partial<UserProgress>): GamificationState {
+  if (candidate.gamification) {
+    return normalizeGamificationState(candidate.gamification);
+  }
+
+  if (candidate.streak) {
+    return {
+      totalPoints: 0,
+      currentStreak: typeof candidate.streak.current === 'number' ? candidate.streak.current : 0,
+      bestStreak: typeof candidate.streak.best === 'number' ? candidate.streak.best : 0,
+      lastActivityDateIso: candidate.streak.lastActivityDateIso || '',
+      badges: [],
+      awardedPointEvents: {}
+    };
+  }
+
+  return normalizeLegacyGamification();
+}
+
 function normalizeProgress(raw: unknown): UserProgress {
   const base = getDefaultProgress();
 
@@ -384,6 +493,8 @@ function normalizeProgress(raw: unknown): UserProgress {
     ? (candidate.pdEntries as PdEntry[])
     : migratedFromLegacy;
 
+  const gamificationState = migrateLegacyProgressGamification(candidate);
+
   return {
     lastOpenedModuleId: candidate.lastOpenedModuleId,
     modules: Object.fromEntries(
@@ -414,14 +525,19 @@ function normalizeProgress(raw: unknown): UserProgress {
       candidate.weakTopicReviews && typeof candidate.weakTopicReviews === 'object'
         ? candidate.weakTopicReviews
         : {},
-    streak: candidate.streak || { current: 0, best: 0, lastActivityDateIso: '' },
+    gamification: gamificationState,
+    streak: {
+      current: gamificationState.currentStreak,
+      best: gamificationState.bestStreak,
+      lastActivityDateIso: gamificationState.lastActivityDateIso
+    },
     dailyChallenge: candidate.dailyChallenge || { lastCompletedDateIso: '' }
   };
 }
 
 export function recordDailyActivity(progress: UserProgress): UserProgress {
   const today = getTodayDateKey();
-  const lastDate = progress.streak?.lastActivityDateIso || '';
+  const lastDate = progress.gamification.lastActivityDateIso || '';
 
   if (lastDate === today) {
     return progress;
@@ -431,19 +547,27 @@ export function recordDailyActivity(progress: UserProgress): UserProgress {
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayKey = yesterday.toISOString().split('T')[0];
 
-  const currentStreak = progress.streak?.current || 0;
-  const bestStreak = progress.streak?.best || 0;
+  const currentStreak = progress.gamification.currentStreak || 0;
+  const bestStreak = progress.gamification.bestStreak || 0;
 
   let nextStreak = 1;
   if (lastDate === yesterdayKey) {
     nextStreak = currentStreak + 1;
   }
 
+  const updatedGamification: GamificationState = {
+    ...progress.gamification,
+    currentStreak: nextStreak,
+    bestStreak: Math.max(bestStreak, nextStreak),
+    lastActivityDateIso: today
+  };
+
   return {
     ...progress,
+    gamification: updatedGamification,
     streak: {
       current: nextStreak,
-      best: Math.max(bestStreak, nextStreak),
+      best: updatedGamification.bestStreak,
       lastActivityDateIso: today
     }
   };
@@ -457,6 +581,51 @@ export function completeDailyChallenge(progress: UserProgress, questionId: strin
       lastCompletedDateIso: getTodayDateKey(),
       lastQuestionId: questionId
     }
+  };
+}
+
+export function awardPointsOnce(progress: UserProgress, amount: number, eventId: string): UserProgress {
+  if (progress.gamification.awardedPointEvents[eventId]) {
+    return progress;
+  }
+
+  const updatedGamification: GamificationState = {
+    ...progress.gamification,
+    totalPoints: progress.gamification.totalPoints + amount,
+    awardedPointEvents: {
+      ...progress.gamification.awardedPointEvents,
+      [eventId]: true
+    }
+  };
+
+  return {
+    ...progress,
+    gamification: updatedGamification
+  };
+}
+
+export function awardBadge(progress: UserProgress, badge: Omit<ProgressBadge, 'earnedAtIso'>): UserProgress {
+  const alreadyEarned = progress.gamification.badges.some((existing) => existing.id === badge.id);
+  if (alreadyEarned) {
+    return progress;
+  }
+
+  const updatedGamification: GamificationState = {
+    ...progress.gamification,
+    badges: [
+      ...progress.gamification.badges,
+      {
+        id: badge.id,
+        name: badge.name,
+        description: badge.description,
+        earnedAtIso: new Date().toISOString()
+      }
+    ]
+  };
+
+  return {
+    ...progress,
+    gamification: updatedGamification
   };
 }
 

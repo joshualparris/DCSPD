@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { navigationItems } from './navigation';
+import { navigationGroups } from './navigation';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { getGamificationData } from '../../lib/gamification';
-import { Trophy, Flame } from 'lucide-react';
+import { getProgress } from '../../lib/progress';
+import { Trophy, Flame, ChevronDown, ChevronRight } from 'lucide-react';
 import { APP_NAME } from '../../config/appConfig';
 
 function isActive(pathname: string, href: string) {
@@ -23,11 +23,19 @@ export default function Sidebar() {
   const [search, setSearch] = useState('');
   const [points, setPoints] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
+    Today: true,
+    Learn: true,
+    Practise: true,
+    Tools: false,
+    Progress: false,
+    Admin: false
+  });
 
   useEffect(() => {
-    const data = getGamificationData();
-    setPoints(data.totalPoints);
-    setStreak(data.currentStreak);
+    const progress = getProgress();
+    setPoints(progress.gamification.totalPoints);
+    setStreak(progress.gamification.currentStreak);
   }, [pathname]);
 
   function handleSearch(e: React.FormEvent) {
@@ -77,21 +85,40 @@ export default function Sidebar() {
         </form>
       </div>
 
-      <nav className="mt-4 space-y-1">
-        {navigationItems.map((item) => {
-          const active = isActive(pathname, item.href);
+      <nav className="mt-4 space-y-4">
+        {navigationGroups.map((group) => {
+          const isOpen = openGroups[group.label];
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`block rounded-2xl px-4 py-3 text-sm transition ${
-                active
-                  ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900'
-                  : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-              }`}
-            >
-              {item.label}
-            </Link>
+            <div key={group.label} className="overflow-hidden rounded-3xl border border-slate-100 bg-slate-50 dark:bg-slate-900/60 dark:border-slate-800">
+              <button
+                type="button"
+                onClick={() => setOpenGroups((current) => ({ ...current, [group.label]: !current[group.label] }))}
+                className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200"
+              >
+                <span>{group.label}</span>
+                {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+              </button>
+              <div className={`${isOpen ? 'max-h-96' : 'max-h-0'} overflow-hidden transition-all duration-300`}> 
+                <div className="space-y-1 border-t border-slate-100 px-3 py-3 dark:border-slate-800">
+                  {group.items.map((item) => {
+                    const active = isActive(pathname, item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`block rounded-2xl px-4 py-3 text-sm transition ${
+                          active
+                            ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900'
+                            : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           );
         })}
       </nav>

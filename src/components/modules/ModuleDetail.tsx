@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { getModuleCompletion } from '../../lib/moduleMath';
 import {
   addPdEntry,
+  awardBadge,
+  awardPointsOnce,
   ensureModuleProgress,
   getInitialProgressSnapshot,
   getStoredProgressSnapshot,
@@ -24,7 +26,7 @@ import type { AssessmentAttempt } from '../../types/assessment';
 import type { TrainingModule } from '../../types/training';
 import AssessmentSession from '../assessment/AssessmentSession';
 import FlashcardDeck from '../flashcards/FlashcardDeck';
-import { addModulePoints, awardBadge, PREDEFINED_BADGES } from '../../lib/gamification';
+import { PREDEFINED_BADGES } from '../../lib/gamification';
 import { trackUsageInteraction } from '../../hooks/useUsageTracking';
 import { useOfflineDownload } from '../../hooks/useOfflineDownload';
 import { Download, Trash2, CheckCircle } from 'lucide-react';
@@ -99,18 +101,21 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
 
   useEffect(() => {
     if (completion === 100) {
-      addModulePoints(moduleData.id);
+      setProgress((current) => {
+        let nextProgress = awardPointsOnce(current, 100, `module-complete-${moduleData.id}`);
 
-      // Check for specific badges
-      if (moduleData.id === 'cybersecurity-basics') {
-        awardBadge(PREDEFINED_BADGES.CYBER_GUARDIAN);
-      } else if (moduleData.id === 'device-imaging-workflows') {
-        awardBadge(PREDEFINED_BADGES.IMAGING_PRO);
-      } else if (moduleData.id === 'accessibility-inclusive-design') {
-        awardBadge(PREDEFINED_BADGES.INCLUSIVE_DESIGNER);
-      } else if (moduleData.id === 'communication-soft-skills') {
-        awardBadge(PREDEFINED_BADGES.SUPPORT_HEART);
-      }
+        if (moduleData.id === 'cybersecurity-basics') {
+          nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.CYBER_GUARDIAN);
+        } else if (moduleData.id === 'device-imaging-workflows') {
+          nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.IMAGING_PRO);
+        } else if (moduleData.id === 'accessibility-inclusive-design') {
+          nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.INCLUSIVE_DESIGNER);
+        } else if (moduleData.id === 'communication-soft-skills') {
+          nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.SUPPORT_HEART);
+        }
+
+        return nextProgress;
+      });
     }
   }, [completion, moduleData.id]);
 
