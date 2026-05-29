@@ -38,29 +38,30 @@ function multipleChoiceFor(
   objectiveTitle: string,
   title: string
 ) {
+  const certificationLabel = `${config.certificationTitle} (${config.examCode})`;
   return [
     {
       id: `${slug(title)}-mcq-concept`,
-      prompt: `What is the best way to study ${title} for ${config.certificationTitle}?`,
+      prompt: `For ${certificationLabel}, what is the best way to study ${title}?`,
       options: [
         { id: 'a', text: 'Memorise the term only, then skip application.' },
         {
           id: 'b',
-          text: `Define the concept, connect it to ${objectiveId} ${objectiveTitle}, and practise support decisions.`
+          text: `Define the concept, connect it to ${objectiveId} ${objectiveTitle}, and practise support decisions aligned with ${sectionTitle}.`
         },
         { id: 'c', text: 'Copy private DCS operational details into your answer.' },
         { id: 'd', text: 'Skip it unless it names a school system directly.' }
       ],
       correctOptionId: 'b',
-      explanation: `${title} should be learned inside ${sectionTitle}, then translated into safe support judgement.`
+      explanation: `${title} should be learned through the ${sectionTitle} domain and translated into safe DCS support judgement.`
     },
     {
       id: `${slug(title)}-mcq-boundary`,
-      prompt: `Which answer is acceptable evidence for this ${title} assessment?`,
+      prompt: `Which answer is acceptable evidence for this ${certificationLabel} ${title} assessment?`,
       options: [
         {
           id: 'a',
-          text: 'A synthetic scenario with safe checks, escalation point, and privacy boundary.'
+          text: 'A synthetic scenario with safe checks, escalation point, and a clear privacy boundary.'
         },
         {
           id: 'b',
@@ -70,22 +71,25 @@ function multipleChoiceFor(
         { id: 'd', text: 'A production change described step by step.' }
       ],
       correctOptionId: 'a',
-      explanation: 'DCSPrep evidence must stay privacy-safe and synthetic.'
+      explanation: `Evidence for ${certificationLabel} must stay privacy-safe, synthetic, and relevant to ${title}.`
     },
     {
       id: `${slug(title)}-mcq-evidence`,
-      prompt: `Before escalating a ${title} issue, which evidence is most useful?`,
+      prompt: `Before escalating a ${certificationLabel} ${title} issue, which evidence is most useful?`,
       options: [
         {
           id: 'a',
           text: 'Exact symptom, scope, system details, recent change, and safe checks already tried.'
         },
-        { id: 'b', text: 'Only a desktop screenshot that may include private information.' },
+        {
+          id: 'b',
+          text: 'Only a desktop screenshot that may include private information.'
+        },
         { id: 'c', text: 'A guess that hardware is broken without scope checks.' },
         { id: 'd', text: 'The user password for later investigation.' }
       ],
       correctOptionId: 'a',
-      explanation: 'Strong notes separate symptom, scope, safe checks, and escalation without private data.'
+      explanation: `Strong ${certificationLabel} notes separate symptom, scope, safe checks, and escalation without private data.`
     }
   ];
 }
@@ -97,8 +101,9 @@ function assessmentFor(
   objectiveTitle: string,
   title: string
 ): AplusCore2Assessment {
+  const certificationLabel = `${config.certificationTitle} (${config.examCode})`;
   return {
-    prompt: `Explain ${title} in plain English, then apply it to a fake DCS IT support scenario for ${config.examCode}. Include what it means, what symptoms it affects, safe first checks, and when you would escalate.`,
+    prompt: `Explain ${title} in plain English for ${certificationLabel}, then apply it to a fake DCS IT support scenario. Include what it means, what symptoms it affects, safe first checks, and when you would escalate.`,
     successCriteria: [
       'Explains the concept without jargon',
       'Connects to realistic DCS support patterns',
@@ -106,7 +111,7 @@ function assessmentFor(
       'Includes a privacy or escalation boundary',
       'Uses only synthetic or anonymised examples'
     ],
-    modelAnswerGuide: `${title} belongs to ${sectionTitle}, objective ${objectiveId} - ${objectiveTitle}. Define the concept, name support symptoms, record safe evidence, and stop before private data or owner-only changes.`,
+    modelAnswerGuide: `${title} belongs to ${sectionTitle}, objective ${objectiveId} - ${objectiveTitle}. Define the concept for ${certificationLabel}, name support symptoms, record safe evidence, and stop before private data or owner-only changes.`,
     multipleChoice: multipleChoiceFor(config, objectiveId.split('.')[0], sectionTitle, objectiveId, objectiveTitle, title)
   };
 }
