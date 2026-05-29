@@ -133,7 +133,7 @@ export default function ModuleQuestionFirst({
             <RecallTextArea
               id={moduleData.modulePattern.memoryPrompt.id}
               value={recallDrafts[moduleData.modulePattern.memoryPrompt.id]}
-              onChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.memoryPrompt.id, text)}
+              onChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.memoryPrompt!.id, text)}
             />
           </div>
         ) : null}
