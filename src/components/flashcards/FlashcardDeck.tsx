@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { Flashcard } from '../../types/training';
 import type { FlashcardProgress } from '../../lib/progress';
-import { leitnerBoxLabels, type ReviewRating } from '../../lib/spacedRepetition';
+import { leitnerBoxLabels, getReviewIntervalLabel, type ReviewRating } from '../../lib/spacedRepetition';
 import { trackUsageInteraction } from '../../hooks/useUsageTracking';
 import FlashcardCard from './FlashcardCard';
 
@@ -90,9 +90,10 @@ export default function FlashcardDeck({ cards, progress, onReview, analyticsCont
               onReview(card.id, rating);
               setIndex(index === cards.length - 1 ? 0 : index + 1);
             }}
-            className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium capitalize text-slate-800"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 transition hover:bg-slate-50"
           >
-            {rating}
+            <span className="capitalize">{rating}</span>
+            <span className="text-[10px] font-normal text-slate-500">{getReviewIntervalLabel(rating)}</span>
           </button>
         ))}
       </div>

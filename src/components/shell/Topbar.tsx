@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { navigationItems } from './navigation';
+import { APP_NAME, APP_SUPPORT_PRIORITIZATION_NOTE } from '../../config/appConfig';
 
 function isActive(pathname: string, href: string) {
   if (href === '/') {
@@ -48,7 +49,7 @@ export default function Topbar() {
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="flex items-center justify-between md:block">
             <Link href="/" className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
-              DCSPrep
+              {APP_NAME}
             </Link>
             <button
               onClick={toggleDarkMode}
@@ -58,7 +59,7 @@ export default function Topbar() {
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
-              Professional development dashboard for DCS IT support knowledge, assessment, documentation, and
+              Professional development dashboard for IT support knowledge, assessment, documentation, and
               situational practice.
             </p>
           </div>
@@ -72,8 +73,7 @@ export default function Topbar() {
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 md:max-w-md dark:bg-amber-950/20 dark:border-amber-900/30 dark:text-amber-200">
-              Use this application only during approved professional development periods. Tickets, walk-ups, calls,
-              and Paul&apos;s instructions take priority over professional development.
+              Use this application only during approved professional development periods. {APP_SUPPORT_PRIORITIZATION_NOTE}
             </div>
           </div>
         </div>

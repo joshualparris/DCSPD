@@ -114,12 +114,12 @@ export default function DashboardPage() {
       <header className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <div className="text-sm font-bold uppercase tracking-widest text-slate-400">DCS Support Training</div>
+            <div className="text-sm font-bold uppercase tracking-widest text-slate-400">IT Support Training</div>
             <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
               Welcome back
             </h1>
             <p className="mt-3 text-lg text-slate-600">
-              Your personalized coaching engine for school IT excellence.
+              Your personalized coaching engine for IT support excellence.
             </p>
           </div>
           <div className="flex gap-3">

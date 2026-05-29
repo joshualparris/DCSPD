@@ -5,27 +5,62 @@ import type { TrainingModule } from '../../types/training';
 
 type ModuleQuestionFirstProps = {
   moduleData: TrainingModule;
+  recallDrafts: Record<string, string>;
+  onUpdateRecallDraft: (draftId: string, text: string) => void;
 };
 
+function RecallTextArea({
+  id,
+  value,
+  onChange,
+  placeholder = "Draft your recall here before reading..."
+}: {
+  id: string;
+  value: string;
+  onChange: (text: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <textarea
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className="mt-3 w-full rounded-2xl border border-slate-200 bg-white p-3 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+      rows={3}
+    />
+  );
+}
+
 function PromptCard({
+  id,
   title,
   prompt,
-  supportText
+  supportText,
+  recallValue,
+  onRecallChange
 }: {
+  id: string;
   title: string;
   prompt: string;
   supportText?: string;
+  recallValue: string;
+  onRecallChange: (text: string) => void;
 }) {
   return (
     <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
       <div className="text-sm font-semibold text-slate-900">{title}</div>
       <p className="mt-3 text-sm leading-7 text-slate-700">{prompt}</p>
       {supportText ? <p className="mt-3 text-sm text-slate-600">{supportText}</p> : null}
+      <RecallTextArea id={id} value={recallValue} onChange={onRecallChange} />
     </div>
   );
 }
 
-export default function ModuleQuestionFirst({ moduleData }: ModuleQuestionFirstProps) {
+export default function ModuleQuestionFirst({
+  moduleData,
+  recallDrafts,
+  onUpdateRecallDraft
+}: ModuleQuestionFirstProps) {
   const exercise = moduleData.modulePattern.conceptSortExercise;
   const [selections, setSelections] = useState<Record<string, string>>(
     exercise ? Object.fromEntries(exercise.cards.map((card) => [card, ''])) : {}
@@ -51,6 +86,11 @@ export default function ModuleQuestionFirst({ moduleData }: ModuleQuestionFirstP
             <div key={question.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
               <div className="text-sm font-semibold text-slate-900">{question.prompt}</div>
               <p className="mt-3 text-sm text-slate-600">What good answers should include: {question.expectedFocus}</p>
+              <RecallTextArea
+                id={question.id}
+                value={recallDrafts[question.id]}
+                onChange={(text) => onUpdateRecallDraft(question.id, text)}
+              />
             </div>
           ))}
         </div>
@@ -58,19 +98,28 @@ export default function ModuleQuestionFirst({ moduleData }: ModuleQuestionFirstP
 
       <section className="grid gap-6 lg:grid-cols-2">
         <PromptCard
+          id={moduleData.modulePattern.explainBackPrompt.id}
           title={moduleData.modulePattern.explainBackPrompt.title}
           prompt={moduleData.modulePattern.explainBackPrompt.prompt}
           supportText={moduleData.modulePattern.explainBackPrompt.supportText}
+          recallValue={recallDrafts[moduleData.modulePattern.explainBackPrompt.id]}
+          onRecallChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.explainBackPrompt.id, text)}
         />
         <PromptCard
+          id={moduleData.modulePattern.cornellPrompt.id}
           title={moduleData.modulePattern.cornellPrompt.title}
           prompt={moduleData.modulePattern.cornellPrompt.prompt}
           supportText={moduleData.modulePattern.cornellPrompt.supportText}
+          recallValue={recallDrafts[moduleData.modulePattern.cornellPrompt.id]}
+          onRecallChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.cornellPrompt.id, text)}
         />
         <PromptCard
+          id={moduleData.modulePattern.sq3rPrompt.id}
           title={moduleData.modulePattern.sq3rPrompt.title}
           prompt={moduleData.modulePattern.sq3rPrompt.prompt}
           supportText={moduleData.modulePattern.sq3rPrompt.supportText}
+          recallValue={recallDrafts[moduleData.modulePattern.sq3rPrompt.id]}
+          onRecallChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.sq3rPrompt.id, text)}
         />
         {moduleData.modulePattern.memoryPrompt ? (
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
@@ -81,6 +130,11 @@ export default function ModuleQuestionFirst({ moduleData }: ModuleQuestionFirstP
                 Memory hint: {moduleData.modulePattern.memoryPrompt.mnemonicHint}
               </p>
             ) : null}
+            <RecallTextArea
+              id={moduleData.modulePattern.memoryPrompt.id}
+              value={recallDrafts[moduleData.modulePattern.memoryPrompt.id]}
+              onChange={(text) => onUpdateRecallDraft(moduleData.modulePattern.memoryPrompt.id, text)}
+            />
           </div>
         ) : null}
       </section>

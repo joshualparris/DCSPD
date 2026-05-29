@@ -128,7 +128,7 @@ export default function SettingsPage() {
   }
 
   function handleReset() {
-    if (window.confirm('Reset all DCSPrep local progress and logs? This cannot be undone.')) {
+    if (window.confirm('Reset all local progress and logs? This cannot be undone.')) {
       resetProgress();
       window.location.reload();
     }
@@ -140,7 +140,7 @@ export default function SettingsPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `dcsprep-progress-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `itprep-progress-backup-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -351,7 +351,7 @@ export default function SettingsPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `dcsprep-usage-analytics-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `itprep-usage-analytics-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(link);
     link.click();
     link.remove();

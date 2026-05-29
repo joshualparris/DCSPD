@@ -87,8 +87,13 @@ const sopPrompts = [
 
 export default function KnowledgeBaseLabPage() {
   const [selectedTrackId, setSelectedTrackId] = useState(articleTracks[0].id);
-  const [draft, setDraft] = useState('');
+  const [skeletonValues, setSkeletonValues] = useState<Record<string, string>>({});
   const selectedTrack = articleTracks.find((track) => track.id === selectedTrackId) || articleTracks[0];
+
+  const draft = selectedTrack.skeleton.map(item => {
+    const key = `${selectedTrack.id}-${item}`;
+    return `## ${item}\n${skeletonValues[key] || ''}`;
+  }).join('\n\n');
 
   return (
     <div className="space-y-6">
@@ -148,21 +153,33 @@ export default function KnowledgeBaseLabPage() {
               </div>
             </div>
 
-            <div className="mt-5 rounded-3xl border border-slate-200 bg-white p-5">
-              <div className="font-semibold text-slate-900">Suggested article skeleton</div>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                {selectedTrack.skeleton.map((item) => (
-                  <li key={item}>- {item}</li>
-                ))}
-              </ul>
+            <div className="mt-5 space-y-4">
+              <div className="text-lg font-semibold text-slate-900">Interactive skeleton</div>
+              <div className="grid gap-4">
+                {selectedTrack.skeleton.map((item) => {
+                  const key = `${selectedTrack.id}-${item}`;
+                  return (
+                    <div key={item} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                      <label className="text-sm font-semibold text-slate-900">{item}</label>
+                      <textarea
+                        value={skeletonValues[key] || ''}
+                        onChange={(e) => setSkeletonValues(prev => ({ ...prev, [key]: e.target.value }))}
+                        className="mt-3 w-full rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        placeholder={`Write the ${item.toLowerCase()} here...`}
+                        rows={3}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            <textarea
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              className="mt-5 min-h-56 w-full rounded-3xl border border-slate-200 px-4 py-3 text-sm text-slate-800"
-              placeholder="Draft your article or SOP outline here."
-            />
+            <div className="mt-8 border-t border-slate-100 pt-8">
+              <div className="text-lg font-semibold text-slate-900">Full draft preview</div>
+              <div className="mt-4 whitespace-pre-wrap rounded-3xl bg-slate-50 p-6 text-sm leading-relaxed text-slate-700 border border-slate-100">
+                {draft || 'Draft will appear here as you fill in the skeleton above.'}
+              </div>
+            </div>
 
             <div className="mt-6">
               <AiCoachPanel

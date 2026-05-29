@@ -1,8 +1,10 @@
 # DCSPrep
 
-DCSPrep is a local-first Next.js professional development app for Josh's DCS IT support growth. It focuses on safe Level 1 learning, structured assessment, scenario practice, error review, and visible progress across real school-support themes.
+DCSPrep is a professional development training and portfolio tool designed for DCS IT support growth. It is a local-first Next.js application that focuses on safe Level 1 learning, structured assessment, and evidence-based practice.
 
-The intended direction is question-first and retrieval-first:
+**Status Notice**: This application is a training environment and portfolio project. It is not a production helpdesk system or a replacement for school-owned management systems (Sentral, OurDCS, etc.). All data and practice should remain privacy-safe.
+
+The intended direction is retrieval-first:
 
 - flashcards
 - multiple-choice and short-answer practice

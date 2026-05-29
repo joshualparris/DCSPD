@@ -15,7 +15,7 @@ type LeaderboardEntry = {
 const mockLeaderboard: LeaderboardEntry[] = [
   { id: '1', name: 'Paul (Level 2)', points: 4500, streak: 12 },
   { id: '2', name: 'Sarah (ICT Admin)', points: 3800, streak: 8 },
-  { id: '3', name: 'Josh (You)', points: 2950, streak: 5, isCurrentUser: true },
+  { id: '3', name: 'You', points: 2950, streak: 5, isCurrentUser: true },
   { id: '4', name: 'Tim (Preschool)', points: 2100, streak: 3 },
   { id: '5', name: 'Emma (Wellington)', points: 1850, streak: 7 }
 ];

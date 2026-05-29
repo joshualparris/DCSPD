@@ -122,25 +122,25 @@ const SCHEDULER_SESSION_STORAGE_PREFIX = 'dcsprep_scheduler_session_v1_';
 
 export const DEFAULT_SCHEDULER_SETTINGS: SchedulerSettings = {
   blocks: [
-    { id: 'thursday-block-1', day: 'thursday', label: 'Thursday Block 1', startTime: '08:30', endTime: '10:55' },
-    { id: 'thursday-block-2', day: 'thursday', label: 'Thursday Block 2', startTime: '11:25', endTime: '13:05' },
-    { id: 'thursday-block-3', day: 'thursday', label: 'Thursday Block 3', startTime: '13:45', endTime: '16:20' },
-    { id: 'friday-block-1', day: 'friday', label: 'Friday Block 1', startTime: '08:30', endTime: '11:05' },
-    { id: 'friday-block-2', day: 'friday', label: 'Friday Block 2', startTime: '11:35', endTime: '13:05' },
-    { id: 'friday-block-3', day: 'friday', label: 'Friday Block 3', startTime: '13:45', endTime: '16:20' }
+    { id: 'thursday-block-1', day: 'thursday', label: 'Morning block', startTime: '08:30', endTime: '10:55' },
+    { id: 'thursday-block-2', day: 'thursday', label: 'Midday block', startTime: '11:25', endTime: '13:05' },
+    { id: 'thursday-block-3', day: 'thursday', label: 'Afternoon block', startTime: '13:45', endTime: '16:20' },
+    { id: 'friday-block-1', day: 'friday', label: 'Morning block', startTime: '08:30', endTime: '11:05' },
+    { id: 'friday-block-2', day: 'friday', label: 'Midday block', startTime: '11:35', endTime: '13:05' },
+    { id: 'friday-block-3', day: 'friday', label: 'Afternoon block', startTime: '13:45', endTime: '16:20' }
   ],
   studyContext: {
-    certificationFocus: 'CompTIA A+ Core 2 in progress',
-    currentTopic: 'Section 1.6 Windows Settings',
-    remainingVideo: '~10 hours of Messer content remaining',
-    videoSource: 'Professor Messer on YouTube',
-    flashcardSource: 'DCSPrep internal deck',
+    certificationFocus: 'A+ and foundational IT support learning',
+    currentTopic: 'Windows settings and endpoint troubleshooting',
+    remainingVideo: '~10 hours of technical practice videos remaining',
+    videoSource: 'IT support training videos',
+    flashcardSource: 'internal review deck',
     flashcardHref: '/due-today',
-    applicationSource: 'DCSPrep scenarios',
+    applicationSource: 'scenario practice modules',
     applicationHref: '/scenarios',
-    buildingTasks: 'DCSPrep app itself and new scenario/content authoring',
-    writingTasks: 'Ticket templates, runbooks, PD log entries, Evidence Pack entries',
-    breakActivities: 'Walk outside, water, brief outdoor exposure'
+    buildingTasks: 'support workflow planning and content authoring',
+    writingTasks: 'ticket summaries, runbooks, PD entries, and reflection notes',
+    breakActivities: 'Walk outside, hydrate, and reset your focus'
   }
 };
 

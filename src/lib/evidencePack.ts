@@ -42,6 +42,33 @@ function joinList(items: string[]) {
   return items.length ? items.map(safeLine).join('; ') : 'None recorded.';
 }
 
+function generateCompetencySummaries(progress: UserProgress, start: string, end: string): string[] {
+  const summaries: string[] = [];
+
+  // 1. Triage & Troubleshooting
+  const scenarioRuns = progress.scenarioRuns.filter(r => r.completed && inRange(r.completedAtIso, start, end));
+  if (scenarioRuns.length > 0) {
+    summaries.push(`**Triage & Troubleshooting**: Demonstrated consistent evidence-based reasoning across ${scenarioRuns.length} technical simulations. Focused on reducing uncertainty through structured observation, scope clarification, and safe, reversible first checks before escalation.`);
+  }
+
+  // 2. Service-Specific Fluency
+  const modulesWithActivity = Object.keys(progress.modules).filter(id => {
+    const mod = progress.modules[id];
+    return mod && (Object.values(mod.sectionsRead).some(Boolean) || mod.quizAttempts.length > 0);
+  });
+  if (modulesWithActivity.length > 0) {
+    summaries.push(`**Service-Specific Fluency**: Engaged with specialized school IT domains including networking basics, endpoint support, and cloud identity. Translated technical concepts into plain English for staff and maintained awareness of ownership boundaries across different systems.`);
+  }
+
+  // 3. Documentation & Professionalism
+  const practicals = Object.values(progress.modules).reduce((sum, mod) => sum + Object.values(mod.practicalOutputs).filter(Boolean).length, 0);
+  if (practicals > 0) {
+    summaries.push(`**Documentation & Professionalism**: Produced ${practicals} practical support references and documentation drafts. Maintained high standards for privacy-safe evidence capture and clear, actionable handoff notes for senior ICT staff.`);
+  }
+
+  return summaries;
+}
+
 export function generateEvidencePackMarkdown(progress: UserProgress, options: EvidencePackOptions): string {
   const summary = generatePdSummaryForRange(progress, options.startDateIso, options.endDateIso);
   const includeFeedbackEvidence = options.includeFeedbackEvidence ?? true;
@@ -128,7 +155,7 @@ export function generateEvidencePackMarkdown(progress: UserProgress, options: Ev
     : [];
 
   return [
-    `# DCSPrep Professional Development ${options.managerSafe ? 'Executive Summary' : 'Evidence Pack'}`,
+    `# ITPrep Professional Development ${options.managerSafe ? 'Executive Summary' : 'Evidence Pack'}`,
     '',
     `Period: ${summary.startDateIso} to ${summary.endDateIso}`,
     '',
@@ -143,11 +170,14 @@ export function generateEvidencePackMarkdown(progress: UserProgress, options: Ev
           `- **Knowledge Base**: Active engagement with ${modulesWithActivity.length || summary.moduleCount} specialized school IT modules.`,
           `- **Documentation**: Generated ${practicalOutputs.length} practical support outputs and evidence-rich ticket notes.`,
           `- **Readiness**: Current proficiency tracking shows strongest alignment in **${readiness.sort((a, b) => b.score - a.score)[0]?.label || 'core support'}** domains.`,
+          '',
+          '### Professional Competency Summary',
+          ...generateCompetencySummaries(progress, options.startDateIso, options.endDateIso),
           ''
         ]
       : [
           '## Privacy reminder',
-          'Do not include live ticket details, student names, parent names, staff names, credentials, IP addresses, internal URLs, screenshots, device serials, or confidential DCS procedures.',
+          'Do not include live ticket details, student names, parent names, staff names, credentials, IP addresses, internal URLs, screenshots, device serials, or confidential internal procedures.',
           '',
           '## Summary',
           `- Total PD time: ${summary.totalMinutes} minutes`,

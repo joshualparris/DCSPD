@@ -4,15 +4,16 @@ import Topbar from '../src/components/shell/Topbar';
 import Sidebar from '../src/components/shell/Sidebar';
 import PwaRegistration from '../src/components/shell/PwaRegistration';
 import AppUsageTracker from '../src/components/usage/AppUsageTracker';
+import { APP_NAME, APP_DESCRIPTION, APP_SHORT_NAME } from '../src/config/appConfig';
 
 export const metadata: Metadata = {
-  title: 'DCSPrep',
-  description: 'A local-first DCS IT professional development dashboard.',
+  title: APP_NAME,
+  description: APP_DESCRIPTION,
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'DCSPrep',
+    title: APP_SHORT_NAME,
   },
 };
 
@@ -41,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <footer className="border-t border-slate-200 bg-white/80 px-4 py-5 text-sm text-slate-500 dark:bg-slate-900/80 dark:border-slate-800 dark:text-slate-400">
             <div className="mx-auto max-w-7xl">
-              DCSPrep is a personal PD tool. Keep all entries privacy-safe and free of real student, staff,
+              {APP_NAME} is a personal PD tool. Keep all entries privacy-safe and free of real student, staff,
               credential, or network details.
             </div>
           </footer>

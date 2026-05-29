@@ -1,4 +1,4 @@
-export const MODULE_GENERATION_PROMPT = `You are an expert educational content creator for IT Professionals. Your task is to generate a new training module for "DCSPrep".
+export const MODULE_GENERATION_PROMPT = `You are an expert educational content creator for IT Professionals. Your task is to generate a new training module for "ITPrep".
 
 The output MUST be a single JSON object.
 
@@ -51,7 +51,7 @@ The output MUST be a single JSON object.
 
 Generate a module about: [TOPIC]`;
 
-export const ROLEPLAY_GENERATION_PROMPT = `Generate a "RoleplayScenario" JSON object for DCSPrep:
+export const ROLEPLAY_GENERATION_PROMPT = `Generate a "RoleplayScenario" JSON object for ITPrep:
 {
   "id": "unique-id",
   "persona": "Name",
@@ -65,7 +65,7 @@ export const ROLEPLAY_GENERATION_PROMPT = `Generate a "RoleplayScenario" JSON ob
 }
 Generate about: [TOPIC]`;
 
-export const SCENARIO_LAB_GENERATION_PROMPT = `Generate a "Scenario" JSON object for DCSPrep:
+export const SCENARIO_LAB_GENERATION_PROMPT = `Generate a "Scenario" JSON object for ITPrep:
 {
   "id": "unique-id",
   "title": "Title",
@@ -91,7 +91,7 @@ export const SCENARIO_LAB_GENERATION_PROMPT = `Generate a "Scenario" JSON object
 }
 Generate about: [TOPIC]`;
 
-export const ACADEMIC_GENERATION_PROMPT = `Generate an "AcademicSubject" JSON object for DCSPrep:
+export const ACADEMIC_GENERATION_PROMPT = `Generate an "AcademicSubject" JSON object for ITPrep:
 {
   "id": "id",
   "code": "CODE",
@@ -113,7 +113,7 @@ export const ACADEMIC_GENERATION_PROMPT = `Generate an "AcademicSubject" JSON ob
 }
 Generate about: [TOPIC]`;
 
-export const PLAYBOOK_GENERATION_PROMPT = `Generate a "TroubleshootingPlaybook" JSON object for DCSPrep:
+export const PLAYBOOK_GENERATION_PROMPT = `Generate a "TroubleshootingPlaybook" JSON object for ITPrep:
 {
   "id": "unique-id",
   "title": "Title",
@@ -139,7 +139,7 @@ export const PLAYBOOK_GENERATION_PROMPT = `Generate a "TroubleshootingPlaybook" 
 }
 Generate about: [TOPIC]`;
 
-export const ASSET_PROFILE_GENERATION_PROMPT = `Generate a "DcsAssetProfile" JSON object for DCSPrep:
+export const ASSET_PROFILE_GENERATION_PROMPT = `Generate a "AssetProfile" JSON object for ITPrep:
 {
   "id": "unique-id",
   "name": "Asset Name",

@@ -30,6 +30,8 @@ export type ModuleProgress = {
   flashcards: Record<string, FlashcardProgress>;
   quizAttempts: ModuleQuizAttempt[];
   practicalOutputs: Record<string, boolean>;
+  practicalOutputEvidence: Record<string, string>;
+  recallDrafts: Record<string, string>;
   activeAssessment?: {
     currentIndex: number;
     attempts: AssessmentAttempt[];
@@ -312,7 +314,9 @@ function normalizeModuleProgress(value: unknown, module?: TrainingModule): Modul
     sectionsRead: Object.fromEntries((module?.sections || []).map((section) => [section.id, false])),
     flashcards: Object.fromEntries((module?.flashcards || []).map((card) => [card.id, getDefaultFlashcardProgress()])),
     quizAttempts: [],
-    practicalOutputs: Object.fromEntries((module?.practicalOutputs || []).map((output) => [output.id, false]))
+    practicalOutputs: Object.fromEntries((module?.practicalOutputs || []).map((output) => [output.id, false])),
+    practicalOutputEvidence: {},
+    recallDrafts: {}
   };
 
   if (!value || typeof value !== 'object') {
@@ -331,12 +335,16 @@ function normalizeModuleProgress(value: unknown, module?: TrainingModule): Modul
   });
 
   const mergedPracticalOutputs = { ...base.practicalOutputs, ...(candidate.practicalOutputs || {}) };
+  const mergedPracticalOutputEvidence = { ...base.practicalOutputEvidence, ...(candidate.practicalOutputEvidence || {}) };
+  const mergedRecallDrafts = { ...base.recallDrafts, ...(candidate.recallDrafts || {}) };
 
   return {
     sectionsRead: mergedSections,
     flashcards: mergedFlashcards,
     quizAttempts: Array.isArray(candidate.quizAttempts) ? candidate.quizAttempts : [],
-    practicalOutputs: mergedPracticalOutputs
+    practicalOutputs: mergedPracticalOutputs,
+    practicalOutputEvidence: mergedPracticalOutputEvidence,
+    recallDrafts: mergedRecallDrafts
   };
 }
 
@@ -483,7 +491,7 @@ export function saveProgress(progress: UserProgress) {
 }
 
 export type ProgressBackup = {
-  app: 'DCSPrep';
+  app: 'ITPrep' | 'DCSPrep';
   schemaVersion: 1;
   exportedAtIso: string;
   progress: UserProgress;
@@ -491,7 +499,7 @@ export type ProgressBackup = {
 
 export function createProgressBackup(progress: UserProgress, exportedAtIso = new Date().toISOString()): ProgressBackup {
   return {
-    app: 'DCSPrep',
+    app: 'ITPrep',
     schemaVersion: 1,
     exportedAtIso,
     progress
@@ -506,8 +514,8 @@ export function parseProgressBackupJson(json: string): { ok: true; progress: Use
   try {
     const parsed = JSON.parse(json) as Partial<ProgressBackup>;
 
-    if (parsed.app !== 'DCSPrep' || parsed.schemaVersion !== 1 || !parsed.progress) {
-      return { ok: false, error: 'This does not look like a DCSPrep progress backup.' };
+    if ((parsed.app !== 'ITPrep' && parsed.app !== 'DCSPrep') || parsed.schemaVersion !== 1 || !parsed.progress) {
+      return { ok: false, error: 'This does not look like an ITPrep progress backup.' };
     }
 
     return { ok: true, progress: normalizeProgress(parsed.progress) };
@@ -586,6 +594,52 @@ export function togglePracticalOutput(
         practicalOutputs: {
           ...moduleProgress.practicalOutputs,
           [outputId]: !moduleProgress.practicalOutputs[outputId]
+        }
+      }
+    }
+  };
+}
+
+export function updatePracticalOutputEvidence(
+  progress: UserProgress,
+  moduleId: string,
+  outputId: string,
+  evidence: string
+): UserProgress {
+  const moduleProgress = progress.modules[moduleId];
+
+  return {
+    ...progress,
+    modules: {
+      ...progress.modules,
+      [moduleId]: {
+        ...moduleProgress,
+        practicalOutputEvidence: {
+          ...moduleProgress.practicalOutputEvidence,
+          [outputId]: evidence
+        }
+      }
+    }
+  };
+}
+
+export function updateRecallDraft(
+  progress: UserProgress,
+  moduleId: string,
+  draftId: string,
+  text: string
+): UserProgress {
+  const moduleProgress = progress.modules[moduleId];
+
+  return {
+    ...progress,
+    modules: {
+      ...progress.modules,
+      [moduleId]: {
+        ...moduleProgress,
+        recallDrafts: {
+          ...moduleProgress.recallDrafts,
+          [draftId]: text
         }
       }
     }

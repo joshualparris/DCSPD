@@ -45,6 +45,13 @@ export function getNextReviewDate(rating: ReviewRating, fromDateKey = getTodayDa
   return addDays(fromDateKey, REVIEW_DAY_OFFSETS[rating]);
 }
 
+export function getReviewIntervalLabel(rating: ReviewRating): string {
+  const days = REVIEW_DAY_OFFSETS[rating];
+  if (days === 0) return 'Review today';
+  if (days === 1) return 'Review tomorrow';
+  return `Review in ${days} days`;
+}
+
 export function isDue(dateKey: string, compareDateKey = getTodayDateKey()) {
   return parseDateKey(dateKey).getTime() <= parseDateKey(compareDateKey).getTime();
 }

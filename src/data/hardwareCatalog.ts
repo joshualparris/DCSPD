@@ -76,6 +76,39 @@ export const hardwareCatalog: HardwareCatalogItem[] = [
     escalationTriggers: ['Many devices affected', 'AP offline', 'VLAN/DHCP suspicion', 'Physical cabling issue', 'Safety access needed'],
     dcsUse: 'Critical for rolls, learning platforms, shared devices, and staff mobility.',
     privacyBoundary: 'Do not expose internal network identifiers or diagrams in PD evidence.'
+  },
+  {
+    id: 'surface-pro-laptop',
+    name: 'Surface Pro / Laptop (Staff Standard)',
+    category: 'endpoint',
+    summary: 'Current standard staff mobile endpoint with touch and pen support.',
+    safeChecks: ['Check Surface Connect port for debris', 'Verify charging light state', 'Force restart (hold power 20s)', 'Test with different dock'],
+    commonSymptoms: ['Battery drain', 'Pen not inking', 'Screen flicker', 'Surface Connect not charging'],
+    escalationTriggers: ['Bulging battery (Safety)', 'Physical screen crack', 'No power after force restart', 'BitLocker recovery key needed'],
+    dcsUse: 'Primary staff device for teaching and admin.',
+    privacyBoundary: 'Respect staff personal data and student records on screen.'
+  },
+  {
+    id: 'epson-laser-projector',
+    name: 'Epson Laser Projector',
+    category: 'display',
+    summary: 'High-brightness classroom and hall display solution.',
+    safeChecks: ['Confirm input source', 'Check for red warning lights', 'Clean external filters if accessible', 'Verify HDMI path/Vivi'],
+    commonSymptoms: ['Faint image', 'Automatic shutdown', 'Wrong aspect ratio', 'Fan noise'],
+    escalationTriggers: ['Internal error code', 'Lamp/Laser failure light', 'Ceiling mount instability', 'Total loss of image'],
+    dcsUse: 'Classroom teaching and large-scale assembly display.',
+    privacyBoundary: 'Be aware of student information being projected during support.'
+  },
+  {
+    id: 'ubiquiti-switch',
+    name: 'Network Switch (Edge/Distribution)',
+    category: 'network',
+    summary: 'Central connectivity for classroom wall ports and access points.',
+    safeChecks: ['Check link lights on relevant port', 'Confirm PoE state for connected APs', 'Verify cable seating', 'Avoid power cycling without approval'],
+    commonSymptoms: ['Room-wide outage', 'Intermittent port connectivity', 'PoE devices not powering', 'Loop detection alerts'],
+    escalationTriggers: ['Multiple ports failing', 'SFP/Uplink failure', 'Fan failure / Overheating', 'Configuration change needed'],
+    dcsUse: 'Backbone for all wired and wireless room services.',
+    privacyBoundary: 'Do not store port mapping or VLAN diagrams in personal notes.'
   }
 ];
 

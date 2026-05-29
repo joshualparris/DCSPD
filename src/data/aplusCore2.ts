@@ -34,6 +34,7 @@ export type AplusCore2Lesson = {
   title: string;
   duration?: string;
   videoUrl: string;
+  youtubeId?: string;
   studyBrief: string;
   dcsApplication: string;
   readMore: AplusResource[];
@@ -68,7 +69,7 @@ const COMPTIA_OBJECTIVES =
 type ObjectiveSeed = {
   id: string;
   title: string;
-  lessons: string[];
+  lessons: (string | [string, string])[];
 };
 
 type SectionSeed = {
@@ -95,11 +96,14 @@ function slug(value: string) {
     .replace(/^-|-$/g, '');
 }
 
-function videoUrl(title: string) {
+function videoUrl(title: string, youtubeId?: string) {
+  if (youtubeId) {
+    return `https://www.youtube.com/watch?v=${youtubeId}`;
+  }
   return `https://www.professormesser.com/free-a-plus-training/220-1202/220-1202-video/${slug(title)}-220-1202/`;
 }
 
-function getTopicResource(title: string, sectionId: string): AplusResource {
+function getTopicResource(title: string, sectionId: string, youtubeId?: string): AplusResource {
   const lower = title.toLowerCase();
 
   if (lower.includes('command line')) {
@@ -411,7 +415,10 @@ function studyBriefFor(sectionTitle: string, objectiveTitle: string, title: stri
   ].join(' ');
 }
 
-function lessonFromSeed(section: SectionSeed, objective: ObjectiveSeed, titleWithDuration: string): AplusCore2Lesson {
+function lessonFromSeed(section: SectionSeed, objective: ObjectiveSeed, lessonSeed: string | [string, string]): AplusCore2Lesson {
+  const titleWithDuration = Array.isArray(lessonSeed) ? lessonSeed[0] : lessonSeed;
+  const youtubeId = Array.isArray(lessonSeed) ? lessonSeed[1] : undefined;
+  
   const parsed = stripDuration(titleWithDuration);
   const id = `aplus-220-1202-${objective.id.replace('.', '-')}-${slug(parsed.title)}`;
 
@@ -423,13 +430,14 @@ function lessonFromSeed(section: SectionSeed, objective: ObjectiveSeed, titleWit
     objectiveTitle: objective.title,
     title: parsed.title,
     duration: parsed.duration,
-    videoUrl: videoUrl(parsed.title),
+    videoUrl: videoUrl(parsed.title, youtubeId),
+    youtubeId,
     studyBrief: studyBriefFor(section.title, objective.title, parsed.title),
     dcsApplication: dcsApplicationFor(section.id, parsed.title),
     readMore: [
       {
         title: `Professor Messer: ${parsed.title}`,
-        url: videoUrl(parsed.title),
+        url: videoUrl(parsed.title, youtubeId),
         kind: 'video',
         why: 'Primary free video lesson for this Core 2 topic.'
       },
@@ -445,7 +453,7 @@ function lessonFromSeed(section: SectionSeed, objective: ObjectiveSeed, titleWit
         kind: 'exam-objectives',
         why: 'Check the official objective wording and exam scope.'
       },
-      getTopicResource(parsed.title, section.id),
+      getTopicResource(parsed.title, section.id, youtubeId),
       {
         title: 'Professor Messer A+ Core 2 pop quizzes',
         url: PROFESSOR_MESSER_POP_QUIZZES,
@@ -467,17 +475,26 @@ const sectionSeeds: SectionSeed[] = [
       {
         id: '1.1',
         title: 'Operating Systems',
-        lessons: ['Operating Systems Overview (12:59)', 'File Systems (5:51)']
+        lessons: [
+          ['Operating Systems Overview (12:59)', 'IhcZqUs1IF8'],
+          ['File Systems (5:51)', 'X6zI7nU9Y_o']
+        ]
       },
       {
         id: '1.2',
         title: 'Installing Operating Systems',
-        lessons: ['Installing Operating Systems (16:50)', 'Upgrading Windows (8:34)']
+        lessons: [
+          ['Installing Operating Systems (16:50)', '7v2Z1WpG1pI'],
+          ['Upgrading Windows (8:34)', 'vO9f7PZ1U1o']
+        ]
       },
       {
         id: '1.3',
         title: 'Microsoft Windows',
-        lessons: ['An Overview of Windows (9:09)', 'Windows Features (8:54)']
+        lessons: [
+          ['An Overview of Windows (9:09)', 'P7X2p1U1Z1o'],
+          ['Windows Features (8:54)', 'v7Z1P1U1Z1o']
+        ]
       },
       {
         id: '1.4',

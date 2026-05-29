@@ -16,6 +16,8 @@ import {
   saveActiveAssessment,
   clearActiveAssessment,
   togglePracticalOutput,
+  updatePracticalOutputEvidence,
+  updateRecallDraft,
   type UserProgress
 } from '../../lib/progress';
 import type { AssessmentAttempt } from '../../types/assessment';
@@ -238,7 +240,15 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
 
       <ModuleTabs tabs={['Questions First', 'Review', 'Assessment', 'Reference', 'DCS Application']} onChange={handleTabChange} />
 
-      {tab === 'Questions First' ? <ModuleQuestionFirst moduleData={moduleData} /> : null}
+      {tab === 'Questions First' ? (
+        <ModuleQuestionFirst
+          moduleData={moduleData}
+          recallDrafts={moduleProgress.recallDrafts}
+          onUpdateRecallDraft={(draftId, text) => {
+            setProgress((current) => updateRecallDraft(current, moduleData.id, draftId, text));
+          }}
+        />
+      ) : null}
 
       {tab === 'Reference' ? (
         <div className="space-y-4">
@@ -436,9 +446,27 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
                     }
                     className="mt-1 h-4 w-4 rounded border-slate-300"
                   />
-                  <div>
+                  <div className="flex-1">
                     <div className="font-semibold text-slate-900">{output.title}</div>
                     <p className="mt-1">{output.description}</p>
+                    {moduleProgress.practicalOutputs[output.id] && (
+                      <div className="mt-3">
+                        <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                          Evidence (e.g. ticket ID, link, or brief note)
+                        </label>
+                        <input
+                          type="text"
+                          value={moduleProgress.practicalOutputEvidence[output.id] || ''}
+                          onChange={(e) => {
+                            setProgress((current) =>
+                              updatePracticalOutputEvidence(current, moduleData.id, output.id, e.target.value)
+                            );
+                          }}
+                          placeholder="T-12345 or https://..."
+                          className="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                      </div>
+                    )}
                   </div>
                 </label>
               ))}

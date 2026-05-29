@@ -80,7 +80,7 @@ export default function EvidencePackPage() {
   }
 
   function downloadEvidencePack() {
-    downloadTextFile(`dcs-prep-evidence-pack-${options.startDateIso}-to-${options.endDateIso}.md`, markdown);
+    downloadTextFile(`itprep-evidence-pack-${options.startDateIso}-to-${options.endDateIso}.md`, markdown);
     trackUsageInteraction({
       eventType: 'evidence_export_created',
       route: '/evidence-pack',
@@ -114,7 +114,7 @@ export default function EvidencePackPage() {
     printWindow.document.write(`
       <html>
         <head>
-          <title>DCSPrep Evidence Pack</title>
+          <title>ITPrep Evidence Pack</title>
           <style>
             @media print {
               body { padding: 20px; }
@@ -126,7 +126,7 @@ export default function EvidencePackPage() {
         </head>
         <body>
           <div style="text-align: right; margin-bottom: 20px; font-size: 12px; color: #94a3b8; font-family: sans-serif;">
-            Generated via DCSPrep App on ${new Date().toLocaleDateString()}
+            Generated via ITPrep App on ${new Date().toLocaleDateString()}
           </div>
           ${html}
           <script>

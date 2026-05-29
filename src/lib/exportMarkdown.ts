@@ -22,7 +22,7 @@ export function buildMonthlyPdMarkdown(progress: UserProgress, date = new Date()
   const nextFocus = topWeakAreas[0] || 'Ports and protocols';
 
   return [
-    `# DCSPrep PD Summary (${monthKey})`,
+    `# ITPrep PD Summary (${monthKey})`,
     '',
     '> Keep this personal and privacy-safe. Do not include student, staff, parent, network, or credential details.',
     '',

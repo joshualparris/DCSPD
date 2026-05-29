@@ -92,7 +92,7 @@ function getRouteUsageMeta(pathname: string): RouteUsageMeta {
     return { route: pathname, label: 'Support tool', contentType: 'support-tool', activityCategory: 'support-tool' };
   }
 
-  return { route: pathname, label: pathname.replace(/^\//, '') || 'DCSPrep', contentType: 'other', activityCategory: 'navigation' };
+  return { route: pathname, label: pathname.replace(/^\//, '') || 'ITPrep', contentType: 'other', activityCategory: 'navigation' };
 }
 
 export default function AppUsageTracker() {

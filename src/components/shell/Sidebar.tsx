@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { getGamificationData } from '../../lib/gamification';
 import { Trophy, Flame } from 'lucide-react';
+import { APP_NAME } from '../../config/appConfig';
 
 function isActive(pathname: string, href: string) {
   if (href === '/') {
@@ -40,7 +41,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm md:block dark:bg-slate-900 dark:border-slate-800 transition-colors">
       <div className="border-b border-slate-100 pb-4 dark:border-slate-800">
-        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">DCSPrep</div>
+        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{APP_NAME}</div>
         <div className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">Professional Development Dashboard</div>
         
         <div className="mt-4 flex gap-2">

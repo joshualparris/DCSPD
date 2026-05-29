@@ -33,21 +33,21 @@ export type CustomRoleplayEditorInput = {
 };
 
 export const DEFAULT_CUSTOM_MODULE_EDITOR_INPUT: CustomModuleEditorInput = {
-  title: 'Custom DCS support module',
+  title: 'Custom IT support module',
   description: 'A privacy-safe Level 1 practice module for a recurring support workflow.',
   domain: 'Operations',
   level: 'L1',
   estimatedMinutes: 15,
   tagsText: 'custom, privacy-safe, Level 1',
   objectivesText: 'Clarify the support symptom\nCapture safe evidence\nEscalate with useful notes',
-  relevanceText: 'Supports repeatable DCS IT triage without copying private system data.',
+  relevanceText: 'Supports repeatable IT triage without copying private system data.',
   sectionsText:
-    'Workflow overview | Describe the support pattern, safe first checks, and boundaries.\nEvidence to capture | Record who/where/what/impact without names, credentials, or confidential URLs.\nEscalation boundary | Name when the issue needs a senior ICT handoff.',
+    'Workflow overview | Describe the support pattern, safe first checks, and boundaries.\nEvidence to capture | Record who/where/what/impact without names, credentials, or confidential URLs.\nEscalation boundary | Name when the issue needs a higher-tier handoff.',
   flashcardsText:
-    'What should the first question clarify? | Scope: one user, one device, one room, or many people.\nWhat should never be pasted into DCSPrep? | Student/staff names, passwords, internal URLs, tickets, IPs, or confidential procedures.\nWhat makes an escalation note useful? | Symptom, scope, impact, checks tried, result, and next owner.',
+    'What should the first question clarify? | Scope: one user, one device, one room, or many people.\nWhat should never be pasted into this app? | Student/staff names, passwords, internal URLs, tickets, IPs, or confidential procedures.\nWhat makes an escalation note useful? | Symptom, scope, impact, checks tried, result, and next owner.',
   recallPrompt: 'Write a privacy-safe first response for this workflow.',
   scenarioTitle: 'First-line triage practice',
-  scenarioPrompt: 'A staff member reports the recurring issue during a busy school day. Ask clarifying questions, try safe checks, and prepare an escalation note.',
+  scenarioPrompt: 'A staff member reports the recurring issue during a busy workday. Ask clarifying questions, try safe checks, and prepare an escalation note.',
   practicalOutputTitle: 'Support note template',
   practicalOutputDescription: 'Create a reusable note template for this workflow using generic wording only.'
 };
@@ -127,7 +127,7 @@ export function buildCustomTrainingModule(input: CustomModuleEditorInput): Train
       modelAnswer:
         'Clarify the symptom and scope, capture privacy-safe evidence, try reversible first checks, and escalate with impact and actions tried.',
       commonMistakes: ['Collecting private details', 'Skipping scope', 'Escalating without evidence'],
-      dcsContext: 'Custom DCSPrep content must stay generic and privacy-safe.',
+      dcsContext: 'Custom content must stay generic and privacy-safe.',
       reviewSchedule: 'Again today. Hard tomorrow. Good in 3 days. Easy in 7 days.',
       recommendedModuleId: id,
       weakTopic: 'ticket-quality',
@@ -145,7 +145,7 @@ export function buildCustomTrainingModule(input: CustomModuleEditorInput): Train
     estimatedMinutes: Math.max(5, Math.min(120, Math.round(input.estimatedMinutes || 15))),
     tags: tags.length ? tags : ['custom'],
     learningObjectives: objectives.length ? objectives : ['Practise safe first-line support.'],
-    dcsRelevance: relevance.length ? relevance : ['Supports DCS IT practice without copying private details.'],
+    dcsRelevance: relevance.length ? relevance : ['Supports IT practice without copying private details.'],
     sections: sections.length ? sections : DEFAULT_CUSTOM_MODULE_EDITOR_INPUT.sectionsText.split(/\r?\n/).map((line, index) => {
       const [title, body] = splitPair(line, 'Add privacy-safe workflow detail.');
       return { id: `${id}-section-${index + 1}`, title, bodyMarkdown: body };
@@ -193,8 +193,8 @@ export function buildCustomTrainingModule(input: CustomModuleEditorInput): Train
           'Write prompts around symptoms, decisions, and escalation boundaries.',
           'Check the result teaches judgement rather than exposing procedure.'
         ],
-        examplePrompt: 'Create three Level 1-safe questions for this workflow using generic school IT wording.',
-        privacyReminder: 'Do not paste live DCS data, names, tickets, credentials, internal URLs, or confidential procedures.'
+        examplePrompt: 'Create three Level 1-safe questions for this workflow using generic IT support wording.',
+        privacyReminder: 'Do not paste live internal data, names, tickets, credentials, internal URLs, or confidential procedures.'
       }
     },
     scenarioPrompts: [
