@@ -297,7 +297,7 @@ export function clearUsageEvents(): void {
 
 export function exportUsageEvents(): string {
   const payload: UsageAnalyticsExport = {
-    app: 'ITPrep',
+    app: 'DCSPrep',
     type: 'usage-analytics-export',
     version: 1,
     exportedAt: new Date().toISOString(),
@@ -312,8 +312,8 @@ export function parseUsageEventsImport(
 ): { ok: true; events: UsageEvent[] } | { ok: false; error: string } {
   try {
     const parsed = JSON.parse(json) as Partial<UsageAnalyticsExport>;
-    if ((parsed.app !== 'ITPrep' && parsed.app !== 'DCSPrep') || parsed.type !== 'usage-analytics-export' || parsed.version !== 1) {
-      return { ok: false, error: 'This does not look like an ITPrep usage analytics export.' };
+    if (parsed.app !== 'DCSPrep' || parsed.type !== 'usage-analytics-export') {
+      return { ok: false, error: 'This does not look like a DCSPrep usage analytics export file.' };
     }
 
     if (!Array.isArray(parsed.events)) {

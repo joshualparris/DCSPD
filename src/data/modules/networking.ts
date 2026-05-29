@@ -1,4 +1,5 @@
-import { mcq, shortAnswer, orderSteps, categorization, buildSections, buildFlashcards, buildScenarioPrompts, buildPracticalOutputs, createModule, enhanceModule, reviewSchedule, type LegacyTrainingModule, type ModuleEnhancement } from './helpers';
+import type { TrainingModule } from '../../types/training';
+import { mcq, shortAnswer, orderSteps, scenarioResponse, categorization, buildSections, buildFlashcards, buildScenarioPrompts, buildPracticalOutputs, createModule, enhanceModule, reviewSchedule, type LegacyTrainingModule, type ModuleEnhancement } from './helpers';
 
 const basePortsAndProtocols: LegacyTrainingModule = {
   id: 'ports-and-protocols',

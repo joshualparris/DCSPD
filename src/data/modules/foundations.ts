@@ -1,4 +1,4 @@
-import { mcq, shortAnswer, orderSteps, categorization, buildSections, buildFlashcards, buildScenarioPrompts, buildPracticalOutputs, createModule, enhanceModule, reviewSchedule, type LegacyTrainingModule, type ModuleEnhancement } from './helpers';
+import { mcq, shortAnswer, orderSteps, scenarioResponse, categorization, buildSections, buildFlashcards, buildScenarioPrompts, buildPracticalOutputs, createModule, enhanceModule, reviewSchedule, type LegacyTrainingModule, type ModuleEnhancement } from './helpers';
 
 const baseFoundations: LegacyTrainingModule = {
   id: 'dcs-it-support-foundations',
