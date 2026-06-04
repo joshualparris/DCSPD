@@ -12,7 +12,7 @@ const baseFoundations: LegacyTrainingModule = {
   learningObjectives: [
     'Use a 60-second triage pattern before touching settings.',
     'Recognise the boundary between safe Level 1 action and escalation.',
-    'Capture clean notes that help Paul or a Level 2 tech move faster.'
+    'Capture clean notes that help a senior tech or a Level 2 tech move faster.'
   ],
   dcsRelevance: [
     'Fits the stop-start rhythm of walk-ups, calls, and classroom interruptions.',
@@ -49,7 +49,7 @@ const baseFoundations: LegacyTrainingModule = {
   quiz: [
     mcq({
       id: 'foundations-q1',
-      prompt: 'A teacher says, "Room 7 has no internet." What is the best first move for Josh at Level 1?',
+      prompt: 'A teacher says, "Room 7 has no internet." What is the best first move for a Level 1 technician?',
       domain: 'DCS support foundations',
       difficulty: 'foundation',
       explanation: 'Scope comes before guesswork.',
@@ -93,7 +93,7 @@ const baseFoundations: LegacyTrainingModule = {
       modelAnswer:
         'Clarify scope first, try a reversible check second, compare with a known-good reference third, then escalate with evidence if the issue persists or affects learning broadly.',
       commonMistakes: ['Escalating before clarifying scope', 'Changing too much before comparing with known-good'],
-      dcsContext: 'A tidy sequence keeps Josh inside safe Level 1 boundaries.',
+      dcsContext: 'A tidy sequence keeps your response inside safe Level 1 boundaries.',
       reviewSchedule,
       recommendedModuleId: 'dcs-it-support-foundations',
       weakTopic: 'ticket-quality',
@@ -109,7 +109,7 @@ const baseFoundations: LegacyTrainingModule = {
     scenarioResponse({
       id: 'foundations-q4',
       prompt:
-        'You are mid-PD in a quiet library window when Paul asks you to help a teacher with a display issue immediately. Explain your next action and the judgement behind it.',
+        'You are mid-PD in a quiet library window when a manager asks you to help a teacher with a display issue immediately. Explain your next action and the judgement behind it.',
       domain: 'DCS support foundations',
       difficulty: 'stretch',
       explanation: 'The mission is not to finish study. It is to support safely and professionally.',
@@ -134,7 +134,7 @@ const baseFoundations: LegacyTrainingModule = {
     {
       id: 'foundations-p1',
       title: 'Quiet-window triage card',
-      description: 'Draft a one-page checklist for how Josh starts a DCS Level 1 incident without overstepping.'
+      description: 'Draft a one-page checklist for how to start a Level 1 incident without overstepping.'
     }
   ]
 };
@@ -143,13 +143,13 @@ const foundationsEnhancement: ModuleEnhancement = {
   estimatedMinutes: 24,
   addTags: ['multi-campus', 'ownership boundaries', 'safe internal source use'],
   addLearningObjectives: [
-    'Recognise when a support pattern spans DCS, Preschool, or Wellington context and should be noted clearly.',
+    'Recognise when a support pattern spans multiple campuses or contexts and should be noted clearly.',
     'Separate ICT triage from admin, leadership, and system-owner workflows.',
-    'Turn internal DCS knowledge into safe prompts instead of copied notes.'
+    'Turn internal knowledge into safe prompts instead of copied notes.'
   ],
   addDcsRelevance: [
-    'Helps Josh avoid treating every campus, office, and classroom workflow as identical.',
-    'Builds cleaner judgement about where real DCS process knowledge often lives internally.'
+    'Helps avoid treating every campus, office, and classroom workflow as identical.',
+    'Builds cleaner judgement about where real process knowledge often lives internally.'
   ],
   addSections: buildSections('foundations-deepen', [
     {
@@ -167,19 +167,19 @@ const foundationsEnhancement: ModuleEnhancement = {
   ]),
   addFlashcards: buildFlashcards('foundations-deepen', [
     ['Why note the campus as well as the room?', 'Because the same symptom can belong to a different owner, asset set, or workflow at another campus.'],
-    ['What is a safe use of internal DCS documentation in this app?', 'Abstract the workflow into prompts, flashcards, and safe scenarios without copying sensitive text.'],
+    ['What is a safe use of internal documentation in this app?', 'Abstract the workflow into prompts, flashcards, and safe scenarios without copying sensitive text.'],
     ['What boundary question often matters before promising action?', 'Who actually owns the workflow, approval, or production change?'],
-    ['What should Josh capture when a process differs between offices or campuses?', 'The exact location, user role, visible symptom, and who appears to own the next step.']
+    ['What should be captured when a process differs between offices or campuses?', 'The exact location, user role, visible symptom, and who appears to own the next step.']
   ]),
   addQuiz: [
     shortAnswer({
       id: 'foundations-q5',
-      prompt: 'Why does multi-campus context matter before Josh writes an escalation note?',
+      prompt: 'Why does multi-campus context matter before writing an escalation note?',
       domain: 'DCS support foundations',
       difficulty: 'stretch',
       explanation: 'The same symptom can have different ownership and urgency depending on where it sits.',
       modelAnswer:
-        'Multi-campus context matters because the correct owner, system path, and operational impact can differ between DCS, Preschool, and Wellington. Naming the campus and role prevents a misleading handoff.',
+        'Multi-campus context matters because the correct owner, system path, and operational impact can differ between locations. Naming the campus and role prevents a misleading handoff.',
       commonMistakes: ['Writing the room only', 'Assuming all campuses share the same workflow owner'],
       dcsContext: 'A short note can still be wrong if it omits the support context the next person needs.',
       reviewSchedule,
@@ -196,8 +196,8 @@ const foundationsEnhancement: ModuleEnhancement = {
       explanation: 'Ownership boundaries are part of safe support behaviour.',
       modelAnswer:
         'Level 1 triages and documents, admin or system owners handle workflow-specific data changes, and senior ICT handles risky production changes or unclear technical boundaries.',
-      commonMistakes: ['Treating every workflow as ICT-owned', 'Ignoring admin ownership for family data changes'],
-      dcsContext: 'DCS service quality improves when Josh routes work cleanly instead of overclaiming ownership.',
+      commonMistakes: ['Treating every workflow as IT-owned', 'Ignoring admin ownership for data changes'],
+      dcsContext: 'Service quality improves when you route work cleanly instead of overclaiming ownership.',
       reviewSchedule,
       recommendedModuleId: 'dcs-it-support-foundations',
       weakTopic: 'ticket-quality',

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { normaliseCoachResponse } from '../../../../src/lib/ai/coachResponse';
+import { devDebug, devLog, isDevEnvironment, logApiError } from '../../../../src/lib/logger';
 
 const CoachInputSchema = z.object({
   contextType: z.enum(['scenario', 'ticket-note', 'short-answer', 'practical-output', 'freeform']),
@@ -48,9 +49,8 @@ function extractJson(text: string) {
       }
     }
 
-    // Last resort: log what failed and throw (dev only)
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('FAILED TO PARSE AI RESPONSE:', text);
+    if (isDevEnvironment()) {
+      devDebug('FAILED TO PARSE AI RESPONSE (truncated)', text.slice(0, 200));
     }
     throw new Error('Could not extract valid JSON from AI response.');
   }
@@ -64,9 +64,7 @@ function pickModelSequence(configuredModel: string) {
 }
 
 async function callGroq(apiKey: string, model: string, userPayload: unknown, system: string) {
-  if (process.env.NODE_ENV !== 'production') {
-    console.log(`Calling Groq with model: ${model}`);
-  }
+  devLog(`Calling Groq with model: ${model}`);
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -173,18 +171,14 @@ export async function POST(request: Request) {
         const data = JSON.parse(attempt.rawText);
         text = data?.choices?.[0]?.message?.content ?? '{}';
         
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('--- RAW AI RESPONSE START ---');
-          console.log(text);
-          console.log('--- RAW AI RESPONSE END ---');
-        }
+        devDebug('AI coach raw response length', String(text.length));
 
         const json = extractJson(text);
         const safe = normaliseCoachResponse(json, parsedBody);
         return NextResponse.json(safe);
       } catch (err) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.error('AI response repair path used:', err);
+        if (isDevEnvironment()) {
+          logApiError('ai.coach.repair', err);
         }
         const repaired = normaliseCoachResponse({ betterAnswer: text }, parsedBody);
         return NextResponse.json(repaired);

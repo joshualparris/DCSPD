@@ -1,7 +1,35 @@
 node_modules/
 .next/
 dist/
+out/
+
+# Environment and secrets
 .env
 .env.local
 .env.*.local
+
+# Logs and local diagnostics
 *.log
+npm-debug.log*
+.baseline-*.txt
+docs/baseline-audit.json
+
+# Build artifacts and caches
+tsconfig.tsbuildinfo
+.turbo/
+.vercel/
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+blob-report/
+
+# Archives (keep local; do not commit)
+*.zip
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

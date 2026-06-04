@@ -47,7 +47,7 @@ function printSheet(sheet: QuickFixCheatSheet) {
           <div class="meta">DCSPrep quick-fix cheat sheet | ${escapeHtml(sheet.domain)} | ${sheet.estimatedMinutes} minutes</div>
           <h1>${escapeHtml(sheet.title)}</h1>
           <p>${escapeHtml(sheet.summary)}</p>
-          <div class="warning">Privacy boundary: use synthetic or anonymised examples only. Do not record passwords, live ticket details, student names, parent names, private URLs, serial numbers, or confidential DCS procedures.</div>
+          <div class="warning">Privacy boundary: use synthetic or anonymised examples only. Do not record passwords, live ticket details, student names, parent names, private URLs, serial numbers, or confidential internal procedures.</div>
         </header>
         ${listHtml('Safe First Checks', sheet.safeFirstChecks)}
         ${listHtml('Ask First', sheet.askFirst)}

@@ -121,7 +121,7 @@ export function buildDefaultPattern(module: LegacyTrainingModule): ModulePattern
       id: `${module.id}-explain-back`,
       title: 'Explain it simply',
       prompt: `Explain ${module.title} in plain English as if you were helping a new Level 1 support worker.`,
-      supportText: 'Keep it simple, practical, and tied to safe DCS support behaviour.'
+      supportText: `Keep it simple, practical, and tied to safe ${module.targetEnvironment === 'MSP' ? 'MSP' : 'DCS'} support behaviour.`
     },
     cornellPrompt: {
       id: `${module.id}-cornell`,
@@ -161,13 +161,13 @@ export function buildDefaultPattern(module: LegacyTrainingModule): ModulePattern
     sq3rPrompt: {
       id: `${module.id}-sq3r`,
       title: 'SQ3R companion',
-      prompt: `Survey, question, read, recite, and review one internal DCS-safe resource related to ${module.title}.`,
+      prompt: `Survey, question, read, recite, and review one internal ${module.targetEnvironment === 'MSP' ? 'MSP' : 'DCS'}-safe resource related to ${module.title}.`,
       supportText: 'Convert the reading into safe prompts and summaries instead of copying internal content.'
     },
     safePromptWorkflow: {
       id: `${module.id}-safe-prompt`,
       title: 'Turn internal knowledge into safe prompts',
-      goal: `Convert DCS workflow knowledge about ${module.title} into study prompts without copying private material.`,
+      goal: `Convert ${module.targetEnvironment === 'MSP' ? 'MSP' : 'DCS'} workflow knowledge about ${module.title} into study prompts without copying private material.`,
       steps: [
         'Identify the workflow or support pattern, not the private case details.',
         'Abstract the safe symptom, decision point, and escalation boundary.',
@@ -188,6 +188,7 @@ export type ModuleEnhancement = {
   addTags?: string[];
   addLearningObjectives?: string[];
   addDcsRelevance?: string[];
+  addMspRelevance?: string[];
   addSections?: Section[];
   addFlashcards?: Flashcard[];
   addQuiz?: AssessmentQuestion[];
@@ -196,13 +197,14 @@ export type ModuleEnhancement = {
 };
 
 export function enhanceModule(module: LegacyTrainingModule, enhancement?: ModuleEnhancement): TrainingModule {
-  return {
+  const enhancedModule: TrainingModule = {
     ...module,
     description: enhancement?.description ?? module.description,
     estimatedMinutes: enhancement?.estimatedMinutes ?? module.estimatedMinutes,
     tags: mergeUniqueStrings(module.tags, enhancement?.addTags),
     learningObjectives: mergeUniqueStrings(module.learningObjectives, enhancement?.addLearningObjectives),
     dcsRelevance: mergeUniqueStrings(module.dcsRelevance, enhancement?.addDcsRelevance),
+    mspRelevance: mergeUniqueStrings(module.mspRelevance ?? [], enhancement?.addMspRelevance ?? []),
     sections: [...module.sections, ...(enhancement?.addSections ?? [])],
     flashcards: [...module.flashcards, ...(enhancement?.addFlashcards ?? [])],
     quiz: [...module.quiz, ...(enhancement?.addQuiz ?? [])],
@@ -215,6 +217,7 @@ export function enhanceModule(module: LegacyTrainingModule, enhancement?: Module
       tags: mergeUniqueStrings(module.tags, enhancement?.addTags),
       learningObjectives: mergeUniqueStrings(module.learningObjectives, enhancement?.addLearningObjectives),
       dcsRelevance: mergeUniqueStrings(module.dcsRelevance, enhancement?.addDcsRelevance),
+      mspRelevance: mergeUniqueStrings(module.mspRelevance ?? [], enhancement?.addMspRelevance ?? []),
       sections: [...module.sections, ...(enhancement?.addSections ?? [])],
       flashcards: [...module.flashcards, ...(enhancement?.addFlashcards ?? [])],
       quiz: [...module.quiz, ...(enhancement?.addQuiz ?? [])],
@@ -222,6 +225,7 @@ export function enhanceModule(module: LegacyTrainingModule, enhancement?: Module
       practicalOutputs: [...module.practicalOutputs, ...(enhancement?.addPracticalOutputs ?? [])]
     })
   };
+  return enhancedModule;
 }
 
 export function createModule(module: LegacyTrainingModule): TrainingModule {

@@ -149,8 +149,9 @@ export default function AplusCore2Page() {
     }
 
     const nowIso = new Date().toISOString();
-    const pdEntryId = `aplus-core-2-${selectedLesson.id}-pd-${Date.now()}`;
-    const attemptId = `aplus-core-2-${selectedLesson.id}-attempt-${Date.now()}`;
+    const uniqueSuffix = crypto.randomUUID();
+    const pdEntryId = `aplus-core-2-${selectedLesson.id}-pd-${uniqueSuffix}`;
+    const attemptId = `aplus-core-2-${selectedLesson.id}-attempt-${uniqueSuffix}`;
     const storedProgress = getStoredProgressSnapshot(modules);
     const finalScore = Math.round((multipleChoiceScore + result.feedback.score) / 2);
     const multipleChoiceResponses = selectedLesson.assessment.multipleChoice.map((question) => {

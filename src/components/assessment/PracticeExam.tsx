@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { strictQuestionBank } from '../../data/questions';
 import AssessmentSession from './AssessmentSession';
 import { recordAssessmentAttempt, saveProgress, getStoredProgressSnapshot } from '../../lib/progress';
@@ -11,12 +11,15 @@ export default function PracticeExam() {
   const [examComplete, setExamComplete] = useState(false);
   const [progress, setProgress] = useState(() => getStoredProgressSnapshot());
 
-  // Pick 20 questions across all domains for a "full" practice exam
-  const questions = useMemo(() => {
-    return [...strictQuestionBank]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 20);
-  }, []); // Only shuffle once per component mount
+  // Pick 20 questions once per mount (Fisher–Yates shuffle)
+  const [questions] = useState(() => {
+    const pool = [...strictQuestionBank];
+    for (let i = pool.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, 20);
+  });
 
   if (!examStarted) {
     return (

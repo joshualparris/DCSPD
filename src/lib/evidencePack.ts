@@ -57,13 +57,13 @@ function generateCompetencySummaries(progress: UserProgress, start: string, end:
     return mod && (Object.values(mod.sectionsRead).some(Boolean) || mod.quizAttempts.length > 0);
   });
   if (modulesWithActivity.length > 0) {
-    summaries.push(`**Service-Specific Fluency**: Engaged with specialized school IT domains including networking basics, endpoint support, and cloud identity. Translated technical concepts into plain English for staff and maintained awareness of ownership boundaries across different systems.`);
+    summaries.push(`**Service-Specific Fluency**: Engaged with specialized IT domains including networking basics, endpoint support, and cloud identity. Translated technical concepts into plain English for users and maintained awareness of ownership boundaries across different systems.`);
   }
 
   // 3. Documentation & Professionalism
   const practicals = Object.values(progress.modules).reduce((sum, mod) => sum + Object.values(mod.practicalOutputs).filter(Boolean).length, 0);
   if (practicals > 0) {
-    summaries.push(`**Documentation & Professionalism**: Produced ${practicals} practical support references and documentation drafts. Maintained high standards for privacy-safe evidence capture and clear, actionable handoff notes for senior ICT staff.`);
+    summaries.push(`**Documentation & Professionalism**: Produced ${practicals} practical support references and documentation drafts. Maintained high standards for privacy-safe evidence capture and clear, actionable handoff notes for senior IT staff.`);
   }
 
   return summaries;
@@ -167,7 +167,7 @@ export function generateEvidencePackMarkdown(progress: UserProgress, options: Ev
           '',
           '### Core Competencies Demonstrated',
           `- **Troubleshooting**: Completed ${completedScenarioRuns.length} multi-step technical simulations.`,
-          `- **Knowledge Base**: Active engagement with ${modulesWithActivity.length || summary.moduleCount} specialized school IT modules.`,
+          `- **Knowledge Base**: Active engagement with ${modulesWithActivity.length || summary.moduleCount} specialized IT modules.`,
           `- **Documentation**: Generated ${practicalOutputs.length} practical support outputs and evidence-rich ticket notes.`,
           `- **Readiness**: Current proficiency tracking shows strongest alignment in **${readiness.sort((a, b) => b.score - a.score)[0]?.label || 'core support'}** domains.`,
           '',

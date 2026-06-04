@@ -1,0 +1,736 @@
+[
+  {
+    "id": "MCQ-N10009-0035",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "OSI Model",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user can associate to Wi-Fi, receives an IP address, can ping the gateway, but HTTPS to any website fails while DNS works. Which OSI area is least likely to be the root cause?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Layer 1 physical wireless signal"
+      },
+      {
+        "key": "B",
+        "text": "Layer 3 IP addressing/routing"
+      },
+      {
+        "key": "C",
+        "text": "Layer 4/7 filtering or application path"
+      },
+      {
+        "key": "D",
+        "text": "Policy/proxy/security inspection"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Association, DHCP, gateway ping, and DNS working make pure physical-layer failure less likely than higher-layer filtering or application-path issues.",
+    "tags": [
+      "OSI",
+      "troubleshooting"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0036",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Network Appliances",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A firewall is asked to block traffic based on application identity and URL category, not just port and IP. Which capability is being used?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patch panel management"
+      },
+      {
+        "key": "B",
+        "text": "Next-generation firewall/application-aware filtering"
+      },
+      {
+        "key": "C",
+        "text": "Unmanaged switching"
+      },
+      {
+        "key": "D",
+        "text": "Media conversion"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Application and URL-aware controls are associated with NGFW/application-layer inspection.",
+    "tags": [
+      "firewall"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0037",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Cloud Models",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A company wants control of virtual networks, subnets, route tables, and servers but not physical data-centre hardware. Which model best fits?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SaaS"
+      },
+      {
+        "key": "B",
+        "text": "PaaS"
+      },
+      {
+        "key": "C",
+        "text": "IaaS"
+      },
+      {
+        "key": "D",
+        "text": "DaaS only"
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "IaaS gives customers control over virtualised infrastructure while the provider manages physical facilities.",
+    "tags": [
+      "cloud",
+      "IaaS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0038",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Ports and Protocols",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A monitoring system can ping a device but cannot collect interface counters. Which protocol/port area should you verify?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SNMP, commonly UDP 161/162 depending on polling/traps"
+      },
+      {
+        "key": "B",
+        "text": "NTP, UDP 123"
+      },
+      {
+        "key": "C",
+        "text": "SMTP, TCP 25"
+      },
+      {
+        "key": "D",
+        "text": "RDP, TCP 3389"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "SNMP is commonly used for device/interface monitoring.",
+    "tags": [
+      "SNMP",
+      "ports"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0039",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Transmission Media",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A fibre link between buildings is several kilometres and requires long-distance transmission. Which media choice is generally appropriate?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Single-mode fibre"
+      },
+      {
+        "key": "B",
+        "text": "Cat 5e copper"
+      },
+      {
+        "key": "C",
+        "text": "Bluetooth"
+      },
+      {
+        "key": "D",
+        "text": "Unshielded RJ11 telephone cable"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Single-mode fibre is suited to longer-distance optical links.",
+    "tags": [
+      "fiber"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0040",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "IPv4 Subnetting",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A /26 IPv4 subnet is used for hosts. How many usable host addresses are available?",
+    "options": [
+      {
+        "key": "A",
+        "text": "30"
+      },
+      {
+        "key": "B",
+        "text": "62"
+      },
+      {
+        "key": "C",
+        "text": "126"
+      },
+      {
+        "key": "D",
+        "text": "254"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "/26 leaves 6 host bits: 2^6 = 64 addresses, minus network and broadcast = 62 usable.",
+    "tags": [
+      "subnetting"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0041",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "IPv4 Addressing",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A device has 192.168.10.50/24 and gateway 192.168.11.1. What is the most likely issue?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The gateway is outside the device’s local /24 subnet."
+      },
+      {
+        "key": "B",
+        "text": "The subnet mask is too long to support private IPs."
+      },
+      {
+        "key": "C",
+        "text": "192.168.x.x addresses cannot use gateways."
+      },
+      {
+        "key": "D",
+        "text": "The device is using IPv6 only."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "With /24, 192.168.10.0/24 does not include 192.168.11.1, so the default gateway is not local.",
+    "tags": [
+      "IPv4",
+      "gateway"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0042",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "Routing",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A router has a static route and a dynamic route to the same prefix. The static route has lower administrative distance. Which route is usually preferred?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The dynamic route because it changes automatically."
+      },
+      {
+        "key": "B",
+        "text": "The static route because lower administrative distance is preferred."
+      },
+      {
+        "key": "C",
+        "text": "Neither; traffic is always broadcast."
+      },
+      {
+        "key": "D",
+        "text": "The route with the longest description."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Administrative distance is a trust/preference metric; lower values are generally preferred when prefix length is equal.",
+    "tags": [
+      "routing"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0043",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "NAT",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Many internal clients share one public IPv4 address for outbound internet access. Which technology is most likely in use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "PAT/NAT overload"
+      },
+      {
+        "key": "B",
+        "text": "STP"
+      },
+      {
+        "key": "C",
+        "text": "VXLAN only"
+      },
+      {
+        "key": "D",
+        "text": "Syslog"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "PAT/NAT overload maps many private hosts to one public IP using port translations.",
+    "tags": [
+      "NAT",
+      "PAT"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0044",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "VLANs and Trunking",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A VoIP phone and PC share one wall port. The phone tags voice traffic, while the PC sends untagged data traffic through the phone. What switchport concept is most relevant?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Voice VLAN with data/native VLAN handling"
+      },
+      {
+        "key": "B",
+        "text": "DNS recursion"
+      },
+      {
+        "key": "C",
+        "text": "NTP stratum"
+      },
+      {
+        "key": "D",
+        "text": "Optical attenuation"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Shared phone/PC connections often use a voice VLAN for tagged voice traffic and a data/native VLAN for PC traffic.",
+    "tags": [
+      "VLAN",
+      "VoIP"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0045",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "Spanning Tree Protocol",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "After someone patches two switch ports together, the network becomes unstable with broadcast storms. Which protocol should reduce this risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "STP"
+      },
+      {
+        "key": "B",
+        "text": "DNSSEC"
+      },
+      {
+        "key": "C",
+        "text": "NTP"
+      },
+      {
+        "key": "D",
+        "text": "SFTP"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Spanning Tree Protocol helps prevent switching loops.",
+    "tags": [
+      "STP"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0046",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "Wireless Devices",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Users at the far end of a building see strong signal but poor performance and roaming issues. Which finding would best explain this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Too many APs using overlapping channels/power levels causing co-channel/interference problems."
+      },
+      {
+        "key": "B",
+        "text": "DNS MX records are missing."
+      },
+      {
+        "key": "C",
+        "text": "The internet has no public IP."
+      },
+      {
+        "key": "D",
+        "text": "The switch uses rack ears."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Strong signal does not guarantee performance; channel planning, power, roaming, and interference matter.",
+    "tags": [
+      "Wi-Fi",
+      "roaming"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0047",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "Network Documentation",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A technician changes a switch port VLAN to fix a classroom issue but does not document it. What is the main operational risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Future troubleshooting and audits may rely on inaccurate baseline/configuration records."
+      },
+      {
+        "key": "B",
+        "text": "The switch will stop forwarding all traffic instantly."
+      },
+      {
+        "key": "C",
+        "text": "DNS records will automatically disappear."
+      },
+      {
+        "key": "D",
+        "text": "The cable will become crossover."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Undocumented changes undermine baseline accuracy and future troubleshooting.",
+    "tags": [
+      "documentation",
+      "change"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0048",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "Logs and Monitoring",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A network is slow, but device CPU and memory look normal. You need to know which conversations are consuming bandwidth. Which data is most useful?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Flow data such as NetFlow/IPFIX/sFlow"
+      },
+      {
+        "key": "B",
+        "text": "Keyboard layout"
+      },
+      {
+        "key": "C",
+        "text": "BIOS boot order"
+      },
+      {
+        "key": "D",
+        "text": "Printer toner level"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Flow data identifies traffic conversations and volume patterns.",
+    "tags": [
+      "monitoring",
+      "flows"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0049",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "Disaster Recovery",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A business says the maximum tolerable data loss is 15 minutes. Which metric is being described?",
+    "options": [
+      {
+        "key": "A",
+        "text": "RTO"
+      },
+      {
+        "key": "B",
+        "text": "RPO"
+      },
+      {
+        "key": "C",
+        "text": "MTTR"
+      },
+      {
+        "key": "D",
+        "text": "MTBF"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Recovery Point Objective (RPO) describes acceptable data loss measured in time.",
+    "tags": [
+      "DR",
+      "RPO"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0050",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "DNS Records",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A domain’s email is being spoofed. Which record type helps receiving mail systems verify authorised senders?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SPF TXT record"
+      },
+      {
+        "key": "B",
+        "text": "A record only"
+      },
+      {
+        "key": "C",
+        "text": "PTR record only"
+      },
+      {
+        "key": "D",
+        "text": "CNAME flattening only"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "SPF is commonly published as TXT and identifies authorised sending sources for a domain.",
+    "tags": [
+      "DNS",
+      "email security"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0051",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "VPNs",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A VPN connects but internal hostnames fail while internal IP addresses work. Which fix area is most likely?",
+    "options": [
+      {
+        "key": "A",
+        "text": "VPN DNS server/search suffix assignment"
+      },
+      {
+        "key": "B",
+        "text": "Monitor colour profile"
+      },
+      {
+        "key": "C",
+        "text": "Printer fuser temperature"
+      },
+      {
+        "key": "D",
+        "text": "RAID stripe size"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "IP works but names fail points toward VPN DNS configuration/search suffix/name resolution.",
+    "tags": [
+      "VPN",
+      "DNS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0052",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Security",
+    "topic": "Attack Types",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A switch CAM table fills with bogus MAC addresses and begins flooding frames. Which attack best matches?",
+    "options": [
+      {
+        "key": "A",
+        "text": "MAC flooding"
+      },
+      {
+        "key": "B",
+        "text": "DNSSEC validation"
+      },
+      {
+        "key": "C",
+        "text": "NTP drift"
+      },
+      {
+        "key": "D",
+        "text": "RAID degradation"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "MAC flooding attempts to exhaust the switch MAC/CAM table, causing flooding behaviour.",
+    "tags": [
+      "switching",
+      "attack"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0053",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Security",
+    "topic": "Segmentation",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A guest Wi-Fi network should reach the internet but not internal servers. Which control best enforces this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "VLAN/SSID segmentation with firewall rules/ACLs"
+      },
+      {
+        "key": "B",
+        "text": "Changing the SSID name only"
+      },
+      {
+        "key": "C",
+        "text": "Using longer HDMI cables"
+      },
+      {
+        "key": "D",
+        "text": "Increasing DHCP lease time"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Segmentation requires separate network/SSID/VLAN and rules that restrict access.",
+    "tags": [
+      "segmentation",
+      "ACL"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0054",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Troubleshooting",
+    "topic": "Methodology",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A senior technician says, 'Do not change anything yet; define the scope.' Which troubleshooting step is this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Identify the problem and establish a theory based on evidence."
+      },
+      {
+        "key": "B",
+        "text": "Implement a random fix."
+      },
+      {
+        "key": "C",
+        "text": "Document after closure only."
+      },
+      {
+        "key": "D",
+        "text": "Escalate without evidence."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Good methodology starts with identifying problem/scope and gathering evidence before changes.",
+    "tags": [
+      "methodology"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  }
+]

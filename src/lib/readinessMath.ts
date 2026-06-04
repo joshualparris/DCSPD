@@ -286,9 +286,13 @@ export function getDashboardRecommendation(progress: UserProgress) {
     };
   }
 
+  const careerFocus = progress.profile?.careerFocus || 'Generic';
+
   return {
     title: 'Complete one focused module review',
-    detail: 'Read one short lesson, review 4 flashcards, then record where the concept applies in DCS support responsibilities.',
+    detail: careerFocus === 'DCS' 
+      ? 'Read one short lesson, review 4 flashcards, then record where the concept applies in DCS support responsibilities.'
+      : 'Read one short lesson, review 4 flashcards, then record how the concept applies to professional support workflows.',
     ctaHref: '/modules',
     ctaLabel: 'Browse modules'
   };

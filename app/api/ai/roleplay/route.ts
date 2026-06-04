@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { logApiError } from '../../../../src/lib/logger';
 
 const RoleplayInputSchema = z.object({
   persona: z.string(),
@@ -82,7 +83,7 @@ You must return ONLY a JSON object with this shape:
     const safe = RoleplayResponseSchema.parse(json);
     return NextResponse.json(safe);
   } catch (err) {
-    console.error('AI Roleplay Error:', err);
+    logApiError('ai.roleplay', err);
     return NextResponse.json({ error: 'Failed to generate reply.' }, { status: 502 });
   }
 }

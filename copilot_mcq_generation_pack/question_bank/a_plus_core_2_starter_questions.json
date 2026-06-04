@@ -1,0 +1,665 @@
+[
+  {
+    "id": "MCQ-2201202-0017",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A removable drive must be readable and writable by Windows and macOS and support files larger than 4 GB. Which file system is the best general choice?",
+    "options": [
+      {
+        "key": "A",
+        "text": "FAT32"
+      },
+      {
+        "key": "B",
+        "text": "exFAT"
+      },
+      {
+        "key": "C",
+        "text": "NTFS with default permissions"
+      },
+      {
+        "key": "D",
+        "text": "ext4"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "exFAT supports large files and broad Windows/macOS compatibility without FAT32’s 4 GB file limit.",
+    "tags": [
+      "filesystems"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0018",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Installing Operating Systems",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A technician needs a clean Windows install on multiple identical devices with minimal manual configuration. Which approach best matches modern deployment practice?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Manual DVD install on each device with local accounts."
+      },
+      {
+        "key": "B",
+        "text": "Zero-touch or automated deployment with approved image/provisioning process."
+      },
+      {
+        "key": "C",
+        "text": "Copy C:\\Windows from one device to another."
+      },
+      {
+        "key": "D",
+        "text": "Install from an unverified ISO found online."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Automated/zero-touch deployment reduces inconsistency and supports approved configuration at scale.",
+    "tags": [
+      "deployment"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0019",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Task Manager",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user reports slowness only during morning sign-in. Which Task Manager area gives the most direct first clue about apps loading at sign-in?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Startup apps"
+      },
+      {
+        "key": "B",
+        "text": "Fonts"
+      },
+      {
+        "key": "C",
+        "text": "Disk Management"
+      },
+      {
+        "key": "D",
+        "text": "Windows Defender Firewall rules"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Startup apps help identify programs launching at sign-in and impacting user experience.",
+    "tags": [
+      "Task Manager",
+      "performance"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0020",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Windows Network Command Line",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A Windows client can reach 8.8.8.8 but cannot reach intranet.example.local by name. Which command best confirms name resolution behaviour?",
+    "options": [
+      {
+        "key": "A",
+        "text": "format"
+      },
+      {
+        "key": "B",
+        "text": "nslookup intranet.example.local"
+      },
+      {
+        "key": "C",
+        "text": "sfc /scannow"
+      },
+      {
+        "key": "D",
+        "text": "net user /domain"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "nslookup directly tests DNS resolution for a hostname.",
+    "tags": [
+      "CLI",
+      "DNS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0021",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Windows Firewall",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An app works locally but cannot accept inbound connections from the same subnet. Network connectivity is otherwise fine. What is the best first Windows host-level check?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Inbound firewall rule/profile status for the app or port."
+      },
+      {
+        "key": "B",
+        "text": "Monitor brightness settings."
+      },
+      {
+        "key": "C",
+        "text": "Recycle Bin size."
+      },
+      {
+        "key": "D",
+        "text": "Keyboard language."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Host firewall inbound rules and network profile can block otherwise valid connections.",
+    "tags": [
+      "firewall"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0022",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Active Directory",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user can sign into Windows but cannot access a department share that colleagues can access. What evidence is most useful before escalation?",
+    "options": [
+      {
+        "key": "A",
+        "text": "User’s password and MFA code."
+      },
+      {
+        "key": "B",
+        "text": "Exact share path, error message, group membership expectation, device name, and whether other users/devices are affected."
+      },
+      {
+        "key": "C",
+        "text": "A statement that Active Directory is broken."
+      },
+      {
+        "key": "D",
+        "text": "A screenshot of every mapped drive for all staff."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Access issues require scope, path, error, group/permission context, and affected device/user comparison without collecting secrets.",
+    "tags": [
+      "AD",
+      "permissions"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0023",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "macOS",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A macOS user cannot find a file but believes it was recently opened. Which native feature is best for searching the device quickly?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Spotlight"
+      },
+      {
+        "key": "B",
+        "text": "Event Viewer"
+      },
+      {
+        "key": "C",
+        "text": "Registry Editor"
+      },
+      {
+        "key": "D",
+        "text": "Group Policy Management"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Spotlight is macOS’s built-in search feature.",
+    "tags": [
+      "macOS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0024",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Linux Commands",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A Linux service is consuming heavy CPU. Which command is the best first live view of processes?",
+    "options": [
+      {
+        "key": "A",
+        "text": "top"
+      },
+      {
+        "key": "B",
+        "text": "chmod"
+      },
+      {
+        "key": "C",
+        "text": "pwd"
+      },
+      {
+        "key": "D",
+        "text": "mv"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "top provides a live process/resource view.",
+    "tags": [
+      "Linux",
+      "processes"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0025",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Authentication and Access",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user enters correct credentials but SSO fails only for one cloud app after a role change. Which cause is most likely?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The monitor cable is loose."
+      },
+      {
+        "key": "B",
+        "text": "App assignment, group claim, or SAML/OIDC attribute mapping no longer matches access rules."
+      },
+      {
+        "key": "C",
+        "text": "The user’s keyboard is Bluetooth."
+      },
+      {
+        "key": "D",
+        "text": "DHCP is unavailable."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "SSO to one app often depends on assignment and claims/attributes after role or group changes.",
+    "tags": [
+      "SSO",
+      "SAML",
+      "access"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0026",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Malware",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user reports a suspicious pop-up and slow performance. They clicked an unknown attachment. Which first response is safest?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tell the user to keep working while you browse the device freely."
+      },
+      {
+        "key": "B",
+        "text": "Follow incident process: isolate if required, preserve evidence, run approved tools, and escalate according to policy."
+      },
+      {
+        "key": "C",
+        "text": "Delete random system files until the pop-up stops."
+      },
+      {
+        "key": "D",
+        "text": "Ask the user for their password so you can investigate later."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Potential malware should follow approved incident response and evidence-preserving procedures.",
+    "tags": [
+      "malware",
+      "incident response"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0027",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Wireless Encryption",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An organisation is replacing WPA2-Personal for staff Wi-Fi with per-user authentication. Which technology is most relevant?",
+    "options": [
+      {
+        "key": "A",
+        "text": "WPA2/WPA3-Enterprise using 802.1X/RADIUS"
+      },
+      {
+        "key": "B",
+        "text": "WEP with a longer shared key"
+      },
+      {
+        "key": "C",
+        "text": "MAC filtering only"
+      },
+      {
+        "key": "D",
+        "text": "Open Wi-Fi with hidden SSID"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Enterprise Wi-Fi commonly uses 802.1X with RADIUS for per-user/device authentication.",
+    "tags": [
+      "Wi-Fi",
+      "RADIUS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0028",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Data Destruction",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A laptop SSD is being redeployed internally. It contained sensitive data. Which approach best matches secure reuse?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Delete files and empty Recycle Bin only."
+      },
+      {
+        "key": "B",
+        "text": "Use an approved sanitisation method appropriate for SSDs, such as crypto erase or vendor secure erase, then document it."
+      },
+      {
+        "key": "C",
+        "text": "Rename user folders."
+      },
+      {
+        "key": "D",
+        "text": "Cover the serial number with tape."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "SSD sanitisation should use appropriate approved methods and documentation; ordinary deletion is insufficient.",
+    "tags": [
+      "data destruction",
+      "SSD"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0029",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Browser Security",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user says a site keeps opening fake login pages after they click search results. Which browser-side checks are most useful first?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Extensions, notification permissions, cached redirects, and whether the URL/certificate is legitimate."
+      },
+      {
+        "key": "B",
+        "text": "RAM channel configuration."
+      },
+      {
+        "key": "C",
+        "text": "Printer duplex setting."
+      },
+      {
+        "key": "D",
+        "text": "Monitor refresh rate."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Malicious extensions, notifications, cached redirects, and URL/certificate checks are relevant browser-security triage.",
+    "tags": [
+      "browser",
+      "phishing"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0030",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Troubleshooting",
+    "topic": "Troubleshooting Windows",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A Windows update failed, and now a device boots to recovery. The user needs files preserved. What is the safest mindset?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Immediately wipe the disk because failed updates always corrupt all data."
+      },
+      {
+        "key": "B",
+        "text": "Use recovery options that preserve data where possible and confirm backup status before destructive repair."
+      },
+      {
+        "key": "C",
+        "text": "Disable all security controls."
+      },
+      {
+        "key": "D",
+        "text": "Replace the user account without checking storage health."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Data preservation and backup checks come before destructive OS repair.",
+    "tags": [
+      "Windows",
+      "recovery"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0031",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Ticketing Systems",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which ticket note is best for escalation?",
+    "options": [
+      {
+        "key": "A",
+        "text": "It’s broken. Please fix."
+      },
+      {
+        "key": "B",
+        "text": "User says internet bad. I think DNS maybe."
+      },
+      {
+        "key": "C",
+        "text": "Issue: cannot access shared mailbox in Outlook web or desktop. Scope: only this user. Checks: sign-in works, licence active, mailbox permission not visible in admin portal. Error: 'not authorised'. No password collected. Please verify mailbox delegation."
+      },
+      {
+        "key": "D",
+        "text": "I tried stuff for a while and got stuck."
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "A strong escalation note includes symptom, scope, checks, error, privacy boundary, and precise request.",
+    "tags": [
+      "ticketing",
+      "documentation"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0032",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Change Management",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A teacher asks you to open a blocked website for a class starting in five minutes. Which action best follows change-control and safety principles?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bypass filtering immediately because urgency overrides policy."
+      },
+      {
+        "key": "B",
+        "text": "Collect educational need, URL, timeframe, requester, risk notes, and follow approved approval/escalation path."
+      },
+      {
+        "key": "C",
+        "text": "Share the firewall admin password with the teacher."
+      },
+      {
+        "key": "D",
+        "text": "Disable filtering for the whole school temporarily."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Urgent requests still need scope, justification, approval, and least-change handling.",
+    "tags": [
+      "change management",
+      "web filtering"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0033",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Managing Backups",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A backup job shows success, but a restore test has not been performed for months. What is the best risk statement?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Successful backup logs prove restores will work."
+      },
+      {
+        "key": "B",
+        "text": "Restore capability is unverified until tested; backup success alone is incomplete evidence."
+      },
+      {
+        "key": "C",
+        "text": "Backups are unnecessary if files are in the cloud."
+      },
+      {
+        "key": "D",
+        "text": "Restore tests are only needed after ransomware."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Backups are only useful if restoration is tested and meets requirements.",
+    "tags": [
+      "backup",
+      "restore"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0034",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Privacy, Licensing, and Policies",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An AI tool asks for a real ticket containing student names to generate a better answer. What should you do?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Paste the full ticket because AI tools need realism."
+      },
+      {
+        "key": "B",
+        "text": "Use a synthetic or anonymised version and keep real personal, credential, and network-sensitive details out."
+      },
+      {
+        "key": "C",
+        "text": "Paste only the student names but not the device names."
+      },
+      {
+        "key": "D",
+        "text": "Disable MFA to make testing easier."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Privacy-safe AI use requires synthetic/anonymised examples and no sensitive details.",
+    "tags": [
+      "AI",
+      "privacy"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  }
+]

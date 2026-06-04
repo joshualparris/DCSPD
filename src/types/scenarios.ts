@@ -21,6 +21,7 @@ export type Scenario = {
   summary: string;
   focus: string[];
   estimatedMinutes: number;
+  targetEnvironment?: 'DCS' | 'MSP' | 'Generic';
   initialReport: string;
   contextBullets: string[];
   steps: ScenarioStep[];

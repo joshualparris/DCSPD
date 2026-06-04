@@ -179,7 +179,7 @@ export default function SubjectPage({ params }: PageProps) {
       <div className="flex min-h-[60vh] flex-col items-center justify-center p-8 text-center">
         <h1 className="text-3xl font-black tracking-tight text-slate-900">Subject Not Found</h1>
         <p className="mt-4 max-w-md text-lg text-slate-600">
-          The subject code "{subjectCode}" does not match our current academic library.
+          The subject code &ldquo;{subjectCode}&rdquo; does not match our current academic library.
         </p>
         <Link 
           href="/academic-pd" 

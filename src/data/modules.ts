@@ -8,6 +8,7 @@ import { cloudModules } from './modules/cloud';
 import { operationsModules } from './modules/operations';
 import { aplusModules } from './modules/aplus';
 import { accessibilityModules } from './modules/accessibility';
+import { mspModules } from './modules/msp';
 
 export const legacyModuleAliases: Record<string, string> = {
   foundations: 'dcs-it-support-foundations',
@@ -25,7 +26,8 @@ export function getAllBaseModules(): TrainingModule[] {
     ...cloudModules,
     ...operationsModules,
     ...aplusModules,
-    ...accessibilityModules
+    ...accessibilityModules,
+    ...mspModules
   ];
 }
 

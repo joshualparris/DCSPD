@@ -1,0 +1,2693 @@
+{
+  "job_name": "generate_hard_mcqs_security_plus",
+  "certification": "CompTIA Security+",
+  "exam": "SY0-701",
+  "source_topic_count": 121,
+  "output_format": "jsonl",
+  "schema_file": "schema/mcq_question.schema.json",
+  "target_questions_per_topic": 3,
+  "target_difficulty_mix_per_topic": {
+    "hard": 2,
+    "expert": 1
+  },
+  "global_rules": [
+    "You are generating hard, varied, scenario-based multiple-choice questions for a local-first IT career learning app.",
+    "",
+    "Quality rules:",
+    "- Make questions hard but fair.",
+    "- Prefer realistic L1/L2 IT support scenarios over definition recall.",
+    "- Include plausible distractors that represent common junior-technician mistakes.",
+    "- Avoid trick questions where wording is the only difficulty.",
+    "- Include privacy-safe synthetic scenarios only.",
+    "- Do not use real student, staff, parent, credential, ticket, network, or client details.",
+    "- Include a concise explanation for why the correct answer is best and why the strongest distractor is wrong.",
+    "- Vary question styles: single best answer, choose two, next best step, command output interpretation, symptom-to-layer, escalation evidence, and security judgement.",
+    "- Do not copy source wording directly. Use the topic list as scope only.",
+    "- Mark each question with certification, exam, domain/objective, topic, difficulty, tags, and correct answer key(s).",
+    "- Output valid JSONL matching schema/mcq_question.schema.json unless explicitly asked otherwise."
+  ],
+  "topic_rows": [
+    {
+      "topic_id": "SY0-701-001",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "",
+      "objective": "0.1 – Introduction",
+      "topic": "How to Pass Your SY0-701 Security+ Exam",
+      "duration": "10:06",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-002",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.1 – Security Controls",
+      "topic": "Security Controls",
+      "duration": "11:48",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-003",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "The CIA Triad",
+      "duration": "5:17",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-004",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "Non-repudiation",
+      "duration": "7:57",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-005",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "Authentication, Authorization, and Accounting",
+      "duration": "9:03",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-006",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "Gap Analysis",
+      "duration": "6:44",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-007",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "Zero Trust",
+      "duration": "10:04",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-008",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "Physical Security",
+      "duration": "8:17",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-009",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.2 – Security Concepts",
+      "topic": "Deception and Disruption",
+      "duration": "4:30",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-010",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.3 – Change Management",
+      "topic": "Change Management",
+      "duration": "11:22",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-011",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.3 – Change Management",
+      "topic": "Technical Change Management",
+      "duration": "10:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-012",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Public Key Infrastructure",
+      "duration": "9:08",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-013",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Encrypting Data",
+      "duration": "9:48",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-014",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Key Exchange",
+      "duration": "3:39",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-015",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Encryption Technologies",
+      "duration": "6:53",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-016",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Obfuscation",
+      "duration": "8:00",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-017",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Hashing and Digital Signatures",
+      "duration": "10:24",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-018",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Blockchain Technology",
+      "duration": "2:22",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-019",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 1: General Security Concepts",
+      "objective": "1.4 – Cryptographic Solutions",
+      "topic": "Certificates",
+      "duration": "14:38",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-020",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.1 – Threat Actors",
+      "topic": "Threat Actors",
+      "duration": "10:23",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-021",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.2 – Threat Vectors and Attack Surfaces",
+      "topic": "Common Threat Vectors",
+      "duration": "17:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-022",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.2 – Threat Vectors and Attack Surfaces",
+      "topic": "Phishing",
+      "duration": "6:32",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-023",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.2 – Threat Vectors and Attack Surfaces",
+      "topic": "Impersonation",
+      "duration": "5:52",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-024",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.2 – Threat Vectors and Attack Surfaces",
+      "topic": "Watering Hole Attacks",
+      "duration": "4:12",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-025",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.2 – Threat Vectors and Attack Surfaces",
+      "topic": "Other Social Engineering Attacks",
+      "duration": "3:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-026",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Memory Injections",
+      "duration": "2:39",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-027",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Buffer Overflows",
+      "duration": "3:37",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-028",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Race Conditions",
+      "duration": "4:58",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-029",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Malicious Updates",
+      "duration": "5:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-030",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Operating System Vulnerabilities",
+      "duration": "4:09",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-031",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "SQL Injection",
+      "duration": "5:09",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-032",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Cross-site Scripting",
+      "duration": "8:34",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-033",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Hardware Vulnerabilities",
+      "duration": "6:27",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-034",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Virtualization Vulnerabilities",
+      "duration": "5:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-035",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Cloud-specific Vulnerabilities",
+      "duration": "4:06",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-036",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Supply Chain Vulnerabilities",
+      "duration": "9:12",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-037",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Misconfiguration Vulnerabilities",
+      "duration": "7:09",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-038",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Mobile Device Vulnerabilities",
+      "duration": "3:23",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-039",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.3 – Types of Vulnerabilities",
+      "topic": "Zero-day Vulnerabilities",
+      "duration": "3:02",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-040",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "An Overview of Malware",
+      "duration": "6:06",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-041",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Viruses and Worms",
+      "duration": "5:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-042",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Spyware and Bloatware",
+      "duration": "4:21",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-043",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Other Malware Types",
+      "duration": "7:32",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-044",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Physical Attacks",
+      "duration": "4:04",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-045",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Denial of Service",
+      "duration": "6:07",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-046",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "DNS Attacks",
+      "duration": "8:57",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-047",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Wireless Attacks",
+      "duration": "7:55",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-048",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "On-path Attacks",
+      "duration": "5:30",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-049",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Replay Attacks",
+      "duration": "5:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-050",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Malicious Code",
+      "duration": "3:40",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-051",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Application Attacks",
+      "duration": "11:48",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-052",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Cryptographic Attacks",
+      "duration": "9:31",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-053",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Password Attacks",
+      "duration": "7:15",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-054",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.4 – Indicators of Malicious Activity",
+      "topic": "Indicators of Compromise",
+      "duration": "10:59",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-055",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.5 – Mitigation Techniques",
+      "topic": "Segmentation and Access Control",
+      "duration": "6:06",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-056",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.5 – Mitigation Techniques",
+      "topic": "Mitigation Techniques",
+      "duration": "6:51",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-057",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 2: Threats, Vulnerabilities, and Mitigations",
+      "objective": "2.5 – Mitigation Techniques",
+      "topic": "Hardening Techniques",
+      "duration": "12:11",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-058",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.1 – Architecture Models",
+      "topic": "Cloud Infrastructures",
+      "duration": "9:56",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-059",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.1 – Architecture Models",
+      "topic": "Network Infrastructure Concepts",
+      "duration": "6:56",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-060",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.1 – Architecture Models",
+      "topic": "Other Infrastructure Concepts",
+      "duration": "14:24",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-061",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.1 – Architecture Models",
+      "topic": "Infrastructure Considerations",
+      "duration": "13:48",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-062",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.2 – Applying Security Principles",
+      "topic": "Secure Infrastructures",
+      "duration": "5:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-063",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.2 – Applying Security Principles",
+      "topic": "Intrusion Prevention",
+      "duration": "5:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-064",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.2 – Applying Security Principles",
+      "topic": "Network Appliances",
+      "duration": "11:56",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-065",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.2 – Applying Security Principles",
+      "topic": "Port Security",
+      "duration": "3:50",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-066",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.2 – Applying Security Principles",
+      "topic": "Firewall Types",
+      "duration": "8:00",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-067",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.2 – Applying Security Principles",
+      "topic": "Secure Communication",
+      "duration": "9:55",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-068",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.3 – Protecting Data",
+      "topic": "Data Types and Classifications",
+      "duration": "5:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-069",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.3 – Protecting Data",
+      "topic": "States of Data",
+      "duration": "6:07",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-070",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.3 – Protecting Data",
+      "topic": "Protecting Data",
+      "duration": "14:28",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-071",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.4 – Resiliency and Recovery",
+      "topic": "Resiliency",
+      "duration": "9:42",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-072",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.4 – Resiliency and Recovery",
+      "topic": "Capacity Planning",
+      "duration": "3:53",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-073",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.4 – Resiliency and Recovery",
+      "topic": "Recovery Testing",
+      "duration": "5:18",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-074",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.4 – Resiliency and Recovery",
+      "topic": "Backups",
+      "duration": "12:16",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-075",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 3: Security Architecture",
+      "objective": "3.4 – Resiliency and Recovery",
+      "topic": "Power Resiliency",
+      "duration": "4:02",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-076",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.1 – Security Techniques",
+      "topic": "Secure Baselines",
+      "duration": "4:11",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-077",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.1 – Security Techniques",
+      "topic": "Hardening Targets",
+      "duration": "10:11",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-078",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.1 – Security Techniques",
+      "topic": "Securing Wireless and Mobile",
+      "duration": "8:58",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-079",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.1 – Security Techniques",
+      "topic": "Wireless Security Settings",
+      "duration": "10:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-080",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.1 – Security Techniques",
+      "topic": "Application Security",
+      "duration": "8:26",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-081",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.2 – Asset Management",
+      "topic": "Asset Management",
+      "duration": "8:37",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-082",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.3 – Vulnerability Management",
+      "topic": "Vulnerability Scanning",
+      "duration": "7:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-083",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.3 – Vulnerability Management",
+      "topic": "Threat Intelligence",
+      "duration": "4:46",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-084",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.3 – Vulnerability Management",
+      "topic": "Penetration Testing",
+      "duration": "6:21",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-085",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.3 – Vulnerability Management",
+      "topic": "Analyzing Vulnerabilities",
+      "duration": "10:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-086",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.3 – Vulnerability Management",
+      "topic": "Vulnerability Remediation",
+      "duration": "8:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-087",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.4 – Security Monitoring",
+      "topic": "Security Monitoring",
+      "duration": "10:27",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-088",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.4 – Security Monitoring",
+      "topic": "Security Tools",
+      "duration": "14:06",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-089",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Firewalls",
+      "duration": "11:31",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-090",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Web Filtering",
+      "duration": "10:00",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-091",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Operating System Security",
+      "duration": "3:22",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-092",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Secure Protocols",
+      "duration": "4:47",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-093",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Email Security",
+      "duration": "7:05",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-094",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Monitoring Data",
+      "duration": "7:25",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-095",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.5 – Enterprise Security",
+      "topic": "Endpoint Security",
+      "duration": "9:25",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-096",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.6 – Identity and Access Management",
+      "topic": "Identity and Access Management",
+      "duration": "12:46",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-097",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.6 – Identity and Access Management",
+      "topic": "Access Controls",
+      "duration": "7:49",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-098",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.6 – Identity and Access Management",
+      "topic": "Multifactor Authentication",
+      "duration": "4:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-099",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.6 – Identity and Access Management",
+      "topic": "Password Security",
+      "duration": "6:22",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-100",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.7 – Automation and Orchestration",
+      "topic": "Scripting and Automation",
+      "duration": "8:20",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-101",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.8 – Incident Response",
+      "topic": "Incident Response",
+      "duration": "9:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-102",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.8 – Incident Response",
+      "topic": "Incident Planning",
+      "duration": "6:50",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-103",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.8 – Incident Response",
+      "topic": "Digital Forensics",
+      "duration": "9:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-104",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 4: Security Operations",
+      "objective": "4.9 – Security Data Sources",
+      "topic": "Log Data",
+      "duration": "13:41",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-105",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.1 – Security Governance",
+      "topic": "Security Policies",
+      "duration": "11:02",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-106",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.1 – Security Governance",
+      "topic": "Security Standards",
+      "duration": "5:36",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-107",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.1 – Security Governance",
+      "topic": "Security Procedures",
+      "duration": "7:02",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-108",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.1 – Security Governance",
+      "topic": "Security Considerations",
+      "duration": "4:51",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-109",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.1 – Security Governance",
+      "topic": "Data Roles and Responsibilities",
+      "duration": "2:27",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-110",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.2 – Risk Management",
+      "topic": "Risk Management",
+      "duration": "3:30",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-111",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.2 – Risk Management",
+      "topic": "Risk Analysis",
+      "duration": "9:13",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-112",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.2 – Risk Management",
+      "topic": "Risk Management Strategies",
+      "duration": "3:12",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-113",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.2 – Risk Management",
+      "topic": "Business Impact Analysis",
+      "duration": "2:55",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-114",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.3 – Third-party Risk",
+      "topic": "Third-party Risk Assessment",
+      "duration": "11:36",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-115",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.3 – Third-party Risk",
+      "topic": "Agreement Types",
+      "duration": "5:19",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-116",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.4 – Security Compliance",
+      "topic": "Compliance",
+      "duration": "8:06",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-117",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.4 – Security Compliance",
+      "topic": "Privacy",
+      "duration": "5:21",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-118",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.5 – Audits and Assessments",
+      "topic": "Audits and Assessments",
+      "duration": "2:49",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-119",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.5 – Audits and Assessments",
+      "topic": "Penetration Tests",
+      "duration": "5:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-120",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.6 – Security Awareness",
+      "topic": "Security Awareness",
+      "duration": "6:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "SY0-701-121",
+      "certification": "CompTIA Security+",
+      "exam": "SY0-701",
+      "section": "Section 5: Security Program Management and Oversight",
+      "objective": "5.6 – Security Awareness",
+      "topic": "User Training",
+      "duration": "4:31",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    }
+  ]
+}

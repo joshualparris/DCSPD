@@ -212,11 +212,13 @@ export type CertificationAssessmentAttempt = {
 };
 
 export type UserRole = 'learner' | 'senior' | 'admin';
+export type CareerFocus = 'DCS' | 'MSP' | 'Generic';
 
 export type UserProfile = {
   id: string;
   name: string;
   role: UserRole;
+  careerFocus?: CareerFocus;
   avatar?: string;
 };
 
@@ -248,15 +250,16 @@ export type UserProgress = {
   };
 };
 
-const STORAGE_KEY = 'dcsprep_learning_cockpit_v4';
-const LEGACY_GAMIFICATION_STORAGE_KEY = 'dcsprep-gamification';
+export const STORAGE_KEY = 'dcsprep_learning_cockpit_v4';
+export const LEGACY_GAMIFICATION_STORAGE_KEY = 'dcsprep-gamification';
 
 export function getDefaultProgress(): UserProgress {
   return {
     profile: {
       id: 'local-user',
-      name: 'Joshua',
-      role: 'learner'
+      name: 'Technician',
+      role: 'learner',
+      careerFocus: 'Generic'
     },
     modules: {},
     assessmentAttempts: [],
@@ -495,7 +498,13 @@ function normalizeProgress(raw: unknown): UserProgress {
 
   const gamificationState = migrateLegacyProgressGamification(candidate);
 
+  const normalizedProfile: UserProfile = {
+    ...base.profile!,
+    ...(candidate.profile || {})
+  };
+
   return {
+    profile: normalizedProfile,
     lastOpenedModuleId: candidate.lastOpenedModuleId,
     modules: Object.fromEntries(
       Object.entries(candidate.modules || {}).map(([moduleId, moduleProgress]) => [
@@ -1084,6 +1093,25 @@ export function calculateRoleplaySatisfactionScore(sentiments: RoleplaySentiment
   const recoveryFloor = finalTwo.includes('satisfied') ? 72 : finalTwo.every((sentiment) => sentiment !== 'angry') ? 58 : 0;
 
   return Math.round(Math.max(recoveryFloor, Math.min(100, baseScore + improvementBonus)));
+}
+
+export function getUserName(): string {
+  const progress = getProgress();
+  return progress.profile?.name || 'Technician';
+}
+
+export function getCareerFocus(): CareerFocus {
+  const progress = getProgress();
+  return progress.profile?.careerFocus || 'Generic';
+}
+
+export function setCareerFocus(focus: CareerFocus) {
+  const progress = getProgress();
+  if (!progress.profile) {
+    progress.profile = { id: 'local-user', name: 'Technician', role: 'learner' };
+  }
+  progress.profile.careerFocus = focus;
+  saveProgress(progress);
 }
 
 export function getRoleplayFeedbackStats(attempts: RoleplayFeedbackAttempt[]) {

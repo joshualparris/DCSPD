@@ -1,0 +1,2728 @@
+[
+  {
+    "id": "MCQ-2201201-0001",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Mobile Devices",
+    "topic": "Laptop Hardware",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A teacher’s laptop only works when plugged in. Battery health reports normal capacity, but the laptop shuts off instantly when the AC adapter is removed. Which next check best separates a battery fault from a power-delivery or board-level fault?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Replace the laptop battery immediately because capacity is the only battery-health indicator that matters."
+      },
+      {
+        "key": "B",
+        "text": "Test with a known-good compatible AC adapter and inspect the DC-in/USB-C charging path before replacing parts."
+      },
+      {
+        "key": "C",
+        "text": "Reinstall Windows because sudden shutdowns are normally caused by corrupt power plans."
+      },
+      {
+        "key": "D",
+        "text": "Disable sleep and hibernation so the laptop cannot power off unexpectedly."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "A known-good adapter and charging-path check helps isolate whether the issue is battery, charger, port, or board-level power delivery before parts are replaced.",
+    "tags": [
+      "hardware",
+      "battery",
+      "triage"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0002",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Mobile Devices",
+    "topic": "Mobile Device Management",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A BYOD tablet can access email but cannot receive required Wi-Fi profiles or app restrictions. The user insists they signed in correctly. Which finding most strongly points to the actual issue?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The device is enrolled as personal/BYOD but the policy is scoped only to corporate-owned devices."
+      },
+      {
+        "key": "B",
+        "text": "The device battery is below 50%, so MDM profiles cannot apply."
+      },
+      {
+        "key": "C",
+        "text": "The user is connected to 5 GHz Wi-Fi rather than 2.4 GHz Wi-Fi."
+      },
+      {
+        "key": "D",
+        "text": "The user’s email mailbox is full."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "MDM targeting/scope and ownership type commonly determine whether configuration profiles apply. Email access alone does not prove the device is correctly enrolled for policy.",
+    "tags": [
+      "MDM",
+      "BYOD",
+      "policy"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0003",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Mobile Devices",
+    "topic": "Mobile Connectivity",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A staff phone connects to Bluetooth headphones but cannot use a wireless hotspot from a laptop beside it. Other phones can use the hotspot. What is the best first support explanation?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bluetooth success proves all wireless radios are healthy."
+      },
+      {
+        "key": "B",
+        "text": "Bluetooth and Wi-Fi/hotspot use different radios/protocols, so each must be tested separately."
+      },
+      {
+        "key": "C",
+        "text": "The laptop hotspot must be using cellular 5G rather than Wi-Fi."
+      },
+      {
+        "key": "D",
+        "text": "The phone cannot support both Bluetooth and Wi-Fi at the same time."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Bluetooth working does not validate Wi-Fi or hotspot capability. Treat each wireless function as a separate symptom path.",
+    "tags": [
+      "wireless",
+      "Bluetooth",
+      "hotspot"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0004",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Networking",
+    "topic": "Ports and Protocols",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user can browse websites but cannot map a file share by name or IP. Which port/protocol area should you suspect first for Windows file sharing?",
+    "options": [
+      {
+        "key": "A",
+        "text": "TCP 443 / HTTPS"
+      },
+      {
+        "key": "B",
+        "text": "UDP 53 / DNS only"
+      },
+      {
+        "key": "C",
+        "text": "TCP 445 / SMB"
+      },
+      {
+        "key": "D",
+        "text": "UDP 123 / NTP"
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "Windows file sharing commonly uses SMB over TCP 445. Web browsing working on HTTPS does not prove SMB traffic is allowed.",
+    "tags": [
+      "ports",
+      "SMB"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0005",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Networking",
+    "topic": "DNS Configuration",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A laptop can access an internal web app by IP address but not by its hostname. Other devices on the same network resolve the hostname correctly. What is the best next check?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Replace the network cable because hostname failures always mean physical failure."
+      },
+      {
+        "key": "B",
+        "text": "Check the laptop’s DNS server assignment and DNS cache before changing the app server."
+      },
+      {
+        "key": "C",
+        "text": "Reboot the app server because IP access proves the client is fine."
+      },
+      {
+        "key": "D",
+        "text": "Disable the firewall because firewalls only block names, not IP addresses."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "IP access but hostname failure points strongly toward DNS configuration or cache on the client.",
+    "tags": [
+      "DNS",
+      "troubleshooting"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0006",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Networking",
+    "topic": "DHCP",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A workstation shows 169.254.18.22 and cannot access the network. What does this most likely indicate?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The device has successfully received an IPv6 address."
+      },
+      {
+        "key": "B",
+        "text": "The device has self-assigned an APIPA address after failing to get DHCP."
+      },
+      {
+        "key": "C",
+        "text": "The DNS server has assigned a temporary quarantine address."
+      },
+      {
+        "key": "D",
+        "text": "The gateway has blocked HTTPS traffic."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "169.254.x.x is APIPA, usually indicating the client did not receive a DHCP lease.",
+    "tags": [
+      "DHCP",
+      "APIPA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0007",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Networking",
+    "topic": "VLANs and VPNs",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A remote user says the VPN connects, but they cannot reach one internal subnet while other internal apps work. What is the most useful first technical evidence to collect?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Their password, so an admin can test as them."
+      },
+      {
+        "key": "B",
+        "text": "VPN-assigned IP, route table, destination subnet, and whether split tunnelling is enabled."
+      },
+      {
+        "key": "C",
+        "text": "A screenshot of the whole desktop showing all open apps."
+      },
+      {
+        "key": "D",
+        "text": "The user’s home Wi-Fi password and router admin password."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "A connected VPN with partial access often needs route/split-tunnel/subnet evidence, not credentials or privacy-invasive screenshots.",
+    "tags": [
+      "VPN",
+      "routing",
+      "privacy"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0008",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Networking",
+    "topic": "Network Devices",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A classroom has no wired connectivity from one wall port. The switch shows no link light for that port, but other ports on the same switch work. What is the best next physical-layer check?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Reset every VLAN on the switch."
+      },
+      {
+        "key": "B",
+        "text": "Test the patch lead and wall port path with a known-good cable or cable tester."
+      },
+      {
+        "key": "C",
+        "text": "Flush DNS on the workstation."
+      },
+      {
+        "key": "D",
+        "text": "Replace the router because one port is down."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "No link light on one run points first to cable/port/path testing before changing VLANs or upstream routing.",
+    "tags": [
+      "physical layer",
+      "switching"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0009",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Hardware",
+    "topic": "Displays",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A laptop connected by USB-C shows charging but no external display. Another USB-C cable works for charging only as well. Which explanation is most likely?",
+    "options": [
+      {
+        "key": "A",
+        "text": "All USB-C cables and ports support video by default."
+      },
+      {
+        "key": "B",
+        "text": "The laptop display must be cracked internally."
+      },
+      {
+        "key": "C",
+        "text": "The port, cable, or adapter may not support DisplayPort Alt Mode/video output."
+      },
+      {
+        "key": "D",
+        "text": "The monitor must require VGA for video."
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "USB-C does not guarantee video support. DisplayPort Alt Mode and compatible cable/adapter support matter.",
+    "tags": [
+      "USB-C",
+      "display"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0010",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Hardware",
+    "topic": "RAID",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A small server uses two drives and must survive one drive failure with minimal complexity. Capacity efficiency is less important than redundancy. Which RAID level best fits?",
+    "options": [
+      {
+        "key": "A",
+        "text": "RAID 0"
+      },
+      {
+        "key": "B",
+        "text": "RAID 1"
+      },
+      {
+        "key": "C",
+        "text": "RAID 5"
+      },
+      {
+        "key": "D",
+        "text": "JBOD"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "RAID 1 mirrors data across two drives and can tolerate one drive failure. RAID 0 improves performance/capacity but provides no redundancy.",
+    "tags": [
+      "storage",
+      "RAID"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0011",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Hardware",
+    "topic": "Memory Technologies",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A workstation has intermittent crashes after a RAM upgrade. The board supports DDR4 non-ECC only, but the installed module is ECC registered memory. What is the best interpretation?",
+    "options": [
+      {
+        "key": "A",
+        "text": "ECC registered memory is always backward-compatible with non-ECC desktop boards."
+      },
+      {
+        "key": "B",
+        "text": "The module type is likely incompatible even if it physically fits."
+      },
+      {
+        "key": "C",
+        "text": "The issue must be caused by the SSD because RAM errors cannot cause crashes."
+      },
+      {
+        "key": "D",
+        "text": "The solution is to disable all CPU cores except one."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Physical fit does not guarantee compatibility. Registered/ECC requirements must match motherboard support.",
+    "tags": [
+      "RAM",
+      "compatibility"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0012",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Hardware",
+    "topic": "Printers",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A laser printer produces repeated marks at regular intervals down the page. Which part is most likely associated with this symptom pattern?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Wireless access point"
+      },
+      {
+        "key": "B",
+        "text": "Fuser, drum, or roller surface with a repeating defect"
+      },
+      {
+        "key": "C",
+        "text": "DHCP scope exhaustion"
+      },
+      {
+        "key": "D",
+        "text": "Incorrect file extension"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Repeating defects on laser printouts usually correspond to rotating components such as drum, fuser, or rollers.",
+    "tags": [
+      "printers",
+      "laser"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0013",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Virtualization and Cloud",
+    "topic": "Cloud Models",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A school app is accessed through a browser, managed by a vendor, and staff only configure users and settings. Which cloud model is this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "IaaS"
+      },
+      {
+        "key": "B",
+        "text": "PaaS"
+      },
+      {
+        "key": "C",
+        "text": "SaaS"
+      },
+      {
+        "key": "D",
+        "text": "Bare metal colocation"
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "SaaS is vendor-managed application delivery where customers mainly manage data, users, and configuration.",
+    "tags": [
+      "cloud",
+      "SaaS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0014",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Virtualization and Cloud",
+    "topic": "Virtual Machines",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "You want to safely test Active Directory concepts on a work laptop without touching production. Which boundary is most important?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Use real staff accounts so the lab is realistic."
+      },
+      {
+        "key": "B",
+        "text": "Keep the VM isolated or on a clearly non-production network with synthetic accounts only."
+      },
+      {
+        "key": "C",
+        "text": "Join the VM to the production domain so policies match."
+      },
+      {
+        "key": "D",
+        "text": "Disable snapshots so mistakes cannot be hidden."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "A safe lab uses synthetic data and avoids production networks/domains unless explicitly approved.",
+    "tags": [
+      "virtualization",
+      "AD lab",
+      "privacy"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0015",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A workstation intermittently loses network connection. Other devices on the same switch remain stable. Which sequence is best?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Replace the switch immediately, then check the cable."
+      },
+      {
+        "key": "B",
+        "text": "Check physical link/cable, NIC status, IP lease, logs, and whether the issue follows the device or port."
+      },
+      {
+        "key": "C",
+        "text": "Change DNS to a public resolver before checking link state."
+      },
+      {
+        "key": "D",
+        "text": "Factory reset the firewall."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Good troubleshooting isolates physical, adapter, addressing, logs, and scope before changing infrastructure.",
+    "tags": [
+      "methodology",
+      "network"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201201-0016",
+    "certification": "CompTIA A+ Core 1",
+    "exam": "220-1201",
+    "domain": "Troubleshooting",
+    "topic": "Storage Troubleshooting",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A PC is slow, reports SMART warnings, and sometimes fails to boot. The user has important unsynced files. What should be first?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Run a full destructive format to clear errors."
+      },
+      {
+        "key": "B",
+        "text": "Prioritise data protection/backup or approved recovery before stress-testing the drive."
+      },
+      {
+        "key": "C",
+        "text": "Update the wallpaper to reduce disk usage."
+      },
+      {
+        "key": "D",
+        "text": "Run continuous benchmarks until the drive fails."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "SMART warnings plus boot issues indicate possible drive failure. Protect data before heavy testing.",
+    "tags": [
+      "storage",
+      "backup"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0017",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A removable drive must be readable and writable by Windows and macOS and support files larger than 4 GB. Which file system is the best general choice?",
+    "options": [
+      {
+        "key": "A",
+        "text": "FAT32"
+      },
+      {
+        "key": "B",
+        "text": "exFAT"
+      },
+      {
+        "key": "C",
+        "text": "NTFS with default permissions"
+      },
+      {
+        "key": "D",
+        "text": "ext4"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "exFAT supports large files and broad Windows/macOS compatibility without FAT32’s 4 GB file limit.",
+    "tags": [
+      "filesystems"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0018",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Installing Operating Systems",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A technician needs a clean Windows install on multiple identical devices with minimal manual configuration. Which approach best matches modern deployment practice?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Manual DVD install on each device with local accounts."
+      },
+      {
+        "key": "B",
+        "text": "Zero-touch or automated deployment with approved image/provisioning process."
+      },
+      {
+        "key": "C",
+        "text": "Copy C:\\Windows from one device to another."
+      },
+      {
+        "key": "D",
+        "text": "Install from an unverified ISO found online."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Automated/zero-touch deployment reduces inconsistency and supports approved configuration at scale.",
+    "tags": [
+      "deployment"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0019",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Task Manager",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user reports slowness only during morning sign-in. Which Task Manager area gives the most direct first clue about apps loading at sign-in?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Startup apps"
+      },
+      {
+        "key": "B",
+        "text": "Fonts"
+      },
+      {
+        "key": "C",
+        "text": "Disk Management"
+      },
+      {
+        "key": "D",
+        "text": "Windows Defender Firewall rules"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Startup apps help identify programs launching at sign-in and impacting user experience.",
+    "tags": [
+      "Task Manager",
+      "performance"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0020",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Windows Network Command Line",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A Windows client can reach 8.8.8.8 but cannot reach intranet.example.local by name. Which command best confirms name resolution behaviour?",
+    "options": [
+      {
+        "key": "A",
+        "text": "format"
+      },
+      {
+        "key": "B",
+        "text": "nslookup intranet.example.local"
+      },
+      {
+        "key": "C",
+        "text": "sfc /scannow"
+      },
+      {
+        "key": "D",
+        "text": "net user /domain"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "nslookup directly tests DNS resolution for a hostname.",
+    "tags": [
+      "CLI",
+      "DNS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0021",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Windows Firewall",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An app works locally but cannot accept inbound connections from the same subnet. Network connectivity is otherwise fine. What is the best first Windows host-level check?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Inbound firewall rule/profile status for the app or port."
+      },
+      {
+        "key": "B",
+        "text": "Monitor brightness settings."
+      },
+      {
+        "key": "C",
+        "text": "Recycle Bin size."
+      },
+      {
+        "key": "D",
+        "text": "Keyboard language."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Host firewall inbound rules and network profile can block otherwise valid connections.",
+    "tags": [
+      "firewall"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0022",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Active Directory",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user can sign into Windows but cannot access a department share that colleagues can access. What evidence is most useful before escalation?",
+    "options": [
+      {
+        "key": "A",
+        "text": "User’s password and MFA code."
+      },
+      {
+        "key": "B",
+        "text": "Exact share path, error message, group membership expectation, device name, and whether other users/devices are affected."
+      },
+      {
+        "key": "C",
+        "text": "A statement that Active Directory is broken."
+      },
+      {
+        "key": "D",
+        "text": "A screenshot of every mapped drive for all staff."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Access issues require scope, path, error, group/permission context, and affected device/user comparison without collecting secrets.",
+    "tags": [
+      "AD",
+      "permissions"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0023",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "macOS",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A macOS user cannot find a file but believes it was recently opened. Which native feature is best for searching the device quickly?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Spotlight"
+      },
+      {
+        "key": "B",
+        "text": "Event Viewer"
+      },
+      {
+        "key": "C",
+        "text": "Registry Editor"
+      },
+      {
+        "key": "D",
+        "text": "Group Policy Management"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Spotlight is macOS’s built-in search feature.",
+    "tags": [
+      "macOS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0024",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operating Systems",
+    "topic": "Linux Commands",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A Linux service is consuming heavy CPU. Which command is the best first live view of processes?",
+    "options": [
+      {
+        "key": "A",
+        "text": "top"
+      },
+      {
+        "key": "B",
+        "text": "chmod"
+      },
+      {
+        "key": "C",
+        "text": "pwd"
+      },
+      {
+        "key": "D",
+        "text": "mv"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "top provides a live process/resource view.",
+    "tags": [
+      "Linux",
+      "processes"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0025",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Authentication and Access",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user enters correct credentials but SSO fails only for one cloud app after a role change. Which cause is most likely?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The monitor cable is loose."
+      },
+      {
+        "key": "B",
+        "text": "App assignment, group claim, or SAML/OIDC attribute mapping no longer matches access rules."
+      },
+      {
+        "key": "C",
+        "text": "The user’s keyboard is Bluetooth."
+      },
+      {
+        "key": "D",
+        "text": "DHCP is unavailable."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "SSO to one app often depends on assignment and claims/attributes after role or group changes.",
+    "tags": [
+      "SSO",
+      "SAML",
+      "access"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0026",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Malware",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user reports a suspicious pop-up and slow performance. They clicked an unknown attachment. Which first response is safest?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tell the user to keep working while you browse the device freely."
+      },
+      {
+        "key": "B",
+        "text": "Follow incident process: isolate if required, preserve evidence, run approved tools, and escalate according to policy."
+      },
+      {
+        "key": "C",
+        "text": "Delete random system files until the pop-up stops."
+      },
+      {
+        "key": "D",
+        "text": "Ask the user for their password so you can investigate later."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Potential malware should follow approved incident response and evidence-preserving procedures.",
+    "tags": [
+      "malware",
+      "incident response"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0027",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Wireless Encryption",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An organisation is replacing WPA2-Personal for staff Wi-Fi with per-user authentication. Which technology is most relevant?",
+    "options": [
+      {
+        "key": "A",
+        "text": "WPA2/WPA3-Enterprise using 802.1X/RADIUS"
+      },
+      {
+        "key": "B",
+        "text": "WEP with a longer shared key"
+      },
+      {
+        "key": "C",
+        "text": "MAC filtering only"
+      },
+      {
+        "key": "D",
+        "text": "Open Wi-Fi with hidden SSID"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Enterprise Wi-Fi commonly uses 802.1X with RADIUS for per-user/device authentication.",
+    "tags": [
+      "Wi-Fi",
+      "RADIUS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0028",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Data Destruction",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A laptop SSD is being redeployed internally. It contained sensitive data. Which approach best matches secure reuse?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Delete files and empty Recycle Bin only."
+      },
+      {
+        "key": "B",
+        "text": "Use an approved sanitisation method appropriate for SSDs, such as crypto erase or vendor secure erase, then document it."
+      },
+      {
+        "key": "C",
+        "text": "Rename user folders."
+      },
+      {
+        "key": "D",
+        "text": "Cover the serial number with tape."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "SSD sanitisation should use appropriate approved methods and documentation; ordinary deletion is insufficient.",
+    "tags": [
+      "data destruction",
+      "SSD"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0029",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Security",
+    "topic": "Browser Security",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user says a site keeps opening fake login pages after they click search results. Which browser-side checks are most useful first?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Extensions, notification permissions, cached redirects, and whether the URL/certificate is legitimate."
+      },
+      {
+        "key": "B",
+        "text": "RAM channel configuration."
+      },
+      {
+        "key": "C",
+        "text": "Printer duplex setting."
+      },
+      {
+        "key": "D",
+        "text": "Monitor refresh rate."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Malicious extensions, notifications, cached redirects, and URL/certificate checks are relevant browser-security triage.",
+    "tags": [
+      "browser",
+      "phishing"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0030",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Troubleshooting",
+    "topic": "Troubleshooting Windows",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A Windows update failed, and now a device boots to recovery. The user needs files preserved. What is the safest mindset?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Immediately wipe the disk because failed updates always corrupt all data."
+      },
+      {
+        "key": "B",
+        "text": "Use recovery options that preserve data where possible and confirm backup status before destructive repair."
+      },
+      {
+        "key": "C",
+        "text": "Disable all security controls."
+      },
+      {
+        "key": "D",
+        "text": "Replace the user account without checking storage health."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Data preservation and backup checks come before destructive OS repair.",
+    "tags": [
+      "Windows",
+      "recovery"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0031",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Ticketing Systems",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which ticket note is best for escalation?",
+    "options": [
+      {
+        "key": "A",
+        "text": "It’s broken. Please fix."
+      },
+      {
+        "key": "B",
+        "text": "User says internet bad. I think DNS maybe."
+      },
+      {
+        "key": "C",
+        "text": "Issue: cannot access shared mailbox in Outlook web or desktop. Scope: only this user. Checks: sign-in works, licence active, mailbox permission not visible in admin portal. Error: 'not authorised'. No password collected. Please verify mailbox delegation."
+      },
+      {
+        "key": "D",
+        "text": "I tried stuff for a while and got stuck."
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "A strong escalation note includes symptom, scope, checks, error, privacy boundary, and precise request.",
+    "tags": [
+      "ticketing",
+      "documentation"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0032",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Change Management",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A teacher asks you to open a blocked website for a class starting in five minutes. Which action best follows change-control and safety principles?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bypass filtering immediately because urgency overrides policy."
+      },
+      {
+        "key": "B",
+        "text": "Collect educational need, URL, timeframe, requester, risk notes, and follow approved approval/escalation path."
+      },
+      {
+        "key": "C",
+        "text": "Share the firewall admin password with the teacher."
+      },
+      {
+        "key": "D",
+        "text": "Disable filtering for the whole school temporarily."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Urgent requests still need scope, justification, approval, and least-change handling.",
+    "tags": [
+      "change management",
+      "web filtering"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0033",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Managing Backups",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A backup job shows success, but a restore test has not been performed for months. What is the best risk statement?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Successful backup logs prove restores will work."
+      },
+      {
+        "key": "B",
+        "text": "Restore capability is unverified until tested; backup success alone is incomplete evidence."
+      },
+      {
+        "key": "C",
+        "text": "Backups are unnecessary if files are in the cloud."
+      },
+      {
+        "key": "D",
+        "text": "Restore tests are only needed after ransomware."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Backups are only useful if restoration is tested and meets requirements.",
+    "tags": [
+      "backup",
+      "restore"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-2201202-0034",
+    "certification": "CompTIA A+ Core 2",
+    "exam": "220-1202",
+    "domain": "Operational Procedures",
+    "topic": "Privacy, Licensing, and Policies",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An AI tool asks for a real ticket containing student names to generate a better answer. What should you do?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Paste the full ticket because AI tools need realism."
+      },
+      {
+        "key": "B",
+        "text": "Use a synthetic or anonymised version and keep real personal, credential, and network-sensitive details out."
+      },
+      {
+        "key": "C",
+        "text": "Paste only the student names but not the device names."
+      },
+      {
+        "key": "D",
+        "text": "Disable MFA to make testing easier."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Privacy-safe AI use requires synthetic/anonymised examples and no sensitive details.",
+    "tags": [
+      "AI",
+      "privacy"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0035",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "OSI Model",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user can associate to Wi-Fi, receives an IP address, can ping the gateway, but HTTPS to any website fails while DNS works. Which OSI area is least likely to be the root cause?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Layer 1 physical wireless signal"
+      },
+      {
+        "key": "B",
+        "text": "Layer 3 IP addressing/routing"
+      },
+      {
+        "key": "C",
+        "text": "Layer 4/7 filtering or application path"
+      },
+      {
+        "key": "D",
+        "text": "Policy/proxy/security inspection"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Association, DHCP, gateway ping, and DNS working make pure physical-layer failure less likely than higher-layer filtering or application-path issues.",
+    "tags": [
+      "OSI",
+      "troubleshooting"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0036",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Network Appliances",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A firewall is asked to block traffic based on application identity and URL category, not just port and IP. Which capability is being used?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patch panel management"
+      },
+      {
+        "key": "B",
+        "text": "Next-generation firewall/application-aware filtering"
+      },
+      {
+        "key": "C",
+        "text": "Unmanaged switching"
+      },
+      {
+        "key": "D",
+        "text": "Media conversion"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Application and URL-aware controls are associated with NGFW/application-layer inspection.",
+    "tags": [
+      "firewall"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0037",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Cloud Models",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A company wants control of virtual networks, subnets, route tables, and servers but not physical data-centre hardware. Which model best fits?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SaaS"
+      },
+      {
+        "key": "B",
+        "text": "PaaS"
+      },
+      {
+        "key": "C",
+        "text": "IaaS"
+      },
+      {
+        "key": "D",
+        "text": "DaaS only"
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "IaaS gives customers control over virtualised infrastructure while the provider manages physical facilities.",
+    "tags": [
+      "cloud",
+      "IaaS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0038",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Ports and Protocols",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A monitoring system can ping a device but cannot collect interface counters. Which protocol/port area should you verify?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SNMP, commonly UDP 161/162 depending on polling/traps"
+      },
+      {
+        "key": "B",
+        "text": "NTP, UDP 123"
+      },
+      {
+        "key": "C",
+        "text": "SMTP, TCP 25"
+      },
+      {
+        "key": "D",
+        "text": "RDP, TCP 3389"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "SNMP is commonly used for device/interface monitoring.",
+    "tags": [
+      "SNMP",
+      "ports"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0039",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "Transmission Media",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A fibre link between buildings is several kilometres and requires long-distance transmission. Which media choice is generally appropriate?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Single-mode fibre"
+      },
+      {
+        "key": "B",
+        "text": "Cat 5e copper"
+      },
+      {
+        "key": "C",
+        "text": "Bluetooth"
+      },
+      {
+        "key": "D",
+        "text": "Unshielded RJ11 telephone cable"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Single-mode fibre is suited to longer-distance optical links.",
+    "tags": [
+      "fiber"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0040",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "IPv4 Subnetting",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A /26 IPv4 subnet is used for hosts. How many usable host addresses are available?",
+    "options": [
+      {
+        "key": "A",
+        "text": "30"
+      },
+      {
+        "key": "B",
+        "text": "62"
+      },
+      {
+        "key": "C",
+        "text": "126"
+      },
+      {
+        "key": "D",
+        "text": "254"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "/26 leaves 6 host bits: 2^6 = 64 addresses, minus network and broadcast = 62 usable.",
+    "tags": [
+      "subnetting"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0041",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Networking Concepts",
+    "topic": "IPv4 Addressing",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A device has 192.168.10.50/24 and gateway 192.168.11.1. What is the most likely issue?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The gateway is outside the device’s local /24 subnet."
+      },
+      {
+        "key": "B",
+        "text": "The subnet mask is too long to support private IPs."
+      },
+      {
+        "key": "C",
+        "text": "192.168.x.x addresses cannot use gateways."
+      },
+      {
+        "key": "D",
+        "text": "The device is using IPv6 only."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "With /24, 192.168.10.0/24 does not include 192.168.11.1, so the default gateway is not local.",
+    "tags": [
+      "IPv4",
+      "gateway"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0042",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "Routing",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A router has a static route and a dynamic route to the same prefix. The static route has lower administrative distance. Which route is usually preferred?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The dynamic route because it changes automatically."
+      },
+      {
+        "key": "B",
+        "text": "The static route because lower administrative distance is preferred."
+      },
+      {
+        "key": "C",
+        "text": "Neither; traffic is always broadcast."
+      },
+      {
+        "key": "D",
+        "text": "The route with the longest description."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Administrative distance is a trust/preference metric; lower values are generally preferred when prefix length is equal.",
+    "tags": [
+      "routing"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0043",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "NAT",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Many internal clients share one public IPv4 address for outbound internet access. Which technology is most likely in use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "PAT/NAT overload"
+      },
+      {
+        "key": "B",
+        "text": "STP"
+      },
+      {
+        "key": "C",
+        "text": "VXLAN only"
+      },
+      {
+        "key": "D",
+        "text": "Syslog"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "PAT/NAT overload maps many private hosts to one public IP using port translations.",
+    "tags": [
+      "NAT",
+      "PAT"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0044",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "VLANs and Trunking",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A VoIP phone and PC share one wall port. The phone tags voice traffic, while the PC sends untagged data traffic through the phone. What switchport concept is most relevant?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Voice VLAN with data/native VLAN handling"
+      },
+      {
+        "key": "B",
+        "text": "DNS recursion"
+      },
+      {
+        "key": "C",
+        "text": "NTP stratum"
+      },
+      {
+        "key": "D",
+        "text": "Optical attenuation"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Shared phone/PC connections often use a voice VLAN for tagged voice traffic and a data/native VLAN for PC traffic.",
+    "tags": [
+      "VLAN",
+      "VoIP"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0045",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "Spanning Tree Protocol",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "After someone patches two switch ports together, the network becomes unstable with broadcast storms. Which protocol should reduce this risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "STP"
+      },
+      {
+        "key": "B",
+        "text": "DNSSEC"
+      },
+      {
+        "key": "C",
+        "text": "NTP"
+      },
+      {
+        "key": "D",
+        "text": "SFTP"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Spanning Tree Protocol helps prevent switching loops.",
+    "tags": [
+      "STP"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0046",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Implementation",
+    "topic": "Wireless Devices",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Users at the far end of a building see strong signal but poor performance and roaming issues. Which finding would best explain this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Too many APs using overlapping channels/power levels causing co-channel/interference problems."
+      },
+      {
+        "key": "B",
+        "text": "DNS MX records are missing."
+      },
+      {
+        "key": "C",
+        "text": "The internet has no public IP."
+      },
+      {
+        "key": "D",
+        "text": "The switch uses rack ears."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Strong signal does not guarantee performance; channel planning, power, roaming, and interference matter.",
+    "tags": [
+      "Wi-Fi",
+      "roaming"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0047",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "Network Documentation",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A technician changes a switch port VLAN to fix a classroom issue but does not document it. What is the main operational risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Future troubleshooting and audits may rely on inaccurate baseline/configuration records."
+      },
+      {
+        "key": "B",
+        "text": "The switch will stop forwarding all traffic instantly."
+      },
+      {
+        "key": "C",
+        "text": "DNS records will automatically disappear."
+      },
+      {
+        "key": "D",
+        "text": "The cable will become crossover."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Undocumented changes undermine baseline accuracy and future troubleshooting.",
+    "tags": [
+      "documentation",
+      "change"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0048",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "Logs and Monitoring",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A network is slow, but device CPU and memory look normal. You need to know which conversations are consuming bandwidth. Which data is most useful?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Flow data such as NetFlow/IPFIX/sFlow"
+      },
+      {
+        "key": "B",
+        "text": "Keyboard layout"
+      },
+      {
+        "key": "C",
+        "text": "BIOS boot order"
+      },
+      {
+        "key": "D",
+        "text": "Printer toner level"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Flow data identifies traffic conversations and volume patterns.",
+    "tags": [
+      "monitoring",
+      "flows"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0049",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "Disaster Recovery",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A business says the maximum tolerable data loss is 15 minutes. Which metric is being described?",
+    "options": [
+      {
+        "key": "A",
+        "text": "RTO"
+      },
+      {
+        "key": "B",
+        "text": "RPO"
+      },
+      {
+        "key": "C",
+        "text": "MTTR"
+      },
+      {
+        "key": "D",
+        "text": "MTBF"
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Recovery Point Objective (RPO) describes acceptable data loss measured in time.",
+    "tags": [
+      "DR",
+      "RPO"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0050",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "DNS Records",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A domain’s email is being spoofed. Which record type helps receiving mail systems verify authorised senders?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SPF TXT record"
+      },
+      {
+        "key": "B",
+        "text": "A record only"
+      },
+      {
+        "key": "C",
+        "text": "PTR record only"
+      },
+      {
+        "key": "D",
+        "text": "CNAME flattening only"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "SPF is commonly published as TXT and identifies authorised sending sources for a domain.",
+    "tags": [
+      "DNS",
+      "email security"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0051",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Operations",
+    "topic": "VPNs",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A VPN connects but internal hostnames fail while internal IP addresses work. Which fix area is most likely?",
+    "options": [
+      {
+        "key": "A",
+        "text": "VPN DNS server/search suffix assignment"
+      },
+      {
+        "key": "B",
+        "text": "Monitor colour profile"
+      },
+      {
+        "key": "C",
+        "text": "Printer fuser temperature"
+      },
+      {
+        "key": "D",
+        "text": "RAID stripe size"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "IP works but names fail points toward VPN DNS configuration/search suffix/name resolution.",
+    "tags": [
+      "VPN",
+      "DNS"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0052",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Security",
+    "topic": "Attack Types",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A switch CAM table fills with bogus MAC addresses and begins flooding frames. Which attack best matches?",
+    "options": [
+      {
+        "key": "A",
+        "text": "MAC flooding"
+      },
+      {
+        "key": "B",
+        "text": "DNSSEC validation"
+      },
+      {
+        "key": "C",
+        "text": "NTP drift"
+      },
+      {
+        "key": "D",
+        "text": "RAID degradation"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "MAC flooding attempts to exhaust the switch MAC/CAM table, causing flooding behaviour.",
+    "tags": [
+      "switching",
+      "attack"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0053",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Security",
+    "topic": "Segmentation",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A guest Wi-Fi network should reach the internet but not internal servers. Which control best enforces this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "VLAN/SSID segmentation with firewall rules/ACLs"
+      },
+      {
+        "key": "B",
+        "text": "Changing the SSID name only"
+      },
+      {
+        "key": "C",
+        "text": "Using longer HDMI cables"
+      },
+      {
+        "key": "D",
+        "text": "Increasing DHCP lease time"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Segmentation requires separate network/SSID/VLAN and rules that restrict access.",
+    "tags": [
+      "segmentation",
+      "ACL"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-N10009-0054",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "domain": "Network Troubleshooting",
+    "topic": "Methodology",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A senior technician says, 'Do not change anything yet; define the scope.' Which troubleshooting step is this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Identify the problem and establish a theory based on evidence."
+      },
+      {
+        "key": "B",
+        "text": "Implement a random fix."
+      },
+      {
+        "key": "C",
+        "text": "Document after closure only."
+      },
+      {
+        "key": "D",
+        "text": "Escalate without evidence."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Good methodology starts with identifying problem/scope and gathering evidence before changes.",
+    "tags": [
+      "methodology"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0055",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Security Controls",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A camera, badge reader, and locked server room are primarily what category of control?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Physical controls"
+      },
+      {
+        "key": "B",
+        "text": "Compensating cryptographic controls"
+      },
+      {
+        "key": "C",
+        "text": "Cloud-native only controls"
+      },
+      {
+        "key": "D",
+        "text": "Application-layer controls only"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "These are physical security controls that protect access to equipment and spaces.",
+    "tags": [
+      "controls"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0056",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "CIA Triad",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A ransomware event makes files unavailable even though confidentiality may not be proven breached. Which CIA principle is most directly harmed?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Availability"
+      },
+      {
+        "key": "B",
+        "text": "Non-repudiation"
+      },
+      {
+        "key": "C",
+        "text": "Obfuscation"
+      },
+      {
+        "key": "D",
+        "text": "Accounting"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Ransomware commonly disrupts availability by preventing authorised access to data/systems.",
+    "tags": [
+      "CIA",
+      "ransomware"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0057",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "AAA",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An admin wants logs that prove which account changed a firewall rule. Which part of AAA is most relevant?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Authentication"
+      },
+      {
+        "key": "B",
+        "text": "Authorization"
+      },
+      {
+        "key": "C",
+        "text": "Accounting"
+      },
+      {
+        "key": "D",
+        "text": "Anonymisation"
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "Accounting records actions for auditability and accountability.",
+    "tags": [
+      "AAA",
+      "logs"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0058",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Zero Trust",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which design best matches zero trust?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Trust every device once it is inside the LAN."
+      },
+      {
+        "key": "B",
+        "text": "Verify identity, device posture, and least-privilege access continuously, regardless of network location."
+      },
+      {
+        "key": "C",
+        "text": "Use one shared admin password for simplicity."
+      },
+      {
+        "key": "D",
+        "text": "Disable MFA for trusted offices."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Zero trust avoids implicit internal trust and uses continuous verification and least privilege.",
+    "tags": [
+      "zero trust"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0059",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Change Management",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A patch is urgent but affects a production identity service. What is the best security-minded approach?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patch immediately without rollback planning or notification."
+      },
+      {
+        "key": "B",
+        "text": "Follow emergency change process with risk, approval, backup/rollback, communication, and validation."
+      },
+      {
+        "key": "C",
+        "text": "Never patch identity systems."
+      },
+      {
+        "key": "D",
+        "text": "Let end users decide whether to patch."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Emergency change can be fast but still needs risk controls, approval, rollback, and validation.",
+    "tags": [
+      "change management"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0060",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Public Key Infrastructure",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A browser trusts a website certificate because the issuing CA chains to a trusted root. Which PKI concept is being used?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Chain of trust"
+      },
+      {
+        "key": "B",
+        "text": "MAC flooding"
+      },
+      {
+        "key": "C",
+        "text": "Data remanence"
+      },
+      {
+        "key": "D",
+        "text": "APIPA"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Certificate validation relies on a trust chain from end-entity certificate through intermediates to a trusted root.",
+    "tags": [
+      "PKI",
+      "certificates"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0061",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Hashing and Digital Signatures",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which pairing best describes hashing plus digital signature use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hashing encrypts data for secrecy; signatures remove the need for keys."
+      },
+      {
+        "key": "B",
+        "text": "Hashing creates a fixed digest; a digital signature helps prove integrity and signer authenticity."
+      },
+      {
+        "key": "C",
+        "text": "Hashing makes data impossible to delete."
+      },
+      {
+        "key": "D",
+        "text": "Digital signatures are only for wireless networks."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Hashes provide digests; signatures use asymmetric cryptography to support integrity/authenticity/non-repudiation.",
+    "tags": [
+      "hashing",
+      "signatures"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0062",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Phishing",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A finance user receives a convincing invoice from a lookalike domain and the sender pressures immediate payment. What is the best first action?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pay if the logo looks correct."
+      },
+      {
+        "key": "B",
+        "text": "Use the approved reporting/verification path and do not click links or reply to the sender."
+      },
+      {
+        "key": "C",
+        "text": "Forward it to all staff as a warning with attachments included."
+      },
+      {
+        "key": "D",
+        "text": "Ask the sender for a password reset link."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Phishing/BEC should be reported and verified through trusted channels; avoid links, attachments, and replying to attackers.",
+    "tags": [
+      "phishing",
+      "BEC"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0063",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Impersonation",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An attacker calls the helpdesk claiming to be an executive and demands MFA reset approval. Which control most directly reduces this risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Out-of-band identity verification and reset approval workflow"
+      },
+      {
+        "key": "B",
+        "text": "Faster typing speed"
+      },
+      {
+        "key": "C",
+        "text": "Lower password complexity"
+      },
+      {
+        "key": "D",
+        "text": "Open guest Wi-Fi"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "High-risk identity changes need trusted verification and approval paths.",
+    "tags": [
+      "social engineering",
+      "MFA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0064",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Supply Chain Vulnerabilities",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A trusted vendor update channel distributes malicious code. Which risk category best fits?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Supply chain compromise"
+      },
+      {
+        "key": "B",
+        "text": "Shoulder surfing"
+      },
+      {
+        "key": "C",
+        "text": "Bluejacking"
+      },
+      {
+        "key": "D",
+        "text": "Cable attenuation"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Compromised vendor/update channels are supply-chain risks.",
+    "tags": [
+      "supply chain"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0065",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Misconfiguration",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A cloud storage bucket is accidentally public. Which vulnerability type is the best fit?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Misconfiguration"
+      },
+      {
+        "key": "B",
+        "text": "Race condition"
+      },
+      {
+        "key": "C",
+        "text": "RF jamming"
+      },
+      {
+        "key": "D",
+        "text": "Rainbow table"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Unintended public exposure of cloud storage is a common misconfiguration.",
+    "tags": [
+      "cloud",
+      "misconfiguration"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0066",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Indicators of Compromise",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user account logs in from Australia and Eastern Europe within five minutes. Which indicator is this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Impossible travel"
+      },
+      {
+        "key": "B",
+        "text": "Data masking"
+      },
+      {
+        "key": "C",
+        "text": "RAID rebuild"
+      },
+      {
+        "key": "D",
+        "text": "Successful NTP sync"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Impossible travel indicates logins from geographically impossible locations in a short period.",
+    "tags": [
+      "IOC",
+      "identity"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0067",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "DNS Attacks",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Users are sent to a fake banking site even when they type the correct domain. Which attack should be considered?",
+    "options": [
+      {
+        "key": "A",
+        "text": "DNS spoofing/poisoning or domain hijacking"
+      },
+      {
+        "key": "B",
+        "text": "RAM parity checking"
+      },
+      {
+        "key": "C",
+        "text": "Disk fragmentation"
+      },
+      {
+        "key": "D",
+        "text": "Printer spooler jam"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Correct domain resolving to malicious destination can indicate DNS spoofing/poisoning or domain hijack.",
+    "tags": [
+      "DNS security"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0068",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "On-path Attacks",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An attacker positions themselves between a client and server to read or alter traffic. Which term best describes this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "On-path attack"
+      },
+      {
+        "key": "B",
+        "text": "Cold site recovery"
+      },
+      {
+        "key": "C",
+        "text": "RAID 10"
+      },
+      {
+        "key": "D",
+        "text": "Data deduplication"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "An on-path attacker intercepts traffic between parties.",
+    "tags": [
+      "on-path",
+      "MITM"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0069",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Mitigation Techniques",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which action best applies least privilege?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Give all staff local admin so they do not need support."
+      },
+      {
+        "key": "B",
+        "text": "Grant only the access needed for the role and review it regularly."
+      },
+      {
+        "key": "C",
+        "text": "Use one shared service account for all tasks."
+      },
+      {
+        "key": "D",
+        "text": "Disable audit logs to protect privacy."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Least privilege limits access to what is required and should be reviewed.",
+    "tags": [
+      "least privilege"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0070",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Architecture",
+    "topic": "Network Appliances",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A web application is vulnerable to common HTTP-layer attacks. Which security device is most directly designed to inspect and filter web app traffic?",
+    "options": [
+      {
+        "key": "A",
+        "text": "WAF"
+      },
+      {
+        "key": "B",
+        "text": "Patch panel"
+      },
+      {
+        "key": "C",
+        "text": "Toner probe"
+      },
+      {
+        "key": "D",
+        "text": "KVM switch"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "A Web Application Firewall inspects/filter web application traffic.",
+    "tags": [
+      "WAF"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0071",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Architecture",
+    "topic": "Secure Communication",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A company wants secure private connectivity for remote users plus identity-aware policy at cloud edge locations. Which concept may combine these ideas?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SASE/ZTNA-style secure access architecture"
+      },
+      {
+        "key": "B",
+        "text": "Coax splitter only"
+      },
+      {
+        "key": "C",
+        "text": "WEP shared key"
+      },
+      {
+        "key": "D",
+        "text": "Standalone unmanaged hub"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "SASE/ZTNA approaches combine identity-aware secure access and cloud-delivered security/connectivity.",
+    "tags": [
+      "SASE",
+      "ZTNA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0072",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Architecture",
+    "topic": "Data Classifications",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which data-handling decision is most directly driven by classification?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Whether data may be shared, stored, encrypted, retained, or destroyed under policy."
+      },
+      {
+        "key": "B",
+        "text": "Which monitor colour temperature to use."
+      },
+      {
+        "key": "C",
+        "text": "Whether the keyboard has a numpad."
+      },
+      {
+        "key": "D",
+        "text": "Which font is used in a report."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Classification guides handling controls such as sharing, storage, encryption, retention, and disposal.",
+    "tags": [
+      "data classification"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0073",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Operations",
+    "topic": "Incident Response",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "During suspected account compromise, which action best preserves evidence and limits damage?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Delete all logs so the attacker cannot see them."
+      },
+      {
+        "key": "B",
+        "text": "Follow incident process: contain account/session risk, preserve logs, document times, and escalate."
+      },
+      {
+        "key": "C",
+        "text": "Ask the suspected attacker if they logged in."
+      },
+      {
+        "key": "D",
+        "text": "Post details publicly to warn everyone."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Incident response should contain risk while preserving evidence, documenting, and escalating.",
+    "tags": [
+      "IR",
+      "account compromise"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0074",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Program Management",
+    "topic": "Security Awareness",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Training users to report suspicious MFA prompts instead of approving them mainly reduces which risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "MFA fatigue/social engineering"
+      },
+      {
+        "key": "B",
+        "text": "Optical fibre attenuation"
+      },
+      {
+        "key": "C",
+        "text": "RAID rebuild failure"
+      },
+      {
+        "key": "D",
+        "text": "APIPA assignment"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "MFA fatigue attacks rely on users approving unexpected prompts; awareness and reporting reduce risk.",
+    "tags": [
+      "training",
+      "MFA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  }
+]

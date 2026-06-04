@@ -12,7 +12,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --config eslint.config.cjs . --ext .js,.jsx,.ts,.tsx",
-    "test": "vitest"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test --project=chromium --project=mobile-chrome"
   },
   "dependencies": {
     "lucide-react": "0.275.0",
@@ -24,6 +28,8 @@
     "zustand": "4.4.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.51.1",
     "@testing-library/react": "14.0.0",
     "@types/node": "^24.0.0",
     "@types/react": "18.2.21",

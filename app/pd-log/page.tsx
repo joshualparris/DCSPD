@@ -264,7 +264,7 @@ export default function PdLogPage() {
       <section className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 shadow-sm">
         <div className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">Privacy reminder</div>
         <p className="mt-3 text-sm leading-7 text-amber-900">
-          Do not enter sensitive DCS, student, staff, parent, network, credential, or incident details. Reflect on
+          Do not enter sensitive student, staff, parent, network, credential, or incident details. Reflect on
           the learning pattern, not the confidential record.
         </p>
       </section>

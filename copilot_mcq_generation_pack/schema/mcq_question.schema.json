@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ITPrep MCQ Question",
+  "type": "object",
+  "required": [
+    "id",
+    "certification",
+    "exam",
+    "domain",
+    "topic",
+    "difficulty",
+    "question_type",
+    "question",
+    "options",
+    "correct_keys",
+    "explanation",
+    "tags"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "certification": {
+      "type": "string"
+    },
+    "exam": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "string"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "medium",
+        "hard",
+        "expert"
+      ]
+    },
+    "question_type": {
+      "type": "string",
+      "enum": [
+        "single_best_answer",
+        "choose_two",
+        "choose_three",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    },
+    "question": {
+      "type": "string"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "text"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "correct_keys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "explanation": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "privacy_note": {
+      "type": "string"
+    }
+  }
+}
