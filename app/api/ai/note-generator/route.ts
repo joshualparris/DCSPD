@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { logApiError } from '../../../../src/lib/logger';
 import { z } from 'zod';
 
 const NoteInputSchema = z.object({
@@ -101,7 +102,7 @@ You must return ONLY a JSON object with this shape:
     const safe = NoteResponseSchema.parse(json);
     return NextResponse.json(safe);
   } catch (err) {
-    console.error('AI Note Generator Error:', err);
+    logApiError('ai.note-generator', err);
     return NextResponse.json({ error: 'Failed to generate note.' }, { status: 502 });
   }
 }

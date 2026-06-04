@@ -29,14 +29,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-title" content="DCSPrep" />
+        <meta name="apple-mobile-web-app-title" content={APP_SHORT_NAME} />
       </head>
       <body className="dark:bg-slate-950 transition-colors">
         <PwaRegistration />
         <AppUsageTracker />
         <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(226,232,240,0.6),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2f7_100%)] dark:bg-none dark:bg-slate-950">
           <Topbar />
-          <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-[280px_minmax(0,1fr)]">
+          <main
+            id="main-content"
+            role="main"
+            className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-[280px_minmax(0,1fr)]"
+          >
             <Sidebar />
             <div className="min-w-0">{children}</div>
           </main>

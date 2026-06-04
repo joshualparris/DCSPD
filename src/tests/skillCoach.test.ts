@@ -32,7 +32,9 @@ function completeModule(progress: UserProgress, module: TrainingModule): UserPro
             questionIds: module.quiz.map((question) => question.id)
           }
         ],
-        practicalOutputs: Object.fromEntries(module.practicalOutputs.map((output) => [output.id, true]))
+        practicalOutputs: Object.fromEntries(module.practicalOutputs.map((output) => [output.id, true])),
+        practicalOutputEvidence: {},
+        recallDrafts: {}
       }
     }
   };

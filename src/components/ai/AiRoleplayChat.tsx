@@ -31,7 +31,7 @@ export default function AiRoleplayChat({ roleplayId, persona, scenario, initialP
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sessionStartTime] = useState(Date.now());
+  const [sessionStartTime] = useState(() => Date.now());
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const startedTrackedRef = useRef(false);

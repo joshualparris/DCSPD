@@ -79,7 +79,11 @@ export default function Sidebar() {
             placeholder="Search keywords..."
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder-slate-500"
           />
-          <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+          <button
+            type="submit"
+            aria-label="Search navigation"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </button>
         </form>

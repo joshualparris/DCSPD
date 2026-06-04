@@ -1,25 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { generateMonthlyPdSummary, generatePdSummaryForRange } from '../lib/pdSummary';
-import type { UserProgress } from '../lib/progress';
-
-function baseProgress(): UserProgress {
-  return {
-    modules: {},
-    assessmentAttempts: [],
-    academicAssessmentAttempts: [],
-    certificationAssessmentAttempts: [],
-    roleplayFeedbackAttempts: [],
-    scenarioRuns: [],
-    pdEntries: [],
-    pdLogEntries: [],
-    weakTopicReviews: {},
-    focusSessions: []
-  };
-}
+import { getDefaultProgress } from '../lib/progress';
 
 describe('pdSummary', () => {
   it('summarises a monthly range from pdEntries', () => {
-    const progress = baseProgress();
+    const progress = getDefaultProgress();
     progress.pdEntries = [
       {
         id: 'pd-1',
@@ -52,7 +37,7 @@ describe('pdSummary', () => {
   });
 
   it('summarises an explicit date range', () => {
-    const progress = baseProgress();
+    const progress = getDefaultProgress();
     progress.pdEntries = [
       {
         id: 'pd-1',

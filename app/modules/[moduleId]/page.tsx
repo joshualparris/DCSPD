@@ -72,7 +72,7 @@ export default function ModulePage({ params }: { params: any }) {
       <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <h1 className="text-2xl font-semibold text-slate-900">Module not found</h1>
         <p className="mt-3 text-sm text-slate-600">
-          The module ID "{moduleId}" does not match the current module catalogue.
+          The module ID &ldquo;{moduleId}&rdquo; does not match the current module catalogue.
         </p>
       </div>
     );
