@@ -406,5 +406,116 @@ export const roleplayScenarios: RoleplayScenario[] = [
       'This might be serious. Talk me through containment, log review, mailbox-rule checks, and what changes if the account belongs to the SAM.',
     pressure: 'Critical',
     focus: ['M365 Defender', 'audit logs', 'mailbox rules', 'incident response', 'escalation']
+  },
+  {
+    id: 'msp-anxious-owner-internet-down',
+    persona: 'Jennifer Cole',
+    archetype: 'Anxious Small Business Owner',
+    issueTitle: 'Internet Down - Business Critical',
+    scenario:
+      'A very worried business owner calls because their internet is down and they are losing money by the minute. They are stressed and want immediate answers.',
+    itChallenge: 'Calm a worried client while gathering clear symptoms and scope. Show confidence without overpromising. Communicate progress clearly.',
+    initialPrompt:
+      'Our internet is completely down and we are losing business! Can you fix it right now? People cannot access anything!',
+    pressure: 'Critical',
+    focus: ['calm assessment', 'scope clarity', 'client reassurance', 'realistic timeline', 'ownership']
+  },
+  {
+    id: 'msp-frustrated-office-manager',
+    persona: 'Marcus Thompson',
+    archetype: 'Frustrated Office Manager',
+    issueTitle: 'Printer Keeps Jamming - Staff Blocked',
+    scenario:
+      'An office manager is frustrated because the main printer has jammed three times this week. Staff are now printing elsewhere and workflow is disrupted.',
+    itChallenge:
+      'Acknowledge frustration, triage the pattern, explain what you are checking, offer immediate fallback, and propose long-term solution.',
+    initialPrompt:
+      'This printer is a nightmare. It jams constantly and IT never seems to find the real problem. Can you actually fix this or do we just need to replace it?',
+    pressure: 'High',
+    focus: ['pattern analysis', 'empathy', 'ownership', 'fallback planning', 'decision clarity']
+  },
+  {
+    id: 'msp-busy-executive',
+    persona: 'Carol DeWitt',
+    archetype: 'Time-Poor Executive',
+    issueTitle: 'Laptop Not Syncing - In Meetings',
+    scenario:
+      'A C-level executive reports their laptop is not syncing files and they are going into back-to-back client meetings. They need it working in minutes.',
+    itChallenge:
+      'Be extremely clear and concise. Offer quick fixes or immediate workaround. Avoid jargon. Respect their time.',
+    initialPrompt:
+      'My laptop stopped syncing files this morning. I have three client calls starting in 15 minutes. Can you walk me through a quick fix or should I just use a tablet?',
+    pressure: 'Critical',
+    focus: ['conciseness', 'quick diagnosis', 'alternative path', 'confidence', 'respect time']
+  },
+  {
+    id: 'msp-non-technical-user',
+    persona: 'David Kim',
+    archetype: 'Non-Technical End User',
+    issueTitle: 'Cannot Find Shared Folder',
+    scenario:
+      'A newer staff member cannot find a shared folder and has not opened a support ticket. They are hesitant about technology and unsure if they are doing something wrong.',
+    itChallenge:
+      'Build confidence. Use plain language. Make them feel safe asking questions. Show step-by-step without condescension.',
+    initialPrompt:
+      'Hi, I am sorry to bother you, but I cannot find the projects folder on my computer. I have looked everywhere and I am not sure if I am supposed to see it or if I am missing something obvious. Should I have called IT?',
+    pressure: 'Medium',
+    focus: ['patience', 'plain language', 'confidence building', 'reassurance', 'inclusion']
+  },
+  {
+    id: 'msp-account-manager-update-request',
+    persona: 'Sofia Reeves',
+    archetype: 'Account Manager Requesting Status Update',
+    issueTitle: 'Client Needs Update on Network Migration',
+    scenario:
+      'The account manager needs to tell a key client about progress on a network infrastructure project. They are asking IT for a clear, client-ready summary.',
+    itChallenge:
+      'Translate technical details into client-friendly language. Be honest about progress and blockers. Avoid overstated confidence.',
+    initialPrompt:
+      'Hi, the client (TechFlow Industries) is asking me for a status update on the network migration we started last month. Can you give me a short summary I can send them? They want to know timeline, any blockers, and what is next.',
+    pressure: 'Medium',
+    focus: ['client language', 'honest assessment', 'timeline clarity', 'blocker transparency', 'next steps']
+  },
+  {
+    id: 'msp-senior-tech-handoff',
+    persona: 'Robert Nguyen',
+    archetype: 'Senior Technician Requesting Handoff',
+    issueTitle: 'Escalating Complex Storage Issue',
+    scenario:
+      'A senior technician has been troubleshooting a SAN storage issue for hours and needs to hand it off. They want to ensure the next person understands the full context.',
+    itChallenge:
+      'Respect the handing-off technician expertise. Ask clarifying questions. Show you understand the work done. Write clear documentation.',
+    initialPrompt:
+      'I have been working on the SAN latency issue since this morning. I have ruled out network path, verified firmware is current, and narrowed it to the controller. The client has a backup system they can fail over to, but they want this fixed. I need to hand this off to you. What do you need from me?',
+    pressure: 'High',
+    focus: ['respect expertise', 'evidence capture', 'continuity', 'clear documentation', 'next action']
+  },
+  {
+    id: 'msp-vendor-engineer-remote-access',
+    persona: 'Kyle Chang',
+    archetype: 'Vendor Support Engineer',
+    issueTitle: 'Requesting Remote Access to Diagnose License Issue',
+    scenario:
+      'A vendor support engineer contacts IT for remote access to troubleshoot a licensing or product issue. They need IT to understand the business need and provide appropriate access safely.',
+    itChallenge:
+      'Verify the legitimacy of the request. Understand the business reason. Follow security protocols. Communicate access limitations clearly.',
+    initialPrompt:
+      'Hi, I am the support engineer at [licensing software vendor]. We have a client with a license enforcement issue and I need remote access to their server to run diagnostics. Can your IT team give me access? I have a ticket number [XYZ] if you want to verify with our support team.',
+    pressure: 'High',
+    focus: ['verification', 'security awareness', 'scope limits', 'protocol clarity', 'escalation path']
+  },
+  {
+    id: 'msp-security-conscious-contact',
+    persona: 'Elena Martinez',
+    archetype: 'Security-Conscious Client Contact',
+    issueTitle: 'Password Reset Request With Compliance Questions',
+    scenario:
+      'A security-aware client contact requests a password reset but also asks detailed questions about whether the change complies with industry standards and audit requirements.',
+    itChallenge:
+      'Answer security questions accurately. Show you understand their compliance concerns. Avoid false assurance. Escalate to compliance team if needed.',
+    initialPrompt:
+      'I need to reset my password, but before we do that, I want to make sure the process meets our compliance requirements. We are in healthcare and we need to know how the reset is logged and how long audit records are retained. Can your team handle this securely?',
+    pressure: 'Medium',
+    focus: ['compliance awareness', 'accurate answers', 'honest limitations', 'escalation path', 'documentation']
   }
 ];

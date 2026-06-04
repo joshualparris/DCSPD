@@ -49,18 +49,19 @@ export const scenarios: Scenario[] = [
     summary: 'A teacher reports that the room has no internet and class is already underway.',
     focus: ['scope', 'safe checks', 'network language', 'escalation note'],
     estimatedMinutes: 10,
+    targetEnvironment: 'DCS',
     initialReport:
       'A teacher in Room 7 says student laptops and the teacher device cannot reach class resources. The class is waiting.',
     contextBullets: [
       'Visible classroom pressure matters.',
-      'Josh should not jump into risky network changes.',
+      'A technician should not jump into risky network changes.',
       'The first priority is to clarify scope and keep the response structured.'
     ],
     steps: [
       {
         id: 'internet-step-1',
         title: 'First check',
-        prompt: 'What should Josh do first?',
+        prompt: 'What should be done first?',
         choices: [
           {
             id: 'internet-1a',
@@ -102,106 +103,57 @@ export const scenarios: Scenario[] = [
           },
           {
             id: 'internet-2b',
-            label: 'Start deleting saved Wi-Fi profiles from every student laptop',
-            outcome: 'That is too invasive for the evidence you currently have.',
-            riskNote: 'High disruption, low clarity.',
-            correct: false
-          },
-          {
-            id: 'internet-2c',
-            label: 'Ignore the staff room comparison because it is a different user',
-            outcome: 'That loses valuable scope evidence.',
-            riskNote: 'Missed diagnostic leverage.',
+            label: 'Tell the teacher to restart the whole room network',
+            outcome: 'That is a high-impact guess without enough evidence.',
+            riskNote: 'Too aggressive for Level 1.',
             correct: false
           }
         ],
         recommendedChoiceId: 'internet-2a'
-      },
-      {
-        id: 'internet-step-3',
-        title: 'Escalation moment',
-        newInformation:
-          'Room 7 devices are on the right SSID. A nearby device outside the room works. The class is still blocked after safe checks.',
-        prompt: 'What should Josh do now?',
-        choices: [
-          {
-            id: 'internet-3a',
-            label: 'Escalate as a likely room or local network-path issue with room, scope, and checks tried',
-            outcome: 'Good. Josh has enough evidence to escalate without overclaiming a root cause.',
-            riskNote: 'Fast, evidence-based escalation.',
-            correct: true
-          },
-          {
-            id: 'internet-3b',
-            label: 'Keep experimenting until the class loses more time',
-            outcome: 'That burns class time without increasing safety or clarity.',
-            riskNote: 'Poor classroom judgement.',
-            correct: false
-          },
-          {
-            id: 'internet-3c',
-            label: 'Promise the teacher you can fix the access point settings yourself',
-            outcome: 'That oversteps Level 1 boundaries.',
-            riskNote: 'Unsafe authority claim.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'internet-3a'
       }
     ],
     idealTroubleshootingPath: [
-      'Clarify one device versus many and confirm room context.',
-      'Confirm the correct SSID and compare with a nearby known-good device.',
-      'Escalate with room, scope, and safe steps tried once the issue remains and class time is being hit.'
+      'Clarify scope and location.',
+      'Perform safe, reversible checks.',
+      'Compare with known-good references.',
+      'Escalate with evidence-rich notes.'
     ],
-    escalationPoint:
-      'Escalate once the symptom clearly affects multiple devices in the room and safe first checks do not restore service.',
-    ticketNoteExample:
-      'Room 7: teacher laptop and at least two student laptops cannot reach class resources on the correct SSID. Nearby device outside the room works. Safe comparison completed; likely room-specific network issue. Class currently impacted.',
-    jiraNotePrompt:
-      'Write the Jira note for a likely room-specific network issue. Include room, who is affected, SSID check, nearby comparison result, impact on class, and privacy-safe wording.',
-    riskNote:
-      'Do not invent network root causes or make production admin changes. Preserve the evidence and protect class time.',
-    recommendedModuleIds: ['dcs-it-support-foundations', 'dns-dhcp-gateway-ip-basics']
+    escalationPoint: 'Escalate if the issue affects multiple users and basic checks fail.',
+    ticketNoteExample: 'Room 7 internet outage: multiple student and staff devices affected. Checked SSIDs and compared with Room 8 (working). Escalate for network investigation.',
+    riskNote: 'Do not change core network settings without senior approval.',
+    recommendedModuleIds: ['networking-foundations']
   }),
   scenario({
-    id: 'staff-offboarding-access',
-    title: 'Staff offboarding and M365 access',
-    summary: 'A manager says a departing staff member still appears active and wants the issue handled quickly.',
-    focus: ['identity sequencing', 'authority', 'privacy', 'documentation'],
-    estimatedMinutes: 10,
-    initialReport:
-      'A departing staff member still appears active in Teams. A manager wants it sorted quickly before the end of the day.',
+    id: 'offboarding-related-identity-concern',
+    title: 'Offboarding identity concern',
+    summary: 'A manager reports a former staff member still appears active in some systems.',
+    focus: ['identity', 'privacy', 'escalation', 'offboarding'],
+    estimatedMinutes: 12,
+    targetEnvironment: 'Generic',
+    initialReport: 'A former staff member is still appearing in the Teams directory and their email still seems to resolve.',
     contextBullets: [
-      'Identity work can affect access, privacy, and continuity.',
-      'Josh should understand the sequence but not claim admin authority.',
-      'The note should be exact without copying sensitive detail into personal tools.'
+      'Identity changes are high-risk.',
+      'Privacy and data retention rules apply.',
+      'Technicians must follow the authorized sequence.'
     ],
     steps: [
       {
         id: 'offboard-step-1',
-        title: 'First response',
-        prompt: 'What should Josh do first?',
+        title: 'Initial verification',
+        prompt: 'What is the first priority?',
         choices: [
           {
             id: 'offboard-1a',
-            label: 'Clarify the requested outcome, current symptom, and who owns the authorised action',
-            outcome: 'Good. Identity issues need confirmed scope and ownership before action.',
-            riskNote: 'Protects authority boundaries.',
+            label: 'Verify the departure date and authorized offboarding status in the source of truth',
+            outcome: 'Good. You must confirm the facts before taking action.',
+            riskNote: 'Evidence-based start.',
             correct: true
           },
           {
             id: 'offboard-1b',
-            label: 'Start disabling groups and sessions directly because it sounds urgent',
-            outcome: 'That assumes authority and risks unsafe changes.',
-            riskNote: 'High access and privacy risk.',
-            correct: false
-          },
-          {
-            id: 'offboard-1c',
-            label: 'Ignore it because Teams presence is never important',
-            outcome: 'That dismisses a legitimate identity concern.',
-            riskNote: 'Poor risk judgement.',
+            label: 'Immediately delete the account to be safe',
+            outcome: 'That risks data loss and violates retention policies.',
+            riskNote: 'High-risk unauthorized action.',
             correct: false
           }
         ],
@@ -209,30 +161,21 @@ export const scenarios: Scenario[] = [
       },
       {
         id: 'offboard-step-2',
-        title: 'New information',
-        newInformation:
-          'The manager confirms the staff member has left, but Josh cannot verify which offboarding steps have already been completed.',
-        prompt: 'What next?',
+        title: 'Next step',
+        prompt: 'The account is confirmed as "Offboarded" but still shows in Teams. What now?',
         choices: [
           {
             id: 'offboard-2a',
-            label: 'Document the current visible state and escalate for sequence review by the authorised owner',
-            outcome: 'Good. That captures the symptom without pretending certainty or authority.',
-            riskNote: 'Safe identity posture.',
+            label: 'Check the M365 license state and session revocation status',
+            outcome: 'Good. This identifies where the offboarding sequence might have stalled.',
+            riskNote: 'Systematic check.',
             correct: true
           },
           {
             id: 'offboard-2b',
-            label: 'Assume nothing was done and tell the manager the whole process failed',
-            outcome: 'That is too strong a claim from incomplete information.',
-            riskNote: 'Creates noise and distrust.',
-            correct: false
-          },
-          {
-            id: 'offboard-2c',
-            label: "Ask for the departing staff member's password to check everything yourself",
-            outcome: 'That is a security and privacy failure.',
-            riskNote: 'Never request passwords.',
+            label: 'Tell the manager it is just a cache issue and to wait a week',
+            outcome: 'That ignores a potential security or sequence failure.',
+            riskNote: 'Dismissive support.',
             correct: false
           }
         ],
@@ -240,10 +183,8 @@ export const scenarios: Scenario[] = [
       },
       {
         id: 'offboard-step-3',
-        title: 'Final response',
-        newInformation:
-          'The authorised owner is available to take the escalation if the note is clear and manager-safe.',
-        prompt: 'What should Josh include?',
+        title: 'Escalation',
+        prompt: 'What should you include in the escalation note?',
         choices: [
           {
             id: 'offboard-3a',
@@ -254,7 +195,7 @@ export const scenarios: Scenario[] = [
           },
           {
             id: 'offboard-3b',
-            label: 'Every personal detail Josh can find about the departing staff member',
+            label: 'Every personal detail you can find about the departing staff member',
             outcome: 'That overshares and adds privacy risk.',
             riskNote: 'Unnecessary sensitive detail.',
             correct: false
@@ -286,23 +227,146 @@ export const scenarios: Scenario[] = [
     recommendedModuleIds: ['m365-identity-offboarding-basics', 'ticket-notes-escalation-quality']
   }),
   scenario({
+    id: 'msp-client-remote-access-failure',
+    title: 'Client remote access outage',
+    summary: 'A remote client site is unreachable after last-night maintenance and their morning shift is starting.',
+    focus: ['remote access', 'SLA escalation', 'change verification', 'client note quality'],
+    estimatedMinutes: 10,
+    targetEnvironment: 'MSP',
+    initialReport:
+      'A client reports that their remote site appliance is offline and that staff cannot access remote servers after out-of-hours network work.',
+    contextBullets: [
+      'Remote client outages need evidence, scope, and change history.',
+      'Avoid guessing the root cause; preserve the contract and vendor handoff.',
+      'The support note should make the outage easy to hand to the next-tier owner.'
+    ],
+    steps: [
+      {
+        id: 'msp-access-step-1',
+        title: 'First action',
+        prompt: 'What should the technician do first?',
+        choices: [
+          {
+            id: 'msp-access-1a',
+            label: 'Confirm what changed, which client site is affected, and whether it is a remote access outage or local site fault',
+            outcome: 'Good. That keeps the incident scoped and evidence-based.',
+            riskNote: 'Safe triage with contract awareness.',
+            correct: true
+          },
+          {
+            id: 'msp-access-1b',
+            label: 'Immediately reboot the remote appliance and tell the client it is fixed',
+            outcome: 'That may hide the evidence and is too aggressive for the first step.',
+            riskNote: 'High-risk action without scope.',
+            correct: false
+          },
+          {
+            id: 'msp-access-1c',
+            label: 'Assume the client changed their password and update the ticket accordingly',
+            outcome: 'That guesses a cause without any evidence.',
+            riskNote: 'Poor root-cause assumption.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-access-1a'
+      },
+      {
+        id: 'msp-access-step-2',
+        title: 'New evidence',
+        newInformation:
+          'The client confirms the site was upgraded last night and the remote management agent is not responding, while local site staff still have power.',
+        prompt: 'What is the best next move?',
+        choices: [
+          {
+            id: 'msp-access-2a',
+            label: 'Capture the exact service affected, the outage start time, and the last successful remote connection before escalating',
+            outcome: 'Good. That makes the ticket useful for SLA review and vendor handoff.',
+            riskNote: 'Evidence-rich escalation.',
+            correct: true
+          },
+          {
+            id: 'msp-access-2b',
+            label: 'Tell the client to wait until the vendor support window opens',
+            outcome: 'That avoids taking useful triage and does not preserve the current state.',
+            riskNote: 'Poor client service.',
+            correct: false
+          },
+          {
+            id: 'msp-access-2c',
+            label: 'Change the ticket priority to low because the issue is only remote access',
+            outcome: 'That may violate the SLA if the client is blocked from critical systems.',
+            riskNote: 'Wrong priority judgement.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-access-2a'
+      },
+      {
+        id: 'msp-access-step-3',
+        title: 'Escalation handoff',
+        newInformation:
+          'The client says the site is used for their morning shift and the remote management vendor support line is open now.',
+        prompt: 'What should you include in the escalation note?',
+        choices: [
+          {
+            id: 'msp-access-3a',
+            label: 'Exact site, affected services, last known good state, safe checks done, and vendor bridge request details',
+            outcome: 'Good. That helps the next owner act quickly and aligns with the SLA expectations.',
+            riskNote: 'Strong escalation quality.',
+            correct: true
+          },
+          {
+            id: 'msp-access-3b',
+            label: 'Only mention that remote access is down and leave the rest to the vendor',
+            outcome: 'That does not preserve valuable diagnostic evidence.',
+            riskNote: 'Weak handoff.',
+            correct: false
+          },
+          {
+            id: 'msp-access-3c',
+            label: 'Promise the vendor will fix it within the SLA because they are already on the phone',
+            outcome: 'That overstates the situation without confirmation.',
+            riskNote: 'Risky commitment.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-access-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Verify the exact affected client site and the last successful remote connection.',
+      'Capture what changed, what is still available locally, and whether the vendor is involved.',
+      'Escalate with scope, service impact, and evidence that supports the SLA response.'
+    ],
+    escalationPoint:
+      'Escalate once the remote access outage is confirmed and the client shift is beginning.',
+    ticketNoteExample:
+      'Remote site outage: client appliance offline after last-night maintenance. Local staff still have power, remote management agent not responding, morning shift impacted. Vendor support bridge requested; escalation for SLA-aware remediation.',
+    jiraNotePrompt:
+      'Write the Jira note for this remote access outage. Include the site, impact, agent state, and urgency without guessing root cause.',
+    riskNote:
+      'Do not infer the root cause. Preserve the evidence and keep the note SLA-aware.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-stack-rmm-psa', 'msp-foundations']
+  }),
+  scenario({
     id: 'viewboard-display-issue',
     title: 'ViewBoard display issue',
     summary: 'A teacher laptop will not display during class and time pressure is rising.',
     focus: ['display chain', 'classroom pressure', 'touch versus picture', 'evidence-rich escalation'],
     estimatedMinutes: 10,
+    targetEnvironment: 'DCS',
     initialReport:
       "A teacher's laptop is connected at the front of the room, but nothing appears on the ViewBoard.",
     contextBullets: [
       'Class time is being lost in public.',
       'The safest first actions are visible and reversible.',
-      'Josh needs a short sequence, not a long experiment.'
+      'A technician needs a short sequence, not a long experiment.'
     ],
     steps: [
       {
         id: 'viewboard-step-1',
         title: 'First move',
-        prompt: 'What should Josh do first?',
+        prompt: 'What should be done first?',
         choices: [
           {
             id: 'viewboard-1a',
@@ -332,7 +396,7 @@ export const scenarios: Scenario[] = [
         id: 'viewboard-step-2',
         title: 'New information',
         newInformation: 'The display now shows the laptop picture, but touch is still not working.',
-        prompt: 'How should Josh reason about this change?',
+        prompt: 'How should the technician reason about this change?',
         choices: [
           {
             id: 'viewboard-2a',
@@ -368,22 +432,15 @@ export const scenarios: Scenario[] = [
           {
             id: 'viewboard-3a',
             label: 'Offer the best short fallback available and escalate with the exact symptom split',
-            outcome: 'Good. Josh has protected class time and captured the right evidence.',
+            outcome: 'Good. You have protected class time and captured the right evidence.',
             riskNote: 'Strong classroom judgement.',
             correct: true
           },
           {
             id: 'viewboard-3b',
             label: 'Keep testing until the whole lesson is lost',
-            outcome: "That values persistence over the teacher's actual need.",
-            riskNote: 'Poor support trade-off.',
-            correct: false
-          },
-          {
-            id: 'viewboard-3c',
-            label: 'Write "display broken" with no extra detail',
-            outcome: 'That wastes the clue that picture works but touch does not.',
-            riskNote: 'Weak note quality.',
+            outcome: 'That fails to protect the educational outcome.',
+            riskNote: 'Poor priority judgement.',
             correct: false
           }
         ],
@@ -391,1219 +448,982 @@ export const scenarios: Scenario[] = [
       }
     ],
     idealTroubleshootingPath: [
-      'Check the visible chain first: power, input, and cable or dock.',
-      'Use symptom changes to narrow the fault path, especially picture versus touch.',
-      'Once quick safe checks are exhausted, protect class time and escalate with the exact symptom split.'
+      'Check the visible physical chain (power, cables, inputs).',
+      'Reason about video and touch as separate service paths.',
+      'Protect learning time with fallbacks and escalate with evidence.'
     ],
-    escalationPoint:
-      'Escalate once the quick chain checks are exhausted and the class is continuing to lose time.',
-    ticketNoteExample:
-      'Room 9 ViewBoard: teacher laptop now displays correctly after input and cable check, but touch remains non-functional. Quick USB or control-path check did not restore touch. Lesson currently impacted; escalation requested.',
-    jiraNotePrompt:
-      'Write the escalation note for picture restored but touch still broken. Include room, symptom split, quick checks, and class impact.',
-    riskNote:
-      'Avoid deep configuration work in front of the class. Protect class flow and keep the escalation exact.',
-    recommendedModuleIds: [
-      'classroom-display-viewboard-troubleshooting',
-      'ticket-notes-escalation-quality'
-    ]
+    escalationPoint: 'Escalate once the visible physical chain is verified but faults persist.',
+    ticketNoteExample: 'Room 12 ViewBoard: picture restored via cable reseat, but touch remains non-responsive. Teacher using mouse as fallback. Escalate for touch-link investigation.',
+    riskNote: 'Do not perform factory resets or firmware changes during a live class.',
+    recommendedModuleIds: ['hardware-classroom-support']
   }),
   scenario({
-    id: 'hdmi-works-no-audio',
-    title: 'HDMI works but no audio',
-    summary: 'The classroom screen shows the teacher laptop perfectly, but the room still has no sound.',
-    focus: ['audio path', 'Windows playback device', 'class pressure', 'clear notes'],
+    id: 'dcs-library-printer-offline',
+    title: 'Library printer offline',
+    summary: 'Staff report the library printer is not responding and printing backup is needed.',
+    focus: ['printer triage', 'device offline', 'queue state', 'alternative workflow'],
     estimatedMinutes: 8,
-    initialReport:
-      'A teacher says the HDMI cable is fine because the picture is visible, but their lesson audio will not play through the room.',
+    targetEnvironment: 'DCS',
+    initialReport: 'The library photocopy printer is showing offline and staff cannot print or copy.',
     contextBullets: [
-      'Picture and audio can fail on different paths.',
-      'Class time is already under pressure.',
-      'The note should preserve the symptom split clearly.'
+      'The printer may be offline but the device itself might be okay.',
+      'Queue state and network path are separate issues.',
+      'Fallback printing is essential if repair will take time.'
     ],
     steps: [
       {
-        id: 'hdmi-audio-step-1',
-        title: 'First reasoning move',
-        prompt: 'What should Josh do first?',
+        id: 'lib-printer-step-1',
+        title: 'Initial check',
+        prompt: 'What should be verified first?',
         choices: [
           {
-            id: 'hdmi-audio-1a',
-            label: 'Treat it as a no-picture issue and restart the whole display chain immediately',
-            outcome: 'That ignores the valuable clue that picture already works.',
-            riskNote: 'Poor symptom separation.',
-            correct: false
-          },
-          {
-            id: 'hdmi-audio-1b',
-            label: 'Check the playback device and room audio path because picture is already restored',
-            outcome: 'Good. The picture clue narrows the fault path to audio selection or room audio routing.',
-            riskNote: 'Fast, symptom-based check.',
+            id: 'lib-printer-1a',
+            label: 'Check the printer power, tray status, and error lights at the device',
+            outcome: 'Good. Physical state comes before network assumptions.',
+            riskNote: 'Safe device check.',
             correct: true
           },
           {
-            id: 'hdmi-audio-1c',
-            label: 'Assume the network is causing the room sound failure',
-            outcome: 'That jumps away from the immediate evidence.',
-            riskNote: 'Noisy diagnosis.',
+            id: 'lib-printer-1b',
+            label: 'Delete all print jobs from the queue immediately',
+            outcome: 'That destroys evidence without understanding the root issue.',
+            riskNote: 'Premature action.',
+            correct: false
+          },
+          {
+            id: 'lib-printer-1c',
+            label: 'Assume the network is down and report a campus outage',
+            outcome: 'That overclaims without checking the device or testing another printer.',
+            riskNote: 'Wrong scope.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'hdmi-audio-1b'
+        recommendedChoiceId: 'lib-printer-1a'
       },
       {
-        id: 'hdmi-audio-step-2',
-        title: 'New information',
-        newInformation: 'The laptop shows multiple playback devices and the wrong one appears selected.',
-        prompt: 'What is the best next move?',
+        id: 'lib-printer-step-2',
+        title: 'Device status',
+        newInformation: 'The printer has power, no paper jam, but shows a "Network Offline" error on the display.',
+        prompt: 'What next?',
         choices: [
           {
-            id: 'hdmi-audio-2a',
-            label: 'Switch to the room or display playback device and test briefly',
-            outcome: 'Good. This is a quick, reversible check based on the actual symptom.',
-            riskNote: 'Low-risk next step.',
+            id: 'lib-printer-2a',
+            label: 'Check the IP address, ping test, and network cable or Wi-Fi status',
+            outcome: 'Good. That narrows whether it is a device network path issue.',
+            riskNote: 'Targeted network check.',
             correct: true
           },
           {
-            id: 'hdmi-audio-2b',
-            label: 'Reinstall all audio drivers in front of the class',
-            outcome: 'That is too heavy for the current evidence and time pressure.',
-            riskNote: 'High disruption.',
-            correct: false
-          },
-          {
-            id: 'hdmi-audio-2c',
-            label: 'Tell the teacher the audio path is not part of display support',
-            outcome: 'That abandons a real classroom need too early.',
-            riskNote: 'Poor support ownership.',
+            id: 'lib-printer-2b',
+            label: 'Reboot the printer and wait for all staff to try again',
+            outcome: 'A reboot may help, but capture the network state first.',
+            riskNote: 'Premature action without understanding.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'hdmi-audio-2a'
+        recommendedChoiceId: 'lib-printer-2a'
       },
       {
-        id: 'hdmi-audio-step-3',
-        title: 'Decision point',
+        id: 'lib-printer-step-3',
+        title: 'Escalation and fallback',
         newInformation:
-          'The quick playback-device check does not restore sound and the lesson cannot wait much longer.',
-        prompt: 'What should Josh do now?',
+          'The printer shows a valid IP but does not respond to ping. All staff printing is currently blocked.',
+        prompt: 'What should be done?',
         choices: [
           {
-            id: 'hdmi-audio-3a',
-            label: 'Offer a short fallback and escalate with the picture-versus-audio split clearly written',
-            outcome: 'Good. The note now preserves the most useful clue for the next tech.',
-            riskNote: 'Protects class time.',
+            id: 'lib-printer-3a',
+            label: 'Escalate to the print vendor or network team with the device state, and offer an alternative printer for urgent jobs',
+            outcome: 'Good. That protects workflows and provides useful escalation.',
+            riskNote: 'Strong operational response.',
             correct: true
           },
           {
-            id: 'hdmi-audio-3b',
-            label: 'Keep experimenting until the lesson falls apart',
-            outcome: 'That values persistence over the teacher’s actual need.',
-            riskNote: 'Poor judgement under time pressure.',
-            correct: false
-          },
-          {
-            id: 'hdmi-audio-3c',
-            label: 'Write "HDMI not working" and move on',
-            outcome: 'That loses the best evidence in the incident.',
-            riskNote: 'Weak note quality.',
+            id: 'lib-printer-3b',
+            label: 'Tell staff to just keep waiting',
+            outcome: 'That provides no fallback or escalation.',
+            riskNote: 'Poor user support.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'hdmi-audio-3a'
+        recommendedChoiceId: 'lib-printer-3a'
       }
     ],
     idealTroubleshootingPath: [
-      'Keep the picture-versus-audio symptom split visible.',
-      'Check the playback device and room audio path first.',
-      'Escalate with exact audio evidence once quick safe checks are exhausted.'
+      'Verify the device power state and physical condition.',
+      'Check the network connectivity of the device.',
+      'Escalate with clear evidence and offer a fallback workflow.'
     ],
-    escalationPoint: 'Escalate after the quick playback and room-audio checks fail and class time is being lost.',
-    ticketNoteExample:
-      'Room 4 display shows correctly from teacher laptop, but room audio still absent. Quick playback-device check performed with no restore. Lesson media currently impacted; escalation requested.',
-    jiraNotePrompt:
-      'Write the Jira note for picture working but no room audio. Make the audio-path clue obvious.',
-    riskNote: 'Do not collapse this into a generic HDMI complaint. The audio-path clue is the whole value.',
-    recommendedModuleIds: [
-      'classroom-display-viewboard-troubleshooting',
-      'ticket-notes-escalation-quality'
-    ]
+    escalationPoint: 'Escalate once the device network path is confirmed as unavailable.',
+    ticketNoteExample: 'Library printer offline with Network Offline error. Device powered, no jam, IP visible but not responding to network tests. Likely device network module or upstream switch issue. Vendor escalation recommended. Alternative printer available in staff room.',
+    riskNote: 'Distinguish device issues from network path issues before escalating.',
+    recommendedModuleIds: ['printer-troubleshooting', 'ticket-notes-escalation-quality']
   }),
   scenario({
-    id: 'student-laptop-169-254',
-    title: 'Student laptop has 169.254',
-    summary: 'A student laptop cannot reach class resources and shows a 169.254 address.',
-    focus: ['DHCP reasoning', 'SSID checks', 'comparison', 'network note quality'],
+    id: 'dcs-student-login-failure',
+    title: 'Student device login failure',
+    summary: 'A student cannot log into their school laptop and is now unable to access lessons.',
+    focus: ['identity scoping', 'device state', 'account checking', 'classroom impact'],
     estimatedMinutes: 8,
-    initialReport:
-      'A student laptop in class cannot reach anything. The teacher says the class is starting now and the device appears to show 169.254.',
+    targetEnvironment: 'DCS',
+    initialReport: 'A Year 9 student cannot log into their laptop and a teacher has reported it to support.',
     contextBullets: [
-      '169.254 is a clue, not a complete diagnosis.',
-      'The right SSID and nearby comparison still matter.',
-      'Avoid deep adapter changes at Level 1.'
+      'Login failures can be device, account, or network issues.',
+      'The student may have forgotten a password or the device may be misconfigured.',
+      'Always verify the issue is not user error before escalating.'
     ],
     steps: [
       {
-        id: 'apipa-step-1',
-        title: 'First response',
-        prompt: 'What should Josh do first?',
+        id: 'login-step-1',
+        title: 'Initial clarification',
+        prompt: 'What is the first question to ask?',
         choices: [
           {
-            id: 'apipa-1a',
-            label: 'Treat 169.254 as a clue about missing DHCP lease and confirm the network context',
-            outcome: 'Good. This keeps the evidence grounded instead of magical.',
-            riskNote: 'Strong first-line reasoning.',
-            correct: true
-          },
-          {
-            id: 'apipa-1b',
-            label: 'Assume the gateway is definitely down for the whole school',
-            outcome: 'That overclaims from one clue on one device.',
-            riskNote: 'Poor scope judgement.',
-            correct: false
-          },
-          {
-            id: 'apipa-1c',
-            label: 'Start rewriting the adapter configuration manually',
-            outcome: 'That is too deep and risky for the current evidence.',
-            riskNote: 'Unsafe Level 1 change.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'apipa-1a'
-      },
-      {
-        id: 'apipa-step-2',
-        title: 'New information',
-        newInformation:
-          'Other nearby devices on the intended SSID are working, and this laptop had recently been moved between rooms.',
-        prompt: 'What is the best next judgement?',
-        choices: [
-          {
-            id: 'apipa-2a',
-            label: 'Keep the issue narrow and check whether the laptop is on the correct SSID or needs a clean reconnect',
-            outcome: 'Good. The nearby working devices change the likely scope.',
-            riskNote: 'Safe device-specific reasoning.',
-            correct: true
-          },
-          {
-            id: 'apipa-2b',
-            label: 'Escalate the entire room as a network outage',
-            outcome: 'That ignores the most useful comparison evidence.',
-            riskNote: 'Noisy escalation.',
-            correct: false
-          },
-          {
-            id: 'apipa-2c',
-            label: 'Tell the teacher the laptop probably needs Windows reinstalled',
-            outcome: 'That is far too strong from the current symptom set.',
-            riskNote: 'Wild overreach.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'apipa-2a'
-      },
-      {
-        id: 'apipa-step-3',
-        title: 'Escalation threshold',
-        newInformation:
-          'The SSID is correct, a reconnect attempt still leaves the laptop unable to obtain a normal address, and class time is still moving.',
-        prompt: 'What should Josh do now?',
-        choices: [
-          {
-            id: 'apipa-3a',
-            label: 'Escalate as a device-specific network onboarding or DHCP path issue with the evidence preserved',
-            outcome: 'Good. The note stays accurate and useful.',
-            riskNote: 'Evidence-rich escalation.',
-            correct: true
-          },
-          {
-            id: 'apipa-3b',
-            label: 'Keep guessing until the class loses more time',
-            outcome: 'That does not improve the signal and hurts the classroom.',
-            riskNote: 'Poor trade-off.',
-            correct: false
-          },
-          {
-            id: 'apipa-3c',
-            label: 'Write only "internet not working"',
-            outcome: 'That hides the strongest clue in the case.',
-            riskNote: 'Weak note quality.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'apipa-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Treat 169.254 as a DHCP clue, not a final diagnosis.',
-      'Confirm SSID and compare with nearby working devices.',
-      'Escalate with device-specific evidence once quick reconnect checks fail.'
-    ],
-    escalationPoint:
-      'Escalate when the device remains unable to obtain a valid address after safe network-context checks.',
-    ticketNoteExample:
-      'Student laptop in Room 6 shows 169.254 and cannot reach class resources on the intended SSID. Nearby devices in the same area are working. Reconnect attempt did not restore a normal lease. Device-specific escalation requested.',
-    jiraNotePrompt:
-      'Write the escalation note for this 169.254 case. Keep the DHCP clue, SSID check, and nearby comparison visible.',
-    riskNote: 'Do not treat one APIPA-style clue as proof of a whole-campus outage.',
-    recommendedModuleIds: ['dns-dhcp-gateway-ip-basics', 'ticket-notes-escalation-quality']
-  }),
-  scenario({
-    id: 'printer-jobs-stuck-in-queue',
-    title: 'Printer jobs stuck in queue',
-    summary: 'Users say documents are not printing and the queue appears to be filling up.',
-    focus: ['queue versus release', 'scope', 'device versus path', 'service handoff'],
-    estimatedMinutes: 8,
-    initialReport:
-      'Several staff say their jobs are not appearing on paper. The queue looks busy, and one user mentions they expected Follow-Me release to work.',
-    contextBullets: [
-      'Printing can fail at the queue, release, or device layer.',
-      'One user versus many users changes the likely scope.',
-      'A copier or Follow-Me path may be involved.'
-    ],
-    steps: [
-      {
-        id: 'queue-step-1',
-        title: 'First distinction',
-        prompt: 'What should Josh clarify first?',
-        choices: [
-          {
-            id: 'queue-1a',
-            label: 'Whether the jobs are stuck before release, waiting for release, or blocked by the device itself',
-            outcome: 'Good. That is the main diagnostic split in this incident.',
+            id: 'login-1a',
+            label: 'Clarify the exact error message or behavior (account locked, wrong password, network name prompt)',
+            outcome: 'Good. The exact symptom changes the entire troubleshooting path.',
             riskNote: 'High-value first question.',
             correct: true
           },
           {
-            id: 'queue-1b',
-            label: 'Whether Windows itself should be reinstalled for every user',
-            outcome: 'That is a huge leap from the current evidence.',
-            riskNote: 'Unhelpful overreaction.',
+            id: 'login-1b',
+            label: 'Immediately reset the password to help the student',
+            outcome: 'That may not be the issue and requires authorization.',
+            riskNote: 'Premature action.',
             correct: false
           },
           {
-            id: 'queue-1c',
-            label: 'Whether the school network must be fully down',
-            outcome: 'That is too broad too early.',
-            riskNote: 'Poor scope control.',
+            id: 'login-1c',
+            label: 'Tell the student the device is broken and bring it to IT',
+            outcome: 'That overclaims without gathering evidence.',
+            riskNote: 'Poor support triage.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'queue-1a'
+        recommendedChoiceId: 'login-1a'
       },
       {
-        id: 'queue-step-2',
+        id: 'login-step-2',
         title: 'New information',
         newInformation:
-          'The jobs do appear in the system, but staff report they still need to authenticate at the copier and the device also shows a warning.',
-        prompt: 'What is the best next judgement?',
-        choices: [
-          {
-            id: 'queue-2a',
-            label: 'Treat this as a release or device-side incident rather than only a workstation queue problem',
-            outcome: 'Good. Submission appears to work, so the failure point has shifted.',
-            riskNote: 'Strong path reasoning.',
-            correct: true
-          },
-          {
-            id: 'queue-2b',
-            label: 'Delete all queued jobs for every user immediately',
-            outcome: 'That may destroy evidence and not solve the actual layer failing.',
-            riskNote: 'Risky without clarity.',
-            correct: false
-          },
-          {
-            id: 'queue-2c',
-            label: 'Ignore the copier warning because queue issues never involve the device',
-            outcome: 'That throws away a valuable clue.',
-            riskNote: 'Missed evidence.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'queue-2a'
-      },
-      {
-        id: 'queue-step-3',
-        title: 'Handoff threshold',
-        newInformation:
-          'The device warning remains, multiple users are affected, and teaching staff are now waiting on print release.',
-        prompt: 'What should Josh do now?',
-        choices: [
-          {
-            id: 'queue-3a',
-            label: 'Escalate with the queue-versus-release-versus-device distinction clearly written',
-            outcome: 'Good. The note now tells the next person where the likely failure path sits.',
-            riskNote: 'Strong service-call handoff.',
-            correct: true
-          },
-          {
-            id: 'queue-3b',
-            label: 'Tell users to keep trying randomly until it clears',
-            outcome: 'That increases frustration and preserves nothing.',
-            riskNote: 'Poor support quality.',
-            correct: false
-          },
-          {
-            id: 'queue-3c',
-            label: 'Write only "printer queue stuck"',
-            outcome: 'That hides the most useful evidence in the case.',
-            riskNote: 'Weak escalation.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'queue-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Separate queue submission from release and device behaviour.',
-      'Use the copier warning as a meaningful clue.',
-      'Escalate with scope and failure-layer reasoning once multiple users are blocked.'
-    ],
-    escalationPoint:
-      'Escalate once the evidence shows jobs are reaching the system but failing at release or device level for multiple users.',
-    ticketNoteExample:
-      'Multiple staff jobs appear in the print system but remain blocked at release/device stage. Copier shows warning and users still need authentication at the device. Multi-user impact now affecting work flow.',
-    jiraNotePrompt:
-      'Write the Jira note so the next tech can immediately see whether this is queue, release, or device related.',
-    riskNote: 'Do not flatten the problem into one generic print complaint when the layer clues are already visible.',
-    recommendedModuleIds: ['printer-troubleshooting', 'ticket-notes-escalation-quality']
-  }),
-  scenario({
-    id: 'laser-printer-toner-rubs-off',
-    title: 'Laser printer toner rubs off',
-    summary: 'A staff member says the page prints, but the toner wipes off and copying quality is poor too.',
-    focus: ['print quality clues', 'device versus queue', 'service-call evidence', 'scope'],
-    estimatedMinutes: 8,
-    initialReport:
-      'A teacher says the printer is producing readable pages, but the toner rubs off and the photocopier output also looks poor.',
-    contextBullets: [
-      'This is a quality issue, not only a delivery issue.',
-      'Printing and copying both matter in the note.',
-      'Consumable or device path clues are valuable.'
-    ],
-    steps: [
-      {
-        id: 'toner-step-1',
-        title: 'First judgement',
-        prompt: 'What should Josh recognise first?',
-        choices: [
-          {
-            id: 'toner-1a',
-            label: 'The job is printing, so this points more toward device or quality path than wrong queue',
-            outcome: 'Good. Paper output changes the problem category.',
-            riskNote: 'Useful symptom reading.',
-            correct: true
-          },
-          {
-            id: 'toner-1b',
-            label: 'This must still be only the user choosing the wrong printer',
-            outcome: 'That ignores the quality symptom on paper.',
-            riskNote: 'Missed clue.',
-            correct: false
-          },
-          {
-            id: 'toner-1c',
-            label: 'Delete the driver because toner issues are always software',
-            outcome: 'That is not supported by the symptom.',
-            riskNote: 'Poor fault interpretation.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'toner-1a'
-      },
-      {
-        id: 'toner-step-2',
-        title: 'New information',
-        newInformation:
-          'The same poor result appears when copying directly at the device, not just when printing from a computer.',
-        prompt: 'What does this change?',
-        choices: [
-          {
-            id: 'toner-2a',
-            label: 'It strengthens the case that this is device or consumable quality rather than user print path',
-            outcome: 'Good. Copying uses the device too and confirms the scope of the quality issue.',
-            riskNote: 'Strong device clue.',
-            correct: true
-          },
-          {
-            id: 'toner-2b',
-            label: 'It means the network path is definitely broken',
-            outcome: 'That does not fit the evidence.',
-            riskNote: 'Wrong mechanism.',
-            correct: false
-          },
-          {
-            id: 'toner-2c',
-            label: 'It no longer matters what the visible symptom is',
-            outcome: 'The visible symptom matters even more now.',
-            riskNote: 'Bad note discipline.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'toner-2a'
-      },
-      {
-        id: 'toner-step-3',
-        title: 'Service handoff',
-        newInformation:
-          'The device remains usable enough to test, but the output quality is unacceptable for staff work and the lesson prep is delayed.',
-        prompt: 'What should Josh write?',
-        choices: [
-          {
-            id: 'toner-3a',
-            label: 'An escalation note naming the toner-rubs-off symptom, copy-plus-print scope, and device quality concern',
-            outcome: 'Good. The note now supports servicing rather than generic queue troubleshooting.',
-            riskNote: 'Strong service-call language.',
-            correct: true
-          },
-          {
-            id: 'toner-3b',
-            label: 'Only "printer broken" with no symptom detail',
-            outcome: 'That throws away the best evidence.',
-            riskNote: 'Weak handoff.',
-            correct: false
-          },
-          {
-            id: 'toner-3c',
-            label: 'No note, because the printer still sort of works',
-            outcome: 'That underplays a real quality failure.',
-            riskNote: 'Poor urgency judgement.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'toner-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Recognise that pages are printing but quality is failing.',
-      'Use copy-plus-print scope to confirm a device-quality path.',
-      'Escalate with exact print-quality language for servicing.'
-    ],
-    escalationPoint: 'Escalate once the quality issue is confirmed across both printing and copying.',
-    ticketNoteExample:
-      'Copier in staff area produces pages, but toner rubs off and output quality is poor on both print and direct copy. Device-quality servicing concern; staff work currently delayed.',
-    jiraNotePrompt:
-      'Write the service note for this print-quality fault. Keep the copy-plus-print clue and the exact symptom visible.',
-    riskNote: 'Do not route a device-quality symptom like a generic queue complaint.',
-    recommendedModuleIds: ['printer-troubleshooting', 'ticket-notes-escalation-quality']
-  }),
-  scenario({
-    id: 'guest-wifi-segmentation-rules',
-    title: 'Guest Wi-Fi segmentation rules',
-    summary: 'A staff member wants guest devices to reach internal classroom gear for an event.',
-    focus: ['design intent', 'allow/block thinking', 'business need', 'safe escalation'],
-    estimatedMinutes: 8,
-    initialReport:
-      'A teacher running an event says guest devices need to reach a classroom TV and printer because the internet already works on guest Wi-Fi.',
-    contextBullets: [
-      'Internet access is not the same as internal-device access.',
-      'The event timing may make the request urgent.',
-      'Josh should capture the need, not promise a bypass.'
-    ],
-    steps: [
-      {
-        id: 'guest-step-1',
-        title: 'First judgement',
-        prompt: 'What is the best first response?',
-        choices: [
-          {
-            id: 'guest-1a',
-            label: 'Explain that guest internet access does not automatically include internal device access',
-            outcome: 'Good. This resets the conversation to the real design question.',
-            riskNote: 'Strong plain-English networking.',
-            correct: true
-          },
-          {
-            id: 'guest-1b',
-            label: 'Promise that guest networks should always reach everything if the internet works',
-            outcome: 'That is technically and operationally unsafe.',
-            riskNote: 'False promise.',
-            correct: false
-          },
-          {
-            id: 'guest-1c',
-            label: 'Tell them to plug into any random internal port',
-            outcome: 'That suggests an unsafe workaround.',
-            riskNote: 'Security risk.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'guest-1a'
-      },
-      {
-        id: 'guest-step-2',
-        title: 'New information',
-        newInformation:
-          'The event is tomorrow morning, and the staff member says they specifically need display and print access from guest devices.',
-        prompt: 'What should Josh capture next?',
-        choices: [
-          {
-            id: 'guest-2a',
-            label: 'The exact source network, destination devices, event timing, and business need',
-            outcome: 'Good. That is the minimum useful request language.',
-            riskNote: 'Clear escalation input.',
-            correct: true
-          },
-          {
-            id: 'guest-2b',
-            label: 'Nothing else, because networking teams should just know what to do',
-            outcome: 'That leaves the request underspecified.',
-            riskNote: 'Weak handoff.',
-            correct: false
-          },
-          {
-            id: 'guest-2c',
-            label: 'Only the name of the teacher',
-            outcome: 'That is not enough to assess the path need.',
-            riskNote: 'Poor request quality.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'guest-2a'
-      },
-      {
-        id: 'guest-step-3',
-        title: 'Escalation boundary',
-        newInformation:
-          'There is no approved exception yet, and the need clearly involves guest-to-internal access.',
-        prompt: 'What should Josh do now?',
-        choices: [
-          {
-            id: 'guest-3a',
-            label: 'Escalate the business requirement and timing without suggesting an unauthorised workaround',
-            outcome: 'Good. Josh has captured the path request without overstepping.',
-            riskNote: 'Safe segmentation posture.',
-            correct: true
-          },
-          {
-            id: 'guest-3b',
-            label: 'Try to bypass the segmentation control yourself because the event is urgent',
-            outcome: 'Urgency does not create authorisation.',
-            riskNote: 'Unsafe boundary crossing.',
-            correct: false
-          },
-          {
-            id: 'guest-3c',
-            label: 'Write only "guest Wi-Fi issue"',
-            outcome: 'That hides the actual access-path request.',
-            riskNote: 'Weak note quality.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'guest-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Separate guest internet from internal-device reachability.',
-      'Capture exact source, destination, timing, and business need.',
-      'Escalate the access request rather than promising a workaround.'
-    ],
-    escalationPoint:
-      'Escalate once it is clear the request requires a deliberate guest-to-internal access decision.',
-    ticketNoteExample:
-      'Event request: guest Wi-Fi devices need temporary access to classroom TV and printer for tomorrow morning event. Guest internet works as designed; business need is guest-to-internal device reachability. Escalation for approved path review requested.',
-    jiraNotePrompt:
-      'Write the note for a guest-to-internal access request. Include source network, destination devices, timing, and business need.',
-    riskNote: 'Do not confuse an access request with a random Wi-Fi fault.',
-    recommendedModuleIds: ['vlans-network-segmentation', 'ticket-notes-escalation-quality']
-  }),
-  scenario({
-    id: 'phishing-email-reported',
-    title: 'Phishing email reported by staff',
-    summary: 'A staff member reports a suspicious email and wants to know what to do next.',
-    focus: ['security judgement', 'privacy boundaries', 'incident note discipline', 'safe escalation'],
-    estimatedMinutes: 8,
-    initialReport:
-      'A staff member tells Josh they may have received a phishing email and wants help quickly.',
-    contextBullets: [
-      'Security concerns need urgency and restraint together.',
-      'The PD app should never become a place for copied live incident detail.',
-      'Josh should focus on the safe response path and note quality.'
-    ],
-    steps: [
-      {
-        id: 'phish-step-1',
-        title: 'First response',
-        prompt: 'What should Josh do first?',
-        choices: [
-          {
-            id: 'phish-1a',
-            label: 'Treat it as a security-sensitive incident and follow the approved reporting or escalation path',
-            outcome: 'Good. The issue needs urgency without casual handling.',
-            riskNote: 'Strong security posture.',
-            correct: true
-          },
-          {
-            id: 'phish-1b',
-            label: 'Paste the full suspicious email into the PD app so nothing is forgotten',
-            outcome: 'That creates a privacy and incident-handling problem.',
-            riskNote: 'Do not move live incident detail into personal tools.',
-            correct: false
-          },
-          {
-            id: 'phish-1c',
-            label: 'Ignore it until the end of the day because email is often annoying',
-            outcome: 'That underplays a possible security incident.',
-            riskNote: 'Poor urgency judgement.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'phish-1a'
-      },
-      {
-        id: 'phish-step-2',
-        title: 'New information',
-        newInformation:
-          'The staff member is worried they may have clicked once, but they are unsure what happened afterwards.',
-        prompt: 'What should Josh capture?',
-        choices: [
-          {
-            id: 'phish-2a',
-            label: 'High-level incident facts such as possible interaction, timing, and the approved escalation path',
-            outcome: 'Good. That preserves useful risk context without copying the entire incident.',
-            riskNote: 'Useful and restrained.',
-            correct: true
-          },
-          {
-            id: 'phish-2b',
-            label: 'Their password so you can test the account yourself',
-            outcome: 'That is never appropriate.',
-            riskNote: 'Severe security failure.',
-            correct: false
-          },
-          {
-            id: 'phish-2c',
-            label: 'Only your personal guess that it is probably nothing',
-            outcome: 'That does not preserve the risk properly.',
-            riskNote: 'Weak incident judgement.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'phish-2a'
-      },
-      {
-        id: 'phish-step-3',
-        title: 'Documentation choice',
-        newInformation:
-          'Josh still wants to learn from the incident later without storing sensitive detail in the app.',
-        prompt: 'What is the safer approach?',
-        choices: [
-          {
-            id: 'phish-3a',
-            label: 'Record the high-level lesson and safe escalation pattern only, not the live message detail',
-            outcome: 'Good. That keeps the PD record useful without turning it into an incident archive.',
-            riskNote: 'Privacy-safe learning.',
-            correct: true
-          },
-          {
-            id: 'phish-3b',
-            label: 'Copy everything into the error log because it stays local',
-            outcome: 'Local-only does not remove the privacy problem.',
-            riskNote: 'Unsafe data handling.',
-            correct: false
-          },
-          {
-            id: 'phish-3c',
-            label: 'Write no note at all because security topics cannot be learned from',
-            outcome: 'You can still learn the pattern safely without storing live content.',
-            riskNote: 'Missed learning opportunity.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'phish-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Escalate through the approved security path promptly.',
-      'Capture only the high-level risk facts needed for handoff.',
-      'Keep the PD app limited to the safe lesson pattern, not live incident detail.'
-    ],
-    escalationPoint: 'Escalate immediately once phishing or suspicious interaction is suspected.',
-    ticketNoteExample:
-      'Security concern reported by staff member. Possible suspicious email interaction reported today; approved escalation path engaged. High-level incident timing and concern captured separately in the authorised work system only.',
-    jiraNotePrompt:
-      'Write the privacy-safe operational note for this phishing concern. Do not reproduce the live email content.',
-    riskNote: 'Never use the PD app as the system of record for a live security incident.',
-    recommendedModuleIds: ['ticket-notes-escalation-quality', 'login-and-password-support']
-  }),
-  scenario({
-    id: 'parent-portal-registration-problem',
-    title: 'Parent Portal registration problem',
-    summary: 'A parent says registration is blocked and is unsure whether the access key or email is wrong.',
-    focus: ['workflow stage', 'access-key clues', 'parent communication', 'owner boundaries'],
-    estimatedMinutes: 8,
-    initialReport:
-      'A parent contacts the school saying they cannot finish Parent Portal registration and do not know whether the key or email is the problem.',
-    contextBullets: [
-      'Registration stage matters more than broad frustration.',
-      'Private family data should stay out of the PD app.',
-      'The note should help the right owner act quickly.'
-    ],
-    steps: [
-      {
-        id: 'portal-step-1',
-        title: 'First question',
-        prompt: 'What should Josh clarify first?',
-        choices: [
-          {
-            id: 'portal-1a',
-            label: 'Whether this is first registration or a retry and what exact blocker is shown',
-            outcome: 'Good. That clarifies the workflow stage before guesswork begins.',
-            riskNote: 'High-value first split.',
-            correct: true
-          },
-          {
-            id: 'portal-1b',
-            label: 'Every family detail on the account',
-            outcome: 'That is more private detail than Josh needs in the PD flow.',
-            riskNote: 'Privacy risk.',
-            correct: false
-          },
-          {
-            id: 'portal-1c',
-            label: 'Assume the whole portal is down for all families',
-            outcome: 'That overclaims far too early.',
-            riskNote: 'Poor scope judgement.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'portal-1a'
-      },
-      {
-        id: 'portal-step-2',
-        title: 'New information',
-        newInformation:
-          'It appears to be a first registration attempt. The parent says the email may not match what the school expects.',
-        prompt: 'What is the best next judgement?',
-        choices: [
-          {
-            id: 'portal-2a',
-            label: 'Capture the access-key stage and likely email-match clue, then route to the right owner',
-            outcome: 'Good. The note now carries the most useful workflow evidence.',
-            riskNote: 'Clear ownership thinking.',
-            correct: true
-          },
-          {
-            id: 'portal-2b',
-            label: 'Tell the parent to keep retrying until it eventually works',
-            outcome: 'That does not preserve the actual blocker.',
-            riskNote: 'Poor support quality.',
-            correct: false
-          },
-          {
-            id: 'portal-2c',
-            label: 'Promise that ICT can directly rewrite the family record immediately',
-            outcome: 'That overstates authority.',
-            riskNote: 'Unsafe promise.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'portal-2a'
-      },
-      {
-        id: 'portal-step-3',
-        title: 'Parent-facing handoff',
-        newInformation:
-          'The parent is frustrated and wants to know what will happen next.',
-        prompt: 'What should Josh do?',
-        choices: [
-          {
-            id: 'portal-3a',
-            label: 'Explain the next handoff calmly, confirm the blocker has been recorded clearly, and avoid blame',
-            outcome: 'Good. Clear and calm wording reduces stress and improves trust.',
-            riskNote: 'Strong communication.',
-            correct: true
-          },
-          {
-            id: 'portal-3b',
-            label: 'Tell the parent someone will probably fix it eventually',
-            outcome: 'That is vague and unhelpful.',
-            riskNote: 'Weak expectation setting.',
-            correct: false
-          },
-          {
-            id: 'portal-3c',
-            label: 'Copy the family details into the PD note so nothing is missed',
-            outcome: 'That is not the right place for private record content.',
-            riskNote: 'Privacy failure.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'portal-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Clarify first registration versus retry.',
-      'Capture access-key and likely email-match clues.',
-      'Use calm parent-facing handoff language with clear ownership boundaries.'
-    ],
-    escalationPoint: 'Escalate once the workflow blocker is identified and it moves beyond safe first-line clarification.',
-    ticketNoteExample:
-      'Parent Portal first-registration issue. Parent reports likely email-match blocker at access-key stage. Generic error wording captured; clean handoff to workflow owner requested. Parent updated on next step.',
-    jiraNotePrompt:
-      'Write the parent-safe escalation note for this portal registration blocker. Keep the stage, clue, and handoff clear.',
-    riskNote: 'Keep the workflow pattern, not the family’s private detail, in the PD app.',
-    recommendedModuleIds: ['parent-portal-registration', 'ticket-notes-escalation-quality']
-  }),
-  scenario({
-    id: 'sentral-markbook-access-key-issue',
-    title: 'Sentral access-key or markbook issue',
-    summary: 'A staff member reports a Sentral problem during a busy reporting period and a parent-access-key question arrives at the same time.',
-    focus: ['function classification', 'timing pressure', 'workflow routing', 'good notes'],
-    estimatedMinutes: 9,
-    initialReport:
-      'A teacher says a class markbook is missing in Sentral and reports are due today. At the same time, another enquiry mentions a Sentral parent access key.',
-    contextBullets: [
-      'Sentral is one platform with multiple workflows.',
-      'Timing pressure can raise urgency significantly.',
-      'Classification is the first-line superpower here.'
-    ],
-    steps: [
-      {
-        id: 'sentral-lab-step-1',
-        title: 'First split',
-        prompt: 'What should Josh recognise first?',
-        choices: [
-          {
-            id: 'sentral-lab-1a',
-            label: 'These are two different workflows: reporting or markbook visibility and parent-access-key support',
-            outcome: 'Good. Classification stops the note from becoming vague and mixed up.',
-            riskNote: 'Strong triage thinking.',
-            correct: true
-          },
-          {
-            id: 'sentral-lab-1b',
-            label: 'They are both just general Sentral issues and need no further distinction',
-            outcome: 'That makes the work much harder to route.',
-            riskNote: 'Weak classification.',
-            correct: false
-          },
-          {
-            id: 'sentral-lab-1c',
-            label: 'Only the parent enquiry matters because it sounds simpler',
-            outcome: 'That ignores a potentially urgent teacher deadline.',
-            riskNote: 'Poor urgency balance.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'sentral-lab-1a'
-      },
-      {
-        id: 'sentral-lab-step-2',
-        title: 'New information',
-        newInformation:
-          'The teacher confirms marks are due this afternoon and the issue appears to affect one class view only.',
-        prompt: 'What should Josh capture next?',
-        choices: [
-          {
-            id: 'sentral-lab-2a',
-            label: 'The exact class or screen affected, the deadline, and whether anyone else sees the same issue',
-            outcome: 'Good. That is the minimum evidence for a useful urgent note.',
-            riskNote: 'High-value detail.',
-            correct: true
-          },
-          {
-            id: 'sentral-lab-2b',
-            label: 'Only that Sentral is broken today',
-            outcome: 'That does not preserve the specific staff need.',
-            riskNote: 'Weak note quality.',
-            correct: false
-          },
-          {
-            id: 'sentral-lab-2c',
-            label: 'No timing detail because the system owner will ask if it matters',
-            outcome: 'The timing detail matters immediately.',
-            riskNote: 'Missed urgency clue.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'sentral-lab-2a'
-      },
-      {
-        id: 'sentral-lab-step-3',
-        title: 'Escalation note',
-        newInformation:
-          'Josh now has one urgent teacher note and one parent-access-key style note to route.',
+          'The student reports the laptop shows "Invalid username or password" after multiple attempts. The student says they know their password.',
         prompt: 'What is the best next move?',
         choices: [
           {
-            id: 'sentral-lab-3a',
-            label: 'Write two clean notes that preserve each workflow separately and route them to the correct owners',
-            outcome: 'Good. Separate notes protect both speed and clarity.',
-            riskNote: 'Strong workflow discipline.',
+            id: 'login-2a',
+            label: 'Ask whether the device is showing the correct network name and whether CAPS LOCK is on',
+            outcome: 'Good. Simple checks first for user-error patterns.',
+            riskNote: 'Safe Level 1 triage.',
             correct: true
           },
           {
-            id: 'sentral-lab-3b',
-            label: 'Combine both into one broad complaint about Sentral',
-            outcome: 'That confuses the work and slows both tasks down.',
-            riskNote: 'Poor routing.',
-            correct: false
-          },
-          {
-            id: 'sentral-lab-3c',
-            label: 'Escalate only the teacher issue and forget the parent enquiry',
-            outcome: 'That drops a real workflow rather than capturing it properly.',
-            riskNote: 'Incomplete support.',
+            id: 'login-2b',
+            label: 'Assume the account has been deleted and report it as a security incident',
+            outcome: 'That overclaims from one credential error.',
+            riskNote: 'Wrong severity.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'sentral-lab-3a'
+        recommendedChoiceId: 'login-2a'
+      },
+      {
+        id: 'login-step-3',
+        title: 'Escalation',
+        newInformation: 'The device is on the correct network, CAPS LOCK is off, and multiple attempts still fail.',
+        prompt: 'What should be documented?',
+        choices: [
+          {
+            id: 'login-3a',
+            label: 'The student name, exact error message, device checked, safe attempts made, and whether this is a new device issue',
+            outcome: 'Good. That gives the next tier enough evidence to investigate the account or device.',
+            riskNote: 'Clear escalation note.',
+            correct: true
+          },
+          {
+            id: 'login-3b',
+            label: 'Just the student name and "laptop not working"',
+            outcome: 'That hides the evidence and slows resolution.',
+            riskNote: 'Poor note quality.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'login-3a'
       }
     ],
     idealTroubleshootingPath: [
-      'Separate markbook visibility from parent-access-key workflow immediately.',
-      'Capture exact class, deadline, and scope on the urgent teacher issue.',
-      'Route separate evidence-rich notes to the correct owners.'
+      'Gather the exact error message and user context.',
+      'Verify simple user-error patterns.',
+      'Escalate with evidence for account or device investigation.'
     ],
-    escalationPoint:
-      'Escalate once the function and urgency are clear enough to route each workflow properly.',
-    ticketNoteExample:
-      'Urgent Sentral teacher issue: one class markbook view missing with marks due this afternoon; scope currently appears limited to one class view. Separate parent-access-key enquiry logged and routed as its own workflow.',
-    jiraNotePrompt:
-      'Write the urgent Sentral markbook note. If you mention the parent-access-key enquiry, keep it as a separate workflow line.',
-    riskNote: 'Do not flatten multiple Sentral workflows into one broad complaint.',
-    recommendedModuleIds: ['sentral-support', 'ticket-notes-escalation-quality']
-  }),
-  scenario({
-    id: 'password-lockout-self-service-reset-failure',
-    title: 'Password lockout or self-service reset failure',
-    summary: 'A user says they are locked out, then later says the reset flow still feels wrong.',
-    focus: ['exact sign-in state', 'self-service path', 'security suspicion', 'identity note quality'],
-    estimatedMinutes: 8,
-    initialReport:
-      'A user says they cannot log in and believes they may be locked out. They also mention a reset attempt already failed.',
-    contextBullets: [
-      'Exact sign-in state matters more than the broad complaint.',
-      'Reset failure can stay routine or become security-sensitive.',
-      'Josh should never ask for the password.'
-    ],
-    steps: [
-      {
-        id: 'lockout-step-1',
-        title: 'First classification',
-        prompt: 'What should Josh do first?',
-        choices: [
-          {
-            id: 'lockout-1a',
-            label: 'Confirm the correct username and exact sign-in message before taking action',
-            outcome: 'Good. Identity classification starts with the exact state.',
-            riskNote: 'High-value first step.',
-            correct: true
-          },
-          {
-            id: 'lockout-1b',
-            label: 'Ask for the user’s password so you can test it yourself',
-            outcome: 'That is never appropriate.',
-            riskNote: 'Severe identity hygiene failure.',
-            correct: false
-          },
-          {
-            id: 'lockout-1c',
-            label: 'Assume it is definitely compromise and panic immediately',
-            outcome: 'That skips the evidence-gathering needed even in urgent cases.',
-            riskNote: 'Poor risk calibration.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'lockout-1a'
-      },
-      {
-        id: 'lockout-step-2',
-        title: 'New information',
-        newInformation:
-          'The username looks correct. The reset path was tried, but the user now says the prompts seem odd and they are unsure what changed.',
-        prompt: 'How should Josh respond?',
-        choices: [
-          {
-            id: 'lockout-2a',
-            label: 'Treat the case as potentially security-sensitive now and capture the timing and odd prompts clearly',
-            outcome: 'Good. The issue has shifted beyond a plain routine reset story.',
-            riskNote: 'Strong judgement shift.',
-            correct: true
-          },
-          {
-            id: 'lockout-2b',
-            label: 'Keep repeating random resets until something works',
-            outcome: 'That may worsen confusion and ignores the risk signal.',
-            riskNote: 'Weak security posture.',
-            correct: false
-          },
-          {
-            id: 'lockout-2c',
-            label: 'Ignore the strange prompts because self-service always behaves strangely',
-            outcome: 'That downplays a meaningful clue.',
-            riskNote: 'Missed risk cue.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'lockout-2a'
-      },
-      {
-        id: 'lockout-step-3',
-        title: 'Escalation note',
-        newInformation:
-          'Josh needs to hand the issue onward without oversharing or sounding vague.',
-        prompt: 'What should the note focus on?',
-        choices: [
-          {
-            id: 'lockout-3a',
-            label: 'Exact sign-in symptom, correct-username confirmation, reset attempt, odd prompt clue, and security-sensitive escalation',
-            outcome: 'Good. The note now helps the next person assess both access and risk.',
-            riskNote: 'Strong identity-note quality.',
-            correct: true
-          },
-          {
-            id: 'lockout-3b',
-            label: 'Only "cannot log in" because the rest is too hard to explain',
-            outcome: 'That strips out the most important evidence.',
-            riskNote: 'Weak note quality.',
-            correct: false
-          },
-          {
-            id: 'lockout-3c',
-            label: 'The user’s guessed passwords so the next person can keep trying them',
-            outcome: 'That is not safe or appropriate information to log here.',
-            riskNote: 'Security failure.',
-            correct: false
-          }
-        ],
-        recommendedChoiceId: 'lockout-3a'
-      }
-    ],
-    idealTroubleshootingPath: [
-      'Confirm the account context and exact sign-in state.',
-      'Recognise when failed reset flow becomes security-sensitive.',
-      'Escalate with evidence-rich, password-free identity notes.'
-    ],
-    escalationPoint:
-      'Escalate when reset failure includes suspicious prompt behaviour or the issue no longer fits a normal routine identity story.',
-    ticketNoteExample:
-      'Identity issue: user confirmed correct username but remains unable to sign in after reset attempt. User reports unusual prompt behaviour after self-service flow. Security-sensitive escalation requested; no passwords collected.',
-    jiraNotePrompt:
-      'Write the identity escalation note for this lockout-plus-reset-failure case. Keep it password-free and risk-aware.',
-    riskNote: 'Do not collect or log passwords. Keep the note focused on symptoms, state, and risk clues.',
+    escalationPoint: 'Escalate once simple checks fail and the issue points to device or account state.',
+    ticketNoteExample: 'Year 9 student unable to log into school laptop with "Invalid username or password" error after multiple attempts. Device on correct network, CAPS LOCK verified off. No recent changes reported. Device identity or account state may require investigation.',
+    riskNote: 'Do not bypass account security checks just to help a student get back to class.',
     recommendedModuleIds: ['login-and-password-support', 'ticket-notes-escalation-quality']
   }),
   scenario({
-    id: 'new-user-onboarding-missing-system-access',
-    title: 'New user onboarding with missing system access',
-    summary: 'A new user can log in but still lacks the systems needed to start work today.',
-    focus: ['request completeness', 'role context', 'day-one validation', 'missing-access note quality'],
-    estimatedMinutes: 8,
-    initialReport:
-      'A new staff member has started today and can sign in, but says they still cannot access the drives, Teams, or applications they were told to use.',
+    id: 'dcs-staff-missing-access',
+    title: 'Staff member cannot access shared drive',
+    summary: 'A new staff member reports they cannot see the departmental shared drive.',
+    focus: ['group membership', 'permissions', 'onboarding', 'access verification'],
+    estimatedMinutes: 10,
+    targetEnvironment: 'DCS',
+    initialReport: 'A new staff member in the Science department says they cannot find or access the Science shared folder.',
     contextBullets: [
-      'This is likely missing access, not total setup failure.',
-      'Role context and day-one urgency both matter.',
-      'The note should name exactly what is missing.'
+      'New staff access can be delayed or assigned to the wrong groups.',
+      'Staff should have received documented access expectations.',
+      'Verification of group membership comes before permission changes.'
     ],
     steps: [
       {
-        id: 'onboard-step-1',
-        title: 'First judgement',
-        prompt: 'What should Josh recognise first?',
+        id: 'access-step-1',
+        title: 'Initial verification',
+        prompt: 'What is the first step?',
         choices: [
           {
-            id: 'onboard-1a',
-            label: 'The account exists, so the issue now looks like missing access or incomplete onboarding',
-            outcome: 'Good. This narrows the workflow immediately.',
-            riskNote: 'Strong onboarding reasoning.',
+            id: 'access-1a',
+            label: 'Verify when the staff member started, which access was requested, and who approved it',
+            outcome: 'Good. That establishes whether access was ever requested or approved.',
+            riskNote: 'Proper evidence gathering.',
             correct: true
           },
           {
-            id: 'onboard-1b',
-            label: 'Delete the account and start from scratch because something is missing',
-            outcome: 'That is far too disruptive and unsupported.',
-            riskNote: 'Poor identity judgement.',
-            correct: false
-          },
-          {
-            id: 'onboard-1c',
-            label: 'Assume the user is mistaken and everything is already there',
-            outcome: 'That ignores a common day-one support pattern.',
-            riskNote: 'Poor service posture.',
+            id: 'access-1b',
+            label: 'Immediately add the staff member to all department groups',
+            outcome: 'That assumes access was approved and risks giving too much permission.',
+            riskNote: 'Overstep without authorization.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'onboard-1a'
+        recommendedChoiceId: 'access-1a'
       },
       {
-        id: 'onboard-step-2',
-        title: 'New information',
+        id: 'access-step-2',
+        title: 'Access status',
         newInformation:
-          'The user needs specific shared drives, a Team, and one application for today’s work. They are unsure what was originally requested for them.',
-        prompt: 'What should Josh capture next?',
+          'The staff member started two weeks ago. Access to the Science drive was requested but may not have been processed.',
+        prompt: 'What next?',
         choices: [
           {
-            id: 'onboard-2a',
-            label: 'The exact missing systems, the user’s role, and the day-one urgency',
-            outcome: 'Good. This turns a vague onboarding complaint into a workable note.',
-            riskNote: 'High-value completeness.',
+            id: 'access-2a',
+            label: 'Check whether the staff member is already in the Science group and document the current group memberships',
+            outcome: 'Good. That clarifies what actually exists versus what is expected.',
+            riskNote: 'Evidence-based check.',
             correct: true
           },
           {
-            id: 'onboard-2b',
-            label: 'Only that onboarding failed somehow',
-            outcome: 'That leaves the next person guessing.',
-            riskNote: 'Weak note quality.',
-            correct: false
-          },
-          {
-            id: 'onboard-2c',
-            label: 'No role context because access systems should be standard for everyone',
-            outcome: 'Role context is exactly what shapes the access list.',
-            riskNote: 'Poor least-privilege thinking.',
+            id: 'access-2b',
+            label: 'Blame the department and tell the staff member nothing can be done today',
+            outcome: 'That avoids taking responsibility for the onboarding gap.',
+            riskNote: 'Poor support.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'onboard-2a'
+        recommendedChoiceId: 'access-2a'
       },
       {
-        id: 'onboard-step-3',
-        title: 'Escalation and validation',
-        newInformation:
-          'Josh can now describe what already works and what still does not.',
-        prompt: 'What should he do now?',
+        id: 'access-step-3',
+        title: 'Resolution',
+        newInformation: 'The staff member is NOT in the Science group, though the request was submitted weeks ago.',
+        prompt: 'What should be done?',
         choices: [
           {
-            id: 'onboard-3a',
-            label: 'Escalate the specific missing systems while noting what already works and the day-one impact',
-            outcome: 'Good. That preserves both progress and remaining gaps.',
-            riskNote: 'Strong day-one validation note.',
+            id: 'access-3a',
+            label: 'Verify the department head approval is on file, then add the staff member to the group with documentation',
+            outcome: 'Good. That closes the gap with authorization and audit trail.',
+            riskNote: 'Authorized and documented.',
             correct: true
           },
           {
-            id: 'onboard-3b',
-            label: 'Log only "new starter issue" and wait',
-            outcome: 'That is not enough for a fast handoff.',
-            riskNote: 'Weak escalation.',
-            correct: false
-          },
-          {
-            id: 'onboard-3c',
-            label: 'Grant broad access without the right owner because the user has already started',
-            outcome: 'Urgency does not remove access boundaries.',
-            riskNote: 'Unsafe authorisation behaviour.',
+            id: 'access-3b',
+            label: 'Just add the staff member without checking who authorized it',
+            outcome: 'That bypasses the approval process.',
+            riskNote: 'Authorization gap.',
             correct: false
           }
         ],
-        recommendedChoiceId: 'onboard-3a'
+        recommendedChoiceId: 'access-3a'
       }
     ],
     idealTroubleshootingPath: [
-      'Recognise this as missing access after account creation, not total identity failure.',
-      'Capture exact missing systems, role, and day-one urgency.',
-      'Escalate the remaining gaps with a note that also records what already works.'
+      'Verify the access request and approval status.',
+      'Check current group memberships.',
+      'Add access only after confirming authorized approval.'
     ],
-    escalationPoint:
-      'Escalate once the missing systems and day-one impact are clear enough to route to the correct owner.',
-    ticketNoteExample:
-      'New staff member can sign in successfully but is missing shared drive, Team, and required application access for today’s role. Role and day-one impact confirmed; exact missing systems listed for onboarding follow-up.',
-    jiraNotePrompt:
-      'Write the onboarding escalation note for a day-one missing-access case. Include what works, what is missing, and the role impact.',
-    riskNote: 'Do not confuse a live access gap with permission to grant broad unauthorised access.',
+    escalationPoint: 'Escalate if the request approval is missing or disputed.',
+    ticketNoteExample: 'New Science staff member requested access to Science shared drive two weeks ago. Currently not in Science group. Request has been approved by department head. Accessed granted with documentation. Staff member now able to access shared folder.',
+    riskNote: 'Always verify approval before granting new staff access. Do not assume onboarding processes completed automatically.',
     recommendedModuleIds: ['new-user-onboarding', 'permissions-and-access-requests']
+  }),
+  scenario({
+    id: 'dcs-wifi-drops-repeatedly',
+    title: 'Wi-Fi drops repeatedly in one classroom',
+    summary: 'A teacher reports Wi-Fi keeps disconnecting in Room 15 during lessons.',
+    focus: ['Wi-Fi triage', 'signal strength', 'device versus infrastructure', 'pattern analysis'],
+    estimatedMinutes: 8,
+    targetEnvironment: 'DCS',
+    initialReport: 'Multiple staff and students report Wi-Fi in Room 15 drops every 10-15 minutes.',
+    contextBullets: [
+      'Repeated drops can be a device issue, signal issue, or overcrowding.',
+      'Scope matters: is it one device or all devices in the room?',
+      'Workarounds may be needed while infrastructure is investigated.'
+    ],
+    steps: [
+      {
+        id: 'wifi-step-1',
+        title: 'Scope check',
+        prompt: 'What is the first clarification needed?',
+        choices: [
+          {
+            id: 'wifi-1a',
+            label: 'Is this affecting one device, all student devices, or all devices in the room?',
+            outcome: 'Good. That immediately narrows device versus room versus infrastructure.',
+            riskNote: 'Essential scope question.',
+            correct: true
+          },
+          {
+            id: 'wifi-1b',
+            label: 'Assume the access point needs a reboot and do it immediately',
+            outcome: 'That may fix it temporarily but hides the root cause.',
+            riskNote: 'Symptomatic treatment.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'wifi-1a'
+      },
+      {
+        id: 'wifi-step-2',
+        title: 'Pattern',
+        newInformation: 'Multiple devices from different users all drop Wi-Fi at similar times in Room 15.',
+        prompt: 'What does this pattern suggest?',
+        choices: [
+          {
+            id: 'wifi-2a',
+            label: 'The issue is room or access-point specific, not device specific',
+            outcome: 'Good. Multiple devices with the same pattern points to infrastructure.',
+            riskNote: 'Pattern-based reasoning.',
+            correct: true
+          },
+          {
+            id: 'wifi-2b',
+            label: 'All those devices must have the same configuration problem',
+            outcome: 'That is unlikely across multiple users and device models.',
+            riskNote: 'Unlikely cause.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'wifi-2a'
+      },
+      {
+        id: 'wifi-step-3',
+        title: 'Action',
+        newInformation: 'Infrastructure investigation will take time but is needed.',
+        prompt: 'What should be offered immediately?',
+        choices: [
+          {
+            id: 'wifi-3a',
+            label: 'Document the pattern and offer an alternative location or wired option for critical lessons until fixed',
+            outcome: 'Good. That protects teaching while infrastructure is investigated.',
+            riskNote: 'Operational response.',
+            correct: true
+          },
+          {
+            id: 'wifi-3b',
+            label: 'Tell the teacher nothing can be done until the access point is replaced',
+            outcome: 'That provides no support or workaround.',
+            riskNote: 'Unhelpful.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'wifi-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Establish scope across multiple users and devices.',
+      'Recognize patterns that point to infrastructure.',
+      'Escalate for investigation while offering interim solutions.'
+    ],
+    escalationPoint: 'Escalate once the pattern points to room or access-point issues.',
+    ticketNoteExample: 'Room 15 Wi-Fi drops reported by multiple staff and students, approximately every 10-15 minutes. Multiple devices affected from different users, suggesting room-level or AP issue, not device-specific. Wired alternative offered for critical lessons. Infrastructure investigation needed.',
+    riskNote: 'Do not assume repeated drops are due to user configuration when the pattern affects many devices.',
+    recommendedModuleIds: ['networking-fundamentals', 'ticket-notes-escalation-quality']
+  }),
+  scenario({
+    id: 'msp-m365-signin-failure',
+    title: 'M365 user cannot sign in',
+    summary: 'A client user reports they cannot sign into Outlook or Teams at a remote office.',
+    focus: ['identity triage', 'MFA', 'password', 'account state', 'client communication'],
+    estimatedMinutes: 10,
+    targetEnvironment: 'MSP',
+    initialReport:
+      'A client at Acme Corp reports that they cannot sign into Outlook or Teams and they need access urgently for a morning meeting.',
+    contextBullets: [
+      'M365 sign-in failures can be account, credential, MFA, or device issues.',
+      'Client urgency should not override security checks.',
+      'Password reset workflows must be authorized and secure.'
+    ],
+    steps: [
+      {
+        id: 'msp-signin-step-1',
+        title: 'Initial clarification',
+        prompt: 'What is the first thing to clarify?',
+        choices: [
+          {
+            id: 'msp-signin-1a',
+            label: 'The exact error message, which client site, which account, and whether MFA is being prompted',
+            outcome: 'Good. That shapes the entire troubleshooting path.',
+            riskNote: 'Essential triage questions.',
+            correct: true
+          },
+          {
+            id: 'msp-signin-1b',
+            label: 'Immediately reset the password to help them regain access',
+            outcome: 'That may not be the issue and requires verification.',
+            riskNote: 'Premature action.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-signin-1a'
+      },
+      {
+        id: 'msp-signin-step-2',
+        title: 'Error details',
+        newInformation:
+          'The client reports "invalid username or password" after multiple attempts. No MFA prompt is shown.',
+        prompt: 'What should be verified before password reset?',
+        choices: [
+          {
+            id: 'msp-signin-2a',
+            label: 'Whether they are using the correct email format, CAPS LOCK state, and whether another user can sign in from the same device',
+            outcome: 'Good. Safe Level 1 checks that rule out user error and device state.',
+            riskNote: 'Safe verification.',
+            correct: true
+          },
+          {
+            id: 'msp-signin-2b',
+            label: 'Request the client send their password in chat so you can test the account',
+            outcome: 'That is a security and password-handling violation.',
+            riskNote: 'Security violation.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-signin-2a'
+      },
+      {
+        id: 'msp-signin-step-3',
+        title: 'Escalation or reset',
+        newInformation: 'Another user can sign in successfully from the same device. The error persists for the first user.',
+        prompt: 'What now?',
+        choices: [
+          {
+            id: 'msp-signin-3a',
+            label: 'Follow authorized password reset procedure and confirm via secure channel',
+            outcome: 'Good. That isolates the issue to the account and enables a secure fix.',
+            riskNote: 'Authorized and secure reset.',
+            correct: true
+          },
+          {
+            id: 'msp-signin-3b',
+            label: 'Escalate to Microsoft without gathering evidence',
+            outcome: 'That skips available Level 1 action.',
+            riskNote: 'Premature escalation.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-signin-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Gather exact error message and client context.',
+      'Rule out user error and device state.',
+      'Execute authorized password reset or escalate for account investigation.'
+    ],
+    escalationPoint: 'Escalate if password reset does not restore access or account state is suspicious.',
+    ticketNoteExample:
+      'Acme Corp client unable to sign into Outlook/Teams from office. Error: "Invalid username or password" after multiple attempts. Another user can sign in from same device. Device and credentials verified. Password reset executed per client authorization.',
+    jiraNotePrompt: 'Write the escalation note if password reset did not restore access. Include client, user, error, device state, and next action.',
+    riskNote: 'Do not accept passwords in chat or email. Always use secure password reset procedures.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-client-communication-documentation']
+  }),
+  scenario({
+    id: 'msp-mfa-loop-or-prompt-stuck',
+    title: 'Repeated MFA prompts or stuck MFA loop',
+    summary: 'A client user reports being stuck in an endless MFA challenge loop.',
+    focus: ['MFA state', 'device trust', 'cache', 'security concern', 'escalation'],
+    estimatedMinutes: 9,
+    targetEnvironment: 'MSP',
+    initialReport:
+      'A client reports they keep getting MFA prompts even after approving them, and they are now locked out of their account.',
+    contextBullets: [
+      'MFA loops can indicate device compromise or M365 account security issues.',
+      'Excessive MFA prompts should be treated as a security signal.',
+      'Client safety and timely escalation are critical.'
+    ],
+    steps: [
+      {
+        id: 'msp-mfa-step-1',
+        title: 'Security assessment',
+        prompt: 'What is the first priority?',
+        choices: [
+          {
+            id: 'msp-mfa-1a',
+            label: 'Confirm the MFA prompts are from legitimate M365 (not a phishing loop) and ask if the client recognizes the requests',
+            outcome: 'Good. That verifies the MFA is legitimate before proceeding.',
+            riskNote: 'Security-first approach.',
+            correct: true
+          },
+          {
+            id: 'msp-mfa-1b',
+            label: 'Reset the account password immediately to break the loop',
+            outcome: 'That may help but misses the security signal.',
+            riskNote: 'Symptomatic only.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-mfa-1a'
+      },
+      {
+        id: 'msp-mfa-step-2',
+        title: 'Triage',
+        newInformation:
+          'The MFA prompts are coming from legitimate Microsoft. The client confirms they recognize the device but keep hitting "Approve" and still get another prompt.',
+        prompt: 'What should be checked?',
+        choices: [
+          {
+            id: 'msp-mfa-2a',
+            label: 'Whether the device cache is corrupted, whether "trust this device" is being saved, and whether this is one device or multiple devices',
+            outcome: 'Good. That identifies whether this is a device issue or account state issue.',
+            riskNote: 'Targeted checks.',
+            correct: true
+          },
+          {
+            id: 'msp-mfa-2b',
+            label: 'Just delete all browser cookies and assume the loop will clear',
+            outcome: 'That may temporarily help but risks data loss and misses root cause.',
+            riskNote: 'Risky without understanding.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-mfa-2a'
+      },
+      {
+        id: 'msp-mfa-step-3',
+        title: 'Escalation',
+        newInformation:
+          'The loop persists even after cache clearing. This is now affecting the client morning workflow.',
+        prompt: 'What should be escalated?',
+        choices: [
+          {
+            id: 'msp-mfa-3a',
+            label: 'Suspected MFA loop with client impact, device checks done, and request for M365 admin or vendor investigation',
+            outcome: 'Good. That preserves evidence and gets the right team involved.',
+            riskNote: 'Professional escalation.',
+            correct: true
+          },
+          {
+            id: 'msp-mfa-3b',
+            label: 'Just tell the client to try again later',
+            outcome: 'That provides no support or escalation.',
+            riskNote: 'Unhelpful and risky.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-mfa-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Verify MFA prompts are legitimate.',
+      'Check device cache and trust settings.',
+      'Escalate to M365 admin with full evidence if device-level fixes do not resolve.'
+    ],
+    escalationPoint: 'Escalate if device-level fixes do not break the loop and client is blocked from work.',
+    ticketNoteExample:
+      'Acme Corp client experiencing endless MFA loop: approves prompt but new prompt appears immediately. Legitimate M365 MFA confirmed. Device cache cleared, "trust device" setting verified. Loop persists. Requesting M365 admin investigation for possible account-side state issue.',
+    jiraNotePrompt: 'Write the escalation note for suspected MFA loop. Include legitimacy check, device checks, client impact, and request for investigation.',
+    riskNote: 'Treat excessive MFA as a security signal. Do not dismiss as user error without verification.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-client-communication-documentation']
+  }),
+  scenario({
+    id: 'msp-printer-offline-client',
+    title: 'Client printer offline during business hours',
+    summary: 'A client site reports their main office printer is offline and staff cannot print.',
+    focus: ['device state', 'network path', 'queue', 'client SLA', 'fallback'],
+    estimatedMinutes: 9,
+    targetEnvironment: 'MSP',
+    initialReport: 'TechServe Systems (client) reports their office printer shows offline and no one can print documents.',
+    contextBullets: [
+      'Client printer outages require fast triage and SLA awareness.',
+      'Printer status can be device, network, or queue related.',
+      'Fallback printing is essential for business continuity.'
+    ],
+    steps: [
+      {
+        id: 'msp-printer-step-1',
+        title: 'Initial triage',
+        prompt: 'What must be confirmed first given the SLA?',
+        choices: [
+          {
+            id: 'msp-printer-1a',
+            label: 'The client SLA response time, the exact printer model/location, current device status (power, error lights), and queue state',
+            outcome: 'Good. SLA context shapes urgency, device state shapes solution path.',
+            riskNote: 'SLA and scope awareness.',
+            correct: true
+          },
+          {
+            id: 'msp-printer-1b',
+            label: 'Immediately tell the client to restart the printer',
+            outcome: 'That may help but skips evidence gathering.',
+            riskNote: 'Action without scope.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-printer-1a'
+      },
+      {
+        id: 'msp-printer-step-2',
+        title: 'Device check',
+        newInformation:
+          'Printer is powered, has paper, no error lights. Network shows "Offline" on the display panel. Queue has jobs waiting.',
+        prompt: 'What is the likely issue?',
+        choices: [
+          {
+            id: 'msp-printer-2a',
+            label: 'The device cannot reach the network. Check IP, ping, and Ethernet or Wi-Fi connection.',
+            outcome: 'Good. That narrows the issue to the device network path.',
+            riskNote: 'Logical narrowing.',
+            correct: true
+          },
+          {
+            id: 'msp-printer-2b',
+            label: 'The jobs in the queue must be corrupted, so delete them all immediately',
+            outcome: 'That destroys evidence and may not be necessary.',
+            riskNote: 'Premature action.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-printer-2a'
+      },
+      {
+        id: 'msp-printer-step-3',
+        title: 'Client continuity',
+        newInformation: 'Printer shows a valid IP but does not respond to network tests. Repair will take 2+ hours.',
+        prompt: 'What should be offered?',
+        choices: [
+          {
+            id: 'msp-printer-3a',
+            label: 'Escalate to printer vendor, document device state and network evidence, and offer an alternative printer or document distribution method',
+            outcome: 'Good. That preserves business continuity while getting expert repair involved.',
+            riskNote: 'Strong client support.',
+            correct: true
+          },
+          {
+            id: 'msp-printer-3b',
+            label: 'Tell the client nothing can be done until Monday',
+            outcome: 'That ignores SLA and client business needs.',
+            riskNote: 'Poor service.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-printer-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Confirm SLA context and device location.',
+      'Check device power and network connectivity.',
+      'Escalate with evidence and offer interim workflow.'
+    ],
+    escalationPoint: 'Escalate once device network path is unavailable and client SLA requires continuity.',
+    ticketNoteExample:
+      'TechServe Systems office printer offline, no network connection despite valid IP. Device powered, no jam, jobs queued. Network path unavailable (ping fails). Printer vendor escalation initiated. Alternative printing arranged via networked device in conference room.',
+    jiraNotePrompt: 'Write the escalation to the printer vendor. Include device model, network evidence, client SLA, and interim solution offered.',
+    riskNote: 'Always provide a fallback for client business continuity. Do not leave them without printing capability.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-client-communication-documentation']
+  }),
+  scenario({
+    id: 'msp-unifi-ap-offline',
+    title: 'UniFi access point offline at client site',
+    summary: 'A client site reports no Wi-Fi available at one location and staff are unable to work.',
+    focus: ['network device triage', 'PoE', 'uplink', 'failover', 'client impact'],
+    estimatedMinutes: 10,
+    targetEnvironment: 'MSP',
+    initialReport:
+      'CloudPro Industries (client) reports the access point in their east wing is not broadcasting Wi-Fi and staff cannot connect.',
+    contextBullets: [
+      'AP failures can be power, uplink, or device failure.',
+      'UniFi dashboard visibility is essential.',
+      'Failover and mesh options may exist.'
+    ],
+    steps: [
+      {
+        id: 'msp-ap-step-1',
+        title: 'Remote verification',
+        prompt: 'What is the first remote check?',
+        choices: [
+          {
+            id: 'msp-ap-1a',
+            label: 'Log into the UniFi controller and check the AP status, event logs, and whether it shows online but broadcasting is off',
+            outcome: 'Good. That shows whether the issue is device state or management visibility.',
+            riskNote: 'Remote visibility first.',
+            correct: true
+          },
+          {
+            id: 'msp-ap-1b',
+            label: 'Tell the client to walk over and unplug/replug the device',
+            outcome: 'That may help but skips remote diagnostics.',
+            riskNote: 'Premature field action.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-ap-1a'
+      },
+      {
+        id: 'msp-ap-step-2',
+        title: 'Controller status',
+        newInformation: 'UniFi controller shows the AP as "Offline" with last heartbeat 30 minutes ago.',
+        prompt: 'What should be checked?',
+        choices: [
+          {
+            id: 'msp-ap-2a',
+            label: 'Whether the AP has power (check PoE injector/switch), whether the uplink is connected, and whether there is a nearby AP providing mesh coverage',
+            outcome: 'Good. That narrows between power, network path, and coverage issues.',
+            riskNote: 'Logical narrowing.',
+            correct: true
+          },
+          {
+            id: 'msp-ap-2b',
+            label: 'Just reboot the entire UniFi controller to reset everything',
+            outcome: 'That may help but skips field diagnostics.',
+            riskNote: 'Risky without understanding.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-ap-2a'
+      },
+      {
+        id: 'msp-ap-step-3',
+        title: 'Client support',
+        newInformation: 'Field check confirms: AP is powered but PoE cable shows no lights, and the uplink switch port is powered but shows no link to the AP.',
+        prompt: 'What should be communicated to the client?',
+        choices: [
+          {
+            id: 'msp-ap-3a',
+            label: 'Documented issue (power and uplink suspected), ETA for replacement cable/PoE injector, and interim coverage (mesh or nearby AP if available)',
+            outcome: 'Good. That gives the client a clear status and timeline.',
+            riskNote: 'Client-focused communication.',
+            correct: true
+          },
+          {
+            id: 'msp-ap-3b',
+            label: 'Tell the client the AP is definitely broken and needs replacement (without evidence)',
+            outcome: 'That overclaims without confirming the root cause.',
+            riskNote: 'Premature conclusion.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-ap-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Check UniFi controller status and device visibility.',
+      'Verify power and uplink connectivity.',
+      'Communicate issue, ETA, and interim coverage.'
+    ],
+    escalationPoint: 'Escalate to hardware replacement if power and uplink are confirmed and device still offline.',
+    ticketNoteExample:
+      'CloudPro Industries east-wing AP offline. UniFi controller shows device offline, last heartbeat 30 min ago. PoE cable confirmed unpowered, uplink switch port powered but no link to AP. Suspected cable or PoE injector failure. Interim coverage available via mesh AP in adjacent office. Replacement cable ETA 2 hours.',
+    jiraNotePrompt: 'Write the escalation note if power and uplink diagnostics point to hardware fault. Include device model, issue evidence, and interim solution.',
+    riskNote: 'Verify power and uplink before declaring hardware failure. Many AP offline issues are cable or PoE related.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-client-communication-documentation']
+  }),
+  scenario({
+    id: 'msp-rmm-low-disk-alert',
+    title: 'RMM reports low disk space on client server',
+    summary: 'An automated alert shows a client server drive is below 10% free space and may affect services.',
+    focus: ['RMM alert triage', 'disk analysis', 'root cause', 'client decision', 'escalation'],
+    estimatedMinutes: 10,
+    targetEnvironment: 'MSP',
+    initialReport:
+      'The RMM dashboard shows FileServe1 at Acme Logistics has 9% free disk space and the alert is critical.',
+    contextBullets: [
+      'Low disk alerts can be temporary (cache buildup) or structural (growth outpacing storage).',
+      'Root cause determines whether cleanup is enough or expansion is needed.',
+      'Client approval is needed before adding storage costs.'
+    ],
+    steps: [
+      {
+        id: 'msp-disk-step-1',
+        title: 'Alert investigation',
+        prompt: 'What should be checked first in the RMM?',
+        choices: [
+          {
+            id: 'msp-disk-1a',
+            label: 'Disk usage trend (was it gradual or sudden drop?), identify largest folders/files, and check for known cache or log directories',
+            outcome: 'Good. That shows whether this is temporary or structural growth.',
+            riskNote: 'Evidence-based triage.',
+            correct: true
+          },
+          {
+            id: 'msp-disk-1b',
+            label: 'Immediately tell the client they need to buy new storage',
+            outcome: 'That may be premature before understanding root cause.',
+            riskNote: 'Overreach without investigation.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-disk-1a'
+      },
+      {
+        id: 'msp-disk-step-2',
+        title: 'Root cause',
+        newInformation:
+          'Trend shows gradual growth over 6 months (storage growing steady, 100GB/month). Largest folder is application logs directory (250GB).',
+        prompt: 'What is the likely issue?',
+        choices: [
+          {
+            id: 'msp-disk-2a',
+            label: 'Logs are filling disk. Either log rotation/archival is not configured or the application generates excess logs.',
+            outcome: 'Good. That narrows the cause to a configuration or application issue.',
+            riskNote: 'Root-cause identification.',
+            correct: true
+          },
+          {
+            id: 'msp-disk-2b',
+            label: 'Assume malware is consuming the disk space',
+            outcome: 'That is unlikely given the gradual pattern and log directory focus.',
+            riskNote: 'Wrong diagnosis.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-disk-2a'
+      },
+      {
+        id: 'msp-disk-step-3',
+        title: 'Client action',
+        newInformation: 'Cleanup of old logs will free 150GB. Long-term, log rotation needs configuration.',
+        prompt: 'What should be proposed to the client?',
+        choices: [
+          {
+            id: 'msp-disk-3a',
+            label: 'Immediate cleanup option and permanent log-rotation fix, with costs and timeline for each',
+            outcome: 'Good. That gives the client informed choice and decision authority.',
+            riskNote: 'Client-focused proposal.',
+            correct: true
+          },
+          {
+            id: 'msp-disk-3b',
+            label: 'Just delete the old logs without client approval',
+            outcome: 'That could affect compliance or troubleshooting if logs are needed.',
+            riskNote: 'Unauthorized action.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-disk-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Analyze disk trend and largest folders.',
+      'Identify root cause (logs, cache, application growth).',
+      'Propose immediate cleanup and permanent fix options.'
+    ],
+    escalationPoint: 'Escalate if cleanup is not sufficient or if application is misconfigured.',
+    ticketNoteExample:
+      'Acme Logistics FileServe1 at 9% free disk. Trend shows 6-month gradual growth. Root cause: log folder (250GB) filling due to missing log rotation. Immediate cleanup can free 150GB. Permanent fix requires log rotation configuration. Proposed both options to client with cost/timeline.',
+    jiraNotePrompt: 'Write the technical note for log rotation configuration. Include server name, root cause, current state, and permanent fix steps.',
+    riskNote: 'Always identify root cause before cleanup. Archive logs if they may be needed for compliance or troubleshooting.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-client-communication-documentation']
+  }),
+  scenario({
+    id: 'msp-endpoint-offline-rmm',
+    title: 'Workstation appears offline in RMM',
+    summary: 'An RMM dashboard shows a client workstation offline and not responding to commands.',
+    focus: ['RMM visibility', 'network connectivity', 'agent status', 'scope', 'user impact'],
+    estimatedMinutes: 9,
+    targetEnvironment: 'MSP',
+    initialReport:
+      'TechFlow Corp workstation WS-204 is showing offline in the RMM dashboard, and the client says it appears to be working normally.',
+    contextBullets: [
+      'RMM offline status can mean network loss, agent crash, or firewall block.',
+      'User perception and RMM visibility may differ.',
+      'Scope matters: is it one device, one user, or broader network issue?'
+    ],
+    steps: [
+      {
+        id: 'msp-endpoint-step-1',
+        title: 'Verification',
+        prompt: 'What is the first check?',
+        choices: [
+          {
+            id: 'msp-endpoint-1a',
+            label: 'Ask the client: Is the workstation powered on? Can they use it normally? Is it connected to the network?',
+            outcome: 'Good. That clarifies whether RMM visibility loss is related to actual availability.',
+            riskNote: 'User perspective first.',
+            correct: true
+          },
+          {
+            id: 'msp-endpoint-1b',
+            label: 'Assume the agent crashed and immediately schedule a reboot',
+            outcome: 'That may be unnecessary if the device is working fine.',
+            riskNote: 'Premature action.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-endpoint-1a'
+      },
+      {
+        id: 'msp-endpoint-step-2',
+        title: 'Device state',
+        newInformation: 'The workstation is powered on, user is working normally, and it is connected to the network.',
+        prompt: 'What does this indicate?',
+        choices: [
+          {
+            id: 'msp-endpoint-2a',
+            label: 'The device is working but the RMM agent is not communicating. Check network connectivity to the RMM server and whether the agent is running.',
+            outcome: 'Good. That narrows to RMM-specific issue rather than device outage.',
+            riskNote: 'Proper scoping.',
+            correct: true
+          },
+          {
+            id: 'msp-endpoint-2b',
+            label: 'The RMM dashboard must have a database error, so escalate to the RMM vendor',
+            outcome: 'That may be true, but should verify network and agent first.',
+            riskNote: 'Premature escalation.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-endpoint-2a'
+      },
+      {
+        id: 'msp-endpoint-step-3',
+        title: 'Root cause',
+        newInformation:
+          'Network connectivity to the RMM server is available. The RMM agent status shows "Not running" on the device.',
+        prompt: 'What should be done?',
+        choices: [
+          {
+            id: 'msp-endpoint-3a',
+            label: 'Restart the RMM agent service on the device and confirm the device reappears in the RMM dashboard',
+            outcome: 'Good. That should restore RMM visibility.',
+            riskNote: 'Targeted service restart.',
+            correct: true
+          },
+          {
+            id: 'msp-endpoint-3b',
+            label: 'Reimage the entire workstation',
+            outcome: 'That is extreme and unnecessary for an agent restart.',
+            riskNote: 'Overkill.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'msp-endpoint-3a'
+      }
+    ],
+    idealTroubleshootingPath: [
+      'Confirm device is actually working from user perspective.',
+      'Distinguish device outage from RMM visibility loss.',
+      'Check agent and network connectivity, then restart service.'
+    ],
+    escalationPoint: 'Escalate to RMM vendor if agent restart does not restore visibility.',
+    ticketNoteExample:
+      'TechFlow Corp WS-204 offline in RMM but device working normally per user. Network connectivity verified. RMM agent status shows not running on device. Restarted RMM agent service; device returned to online status in dashboard.',
+    riskNote: 'Do not assume RMM visibility loss means the device is unavailable. Always verify with the user first.',
+    recommendedModuleIds: ['msp-ticket-triage-escalation', 'msp-stack-rmm-psa']
   })
 ];
