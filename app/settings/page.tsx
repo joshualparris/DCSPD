@@ -32,7 +32,8 @@ import {
   parseProgressBackupJson,
   resetProgress,
   saveProgress,
-  serializeProgressBackup
+  serializeProgressBackup,
+  type CareerFocus
 } from '../../src/lib/progress';
 import {
   DEFAULT_SCHEDULER_SETTINGS,
@@ -95,8 +96,17 @@ export default function SettingsPage() {
 
   const [notificationStatus, setNotificationStatus] = useState<'default' | 'granted' | 'denied'>('default');
   const [syncSettings, setSyncSettings] = useState(() => getSyncSettings());
+  const [careerFocus, setCareerFocusState] = useState<CareerFocus>('DCS');
+  const [userName, setUserNameState] = useState('Technician');
 
   useEffect(() => {
+    const progress = getStoredProgressSnapshot(modules);
+    if (progress.profile?.careerFocus) {
+      setCareerFocusState(progress.profile.careerFocus);
+    }
+    if (progress.profile?.name) {
+      setUserNameState(progress.profile.name);
+    }
     setSchedulerSettings(loadSchedulerSettings());
     setUsageTrackingEnabledState(isUsageTrackingEnabled());
     
@@ -108,6 +118,30 @@ export default function SettingsPage() {
   function handleSaveSyncSettings() {
     saveSyncSettings(syncSettings.provider, syncSettings.cloudUrl);
     setBackupStatus({ state: 'ok', message: 'Sync settings updated locally.' });
+  }
+
+  function handleCareerFocusChange(focus: CareerFocus) {
+    setCareerFocusState(focus);
+    const progress = getStoredProgressSnapshot();
+    if (!progress.profile) {
+      progress.profile = { id: 'local-user', name: 'Technician', role: 'learner' };
+    }
+    progress.profile.careerFocus = focus;
+    saveProgress(progress);
+    setBackupStatus({
+      state: 'ok',
+      message: `Career focus updated to ${focus}. Dashboard recommendations will now prioritize this context.`
+    });
+  }
+
+  function handleUserNameChange(name: string) {
+    setUserNameState(name);
+    const progress = getStoredProgressSnapshot(modules);
+    if (!progress.profile) {
+      progress.profile = { id: 'local-user', name: 'Technician', role: 'learner' };
+    }
+    progress.profile.name = name;
+    saveProgress(progress);
   }
 
   async function requestNotificationPermission() {
@@ -573,6 +607,52 @@ export default function SettingsPage() {
         </div>
       </section>
 
+      <section className="rounded-[2rem] border border-blue-200 bg-blue-50 p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+              <GraduationCap size={18} />
+              Career Focus & Identity
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold text-blue-900">Career Pivot Context</h2>
+            <p className="mt-3 text-sm leading-7 text-blue-800">
+              Select your current focus and set your technician name. This will adjust your dashboard recommendations and prioritize 
+              relevant training modules.
+            </p>
+            
+            <div className="mt-6 flex flex-wrap gap-3">
+              {(['DCS', 'MSP', 'Generic'] as CareerFocus[]).map((focus) => (
+                <button
+                  key={focus}
+                  onClick={() => handleCareerFocusChange(focus as CareerFocus)}
+                  className={`flex flex-col items-center justify-center gap-1 rounded-2xl border-2 px-6 py-3 transition-all ${
+                    careerFocus === focus 
+                      ? 'border-blue-600 bg-blue-600 text-white shadow-md' 
+                      : 'border-blue-200 bg-white text-blue-700 hover:border-blue-400'
+                  }`}
+                >
+                  <span className="text-sm font-bold">{focus === 'DCS' ? 'DCS Context' : focus === 'MSP' ? 'MSP Transition' : 'Generic IT'}</span>
+                  {careerFocus === focus && <span className="text-[10px] font-medium uppercase tracking-wider opacity-80">Active</span>}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-8 max-w-sm">
+              <label className="text-sm font-semibold text-blue-900">
+                Technician Name
+                <input
+                  type="text"
+                  value={userName}
+                  onChange={(e) => handleUserNameChange(e.target.value)}
+                  placeholder="e.g. Technician"
+                  className="mt-2 w-full rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-blue-400 focus:outline-none"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <div className="max-w-3xl">
           <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Settings</div>
@@ -580,7 +660,7 @@ export default function SettingsPage() {
             Local-only storage, operational boundaries, and privacy reminders.
           </h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            DCSPrep stores progress locally in the browser. There is no external auth or backend in this version.
+            ITPrep stores progress locally in the browser. There is no external auth or backend in this version.
           </p>
         </div>
       </section>
@@ -588,7 +668,7 @@ export default function SettingsPage() {
       <section className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 shadow-sm">
         <div className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">Privacy notice</div>
         <p className="mt-3 text-sm leading-7 text-amber-900">
-          This app is for personal PD. Do not enter sensitive DCS, student, staff, parent, network, credential,
+          This app is for personal PD. Do not enter sensitive internal student, staff, parent, network, credential,
           or incident details.
         </p>
       </section>
@@ -674,8 +754,9 @@ export default function SettingsPage() {
             </div>
             <h2 className="mt-3 text-2xl font-semibold text-slate-900">Timetable and study context</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              These local settings feed the real-time scheduler page. The defaults match the Thursday/Friday PD block
-              structure and current A+ Core 2 focus.
+              These local settings feed the real-time scheduler page. The defaults match 
+              {careerFocus === 'DCS' ? ' the Thursday/Friday PD block structure' : ' industry-standard study blocks'} 
+              and your current certification focus.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -788,7 +869,7 @@ export default function SettingsPage() {
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="text-2xl font-semibold text-slate-900">Upload custom content</h2>
         <p className="mt-3 text-sm leading-7 text-slate-600">
-          You can use an LLM (like Claude or ChatGPT) to generate new content for almost any part of DCSPrep. 
+          You can use an LLM (like Claude or ChatGPT) to generate new content for almost any part of ITPrep. 
           Copy a prompt template below, generate the JSON in your LLM, and upload the file.
         </p>
         <Link

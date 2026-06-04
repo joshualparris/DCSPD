@@ -223,7 +223,7 @@ export function academicSubjectFromDraft(
   const practicalTasks: AcademicPracticalTask[] = [
     {
       id: `${id}-practical-output`,
-      title: `${code} DCS bridge practical output`,
+      title: `${code} Career bridge practical output`,
       description: 'Create one privacy-safe artefact that connects this subject to DCS support work.',
       evidenceType: 'reflection',
       privacyReminder: PRIVACY_REMINDER

@@ -55,13 +55,32 @@ export function generateStudyPath(
   // 3. Check Incomplete Modules
   modules.forEach(m => {
     const completion = getModuleCompletion(m.id, progress, m);
+    
+    // Prioritize modules that match career focus
+    const isCareerTarget = progress.profile?.careerFocus === m.targetEnvironment;
+    const priority = isCareerTarget ? 'high' : 'medium';
+
     if (completion > 0 && completion < 90) {
       recommendations.push({
         id: `incomplete-${m.id}`,
         title: `Finish ${m.title}`,
-        reason: `You are ${completion}% through this module. Complete the remaining sections or quiz.`,
-        priority: 'medium',
+        reason: isCareerTarget 
+          ? `This module aligns with your ${progress.profile?.careerFocus} career focus.`
+          : `You are ${completion}% through this module. Complete the remaining sections or quiz.`,
+        priority: priority,
         estimatedMinutes: Math.ceil(m.estimatedMinutes * (1 - completion / 100)),
+        actionType: 'complete-module',
+        targetId: m.id,
+        route: `/modules/${m.id}`
+      });
+    } else if (completion === 0 && isCareerTarget) {
+      // Recommend new career-aligned modules
+      recommendations.push({
+        id: `start-${m.id}`,
+        title: `Start ${m.title}`,
+        reason: `Recommended for your ${progress.profile?.careerFocus} career focus.`,
+        priority: 'medium',
+        estimatedMinutes: m.estimatedMinutes,
         actionType: 'complete-module',
         targetId: m.id,
         route: `/modules/${m.id}`
@@ -96,6 +115,8 @@ export function generateStudyPath(
   return {
     recommendations: top3,
     totalMinutes,
-    whyItMatters: 'These actions target your weakest areas first to build a robust school IT skillset.'
+    whyItMatters: progress.profile?.careerFocus === 'MSP' 
+      ? 'These actions focus on your transition to MSP workflows while maintaining technical foundations.'
+      : 'These actions target your weakest areas first to build a robust school IT skillset.'
   };
 }

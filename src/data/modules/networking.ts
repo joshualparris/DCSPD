@@ -44,7 +44,7 @@ const basePortsAndProtocols: LegacyTrainingModule = {
     { id: 'ports-f4', front: 'Why might guest Wi-Fi fail to reach printers by design?', back: 'Segmentation or firewall policy can intentionally block internal services.' },
     { id: 'ports-f5', front: 'What is the practical difference between a protocol and a port?', back: 'The protocol is the rule set; the port is the numbered entry point commonly used.' },
     { id: 'ports-f6', front: 'Which port is commonly associated with SMB file or print sharing?', back: '445.' },
-    { id: 'ports-f7', front: 'Why is port knowledge useful to Level 1 if Josh is not editing firewalls?', back: 'It sharpens diagnosis and escalation language.' },
+    { id: 'ports-f7', front: 'Why is port knowledge useful to Level 1 even without editing firewalls?', back: 'It sharpens diagnosis and escalation language.' },
     { id: 'ports-f8', front: 'What service is commonly associated with RDP?', back: 'Remote Desktop on 3389.' }
   ],
   quiz: [
@@ -71,12 +71,12 @@ const basePortsAndProtocols: LegacyTrainingModule = {
     }),
     shortAnswer({
       id: 'ports-q2',
-      prompt: 'Explain why remembering a few common ports is useful to a DCS Level 1 tech even if Josh should not change firewall rules.',
+      prompt: 'Explain why remembering a few common ports is useful to a Level 1 tech even if they should not change firewall rules.',
       domain: 'Ports and protocols',
       difficulty: 'stretch',
       explanation: 'Language quality improves escalation quality.',
       modelAnswer:
-        'A short list of common ports helps Josh describe likely causes more precisely, separate browsing issues from name resolution or print-sharing issues, and escalate with better technical language without making risky changes.',
+        'A short list of common ports helps a technician describe likely causes more precisely, separate browsing issues from name resolution or print-sharing issues, and escalate with better technical language without making risky changes.',
       commonMistakes: ['Treating ports as memorisation only', 'Assuming port knowledge automatically means admin authority'],
       dcsContext: 'The school context rewards accurate descriptions and safe boundaries.',
       reviewSchedule,
@@ -134,7 +134,7 @@ const basePortsAndProtocols: LegacyTrainingModule = {
     {
       id: 'ports-p1',
       title: 'Port memory sheet',
-      description: 'Build a one-page memory sheet for the small port list Josh actually needs in school support.'
+      description: 'Build a one-page memory sheet for the small port list actually needed in school support.'
     }
   ]
 };
@@ -155,7 +155,7 @@ const baseDnsDhcp: LegacyTrainingModule = {
   ],
   dcsRelevance: [
     'Directly supports common classroom Wi-Fi, no-internet, and login confusion reports.',
-    'Helps Josh interpret APIPA and name-resolution symptoms accurately.',
+    'Helps interpret APIPA and name-resolution symptoms accurately.',
     'Improves escalation notes for room outages and trolley device issues.'
   ],
   sections: [
@@ -183,7 +183,7 @@ const baseDnsDhcp: LegacyTrainingModule = {
     { id: 'dns-f5', front: 'Can a DNS issue feel like "the internet is down"?', back: 'Yes. Names may fail even if some connectivity still exists.' },
     { id: 'dns-f6', front: 'What is the safest first comparison in a classroom outage?', back: 'Check another known-good device in the same room or on the same SSID.' },
     { id: 'dns-f7', front: 'Why is SSID confirmation important?', back: 'Because the wrong network can create misleading symptoms.' },
-    { id: 'dns-f8', front: 'What is Josh trying to preserve before escalation?', back: 'A clear symptom picture, not a speculative guess.' }
+    { id: 'dns-f8', front: 'What are you trying to preserve before escalation?', back: 'A clear symptom picture, not a speculative guess.' }
   ],
   quiz: [
     mcq({
@@ -216,7 +216,7 @@ const baseDnsDhcp: LegacyTrainingModule = {
       modelAnswer:
         'A DNS issue is about finding the right address for a name. A gateway-path issue is about getting traffic out beyond the local network after the address is already known.',
       commonMistakes: ['Describing both as simply "internet down"', 'Mixing gateway and DNS into one job'],
-      dcsContext: 'Clear language helps Paul or a Level 2 tech know where to look next.',
+      dcsContext: 'Clear language helps a senior tech or a Level 2 tech know where to look next.',
       reviewSchedule,
       recommendedModuleId: 'dns-dhcp-gateway-ip-basics',
       weakTopic: 'dns-dhcp-gateway',

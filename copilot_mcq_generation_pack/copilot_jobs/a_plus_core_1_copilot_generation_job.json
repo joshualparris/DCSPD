@@ -1,0 +1,1417 @@
+{
+  "job_name": "generate_hard_mcqs_a_plus_core_1",
+  "certification": "CompTIA A+ Core 1",
+  "exam": "220-1201",
+  "source_topic_count": 63,
+  "output_format": "jsonl",
+  "schema_file": "schema/mcq_question.schema.json",
+  "target_questions_per_topic": 3,
+  "target_difficulty_mix_per_topic": {
+    "hard": 2,
+    "expert": 1
+  },
+  "global_rules": [
+    "You are generating hard, varied, scenario-based multiple-choice questions for a local-first IT career learning app.",
+    "",
+    "Quality rules:",
+    "- Make questions hard but fair.",
+    "- Prefer realistic L1/L2 IT support scenarios over definition recall.",
+    "- Include plausible distractors that represent common junior-technician mistakes.",
+    "- Avoid trick questions where wording is the only difficulty.",
+    "- Include privacy-safe synthetic scenarios only.",
+    "- Do not use real student, staff, parent, credential, ticket, network, or client details.",
+    "- Include a concise explanation for why the correct answer is best and why the strongest distractor is wrong.",
+    "- Vary question styles: single best answer, choose two, next best step, command output interpretation, symptom-to-layer, escalation evidence, and security judgement.",
+    "- Do not copy source wording directly. Use the topic list as scope only.",
+    "- Mark each question with certification, exam, domain/objective, topic, difficulty, tags, and correct answer key(s).",
+    "- Output valid JSONL matching schema/mcq_question.schema.json unless explicitly asked otherwise."
+  ],
+  "topic_rows": [
+    {
+      "topic_id": "220-1201-001",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "",
+      "objective": "0.1 – Introduction",
+      "topic": "How to Pass Your A+ 220-1201 and 220-1202 Exams",
+      "duration": "15:22",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-002",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 1: Mobile Devices",
+      "objective": "1.1 – Laptop Hardware",
+      "topic": "Laptop Hardware",
+      "duration": "16:42",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-003",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 1: Mobile Devices",
+      "objective": "1.2 – Mobile Device Configuration",
+      "topic": "Connecting Mobile Devices",
+      "duration": "6:08",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-004",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 1: Mobile Devices",
+      "objective": "1.2 – Mobile Device Configuration",
+      "topic": "Mobile Device Accessories",
+      "duration": "7:18",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-005",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 1: Mobile Devices",
+      "objective": "1.3 – Mobile Connectivity",
+      "topic": "Mobile Device Networks",
+      "duration": "10:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-006",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 1: Mobile Devices",
+      "objective": "1.3 – Mobile Connectivity",
+      "topic": "Mobile Device Management",
+      "duration": "8:31",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-007",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.1 – Ports and Protocols",
+      "topic": "Introduction to IP",
+      "duration": "19:04",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-008",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.1 – Ports and Protocols",
+      "topic": "Common Ports",
+      "duration": "12:52",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-009",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.2 – Wireless Networks",
+      "topic": "Wireless Network Technologies",
+      "duration": "7:16",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-010",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.3 – Network Services",
+      "topic": "Network Services",
+      "duration": "17:03",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-011",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.4 – Network Configurations",
+      "topic": "DNS Configuration",
+      "duration": "18:18",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-012",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.4 – Network Configurations",
+      "topic": "DHCP",
+      "duration": "10:46",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-013",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.4 – Network Configurations",
+      "topic": "VLANs and VPNs",
+      "duration": "7:32",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-014",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.5 – Network Devices",
+      "topic": "Network Devices",
+      "duration": "18:01",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-015",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.6 – Network Configurations",
+      "topic": "IPv4 and IPv6",
+      "duration": "8:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-016",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.6 – Network Configurations",
+      "topic": "Assigning IP Addresses",
+      "duration": "8:26",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-017",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.7 – Network Connections",
+      "topic": "Internet Connection Types",
+      "duration": "7:33",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-018",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.7 – Network Connections",
+      "topic": "Network Types",
+      "duration": "4:46",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-019",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 2: Networking",
+      "objective": "2.8 – Network Tools",
+      "topic": "Network Tools",
+      "duration": "11:48",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-020",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.1 – Displays",
+      "topic": "Display Types",
+      "duration": "9:13",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-021",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.1 – Displays",
+      "topic": "Display Attributes",
+      "duration": "12:01",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-022",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Network Cables",
+      "duration": "12:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-023",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "568A and 568B Colors",
+      "duration": "5:41",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-024",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Optical Fiber",
+      "duration": "4:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-025",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Peripheral Cables",
+      "duration": "8:59",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-026",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Video Cables",
+      "duration": "7:03",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-027",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Storage Cables",
+      "duration": "4:10",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-028",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Adapters and Converters",
+      "duration": "4:05",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-029",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Copper Connectors",
+      "duration": "8:33",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-030",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.2 – Cables and Connectors",
+      "topic": "Fiber Connectors",
+      "duration": "2:49",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-031",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.3 – Memory",
+      "topic": "An Overview of Memory",
+      "duration": "8:38",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-032",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.3 – Memory",
+      "topic": "Memory Technologies",
+      "duration": "8:44",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-033",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.4 – Storage Devices",
+      "topic": "Storage Devices",
+      "duration": "14:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-034",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.4 – Storage Devices",
+      "topic": "RAID",
+      "duration": "8:08",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-035",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "Motherboard Form Factors",
+      "duration": "6:18",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-036",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "Motherboard Expansion Slots",
+      "duration": "7:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-037",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "Motherboard Connections",
+      "duration": "5:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-038",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "Motherboard Compatibility",
+      "duration": "3:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-039",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "The BIOS",
+      "duration": "4:42",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-040",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "BIOS Settings",
+      "duration": "19:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-041",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "HSM and TPM",
+      "duration": "7:47",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-042",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "CPU Features",
+      "duration": "5:13",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-043",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "Expansion Cards",
+      "duration": "6:17",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-044",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.5 – Motherboards",
+      "topic": "Cooling",
+      "duration": "6:37",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-045",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.6 – Power",
+      "topic": "Computer Power",
+      "duration": "15:31",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-046",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.7 – Multifunction Devices",
+      "topic": "Multifunction Devices",
+      "duration": "14:25",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-047",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Laser Printer Maintenance",
+      "duration": "7:30",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-048",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Inkjet Printers",
+      "duration": "3:29",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-049",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Inkjet Printer Maintenance",
+      "duration": "3:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-050",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Thermal Printers",
+      "duration": "3:39",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-051",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Thermal Printer Maintenance",
+      "duration": "4:16",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-052",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Impact Printers",
+      "duration": "6:19",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-053",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 3: Hardware",
+      "objective": "3.8 – Printers",
+      "topic": "Impact Printer Maintenance",
+      "duration": "3:11",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-054",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 4: Virtualization and Cloud Computing",
+      "objective": "4.1 – Virtualization",
+      "topic": "Virtualization Concepts",
+      "duration": "5:45",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-055",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 4: Virtualization and Cloud Computing",
+      "objective": "4.1 – Virtualization",
+      "topic": "Virtualization Services",
+      "duration": "11:23",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-056",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 4: Virtualization and Cloud Computing",
+      "objective": "4.2 – Cloud Computing",
+      "topic": "Cloud Models",
+      "duration": "9:48",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-057",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 4: Virtualization and Cloud Computing",
+      "objective": "4.2 – Cloud Computing",
+      "topic": "Cloud Characteristics",
+      "duration": "6:50",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-058",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 5: Hardware and Network Troubleshooting",
+      "objective": "5.1 – Troubleshooting Hardware",
+      "topic": "Troubleshooting Hardware",
+      "duration": "25:15",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-059",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 5: Hardware and Network Troubleshooting",
+      "objective": "5.2 – Troubleshooting Storage",
+      "topic": "Troubleshooting Storage Devices",
+      "duration": "17:04",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-060",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 5: Hardware and Network Troubleshooting",
+      "objective": "5.3 – Troubleshooting Displays",
+      "topic": "Troubleshooting Display Issues",
+      "duration": "18:52",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-061",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 5: Hardware and Network Troubleshooting",
+      "objective": "5.4 – Troubleshooting Mobile Devices",
+      "topic": "Troubleshooting Mobile Devices",
+      "duration": "17:52",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-062",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 5: Hardware and Network Troubleshooting",
+      "objective": "5.5 – Troubleshooting Networks",
+      "topic": "Troubleshooting Networks",
+      "duration": "15:14",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    },
+    {
+      "topic_id": "220-1201-063",
+      "certification": "CompTIA A+ Core 1",
+      "exam": "220-1201",
+      "section": "Section 5: Hardware and Network Troubleshooting",
+      "objective": "5.6 – Troubleshooting Printers",
+      "topic": "Troubleshooting Printers",
+      "duration": "11:54",
+      "question_targets": {
+        "minimum_count": 3,
+        "difficulty_mix": {
+          "hard": 2,
+          "expert": 1
+        },
+        "formats": [
+          "scenario_single_best_answer",
+          "choose_two",
+          "ordering_or_next_best_step",
+          "command_output_interpretation"
+        ]
+      }
+    }
+  ]
+}

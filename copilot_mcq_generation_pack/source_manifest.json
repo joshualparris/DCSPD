@@ -1,0 +1,58 @@
+{
+  "created": "2026-05-29T05:36:39.202451",
+  "source_files_used": [
+    {
+      "uploaded_name": "Pasted text(189).txt",
+      "sandbox_path": "/mnt/data/Pasted text(189).txt",
+      "description": "ITPrep / A+ Core 1 pathway export"
+    },
+    {
+      "uploaded_name": "Pasted text (2)(34).txt",
+      "sandbox_path": "/mnt/data/Pasted text (2)(34).txt",
+      "description": "ITPrep / A+ Core 2 pathway export"
+    },
+    {
+      "uploaded_name": "Pasted text (3)(6).txt",
+      "sandbox_path": "/mnt/data/Pasted text (3)(6).txt",
+      "description": "ITPrep / Network+ pathway export"
+    },
+    {
+      "uploaded_name": "Pasted text (4)(2).txt",
+      "sandbox_path": "/mnt/data/Pasted text (4)(2).txt",
+      "description": "ITPrep / Security+ pathway export"
+    },
+    {
+      "uploaded_name": "Pasted text (5).txt",
+      "sandbox_path": "/mnt/data/Pasted text (5).txt",
+      "description": "A+ Core 2 topic index"
+    },
+    {
+      "uploaded_name": "Pasted text (6).txt",
+      "sandbox_path": "/mnt/data/Pasted text (6).txt",
+      "description": "A+ Core 1 topic index"
+    },
+    {
+      "uploaded_name": "Pasted text (7).txt",
+      "sandbox_path": "/mnt/data/Pasted text (7).txt",
+      "description": "Network+ topic index"
+    },
+    {
+      "uploaded_name": "Pasted text (8).txt",
+      "sandbox_path": "/mnt/data/Pasted text (8).txt",
+      "description": "Security+ topic index"
+    }
+  ],
+  "topic_counts": {
+    "a_plus_core_1": 63,
+    "a_plus_core_2": 76,
+    "network_plus": 87,
+    "security_plus": 121
+  },
+  "starter_question_count": 74,
+  "formats": [
+    "jsonl",
+    "json",
+    "csv",
+    "md"
+  ]
+}

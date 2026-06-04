@@ -37,7 +37,12 @@ const TOPIC_DESCRIPTIONS: Record<WeakTopicKey, string> = {
   'teams-sharepoint-onedrive': 'Support collaboration and cloud file storage.',
   'jamf-ipad-support': 'Manage student and staff Apple devices.',
   'soft-skills': 'Communicate effectively and with empathy under pressure.',
-  'communication': 'Build trust through clear, professional support interactions.'
+  'communication': 'Build trust through clear, professional support interactions.',
+  'msp-business': 'Billable time and multi-tenant logic.',
+  'triage': 'Fast scope and evidence gathering.',
+  'tool-discipline': 'RMM agent and PSA ticket hygiene.',
+  'escalation-quality': 'Preserving evidence for Tier 2.',
+  'sla-awareness': 'Response times and contract priority.'
 };
 
 export function getRepairPackForTopic(

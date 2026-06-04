@@ -15,7 +15,8 @@ export const navigationGroups = [
       { href: '/certifications/aplus-core-1', label: 'A+ Core 1' },
       { href: '/certifications/aplus-core-2', label: 'A+ Core 2' },
       { href: '/certifications/network-plus', label: 'Network+' },
-      { href: '/certifications/security-plus', label: 'Security+' }
+      { href: '/certifications/security-plus', label: 'Security+' },
+      { href: '/academic-pd', label: 'Academic / Career PD' }
     ]
   },
   {

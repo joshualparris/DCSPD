@@ -71,6 +71,7 @@ export const mspModules = [
         difficulty: 'foundation',
         explanation: 'The triage pattern remains the same, even if the client changes.',
         modelAnswer: 'Because most issues are caused by recent changes to the environment, and identifying the change leads directly to the cause, saving billable time.',
+        commonMistakes: ['Guessing root cause without evidence'],
         reviewSchedule,
         recommendedModuleId: 'msp-foundations',
         weakTopic: 'triage',
@@ -200,7 +201,7 @@ export const mspModules = [
       },
       {
         title: 'Escalation Ownership',
-        bodyMarkdown: 'Never escalate to a vague team. Name the correct owner, vendor, or specialist based on the service affected and the client contract.',
+        bodyMarkdown: 'Never escalate to a target team. Name the correct owner, vendor, or specialist based on the service affected and the client contract.',
         takeaway: 'Escalate to the right owner on the first pass.'
       }
     ]),
@@ -236,11 +237,26 @@ export const mspModules = [
         difficulty: 'foundation',
         explanation: 'SLA-aware descriptions keep the next owner focused on urgency and contract terms.',
         modelAnswer: 'State the current symptom, the client-facing impact, the SLA target, and the checks already completed.',
+        commonMistakes: ['Ignoring SLA targets in the ticket note'],
         reviewSchedule,
         recommendedModuleId: 'msp-ticket-triage-escalation',
         weakTopic: 'sla-awareness',
         rubric: ['Mentions symptom and impact', 'Mentions SLA/priority', 'Mentions checks done'],
         keywordHints: ['impact', 'SLA', 'check', 'priority']
+      }),
+      shortAnswer({
+        id: 'msp-client-q1',
+        prompt: 'You are finishing a call with a client. What are the three things you should confirm before hanging up?',
+        domain: 'Foundations',
+        difficulty: 'foundation',
+        explanation: 'Clean closure prevents re-opened tickets and improves client satisfaction.',
+        modelAnswer: 'Confirm what you have done, confirm the current status of the issue, and confirm the next steps or when they will hear from you next.',
+        commonMistakes: ['Hanging up without a clear next step', 'Assuming the client knows the ticket is closed'],
+        reviewSchedule,
+        recommendedModuleId: 'msp-foundations',
+        weakTopic: 'communication',
+        rubric: ['Confirming current status', 'Confirming next steps', 'Confirming actions taken'],
+        keywordHints: ['current', 'done', 'next']
       })
     ],
     scenarioPrompts: buildScenarioPrompts('msp-ticket-triage', [
@@ -253,76 +269,6 @@ export const mspModules = [
       {
         title: 'Ticket handoff summary',
         description: 'Draft a concise summary that explains the exact issue, impact, safe checks, and the correct escalation owner.'
-      }
-    ])
-  }),
-  createModule({
-    id: 'msp-client-communication-documentation',
-    title: 'MSP Client Communication and Documentation',
-    description: 'Keep clients informed and documents useful by writing clear updates, preserving privacy, and aligning with service expectations.',
-    domain: 'Operations',
-    level: 'L1',
-    targetEnvironment: 'MSP',
-    estimatedMinutes: 18,
-    tags: ['client communication', 'documentation', 'updates', 'privacy'],
-    learningObjectives: [
-      'Write client-facing updates that are clear, confident, and not overly technical.',
-      'Document work so it supports future handoffs and billing reviews.',
-      'Protect client privacy while preserving essential case detail.'
-    ],
-    dcsRelevance: [
-      'Uses the same clear note habits as school support but for external clients.'
-    ],
-    mspRelevance: [
-      'Great communication keeps clients trusting an MSP and reduces repeat issues.'
-    ],
-    sections: buildSections('msp-client-communication', [
-      {
-        title: 'Client-Friendly Language',
-        bodyMarkdown: 'Choose plain, respectful language and avoid jargon unless the client explicitly wants technical detail. The goal is confidence and clarity.',
-        takeaway: 'Clients want simple, useful updates.'
-      },
-      {
-        title: 'Useful Documentation',
-        bodyMarkdown: 'Document the problem, the steps taken, and the next action clearly so the next technician can continue without confusion.',
-        takeaway: 'Good docs are a service asset.'
-      },
-      {
-        title: 'Privacy and Client Boundaries',
-        bodyMarkdown: 'Keep client identifiers and internal vendor details out of shared notes unless the contract explicitly allows them.',
-        takeaway: 'Protect privacy by default.'
-      }
-    ]),
-    flashcards: buildFlashcards('msp-client-communication', [
-      ['What should client updates focus on?', 'Impact, progress, and next steps.'],
-      ['Why avoid jargon in client notes?', 'It reduces confusion and builds trust.'],
-      ['What makes documentation reusable?', 'Clear problem statement, exact steps, and the current status.']
-    ]),
-    quiz: [
-      shortAnswer({
-        id: 'msp-client-q1',
-        prompt: 'What are the three most useful things to include in a client-facing status update?',
-        domain: 'Operations',
-        difficulty: 'foundation',
-        explanation: 'Client updates should be short, concrete, and growth-oriented.',
-        modelAnswer: 'The current problem, what has been done, and what will happen next.',
-        reviewSchedule,
-        recommendedModuleId: 'msp-client-communication-documentation',
-        weakTopic: 'communication',
-        rubric: ['Mentions problem', 'Mentions work done', 'Mentions next step'],
-        keywordHints: ['current', 'done', 'next']
-      })
-    ],
-    scenarioPrompts: buildScenarioPrompts('msp-client-communication', [
-      {
-        title: 'Client update prompt',
-        prompt: 'Write a brief client update for a ticket that is still under investigation but needs status reassurance.'
-      }
-    ]),
-    practicalOutputs: buildPracticalOutputs('msp-client-communication', [
-      {
-        title: 'Client status note',
-        description: 'Create a short status note for a client that explains the current issue, what is being checked, and the next expected update.'
       }
     ])
   })
