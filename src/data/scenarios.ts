@@ -110,6 +110,29 @@ export const scenarios: Scenario[] = [
           }
         ],
         recommendedChoiceId: 'internet-2a'
+      },
+      {
+        id: 'internet-step-3',
+        title: 'Escalation decision',
+        newInformation: 'Room 7 has no internet but Room 8 (same hallway) works fine. All Room 7 devices tried the correct SSID. Issue persists and class is still waiting.',
+        prompt: 'What should be documented and escalated?',
+        choices: [
+          {
+            id: 'internet-3a',
+            label: 'Document the room location, affected devices, safe checks completed, and escalate to network team with evidence',
+            outcome: 'Good. That provides clear context for escalation.',
+            riskNote: 'Professional handoff.',
+            correct: true
+          },
+          {
+            id: 'internet-3b',
+            label: 'Just tell the teacher to move the class to another room and do not escalate',
+            outcome: 'That avoids fixing the underlying issue.',
+            riskNote: 'Avoids root-cause investigation.',
+            correct: false
+          }
+        ],
+        recommendedChoiceId: 'internet-3a'
       }
     ],
     idealTroubleshootingPath: [
