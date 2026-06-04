@@ -130,18 +130,24 @@ export default function AcademicPDPage() {
     setHasHydratedProgress(true);
   }, []);
 
+  const careerFocus = useMemo(() => progress.profile?.careerFocus || 'Generic', [progress]);
+
   return (
     <div className="space-y-6">
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-4xl">
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Academic PD Track</div>
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              {careerFocus === 'DCS' ? 'Academic PD Track' : 'Academic / Career Bridge'}
+            </div>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900">
-              RBC and SMITB study mapped to practical DCS IT growth.
+              {careerFocus === 'DCS' 
+                ? 'RBC and SMITB study mapped to practical DCS IT growth.' 
+                : 'RBC and SMITB study mapped to practical IT career growth.'}
             </h1>
             <p className="mt-4 text-sm leading-7 text-slate-600">
-              This track turns SLGs and SILOs into DCSPrep learning: diagnose, learn, retrieve, apply, and prove. It keeps
-              the university content connected to privacy-safe school support outcomes.
+              This track turns SLGs and SILOs into ITPrep learning: diagnose, learn, retrieve, apply, and prove. It keeps
+              the university content connected to privacy-safe {careerFocus === 'DCS' ? 'school support' : 'career-relevant'} outcomes.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -155,7 +161,7 @@ export default function AcademicPDPage() {
               href="/academic-pd/bridge"
               className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700"
             >
-              Open DCS bridge
+              Open {careerFocus === 'DCS' ? 'DCS bridge' : 'Career bridge'}
             </Link>
           </div>
         </div>
@@ -168,7 +174,7 @@ export default function AcademicPDPage() {
           ['Weekly modules', stats.weeklyModules],
           ['Assessments', stats.weeklyAssessments],
           ['Practical tasks', stats.practicalTasks],
-          ['High DCS bridges', stats.highRelevanceBridges]
+          [careerFocus === 'DCS' ? 'High DCS bridges' : 'High career relevance', stats.highRelevanceBridges]
         ].map(([label, value]) => (
           <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="text-sm text-slate-500">{label}</div>

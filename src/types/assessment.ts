@@ -32,7 +32,12 @@ export type WeakTopicKey =
   | 'teams-sharepoint-onedrive'
   | 'jamf-ipad-support'
   | 'soft-skills'
-  | 'communication';
+  | 'communication'
+  | 'msp-business'
+  | 'triage'
+  | 'tool-discipline'
+  | 'escalation-quality'
+  | 'sla-awareness';
 
 export type AssessmentSource = 'strict-quiz' | 'module-quiz';
 
@@ -59,7 +64,8 @@ export type BaseAssessmentQuestion = {
   explanation: string;
   modelAnswer: string;
   commonMistakes: string[];
-  dcsContext: string;
+  dcsContext?: string;
+  mspContext?: string;
   reviewSchedule: string;
   recommendedModuleId: string;
   weakTopic: WeakTopicKey;

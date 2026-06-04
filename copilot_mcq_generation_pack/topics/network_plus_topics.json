@@ -1,0 +1,1916 @@
+[
+  {
+    "topic_id": "N10-009-001",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "",
+    "objective": "0.1 \u2013 Introduction",
+    "topic": "How to Pass Your N10-009 Network+ Exam",
+    "duration": "7:30",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-002",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.1 \u2013 The OSI Model",
+    "topic": "Understanding the OSI Model",
+    "duration": "13:51",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-003",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.2 \u2013 Network Appliances and Applications",
+    "topic": "Networking Devices",
+    "duration": "14:31",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-004",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.2 \u2013 Network Appliances and Applications",
+    "topic": "Networking Functions",
+    "duration": "13:25",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-005",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.3 \u2013 The Cloud",
+    "topic": "Designing the Cloud",
+    "duration": "9:49",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-006",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.3 \u2013 The Cloud",
+    "topic": "Cloud Models",
+    "duration": "5:23",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-007",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.4 \u2013 Ports and Protocols",
+    "topic": "Introduction to IP",
+    "duration": "14:10",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-008",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.4 \u2013 Ports and Protocols",
+    "topic": "Common Ports",
+    "duration": "20:22",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-009",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.4 \u2013 Ports and Protocols",
+    "topic": "Other Useful Protocols",
+    "duration": "8:26",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-010",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.4 \u2013 Ports and Protocols",
+    "topic": "Network Communication",
+    "duration": "3:55",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-011",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Wireless Networking",
+    "duration": "6:36",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-012",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Ethernet Standards",
+    "duration": "4:04",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-013",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Optical Fiber",
+    "duration": "3:55",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-014",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Copper Cabling",
+    "duration": "7:21",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-015",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Network Transceivers",
+    "duration": "4:51",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-016",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Fiber Connectors",
+    "duration": "3:56",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-017",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.5 \u2013 Transmission Media",
+    "topic": "Copper Connectors",
+    "duration": "3:31",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-018",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.6 \u2013 Network Topologies",
+    "topic": "Network Topologies",
+    "duration": "4:42",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-019",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.6 \u2013 Network Topologies",
+    "topic": "Network Architectures",
+    "duration": "4:53",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-020",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "Binary Math",
+    "duration": "9:15",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-021",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "IPv4 Addressing",
+    "duration": "11:06",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-022",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "Classful Subnetting",
+    "duration": "10:58",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-023",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "IPv4 Subnet Masks",
+    "duration": "9:00",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-024",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "Calculating IPv4 Subnets and Hosts",
+    "duration": "9:46",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-025",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "Magic Number Subnetting",
+    "duration": "21:09",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-026",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.7 \u2013 IPv4 Addressing",
+    "topic": "Seven Second Subnetting",
+    "duration": "17:03",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-027",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.8 \u2013 Network Environments",
+    "topic": "Software Defined Networking",
+    "duration": "6:56",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-028",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.8 \u2013 Network Environments",
+    "topic": "Virtual Extensible LAN",
+    "duration": "5:17",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-029",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.8 \u2013 Network Environments",
+    "topic": "Zero Trust",
+    "duration": "6:41",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-030",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.8 \u2013 Network Environments",
+    "topic": "Infrastructure as Code",
+    "duration": "8:20",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-031",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 1: Networking Concepts",
+    "objective": "1.8 \u2013 Network Environments",
+    "topic": "IPv6 Addressing",
+    "duration": "13:50",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-032",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.1 \u2013 Routing Technologies",
+    "topic": "Static Routing",
+    "duration": "7:21",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-033",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.1 \u2013 Routing Technologies",
+    "topic": "Dynamic Routing",
+    "duration": "9:12",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-034",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.1 \u2013 Routing Technologies",
+    "topic": "Routing Technologies",
+    "duration": "16:10",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-035",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.1 \u2013 Routing Technologies",
+    "topic": "Network Address Translation",
+    "duration": "7:02",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-036",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.2 \u2013 Switching Technologies",
+    "topic": "VLANs and Trunking",
+    "duration": "12:29",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-037",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.2 \u2013 Switching Technologies",
+    "topic": "Interface Configurations",
+    "duration": "6:40",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-038",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.2 \u2013 Switching Technologies",
+    "topic": "Spanning Tree Protocol",
+    "duration": "6:06",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-039",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.3 \u2013 Wireless Devices",
+    "topic": "Wireless Technologies",
+    "duration": "8:34",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-040",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.3 \u2013 Wireless Devices",
+    "topic": "Wireless Networking",
+    "duration": "11:54",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-041",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.3 \u2013 Wireless Devices",
+    "topic": "Network Types",
+    "duration": "4:41",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-042",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.3 \u2013 Wireless Devices",
+    "topic": "Wireless Encryption",
+    "duration": "3:23",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-043",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.4 \u2013 Physical Installations",
+    "topic": "Installing Networks",
+    "duration": "11:40",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-044",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.4 \u2013 Physical Installations",
+    "topic": "Power",
+    "duration": "7:19",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-045",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 2: Network Implementation",
+    "objective": "2.4 \u2013 Physical Installations",
+    "topic": "Environmental Factors",
+    "duration": "3:29",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-046",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.1 \u2013 Processes and Procedures",
+    "topic": "Network Documentation",
+    "duration": "10:42",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-047",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.1 \u2013 Processes and Procedures",
+    "topic": "Life Cycle Management",
+    "duration": "8:17",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-048",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.1 \u2013 Processes and Procedures",
+    "topic": "Configuration Management",
+    "duration": "5:19",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-049",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.2 \u2013 Network Monitoring",
+    "topic": "SNMP",
+    "duration": "8:58",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-050",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.2 \u2013 Network Monitoring",
+    "topic": "Logs and Monitoring",
+    "duration": "13:06",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-051",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.2 \u2013 Network Monitoring",
+    "topic": "Network Solutions",
+    "duration": "6:57",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-052",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.3 \u2013 Disaster Recovery",
+    "topic": "Disaster Recovery",
+    "duration": "12:09",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-053",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.3 \u2013 Disaster Recovery",
+    "topic": "Network Redundancy",
+    "duration": "4:06",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-054",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.4 \u2013 IP Services",
+    "topic": "DHCP",
+    "duration": "8:51",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-055",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.4 \u2013 IP Services",
+    "topic": "Configuring DHCP",
+    "duration": "10:18",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-056",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.4 \u2013 IP Services",
+    "topic": "IPv6 and SLAAC",
+    "duration": "4:53",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-057",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.4 \u2013 IP Services",
+    "topic": "An Overview of DNS",
+    "duration": "16:54",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-058",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.4 \u2013 IP Services",
+    "topic": "DNS Records",
+    "duration": "9:04",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-059",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.4 \u2013 IP Services",
+    "topic": "Time Protocols",
+    "duration": "5:02",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-060",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.5 \u2013 Network Access",
+    "topic": "VPNs",
+    "duration": "6:54",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-061",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 3: Network Operations",
+    "objective": "3.5 \u2013 Network Access",
+    "topic": "Remote Access",
+    "duration": "7:52",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-062",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.1 \u2013 Network Security Concepts",
+    "topic": "Security Concepts",
+    "duration": "13:06",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-063",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.1 \u2013 Network Security Concepts",
+    "topic": "Authentication",
+    "duration": "12:46",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-064",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.1 \u2013 Network Security Concepts",
+    "topic": "Security Technologies",
+    "duration": "7:15",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-065",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.1 \u2013 Network Security Concepts",
+    "topic": "Regulatory Compliance",
+    "duration": "4:00",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-066",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.1 \u2013 Network Security Concepts",
+    "topic": "Segmentation Enforcement",
+    "duration": "6:09",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-067",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "Denial of Service",
+    "duration": "6:58",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-068",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "VLAN Hopping",
+    "duration": "6:35",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-069",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "MAC Flooding",
+    "duration": "8:10",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-070",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "ARP and DNS Poisoning",
+    "duration": "7:28",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-071",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "Rogue Services",
+    "duration": "6:08",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-072",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "Social Engineering",
+    "duration": "10:56",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-073",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.2 \u2013 Attack Types",
+    "topic": "Malware",
+    "duration": "6:41",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-074",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.3 \u2013 Network Security Features",
+    "topic": "Device Security",
+    "duration": "9:03",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-075",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 4: Network Security",
+    "objective": "4.3 \u2013 Network Security Features",
+    "topic": "Security Rules",
+    "duration": "10:23",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-076",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.1 \u2013 Troubleshooting",
+    "topic": "Network Troubleshooting Methodology",
+    "duration": "8:04",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-077",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.2 \u2013 Physical Issues",
+    "topic": "Cable Issues",
+    "duration": "14:40",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-078",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.2 \u2013 Physical Issues",
+    "topic": "Interface Issues",
+    "duration": "9:29",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-079",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.2 \u2013 Physical Issues",
+    "topic": "Hardware Issues",
+    "duration": "7:34",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-080",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.3 \u2013 Troubleshooting Network Services",
+    "topic": "Switching Issues",
+    "duration": "9:58",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-081",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.3 \u2013 Troubleshooting Network Services",
+    "topic": "Routing and IP Issues",
+    "duration": "9:37",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-082",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.4 \u2013 Performance Issues",
+    "topic": "Performance Issues",
+    "duration": "7:18",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-083",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.4 \u2013 Performance Issues",
+    "topic": "Wireless Issues",
+    "duration": "9:21",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-084",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.5 \u2013 Tools and Protocols",
+    "topic": "Software Tools",
+    "duration": "7:29",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-085",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.5 \u2013 Tools and Protocols",
+    "topic": "Command Line Tools",
+    "duration": "17:59",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-086",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.5 \u2013 Tools and Protocols",
+    "topic": "Hardware Tools",
+    "duration": "8:40",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  },
+  {
+    "topic_id": "N10-009-087",
+    "certification": "CompTIA Network+",
+    "exam": "N10-009",
+    "section": "Section 5: Network Troubleshooting",
+    "objective": "5.5 \u2013 Tools and Protocols",
+    "topic": "Basic Network Device Commands",
+    "duration": "8:56",
+    "question_targets": {
+      "minimum_count": 3,
+      "difficulty_mix": {
+        "hard": 2,
+        "expert": 1
+      },
+      "formats": [
+        "scenario_single_best_answer",
+        "choose_two",
+        "ordering_or_next_best_step",
+        "command_output_interpretation"
+      ]
+    }
+  }
+]

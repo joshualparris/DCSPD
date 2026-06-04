@@ -23,7 +23,7 @@ import {
 import { modules as baseModules } from '../src/data/modules';
 import { scenarios as baseScenarios } from '../src/data/scenarios';
 import { getDashboardRecommendation, getCurrentWeakFocus } from '../src/lib/readinessMath';
-import { getStoredProgressSnapshot, type UserProgress, saveProgress, completeDailyChallenge } from '../src/lib/progress';
+import { getStoredProgressSnapshot, type UserProgress, saveProgress, completeDailyChallenge, getUserName, getCareerFocus } from '../src/lib/progress';
 import { getDueFlashcards, isDue, getTodayDateKey } from '../src/lib/spacedRepetition';
 import { getOverallProgress } from '../src/lib/moduleMath';
 import { getCustomModules, getCustomScenarios } from '../src/lib/customModules';
@@ -46,8 +46,29 @@ export default function DashboardPage() {
   const [customScenarios, setCustomScenarios] = useState<any[]>([]);
   const [isOneDrive, setIsOneDrive] = useState(false);
   
-  const allModules = useMemo(() => [...baseModules, ...customModules], [customModules]);
-  const allScenarios = useMemo(() => [...baseScenarios, ...customScenarios], [customScenarios]);
+  const careerFocus = useMemo(() => progress?.profile?.careerFocus || 'Generic', [progress]);
+
+  const allModules = useMemo(() => {
+    const base = [...baseModules, ...customModules];
+    if (careerFocus === 'MSP') {
+      // Prioritize MSP and Generic, hide/demote DCS
+      return base.filter(m => m.targetEnvironment !== 'DCS' || progress?.modules[m.id]?.quizAttempts?.length);
+    }
+    if (careerFocus === 'DCS') {
+      // Show all, but prioritize DCS
+      return base;
+    }
+    // Generic mode: hide DCS-only unless already started
+    return base.filter(m => m.targetEnvironment !== 'DCS' || progress?.modules[m.id]?.quizAttempts?.length);
+  }, [customModules, careerFocus, progress]);
+
+  const allScenarios = useMemo(() => {
+    const base = [...baseScenarios, ...customScenarios];
+    if (careerFocus === 'MSP') {
+      return base.filter(s => s.id.toLowerCase().indexOf('dcs') === -1 || progress?.scenarioRuns.some(r => r.scenarioId === s.id));
+    }
+    return base;
+  }, [customScenarios, careerFocus, progress]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -115,12 +136,18 @@ export default function DashboardPage() {
       <header className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <div className="text-sm font-bold uppercase tracking-widest text-slate-400">IT Support Training</div>
+            <div className="text-sm font-bold uppercase tracking-widest text-slate-400">
+              {careerFocus === 'DCS' ? 'School IT Support' : careerFocus === 'MSP' ? 'MSP Career Transition' : 'IT Support Training'}
+            </div>
             <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
-              Welcome back
+              Welcome back, {progress.profile?.name || 'Technician'}
             </h1>
             <p className="mt-3 text-lg text-slate-600">
-              Your personalized coaching engine for IT support excellence.
+              {careerFocus === 'DCS' 
+                ? 'Your personalized coaching engine for school IT support excellence.' 
+                : careerFocus === 'MSP'
+                  ? 'Your bridge from internal IT to Managed Services professionalism.'
+                  : 'Your personalized coaching engine for IT support excellence.'}
             </p>
           </div>
           <div className="flex gap-3">

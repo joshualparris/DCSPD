@@ -1,0 +1,734 @@
+[
+  {
+    "id": "MCQ-SY0701-0055",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Security Controls",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A camera, badge reader, and locked server room are primarily what category of control?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Physical controls"
+      },
+      {
+        "key": "B",
+        "text": "Compensating cryptographic controls"
+      },
+      {
+        "key": "C",
+        "text": "Cloud-native only controls"
+      },
+      {
+        "key": "D",
+        "text": "Application-layer controls only"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "These are physical security controls that protect access to equipment and spaces.",
+    "tags": [
+      "controls"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0056",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "CIA Triad",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A ransomware event makes files unavailable even though confidentiality may not be proven breached. Which CIA principle is most directly harmed?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Availability"
+      },
+      {
+        "key": "B",
+        "text": "Non-repudiation"
+      },
+      {
+        "key": "C",
+        "text": "Obfuscation"
+      },
+      {
+        "key": "D",
+        "text": "Accounting"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Ransomware commonly disrupts availability by preventing authorised access to data/systems.",
+    "tags": [
+      "CIA",
+      "ransomware"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0057",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "AAA",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An admin wants logs that prove which account changed a firewall rule. Which part of AAA is most relevant?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Authentication"
+      },
+      {
+        "key": "B",
+        "text": "Authorization"
+      },
+      {
+        "key": "C",
+        "text": "Accounting"
+      },
+      {
+        "key": "D",
+        "text": "Anonymisation"
+      }
+    ],
+    "correct_keys": [
+      "C"
+    ],
+    "explanation": "Accounting records actions for auditability and accountability.",
+    "tags": [
+      "AAA",
+      "logs"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0058",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Zero Trust",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which design best matches zero trust?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Trust every device once it is inside the LAN."
+      },
+      {
+        "key": "B",
+        "text": "Verify identity, device posture, and least-privilege access continuously, regardless of network location."
+      },
+      {
+        "key": "C",
+        "text": "Use one shared admin password for simplicity."
+      },
+      {
+        "key": "D",
+        "text": "Disable MFA for trusted offices."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Zero trust avoids implicit internal trust and uses continuous verification and least privilege.",
+    "tags": [
+      "zero trust"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0059",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Change Management",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A patch is urgent but affects a production identity service. What is the best security-minded approach?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patch immediately without rollback planning or notification."
+      },
+      {
+        "key": "B",
+        "text": "Follow emergency change process with risk, approval, backup/rollback, communication, and validation."
+      },
+      {
+        "key": "C",
+        "text": "Never patch identity systems."
+      },
+      {
+        "key": "D",
+        "text": "Let end users decide whether to patch."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Emergency change can be fast but still needs risk controls, approval, rollback, and validation.",
+    "tags": [
+      "change management"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0060",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Public Key Infrastructure",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A browser trusts a website certificate because the issuing CA chains to a trusted root. Which PKI concept is being used?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Chain of trust"
+      },
+      {
+        "key": "B",
+        "text": "MAC flooding"
+      },
+      {
+        "key": "C",
+        "text": "Data remanence"
+      },
+      {
+        "key": "D",
+        "text": "APIPA"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Certificate validation relies on a trust chain from end-entity certificate through intermediates to a trusted root.",
+    "tags": [
+      "PKI",
+      "certificates"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0061",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "General Security Concepts",
+    "topic": "Hashing and Digital Signatures",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which pairing best describes hashing plus digital signature use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hashing encrypts data for secrecy; signatures remove the need for keys."
+      },
+      {
+        "key": "B",
+        "text": "Hashing creates a fixed digest; a digital signature helps prove integrity and signer authenticity."
+      },
+      {
+        "key": "C",
+        "text": "Hashing makes data impossible to delete."
+      },
+      {
+        "key": "D",
+        "text": "Digital signatures are only for wireless networks."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Hashes provide digests; signatures use asymmetric cryptography to support integrity/authenticity/non-repudiation.",
+    "tags": [
+      "hashing",
+      "signatures"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0062",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Phishing",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A finance user receives a convincing invoice from a lookalike domain and the sender pressures immediate payment. What is the best first action?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pay if the logo looks correct."
+      },
+      {
+        "key": "B",
+        "text": "Use the approved reporting/verification path and do not click links or reply to the sender."
+      },
+      {
+        "key": "C",
+        "text": "Forward it to all staff as a warning with attachments included."
+      },
+      {
+        "key": "D",
+        "text": "Ask the sender for a password reset link."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Phishing/BEC should be reported and verified through trusted channels; avoid links, attachments, and replying to attackers.",
+    "tags": [
+      "phishing",
+      "BEC"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0063",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Impersonation",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An attacker calls the helpdesk claiming to be an executive and demands MFA reset approval. Which control most directly reduces this risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Out-of-band identity verification and reset approval workflow"
+      },
+      {
+        "key": "B",
+        "text": "Faster typing speed"
+      },
+      {
+        "key": "C",
+        "text": "Lower password complexity"
+      },
+      {
+        "key": "D",
+        "text": "Open guest Wi-Fi"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "High-risk identity changes need trusted verification and approval paths.",
+    "tags": [
+      "social engineering",
+      "MFA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0064",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Supply Chain Vulnerabilities",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A trusted vendor update channel distributes malicious code. Which risk category best fits?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Supply chain compromise"
+      },
+      {
+        "key": "B",
+        "text": "Shoulder surfing"
+      },
+      {
+        "key": "C",
+        "text": "Bluejacking"
+      },
+      {
+        "key": "D",
+        "text": "Cable attenuation"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Compromised vendor/update channels are supply-chain risks.",
+    "tags": [
+      "supply chain"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0065",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Misconfiguration",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A cloud storage bucket is accidentally public. Which vulnerability type is the best fit?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Misconfiguration"
+      },
+      {
+        "key": "B",
+        "text": "Race condition"
+      },
+      {
+        "key": "C",
+        "text": "RF jamming"
+      },
+      {
+        "key": "D",
+        "text": "Rainbow table"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Unintended public exposure of cloud storage is a common misconfiguration.",
+    "tags": [
+      "cloud",
+      "misconfiguration"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0066",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Indicators of Compromise",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A user account logs in from Australia and Eastern Europe within five minutes. Which indicator is this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Impossible travel"
+      },
+      {
+        "key": "B",
+        "text": "Data masking"
+      },
+      {
+        "key": "C",
+        "text": "RAID rebuild"
+      },
+      {
+        "key": "D",
+        "text": "Successful NTP sync"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Impossible travel indicates logins from geographically impossible locations in a short period.",
+    "tags": [
+      "IOC",
+      "identity"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0067",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "DNS Attacks",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Users are sent to a fake banking site even when they type the correct domain. Which attack should be considered?",
+    "options": [
+      {
+        "key": "A",
+        "text": "DNS spoofing/poisoning or domain hijacking"
+      },
+      {
+        "key": "B",
+        "text": "RAM parity checking"
+      },
+      {
+        "key": "C",
+        "text": "Disk fragmentation"
+      },
+      {
+        "key": "D",
+        "text": "Printer spooler jam"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Correct domain resolving to malicious destination can indicate DNS spoofing/poisoning or domain hijack.",
+    "tags": [
+      "DNS security"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0068",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "On-path Attacks",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "An attacker positions themselves between a client and server to read or alter traffic. Which term best describes this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "On-path attack"
+      },
+      {
+        "key": "B",
+        "text": "Cold site recovery"
+      },
+      {
+        "key": "C",
+        "text": "RAID 10"
+      },
+      {
+        "key": "D",
+        "text": "Data deduplication"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "An on-path attacker intercepts traffic between parties.",
+    "tags": [
+      "on-path",
+      "MITM"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0069",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Threats/Vulnerabilities/Mitigations",
+    "topic": "Mitigation Techniques",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which action best applies least privilege?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Give all staff local admin so they do not need support."
+      },
+      {
+        "key": "B",
+        "text": "Grant only the access needed for the role and review it regularly."
+      },
+      {
+        "key": "C",
+        "text": "Use one shared service account for all tasks."
+      },
+      {
+        "key": "D",
+        "text": "Disable audit logs to protect privacy."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Least privilege limits access to what is required and should be reviewed.",
+    "tags": [
+      "least privilege"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0070",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Architecture",
+    "topic": "Network Appliances",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A web application is vulnerable to common HTTP-layer attacks. Which security device is most directly designed to inspect and filter web app traffic?",
+    "options": [
+      {
+        "key": "A",
+        "text": "WAF"
+      },
+      {
+        "key": "B",
+        "text": "Patch panel"
+      },
+      {
+        "key": "C",
+        "text": "Toner probe"
+      },
+      {
+        "key": "D",
+        "text": "KVM switch"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "A Web Application Firewall inspects/filter web application traffic.",
+    "tags": [
+      "WAF"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0071",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Architecture",
+    "topic": "Secure Communication",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "A company wants secure private connectivity for remote users plus identity-aware policy at cloud edge locations. Which concept may combine these ideas?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SASE/ZTNA-style secure access architecture"
+      },
+      {
+        "key": "B",
+        "text": "Coax splitter only"
+      },
+      {
+        "key": "C",
+        "text": "WEP shared key"
+      },
+      {
+        "key": "D",
+        "text": "Standalone unmanaged hub"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "SASE/ZTNA approaches combine identity-aware secure access and cloud-delivered security/connectivity.",
+    "tags": [
+      "SASE",
+      "ZTNA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0072",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Architecture",
+    "topic": "Data Classifications",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Which data-handling decision is most directly driven by classification?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Whether data may be shared, stored, encrypted, retained, or destroyed under policy."
+      },
+      {
+        "key": "B",
+        "text": "Which monitor colour temperature to use."
+      },
+      {
+        "key": "C",
+        "text": "Whether the keyboard has a numpad."
+      },
+      {
+        "key": "D",
+        "text": "Which font is used in a report."
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "Classification guides handling controls such as sharing, storage, encryption, retention, and disposal.",
+    "tags": [
+      "data classification"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0073",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Operations",
+    "topic": "Incident Response",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "During suspected account compromise, which action best preserves evidence and limits damage?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Delete all logs so the attacker cannot see them."
+      },
+      {
+        "key": "B",
+        "text": "Follow incident process: contain account/session risk, preserve logs, document times, and escalate."
+      },
+      {
+        "key": "C",
+        "text": "Ask the suspected attacker if they logged in."
+      },
+      {
+        "key": "D",
+        "text": "Post details publicly to warn everyone."
+      }
+    ],
+    "correct_keys": [
+      "B"
+    ],
+    "explanation": "Incident response should contain risk while preserving evidence, documenting, and escalating.",
+    "tags": [
+      "IR",
+      "account compromise"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  },
+  {
+    "id": "MCQ-SY0701-0074",
+    "certification": "CompTIA Security+",
+    "exam": "SY0-701",
+    "domain": "Security Program Management",
+    "topic": "Security Awareness",
+    "difficulty": "hard",
+    "question_type": "single_best_answer",
+    "question": "Training users to report suspicious MFA prompts instead of approving them mainly reduces which risk?",
+    "options": [
+      {
+        "key": "A",
+        "text": "MFA fatigue/social engineering"
+      },
+      {
+        "key": "B",
+        "text": "Optical fibre attenuation"
+      },
+      {
+        "key": "C",
+        "text": "RAID rebuild failure"
+      },
+      {
+        "key": "D",
+        "text": "APIPA assignment"
+      }
+    ],
+    "correct_keys": [
+      "A"
+    ],
+    "explanation": "MFA fatigue attacks rely on users approving unexpected prompts; awareness and reporting reduce risk.",
+    "tags": [
+      "training",
+      "MFA"
+    ],
+    "privacy_note": "Synthetic training scenario only. Do not use real student, staff, parent, credential, or network details."
+  }
+]

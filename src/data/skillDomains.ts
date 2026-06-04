@@ -28,11 +28,16 @@ export const weakTopicLabels: Record<WeakTopicKey, string> = {
   'login-password-support': 'Login and password support',
   'permissions-access': 'Permissions and access requests',
   'website-filtering': 'Website filtering and unblock requests',
-  'onboarding-workflows': 'New user onboarding',
+  'onboarding-workflows': 'Onboarding workflows',
   'teams-sharepoint-onedrive': 'Teams, SharePoint, and OneDrive',
-  'jamf-ipad-support': 'iPad and Jamf support',
+  'jamf-ipad-support': 'Jamf and iPad support',
   'soft-skills': 'Soft skills and empathy',
-  'communication': 'Communication and plain English'
+  'communication': 'Professional communication',
+  'msp-business': 'MSP business foundations',
+  'triage': 'Support triage and scope',
+  'tool-discipline': 'RMM and PSA tool discipline',
+  'escalation-quality': 'Escalation and evidence quality',
+  'sla-awareness': 'SLA and priority awareness'
 };
 
 export type ReadinessArea = {

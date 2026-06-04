@@ -11,8 +11,22 @@ import MindfulnessPause from '../../src/components/mindfulness/MindfulnessPause'
 export default function ModulesPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const [customModules, setCustomModules] = useState<any[]>([]);
-  const modules = useMemo(() => [...baseModules, ...customModules], [customModules]);
   const [progress, setProgress] = useState<UserProgress>(() => getInitialProgressSnapshot(baseModules));
+
+  const careerFocus = useMemo(() => progress.profile?.careerFocus || 'Generic', [progress]);
+
+  const modules = useMemo(() => {
+    const base = [...baseModules, ...customModules];
+    if (careerFocus === 'MSP') {
+      // Hide DCS-only unless already started
+      return base.filter(m => m.targetEnvironment !== 'DCS' || progress.modules[m.id]?.quizAttempts?.length);
+    }
+    if (careerFocus === 'DCS') {
+      return base;
+    }
+    // Generic mode: hide DCS-only unless already started
+    return base.filter(m => m.targetEnvironment !== 'DCS' || progress.modules[m.id]?.quizAttempts?.length);
+  }, [customModules, careerFocus, progress]);
 
   useEffect(() => {
     const loadedCustom = getCustomModules();
@@ -34,7 +48,7 @@ export default function ModulesPage() {
             <div>
               <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Modules</div>
               <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-                DCS-specific modules for targeted professional development
+                Targeted modules for professional development
               </h1>
             </div>
           </div>
@@ -55,15 +69,20 @@ export default function ModulesPage() {
           <div>
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Modules</div>
             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-              DCS-specific modules for targeted professional development
+              {careerFocus === 'DCS' 
+                ? 'School-specific modules for targeted professional development' 
+                : careerFocus === 'MSP'
+                  ? 'MSP transition modules for professional managed services'
+                  : 'IT support modules for professional development'}
             </h1>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
-              Each module is concise, practical, and aligned to common DCS support scenarios. Review the concept,
-              assess retention, apply it in context, and produce a usable reference or note.
+              Each module is concise, practical, and aligned to 
+              {careerFocus === 'DCS' ? ' common DCS support scenarios' : ' industry-standard support workflows'}. 
+              Review the concept, assess retention, apply it in context, and produce a usable reference or note.
             </p>
           </div>
           <div className="rounded-3xl bg-slate-100 px-5 py-4 text-sm text-slate-700">
-            {modules.length} modules across foundations, networking, endpoints, identity, cloud, and operations.
+            {modules.length} modules available.
           </div>
         </div>
       </section>

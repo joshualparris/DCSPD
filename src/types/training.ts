@@ -96,10 +96,12 @@ export type TrainingModule = {
   description: string;
   domain: ModuleDomain;
   level: ModuleLevel;
+  targetEnvironment?: 'DCS' | 'MSP' | 'Generic';
   estimatedMinutes: number;
   tags: string[];
   learningObjectives: string[];
   dcsRelevance: string[];
+  mspRelevance?: string[];
   sections: Section[];
   flashcards: Flashcard[];
   quiz: AssessmentQuestion[];
