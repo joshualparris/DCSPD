@@ -43,7 +43,7 @@ const basePrinters: LegacyTrainingModule = {
     { id: 'printer-f4', front: 'Why does scope matter on a printer call?', back: 'It tells you whether the issue is one user, one queue, or the whole device.' },
     { id: 'printer-f5', front: 'What should a good printer escalation note include?', back: 'Printer location, exact symptom, who is affected, and steps already tried.' },
     { id: 'printer-f6', front: 'What is a safe Level 1 printer action?', back: 'Check queue, paper, jam, offline state, or wrong printer selection.' },
-    { id: 'printer-f7', front: 'What should Josh avoid on a shared school printer without approval?', back: 'Deep admin changes or risky device reconfiguration.' },
+    { id: 'printer-f7', front: 'What should the technician avoid on a shared school printer without approval?', back: 'Deep admin changes or risky device reconfiguration.' },
     { id: 'printer-f8', front: 'Why is "printer broken" a weak note?', back: "It hides the symptom pattern and wastes the next technician's time." }
   ],
   quiz: [
@@ -253,7 +253,7 @@ const baseViewboards: LegacyTrainingModule = {
     { id: 'viewboard-f1', front: 'What is the first mental model for a ViewBoard fault?', back: 'Treat it as a chain of links: source, cable or dock, input, and control paths.' },
     { id: 'viewboard-f2', front: 'What symptom usually points to the USB path rather than video?', back: 'No touch or inking.' },
     { id: 'viewboard-f3', front: 'What does HDMI picture but no audio often suggest?', back: 'The wrong playback device or a display audio-path issue.' },
-    { id: 'viewboard-f4', front: 'Why should Josh avoid a long public experiment?', back: 'Class time is being lost and the risk of confusion rises.' },
+    { id: 'viewboard-f4', front: 'Why should the technician avoid a long public experiment?', back: 'Class time is being lost and the risk of confusion rises.' },
     { id: 'viewboard-f5', front: 'What is a safe first display check?', back: 'Confirm power, correct input, and cable or dock seating.' },
     { id: 'viewboard-f6', front: 'What should a display escalation note include?', back: 'Room, source device type, exact symptom, steps tried, and classroom impact.' },
     { id: 'viewboard-f7', front: 'Why separate no picture from no touch?', back: 'Because they often live on different parts of the chain.' },
@@ -370,7 +370,7 @@ const viewboardEnhancement: ModuleEnhancement = {
   ]),
   addFlashcards: buildFlashcards('viewboard-deepen', [
     ['What quick Windows shortcut often matters in display incidents?', 'Windows+P for display mode selection.'],
-    ['If picture works but there is no audio, what should Josh check next?', 'The selected playback device or room audio path.'],
+    ['If picture works but there is no audio, what should the technician check next?', 'The selected playback device or room audio path.'],
     ['What does a lamp or thermal warning suggest?', 'A room-specific projector hardware or heat issue rather than only the laptop source.'],
     ['Why mention the exact room technology?', 'Because ViewBoard, projector, SMART board, and room audio chains can fail differently.']
   ]),
@@ -398,7 +398,7 @@ const viewboardEnhancement: ModuleEnhancement = {
     }),
     scenarioResponse({
       id: 'viewboard-q6',
-      prompt: 'A projector room keeps overheating and dropping image during assemblies. Explain the note Josh should escalate.',
+      prompt: 'A projector room keeps overheating and dropping image during assemblies. Explain the note the technician should escalate.',
       domain: 'Classroom display troubleshooting',
       difficulty: 'challenge',
       explanation: 'Recurring room faults need exact room and hardware-path evidence.',

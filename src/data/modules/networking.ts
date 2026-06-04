@@ -44,7 +44,7 @@ const basePortsAndProtocols: LegacyTrainingModule = {
     { id: 'ports-f4', front: 'Why might guest Wi-Fi fail to reach printers by design?', back: 'Segmentation or firewall policy can intentionally block internal services.' },
     { id: 'ports-f5', front: 'What is the practical difference between a protocol and a port?', back: 'The protocol is the rule set; the port is the numbered entry point commonly used.' },
     { id: 'ports-f6', front: 'Which port is commonly associated with SMB file or print sharing?', back: '445.' },
-    { id: 'ports-f7', front: 'Why is port knowledge useful to Level 1 even without editing firewalls?', back: 'It sharpens diagnosis and escalation language.' },
+    { id: 'ports-f7', front: 'Why is port knowledge useful to the technician even without editing firewalls?', back: 'It sharpens his diagnosis and escalation language.' },
     { id: 'ports-f8', front: 'What service is commonly associated with RDP?', back: 'Remote Desktop on 3389.' }
   ],
   quiz: [
@@ -308,7 +308,7 @@ const dnsDhcpEnhancement: ModuleEnhancement = {
       difficulty: 'stretch',
       explanation: 'Cross-device comparison narrows scope safely.',
       modelAnswer:
-        'The issue is more likely device, onboarding, profile, or signal specific than a room-wide outage. Josh should keep the note narrow and continue safe first-line checks.',
+        'The issue is more likely device, onboarding, profile, or signal specific than a room-wide outage. the technician should keep the note narrow and continue safe first-line checks.',
       commonMistakes: ['Escalating the whole room immediately', 'Ignoring the known-good comparison'],
       dcsContext: 'BYOD and managed devices do not always fail for the same reasons.',
       reviewSchedule,
@@ -324,7 +324,7 @@ const dnsDhcpEnhancement: ModuleEnhancement = {
     }),
     scenarioResponse({
       id: 'dns-q6',
-      prompt: 'A student iPad keeps joining the wrong saved network. Explain the safer first-line response and the note Josh should capture.',
+      prompt: 'A student iPad keeps joining the wrong saved network. Explain the safer first-line response and the note the technician should capture.',
       domain: 'DNS, DHCP, and gateway basics',
       difficulty: 'challenge',
       explanation: 'SSID mistakes should be named before deeper network assumptions are made.',
@@ -432,7 +432,7 @@ const vlanEnhancement: ModuleEnhancement = {
     {
       title: 'Write source-to-destination rules in plain English',
       bodyMarkdown:
-        'Segmentation becomes more useful when Josh can say "guest Wi-Fi can reach the internet but not internal printers" or "staff devices can reach the staff printer VLAN but not student management interfaces". This is still support language, not permission to edit the rule.',
+        'Segmentation becomes more useful when the technician can say "guest Wi-Fi can reach the internet but not internal printers" or "staff devices can reach the staff printer VLAN but not student management interfaces". This is still support language, not permission to edit the rule.',
       takeaway: 'Plain-English allow and block rules sharpen escalation quality.'
     },
     {
@@ -445,7 +445,7 @@ const vlanEnhancement: ModuleEnhancement = {
   addFlashcards: buildFlashcards('vlan-deepen', [
     ['What does a plain-English rule sound like?', 'Source network A may or may not reach destination service B, and here is why.'],
     ['Why is guest internet-only a valid design?', 'It lets guests browse while protecting internal school services.'],
-    ['What should Josh capture when a path seems blocked?', 'Source network, destination service, business need, urgency, and whether the block may be intentional.'],
+    ['What should the technician capture when a path seems blocked?', 'Source network, destination service, business need, urgency, and whether the block may be intentional.'],
     ['What is a weak segmentation note?', 'One that says "internet works so the printer should too".']
   ]),
   addQuiz: [

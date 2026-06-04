@@ -34,7 +34,7 @@ export const recentUpdates: RecentUpdate[] = [
     dateIso: '2026-05-14',
     title: 'Senior-tech peer review simulation',
     summary:
-      'Added a Paul-style ticket-note review workflow that critiques scope, evidence, privacy, escalation quality, and handover value.',
+      'Added a the Senior Technician-style ticket-note review workflow that critiques scope, evidence, privacy, escalation quality, and handover value.',
     category: 'Added',
     impact: 'Gives ticket writing a realistic senior-tech review loop without using real tickets or private operational details.',
     links: [

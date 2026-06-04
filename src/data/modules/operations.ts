@@ -269,7 +269,7 @@ export const operationsModules = [
     dcsRelevance: [
       'Technical skills are only half the job; the other half is making people feel heard.',
       'Reduces the "IT vs Teachers" friction that can happen during busy periods.',
-      'Ensures that Josh is seen as a supportive partner in the learning environment.'
+      'Ensures that the technician is seen as a supportive partner in the learning environment.'
     ],
     sections: buildSections('soft-skills-dcs-support', [
       {
@@ -287,7 +287,7 @@ export const operationsModules = [
       {
         title: 'De-escalation and Boundaries',
         bodyMarkdown:
-          'If a user is frustrated, stay calm and factual. Don\'t take it personally. If you can\'t fix it immediately, give a clear "Next Step" rather than a vague "I\'ll look into it." Example: "I can\'t get this display back in the next two minutes. I\'ll grab a loaner laptop for you and then call Paul to look at the room fault so you can keep teaching."',
+          'If a user is frustrated, stay calm and factual. Don\'t take it personally. If you can\'t fix it immediately, give a clear "Next Step" rather than a vague "I\'ll look into it." Example: "I can\'t get this display back in the next two minutes. I\'ll grab a loaner laptop for you and then call the Senior Technician to look at the room fault so you can keep teaching."',
         takeaway: 'Calm facts and clear workarounds beat vague promises.'
       }
     ]),
@@ -423,8 +423,8 @@ export const operationsModules = [
       ['What should a staff member check before clicking a link?', "The sender's actual email address and the target URL destination."],
       ['Why is MFA important?', 'It provides a second layer of security beyond just a password.'],
       ['What are the four phases of NIST 800-61?', 'Preparation, Detection & Analysis, Containment/Eradication/Recovery, and Post-Incident Activity.'],
-      ['What is Josh’s primary role in a cyber incident?', 'Early detection, basic containment, and evidence-safe escalation.'],
-      ['Should Josh delete a suspicious email for a user?', 'No. Report it through official channels to preserve the evidence for analysis.'],
+      ['What is the technician’s primary role in a cyber incident?', 'Early detection, basic containment, and evidence-safe escalation.'],
+      ['Should the technician delete a suspicious email for a user?', 'No. Report it through official channels to preserve the evidence for analysis.'],
       ['What should Level 1 support capture for a suspected compromise?', 'Time reported, symptoms, affected device/account, actions already taken, and who has been notified.'],
       ['Why should a potentially infected device be isolated before deeper troubleshooting?', 'Isolation limits spread while preserving the device state for senior ICT review.']
     ]),

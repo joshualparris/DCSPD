@@ -15,7 +15,7 @@ const baseCloud: LegacyTrainingModule = {
     'Explain the responsibility shift between the provider and the school ICT team.'
   ],
   dcsRelevance: [
-    'Helps Josh explain why some tools are managed by the school while others are "just there" via the web.',
+    'Helps the technician explain why some tools are managed by the school while others are "just there" via the web.',
     'Supports better triage for service outages versus local connectivity issues.',
     'Builds vocabulary for modern identity and platform conversations.'
   ],
@@ -28,7 +28,7 @@ const baseCloud: LegacyTrainingModule = {
     {
       id: 'cloud-2',
       title: 'Who owns the fix?',
-      bodyMarkdown: `In SaaS, the provider owns the application health, while the school owns identity, data, and access. In IaaS, the school ICT team owns more of the configuration and maintenance.\n\nUnderstanding this shift helps Josh route reports to the right owner.`
+      bodyMarkdown: `In SaaS, the provider owns the application health, while the school owns identity, data, and access. In IaaS, the school ICT team owns more of the configuration and maintenance.\n\nUnderstanding this shift helps the technician route reports to the right owner.`
     },
     {
       id: 'cloud-3',
@@ -41,7 +41,7 @@ const baseCloud: LegacyTrainingModule = {
     { id: 'cloud-f2', front: 'Name a common school SaaS tool.', back: 'Teams, Outlook, or Sentral.' },
     { id: 'cloud-f3', front: 'What is the school ICT team usually responsible for in SaaS?', back: 'Identity, data, and user access.' },
     { id: 'cloud-f4', front: 'What is DaaS?', back: 'Desktop as a Service: a managed desktop environment via the cloud.' },
-    { id: 'cloud-f5', front: 'Where should Josh check if a SaaS tool is down broadly?', back: "The provider's official service status page." },
+    { id: 'cloud-f5', front: 'Where should the technician check if a SaaS tool is down broadly?', back: "The provider's official service status page." },
     { id: 'cloud-f6', front: 'Why does cloud model knowledge help triage?', back: 'It tells you whether the issue is likely local or provider-side.' },
     { id: 'cloud-f7', front: 'Does SaaS mean the school ICT team has zero work to do?', back: 'No. Access, identity, and data still need management.' },
     { id: 'cloud-f8', front: 'What is the risk of assuming every failure is local?', back: 'Wasted time troubleshooting a provider-side outage.' }

@@ -93,12 +93,12 @@ const extraStrictQuestions: AssessmentQuestion[] = [
   scenarioResponse({
     id: 'strict-sentral-reporting-judgement',
     prompt:
-      'A teacher says a Sentral class view is missing on the day marks are due. Explain why timing changes the note even if Josh still cannot fix the configuration himself.',
+      'A teacher says a Sentral class view is missing on the day marks are due. Explain why timing changes the note even if the technician still cannot fix the configuration himself.',
     domain: 'Mixed DCS workflow judgement',
     difficulty: 'challenge',
     explanation: 'Urgency shapes escalation quality even when authority does not change.',
     modelAnswer:
-      'Timing changes the note because a narrow function issue can now block reporting work. Josh should capture the exact class or view, scope, deadline, and safe checks tried, then escalate quickly without pretending admin authority.',
+      'Timing changes the note because a narrow function issue can now block reporting work. the technician should capture the exact class or view, scope, deadline, and safe checks tried, then escalate quickly without pretending admin authority.',
     commonMistakes: ['Treating timing as irrelevant', 'Acting like urgency gives direct admin authority'],
     dcsContext: 'This is common during reporting spikes.',
     reviewSchedule,
@@ -189,7 +189,7 @@ const extraStrictQuestions: AssessmentQuestion[] = [
   scenarioResponse({
     id: 'strict-filtering-article',
     prompt:
-      'Explain how Josh would turn a recurring blocked-site request pattern into a safe self-service article topic without copying live request details.',
+      'Explain how the technician would turn a recurring blocked-site request pattern into a safe self-service article topic without copying live request details.',
     domain: 'Support article authoring',
     difficulty: 'challenge',
     explanation: 'This combines workflow design and privacy discipline.',

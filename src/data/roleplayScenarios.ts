@@ -200,7 +200,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-staff-offboarding-m365-ad',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Systems Work',
     issueTitle: 'Comprehensive Staff Offboarding',
     scenario:
@@ -221,7 +221,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-sentral-parent-portal-rollout',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Parent Platform Work',
     issueTitle: 'Sentral Parent Portal Rollout and Support Triage',
     scenario:
@@ -242,7 +242,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-ipad-jamf-intune-provisioning',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Device Fleet Work',
     issueTitle: 'Mass Device Provisioning',
     scenario:
@@ -263,7 +263,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-year12-account-archiving',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Directory Governance',
     issueTitle: 'End-of-Year Account Archiving',
     scenario:
@@ -284,7 +284,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-papercut-print-quota-allocation',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Print Governance',
     issueTitle: 'Print Server and Quota Allocation',
     scenario:
@@ -305,7 +305,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-naplan-locked-browser-deployment',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Testing Readiness',
     issueTitle: 'NAPLAN Locked Down Browser Deployment',
     scenario:
@@ -326,7 +326,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-asset-ewaste-secure-wipe',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Asset Governance',
     issueTitle: 'Fleet Audit and E-Waste Prep',
     scenario:
@@ -347,7 +347,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-vivi-firmware-fleet-update',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating AV Fleet Management',
     issueTitle: 'Vivi Firmware Updates and Fleet Management',
     scenario:
@@ -368,7 +368,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-bell-pa-custom-schedule',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Critical School Systems',
     issueTitle: 'School Bell and PA System Interface',
     scenario:
@@ -389,7 +389,7 @@ export const roleplayScenarios: RoleplayScenario[] = [
   {
     id: 'l2-phishing-breach-defender-investigation',
     tier: 'Level 2',
-    persona: 'Paul Matthews',
+    persona: 'the IT Manager',
     archetype: 'IT Manager Delegating Security Incident Response',
     issueTitle: 'Investigating a Phishing Breach',
     scenario:

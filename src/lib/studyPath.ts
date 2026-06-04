@@ -79,7 +79,7 @@ export function generateStudyPath(
         id: `start-${m.id}`,
         title: `Start ${m.title}`,
         reason: `Recommended for your ${progress.profile?.careerFocus} career focus.`,
-        priority: 'medium',
+        priority: priority,
         estimatedMinutes: m.estimatedMinutes,
         actionType: 'complete-module',
         targetId: m.id,

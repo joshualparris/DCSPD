@@ -100,6 +100,8 @@ export default function ModulesPage() {
               estimatedMinutes={module.estimatedMinutes}
               tags={module.tags}
               progress={getModuleCompletion(module.id, progress, module)}
+              targetEnvironment={module.targetEnvironment}
+              currentCareerFocus={careerFocus}
             />
           ))}
         </div>

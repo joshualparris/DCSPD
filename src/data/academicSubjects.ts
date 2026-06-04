@@ -230,7 +230,7 @@ const cse3peWeeklyModules: AcademicWeeklyModule[] = [
     overview: 'Discuss duty of care, confidentiality, and acting within the scope of authority.',
     siloIds: ['cse3pe-silo5'],
     dcsConnections: [
-      'Recognise when a support request exceeds your authority and must be escalated to Paul.',
+      'Recognise when a support request exceeds your authority and must be escalated to the Senior Technician.',
       'Maintain confidentiality regarding internal IT systems and projects.'
     ],
     internalLinks: supportAutomationLinks,
@@ -4547,7 +4547,7 @@ export const academicSubjects: AcademicSubject[] = [
         text: 'Identify safe Level 1 network checks and escalation boundaries.',
         plainEnglish: 'Know what to check and what not to change without approval.',
         masteryCriteria: ['Can name reversible checks', 'Can avoid firewall/policy changes', 'Can preserve observations'],
-        practicePrompts: ['List safe checks for a BYOD Wi-Fi issue.', 'Explain when to escalate to Paul.'],
+        practicePrompts: ['List safe checks for a BYOD Wi-Fi issue.', 'Explain when to escalate to the Senior Technician.'],
         quizItems: ['Name two reversible network checks.', 'Why should Level 1 not change firewall rules?']
       }
     ],

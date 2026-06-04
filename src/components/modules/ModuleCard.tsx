@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { History } from 'lucide-react';
 
 type ModuleCardProps = {
   id: string;
@@ -9,6 +10,8 @@ type ModuleCardProps = {
   estimatedMinutes: number;
   tags: string[];
   progress: number;
+  targetEnvironment?: 'DCS' | 'MSP' | 'Generic';
+  currentCareerFocus?: 'DCS' | 'MSP' | 'Generic';
 };
 
 export default function ModuleCard({
@@ -19,10 +22,20 @@ export default function ModuleCard({
   level,
   estimatedMinutes,
   tags,
-  progress
+  progress,
+  targetEnvironment,
+  currentCareerFocus
 }: ModuleCardProps) {
+  const isHistoricalDcs = currentCareerFocus !== 'DCS' && targetEnvironment === 'DCS' && progress > 0;
+
   return (
-    <article className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="relative rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      {isHistoricalDcs && (
+        <div className="absolute right-5 top-5 flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+          <History size={12} />
+          Historical DCS Context
+        </div>
+      )}
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap gap-2 text-xs text-slate-500">
           <span className="rounded-full bg-slate-100 px-3 py-1">{domain}</span>

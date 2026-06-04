@@ -12,7 +12,7 @@ const baseOffboarding: LegacyTrainingModule = {
   learningObjectives: [
     'Describe offboarding as a sequence, not a single click.',
     'Recognise why accounts can appear active in Teams after other changes.',
-    'Understand which parts Josh can document versus which parts need authority.'
+    'Understand which parts the technician can document versus which parts need authority.'
   ],
   dcsRelevance: [
     'Staff departure tasks carry obvious privacy and security risk.',
@@ -23,7 +23,7 @@ const baseOffboarding: LegacyTrainingModule = {
     {
       id: 'offboarding-1',
       title: 'Offboarding is a sequence',
-      bodyMarkdown: `Think in order, not in single actions. There may be account disablement, session sign-out, group or role cleanup, device handling, mailbox or file decisions, and communication with leaders.\n\nJosh does not need production authority to understand the logic. He needs enough understanding to document safely and escalate accurately.`
+      bodyMarkdown: `Think in order, not in single actions. There may be account disablement, session sign-out, group or role cleanup, device handling, mailbox or file decisions, and communication with leaders.\n\nthe technician does not need production authority to understand the logic. He needs enough understanding to document safely and escalate accurately.`
     },
     {
       id: 'offboarding-2',
@@ -38,9 +38,9 @@ const baseOffboarding: LegacyTrainingModule = {
   ],
   flashcards: [
     { id: 'offboarding-f1', front: 'Why is offboarding not a single action?', back: 'Because accounts, sessions, roles, devices, and data each have different effects and timing.' },
-    { id: 'offboarding-f2', front: 'What should Josh avoid during offboarding practice?', back: 'Pretending he has authority to make production identity changes.' },
+    { id: 'offboarding-f2', front: 'What should the technician avoid during offboarding practice?', back: 'Pretending he has authority to make production identity changes.' },
     { id: 'offboarding-f3', front: 'Why might a former staff member still appear in Teams?', back: 'Service state can lag behind other identity changes.' },
-    { id: 'offboarding-f4', front: "What is Josh's safe role in offboarding?", back: 'Gather facts, document clearly, and escalate to authorised staff.' },
+    { id: 'offboarding-f4', front: "What is the technician's safe role in offboarding?", back: 'Gather facts, document clearly, and escalate to authorised staff.' },
     { id: 'offboarding-f5', front: 'Why does sequencing matter in offboarding?', back: 'The wrong order can leave access, privacy, or continuity gaps.' },
     { id: 'offboarding-f6', front: 'What kind of detail belongs in an offboarding note?', back: 'Requested change, current symptom, urgency, and any visible account state.' },
     { id: 'offboarding-f7', front: 'What is the risk of vague wording like "delete the account"?', back: 'It hides the actual business need and can cause unsafe actions.' },
@@ -55,7 +55,7 @@ const baseOffboarding: LegacyTrainingModule = {
       explanation: 'Visibility lag is possible.',
       modelAnswer:
         'It may reflect service lag or incomplete sequencing, so document the current symptom and escalate to the authorised owner rather than assuming the whole process failed.',
-      commonMistakes: ['Assuming Josh should immediately delete more objects', 'Treating one service view as the whole truth'],
+      commonMistakes: ['Assuming the technician should immediately delete more objects', 'Treating one service view as the whole truth'],
       dcsContext: 'Identity systems often update at different speeds.',
       reviewSchedule,
       recommendedModuleId: 'm365-identity-offboarding-basics',
@@ -63,7 +63,7 @@ const baseOffboarding: LegacyTrainingModule = {
       options: [
         { id: 'a', label: 'It always means nothing was offboarded' },
         { id: 'b', label: 'It may be service lag or sequencing, so document and escalate' },
-        { id: 'c', label: 'Josh should remove every group himself immediately' },
+        { id: 'c', label: 'the technician should remove every group himself immediately' },
         { id: 'd', label: 'Ignore it because Teams never matters' }
       ],
       correctOptionId: 'b'
@@ -108,7 +108,7 @@ const baseOffboarding: LegacyTrainingModule = {
     }),
     scenarioResponse({
       id: 'offboarding-q4',
-      prompt: 'Write the reasoning Josh should use when asked to "just switch everything off" for a departing staff member.',
+      prompt: 'Write the reasoning the technician should use when asked to "just switch everything off" for a departing staff member.',
       domain: 'M365 offboarding',
       difficulty: 'challenge',
       explanation: 'The business outcome matters more than the emotional wording.',
@@ -145,7 +145,7 @@ const offboardingEnhancement: ModuleEnhancement = {
     {
       title: 'Block sign-in, then reason about sessions and logs',
       bodyMarkdown:
-        'The first offboarding decision is often access containment: is sign-in blocked, and are existing sessions or tokens still relevant? Josh should understand the sequence and language even when the authorised owner performs the action.',
+        'The first offboarding decision is often access containment: is sign-in blocked, and are existing sessions or tokens still relevant? the technician should understand the sequence and language even when the authorised owner performs the action.',
       takeaway: 'Containment and evidence language matter before deeper cleanup detail.'
     },
     {
@@ -159,7 +159,7 @@ const offboardingEnhancement: ModuleEnhancement = {
     ['What is often the first containment question in offboarding?', 'Has sign-in been blocked or otherwise contained by the authorised owner?'],
     ['Why might session revocation matter after sign-in is blocked?', 'Because existing sessions or tokens can linger briefly even after the main account state changes.'],
     ['What extra systems may need cleanup during offboarding?', 'Shared mailboxes, MFA methods, group memberships, and managed mobile access paths.'],
-    ['Why should Josh mention sign-in logs or recent activity carefully?', 'They help frame the risk, but review belongs to the authorised owner.']
+    ['Why should the technician mention sign-in logs or recent activity carefully?', 'They help frame the risk, but review belongs to the authorised owner.']
   ]),
   addQuiz: [
     orderSteps({
@@ -186,14 +186,14 @@ const offboardingEnhancement: ModuleEnhancement = {
     }),
     shortAnswer({
       id: 'offboarding-q6',
-      prompt: 'Why might a strong offboarding note mention shared mailbox, MFA, or managed mobile cleanup even if Josh is not doing those tasks himself?',
+      prompt: 'Why might a strong offboarding note mention shared mailbox, MFA, or managed mobile cleanup even if the technician is not doing those tasks himself?',
       domain: 'M365 offboarding',
       difficulty: 'stretch',
       explanation: 'Good notes preserve risk and sequence context for the authorised owner.',
       modelAnswer:
         'Because those systems may still hold access or data risk. Mentioning them helps the authorised owner review the sequence fully without assuming the visible Teams symptom is the whole story.',
       commonMistakes: ['Treating the visible symptom as the entire offboarding scope', 'Assuming mentioning a risk is the same as performing the change'],
-      dcsContext: 'The note should widen the right person’s awareness without widening Josh’s authority.',
+      dcsContext: 'The note should widen the right person’s awareness without widening the technician’s authority.',
       reviewSchedule,
       recommendedModuleId: 'm365-identity-offboarding-basics',
       weakTopic: 'offboarding-sequence',
@@ -236,7 +236,7 @@ const baseMdm: LegacyTrainingModule = {
     {
       id: 'mdm-3',
       title: 'Level 1 value without pretending admin access',
-      bodyMarkdown: `Josh does not need tenant-level control to benefit from these concepts.\n\nHe needs enough understanding to explain why a managed iPad, a staff laptop, and a domain-shaped Windows device may behave differently, and to escalate using the right language.`
+      bodyMarkdown: `the technician does not need tenant-level control to benefit from these concepts.\n\nHe needs enough understanding to explain why a managed iPad, a staff laptop, and a domain-shaped Windows device may behave differently, and to escalate using the right language.`
     }
   ],
   flashcards: [
@@ -247,7 +247,7 @@ const baseMdm: LegacyTrainingModule = {
     { id: 'mdm-f5', front: 'Does policy behavior stay identical across all device types?', back: 'No. Device ownership and management paths change the result.' },
     { id: 'mdm-f6', front: 'Why is "just change the setting" weak thinking?', back: 'Because the setting may be centrally enforced by policy or management.' },
     { id: 'mdm-f7', front: 'What kind of devices often use MDM thinking strongly?', back: 'Cloud-managed laptops, mobiles, and tablets.' },
-    { id: 'mdm-f8', front: 'What should Josh avoid assuming about a device?', back: 'That he personally owns its management path or policy authority.' }
+    { id: 'mdm-f8', front: 'What should the technician avoid assuming about a device?', back: 'That he personally owns its management path or policy authority.' }
   ],
   quiz: [
     mcq({
@@ -311,7 +311,7 @@ const baseMdm: LegacyTrainingModule = {
     }),
     scenarioResponse({
       id: 'mdm-q4',
-      prompt: 'A user asks Josh to change a restricted setting on a school laptop because "it works on my home PC." Explain the safer response.',
+      prompt: 'A user asks the technician to change a restricted setting on a school laptop because "it works on my home PC." Explain the safer response.',
       domain: 'MDM and Group Policy',
       difficulty: 'challenge',
       explanation: 'School management context matters more than what works at home.',
@@ -367,7 +367,7 @@ const mdmEnhancement: ModuleEnhancement = {
   addQuiz: [
     mcq({
       id: 'mdm-q5',
-      prompt: 'A shared drive mapping appears after sign-in but not immediately at startup. Which idea should Josh consider before escalating it as random failure?',
+      prompt: 'A shared drive mapping appears after sign-in but not immediately at startup. Which idea should the technician consider before escalating it as random failure?',
       domain: 'MDM and Group Policy',
       difficulty: 'stretch',
       explanation: 'Policy timing shapes user experience.',
