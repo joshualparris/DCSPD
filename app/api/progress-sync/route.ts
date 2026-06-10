@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { dirname, join } from 'path';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { NextResponse } from 'next/server';
 
 const SYNC_FILE = join(process.cwd(), '.dcsprep-data', 'progress-backup.json');

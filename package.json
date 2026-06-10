@@ -7,10 +7,10 @@
     "npm": ">=10"
   },
   "scripts": {
-    "dev": "next dev",
-    "dev:3000": "cross-env PORT=3000 next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next dev --webpack",
+    "dev:3000": "cross-env PORT=3000 next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start --webpack",
     "lint": "eslint --config eslint.config.cjs . --ext .js,.jsx,.ts,.tsx",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
@@ -19,8 +19,10 @@
     "test:e2e:ci": "playwright test --project=chromium --project=mobile-chrome"
   },
   "dependencies": {
-    "lucide-react": "0.275.0",
-    "next": "16.2.6",
+    "@swc/helpers": "^0.5.23",
+    "caniuse-lite": "^1.0.30001797",
+    "lucide-react": "^0.275.0",
+    "next": "^16.2.9",
     "pdfjs-dist": "^5.7.284",
     "react": "18.2.0",
     "react-dom": "18.2.0",
