@@ -34,6 +34,7 @@ export const navigationGroups = [
     label: 'Tools',
     items: [
       { href: '/cheat-sheets', label: 'Cheat Sheets' },
+      { href: '/ebooks', label: 'Ebook Reader' },
       { href: '/hardware', label: 'Hardware' },
       { href: '/simulations/network', label: 'Network Map' },
       { href: '/simulations/classroom-desk', label: 'Classroom Desk' },
@@ -73,6 +74,7 @@ export const mobileNavigationItems = [
   { href: '/modules', label: 'Modules' },
   { href: '/scenarios', label: 'Scenario Lab' },
   { href: '/practice-exam', label: 'Practice Exam' },
+  { href: '/ebooks', label: 'Ebook Reader' },
   { href: '/settings', label: 'Settings' }
 ];
 

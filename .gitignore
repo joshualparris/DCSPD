@@ -19,6 +19,9 @@ tsconfig.tsbuildinfo
 .turbo/
 .vercel/
 
+# Local ebook library
+IT PD Ebooks/
+
 # Playwright
 playwright-report/
 test-results/

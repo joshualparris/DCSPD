@@ -411,6 +411,21 @@ export default function DashboardPage() {
             </div>
           </Link>
 
+          <Link
+            href="/ebooks"
+            className="group flex flex-col rounded-[2rem] border border-slate-200 bg-slate-50 p-6 transition-all hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/5"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+              <BookOpen size={24} />
+            </div>
+            <h3 className="mt-6 font-bold text-slate-900">Ebook Reader</h3>
+            <p className="mt-2 text-sm text-slate-500">Open your IT PD PDFs and read them inside DCSPrep.</p>
+            <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
+              <span>Local PDF reader</span>
+              <span className="text-blue-600 group-hover:translate-x-1 transition-transform">Open →</span>
+            </div>
+          </Link>
+
           {certificationExpansion.map((cert) => (
             <Link
               key={cert.id}
