@@ -1,14 +1,15 @@
 "use client";
 
-import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import ModuleDetail from '../../../src/components/modules/ModuleDetail';
 import { getModuleById as getBaseModuleById } from '../../../src/data/modules';
 import { getCustomModules } from '../../../src/lib/customModules';
 import { useOfflineDownload } from '../../../src/hooks/useOfflineDownload';
 import type { TrainingModule } from '../../../src/types/training';
 
-export default function ModulePage({ params }: { params: any }) {
+export default function ModulePage() {
+  const params = useParams();
   const [moduleId, setModuleId] = useState<string | undefined>(undefined);
   const [hasMounted, setHasMounted] = useState(false);
   const [moduleData, setModuleData] = useState<TrainingModule | undefined>(undefined);
@@ -17,30 +18,25 @@ export default function ModulePage({ params }: { params: any }) {
 
   useEffect(() => {
     setHasMounted(true);
-    
+
     async function loadModule() {
-      // Robustly unwrap params (works for both Next 14 and 15)
-      const resolvedParams = await params;
-      const mId = resolvedParams?.moduleId;
+      const mId = typeof params?.moduleId === 'string' ? params.moduleId : Array.isArray(params?.moduleId) ? params.moduleId[0] : undefined;
       setModuleId(mId);
 
       if (!mId) return;
 
-      // 1. Check base modules
       const base = getBaseModuleById(mId);
       if (base) {
         setModuleData(base);
         return;
       }
 
-      // 2. Try custom modules (client-only)
-      const custom = getCustomModules().find(m => m.id === mId);
+      const custom = getCustomModules().find((m) => m.id === mId);
       if (custom) {
         setModuleData(custom);
         return;
       }
 
-      // 3. Try IndexedDB if ready (offline support)
       if (isReady) {
         try {
           const downloaded = await getDownloadedModule(mId);
