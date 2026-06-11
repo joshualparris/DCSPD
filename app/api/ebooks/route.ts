@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const EBOOKS_FOLDER = path.resolve(process.env.EBOOKS_DIR || path.join(process.cwd(), 'IT PD Ebooks'));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const EBOOKS_FOLDER = path.resolve(
+  process.env.EBOOKS_DIR || path.join(__dirname, '../../../../IT PD Ebooks')
+);
 
 export async function GET() {
   try {

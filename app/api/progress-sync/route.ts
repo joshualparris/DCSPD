@@ -1,12 +1,14 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { dirname, join } from 'path';
 import { NextResponse } from 'next/server';
+import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 
-const SYNC_FILE = join(process.cwd(), '.dcsprep-data', 'progress-backup.json');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SYNC_FILE_PATH = resolve(__dirname, '../../../../.dcsprep-data/progress-backup.json');
 
 export async function GET() {
   try {
-    const raw = await readFile(SYNC_FILE, 'utf8');
+    const raw = await readFile(SYNC_FILE_PATH, 'utf8');
     return NextResponse.json({
       ok: true,
       backup: JSON.parse(raw)
@@ -34,8 +36,9 @@ export async function POST(request: Request) {
       );
     }
 
-    await mkdir(dirname(SYNC_FILE), { recursive: true });
-    await writeFile(SYNC_FILE, JSON.stringify(payload, null, 2), 'utf8');
+    const dir = dirname(SYNC_FILE_PATH);
+    await mkdir(dir, { recursive: true });
+    await writeFile(SYNC_FILE_PATH, JSON.stringify(payload, null, 2), 'utf8');
 
     return NextResponse.json({
       ok: true,
