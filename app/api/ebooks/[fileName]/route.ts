@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const EBOOKS_FOLDER = path.resolve(
-  process.env.EBOOKS_DIR || path.join(__dirname, '../../../../../IT PD Ebooks')
+  process.env.EBOOKS_DIR || path.join(__dirname, '../../../../IT PD Ebooks')
 );
 
 function isPdfFile(fileName: string) {
