@@ -27,7 +27,7 @@ export default function Sidebar() {
     Today: true,
     Learn: true,
     Practise: true,
-    Tools: false,
+    Tools: true,
     Progress: false,
     Admin: false
   });
