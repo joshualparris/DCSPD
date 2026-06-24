@@ -57,7 +57,7 @@ export default function DailyChallengePage() {
         <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-6">
             <div>
-              <div className="text-sm font-bold uppercase tracking-widest text-slate-400">Today's prompt</div>
+              <div className="text-sm font-bold uppercase tracking-widest text-slate-400">Today&apos;s prompt</div>
               <h2 className="mt-3 text-2xl font-bold text-slate-900">{dailyQuestion.prompt}</h2>
             </div>
             <div className="rounded-3xl bg-slate-50 p-6 text-slate-700 shadow-sm">
