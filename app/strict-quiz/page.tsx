@@ -1,11 +1,12 @@
 import StrictQuizPageClient from '../../src/components/assessment/StrictQuizPageClient';
 
-export default function StrictQuizPage({
+export default async function StrictQuizPage({
   searchParams
 }: {
-  searchParams?: { topic?: string | string[] };
+  searchParams?: Promise<{ topic?: string | string[] }>;
 }) {
-  const topic = Array.isArray(searchParams?.topic) ? searchParams?.topic[0] : searchParams?.topic;
+  const params = (await searchParams) ?? {};
+  const topic = Array.isArray(params.topic) ? params.topic[0] : params.topic;
 
   return <StrictQuizPageClient weakTopic={topic || null} />;
 }
