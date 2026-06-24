@@ -142,12 +142,14 @@ export default function MindfulnessPause() {
           <button
             onClick={toggleTimer}
             disabled={isComplete}
+            aria-label={isActive ? 'Pause timer' : 'Start timer'}
             className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white shadow-lg transition hover:scale-105 disabled:bg-slate-300"
           >
             {isActive ? <Pause size={20} /> : <Play size={20} />}
           </button>
           <button
             onClick={resetTimer}
+            aria-label="Reset timer"
             className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:scale-105"
           >
             <RotateCcw size={20} />
