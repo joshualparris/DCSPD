@@ -36,9 +36,13 @@ export default function ModulesPage() {
 
   useEffect(() => {
     if (hasMounted) {
-      setProgress(getStoredProgressSnapshot(modules));
+      // Ensure progress entries exist for every base + custom module. We build the
+      // list locally instead of depending on the memoized `modules` array, which is
+      // recreated on every render (it depends on `progress`) and would otherwise
+      // re-trigger this effect after each setProgress, causing an infinite render loop.
+      setProgress(getStoredProgressSnapshot([...baseModules, ...customModules]));
     }
-  }, [hasMounted, modules]);
+  }, [hasMounted, customModules]);
 
   if (!hasMounted) {
     return (
