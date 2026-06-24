@@ -5,7 +5,9 @@ export const navigationGroups = [
       { href: '/', label: 'Dashboard' },
       { href: '/due-today', label: 'Due Today' },
       { href: '/focus', label: 'Focus' },
-      { href: '/daily-challenge', label: 'Daily Challenge' }
+      { href: '/daily-challenge', label: 'Daily Challenge' },
+      { href: '/scheduler', label: 'Scheduler' },
+      { href: '/skill-coach', label: 'Skill Coach' }
     ]
   },
   {
@@ -16,7 +18,8 @@ export const navigationGroups = [
       { href: '/certifications/aplus-core-2', label: 'A+ Core 2' },
       { href: '/certifications/network-plus', label: 'Network+' },
       { href: '/certifications/security-plus', label: 'Security+' },
-      { href: '/academic-pd', label: 'Academic / Career PD' }
+      { href: '/academic-pd', label: 'Academic / Career PD' },
+      { href: '/paths', label: 'Learning Paths' }
     ]
   },
   {
@@ -45,6 +48,7 @@ export const navigationGroups = [
   {
     label: 'Progress',
     items: [
+      { href: '/progress', label: 'Progress Overview' },
       { href: '/readiness', label: 'Readiness' },
       { href: '/feedback-log', label: 'Feedback Log' },
       { href: '/error-log', label: 'Error Log' },
@@ -60,6 +64,7 @@ export const navigationGroups = [
       { href: '/settings', label: 'Settings' },
       { href: '/sync', label: 'Sync' },
       { href: '/admin', label: 'Admin Hub' },
+      { href: '/supervisor', label: 'Supervisor' },
       { href: '/trainer-guide', label: 'Trainer Guide' },
       { href: '/mobile-qa', label: 'Mobile QA' }
     ]

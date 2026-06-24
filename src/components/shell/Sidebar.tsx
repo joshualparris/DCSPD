@@ -102,7 +102,7 @@ export default function Sidebar() {
                 <span>{group.label}</span>
                 {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               </button>
-              <div className={`${isOpen ? 'max-h-96' : 'max-h-0'} overflow-hidden transition-all duration-300`}> 
+              <div className={`${isOpen ? 'max-h-[40rem]' : 'max-h-0'} overflow-hidden transition-all duration-300`}>
                 <div className="space-y-1 border-t border-slate-100 px-3 py-3 dark:border-slate-800">
                   {group.items.map((item) => {
                     const active = isActive(pathname, item.href);
