@@ -3,7 +3,7 @@ import type { ScenarioRun } from '../types/scenarios';
 import type { TrainingModule } from '../types/training';
 import type { TroubleshootingPlaybook } from '../types/playbooks';
 import type { DcsAssetProfile } from '../types/assets';
-import { getNextReviewDate, getTodayDateKey, type ReviewRating } from './spacedRepetition';
+import { addDays, getNextReviewDate, getTodayDateKey, type ReviewRating } from './spacedRepetition';
 
 export type FlashcardState = 'new' | 'learning' | 'solid';
 
@@ -552,9 +552,11 @@ export function recordDailyActivity(progress: UserProgress): UserProgress {
     return progress;
   }
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayKey = yesterday.toISOString().split('T')[0];
+  // Derive "yesterday" from today's local date key so it matches getTodayDateKey()
+  // (which uses local date parts). Using toISOString() here would produce a UTC
+  // date that disagrees with the local key in non-UTC timezones, breaking the
+  // consecutive-day streak check.
+  const yesterdayKey = addDays(today, -1);
 
   const currentStreak = progress.gamification.currentStreak || 0;
   const bestStreak = progress.gamification.bestStreak || 0;
