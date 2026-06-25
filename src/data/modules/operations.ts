@@ -626,5 +626,195 @@ export const operationsModules = [
     ],
     scenarioPrompts: [],
     practicalOutputs: []
+  }),
+  createModule({
+    id: 'ticket-notes-escalation-quality',
+    title: 'Ticket Notes and Escalation Quality',
+    description:
+      'Write clear, privacy-safe ticket notes and escalate well: capture the right detail, make the next person faster, and know when and how to hand a job up.',
+    domain: 'Operations',
+    level: 'L1',
+    estimatedMinutes: 18,
+    tags: ['tickets', 'documentation', 'escalation', 'communication', 'triage'],
+    learningObjectives: [
+      'Write a ticket note a colleague could act on without asking you anything.',
+      'Separate symptom, impact, actions taken, and current state in a note.',
+      'Decide when to keep working a ticket versus escalate it.',
+      'Escalate with enough context that the job does not bounce back.',
+      'Keep notes privacy-safe and free of credentials or personal data.'
+    ],
+    dcsRelevance: [
+      'Good notes let any technician pick up a job during a busy support window.',
+      'Clean escalations protect the relationship with Level 2 and external owners.',
+      'Accurate, privacy-safe records matter in a school environment with student data.'
+    ],
+    sections: buildSections('ticket-notes', [
+      {
+        title: 'Why the note matters more than the fix',
+        bodyMarkdown:
+          'A ticket note is written for the next person, not for you. The fix lives in your head for an hour; the note lives in the system for months. A good note answers four questions fast: what is the user seeing, who/what is affected, what have we already tried, and where does the job stand right now.',
+        takeaway: 'Write for the next technician, not your memory.'
+      },
+      {
+        title: 'The anatomy of a strong note',
+        bodyMarkdown:
+          'Structure beats prose. A reliable shape is: **Symptom** (what the user reports, in their words), **Impact** (who is blocked and how urgent), **Checks done** (reversible steps you tried and the result), **Current state** (working, waiting, or escalated), and **Next step** (the single most useful follow-up). Timestamps and the affected device/account-type — not the credentials — make it traceable.',
+        takeaway: 'Symptom, impact, checks done, current state, next step.'
+      },
+      {
+        title: 'When to escalate',
+        bodyMarkdown:
+          'Escalate when the job crosses a boundary, not just when it gets hard. Triggers include: it needs access or rights you do not hold, it touches a system another team owns, the risk of acting is higher than the cost of waiting, or you have exhausted the safe Level 1 checks without resolution. Escalating early with good notes is better than thrashing on something outside your lane.',
+        takeaway: 'Escalate on boundaries and risk, not on frustration.'
+      },
+      {
+        title: 'Escalation that does not bounce back',
+        bodyMarkdown:
+          'A clean escalation tells the next owner three things: what you have confirmed, what you have ruled out, and the specific question or action you need from them. Attach the structured note, name the impact and any deadline, and avoid dumping a raw transcript. The test of a good escalation: the receiver can act without coming back to you for basics.',
+        takeaway: 'Confirmed, ruled out, and the exact ask.'
+      }
+    ]),
+    flashcards: buildFlashcards('ticket-notes', [
+      ['Who is a ticket note written for?', 'The next person who touches the job — not your own memory.'],
+      ['Name the five parts of a strong note.', 'Symptom, impact, checks done, current state, next step.'],
+      ['What belongs in "checks done"?', 'The reversible steps you already tried and what each result was.'],
+      ['Give two triggers to escalate.', 'It needs rights you do not hold, or it touches a system another team owns (also: risk of acting > cost of waiting, or safe L1 checks exhausted).'],
+      ['What three things make an escalation not bounce back?', 'What you confirmed, what you ruled out, and the exact ask for the next owner.'],
+      ['What must never go in a ticket note?', 'Credentials, passwords, access keys, or unnecessary personal/student data.']
+    ]),
+    quiz: [
+      mcq({
+        id: 'tnq-q1',
+        prompt: 'You resolved an issue quickly. What is the most important thing to capture in the note?',
+        domain: 'Operations',
+        difficulty: 'foundation',
+        explanation: 'The value of a note is letting the next person act and learn without asking you.',
+        modelAnswer: 'The symptom, what you actually did to fix it, and the current state, so it is reproducible and traceable.',
+        commonMistakes: ['Writing only "fixed"', 'Recording the password used'],
+        dcsContext: 'During busy windows another technician may reopen the same device or account.',
+        reviewSchedule,
+        recommendedModuleId: 'ticket-notes-escalation-quality',
+        weakTopic: 'ticket-quality',
+        options: [
+          { id: 'a', label: 'Just write "resolved" to close it fast.' },
+          { id: 'b', label: 'Symptom, the action that fixed it, and current state.' },
+          { id: 'c', label: 'The user\'s password so it is on record.' },
+          { id: 'd', label: 'A full copy-paste of the chat transcript.' }
+        ],
+        correctOptionId: 'b'
+      }),
+      mcq({
+        id: 'tnq-q2',
+        prompt: 'Which situation most clearly means you should escalate rather than keep trying?',
+        domain: 'Operations',
+        difficulty: 'foundation',
+        explanation: 'Escalate on boundaries: rights you do not hold or systems another team owns.',
+        modelAnswer: 'The fix requires admin rights or access to a system another team owns.',
+        commonMistakes: ['Treating "it is taking a while" as an escalation trigger on its own'],
+        dcsContext: 'Acting outside your lane can break things you cannot see in a school network.',
+        reviewSchedule,
+        recommendedModuleId: 'ticket-notes-escalation-quality',
+        weakTopic: 'escalation-quality',
+        options: [
+          { id: 'a', label: 'The user is mildly annoyed.' },
+          { id: 'b', label: 'You have not finished your coffee.' },
+          { id: 'c', label: 'The fix needs rights you do not hold or another team\'s system.' },
+          { id: 'd', label: 'It is nearly lunchtime.' }
+        ],
+        correctOptionId: 'c'
+      }),
+      shortAnswer({
+        id: 'tnq-q3',
+        prompt: 'Rewrite this weak note into a strong one: "Printer not working, tried stuff, still broken."',
+        domain: 'Operations',
+        difficulty: 'stretch',
+        explanation: 'A strong note separates symptom, impact, checks done, current state, and next step.',
+        modelAnswer:
+          'Symptom: Staffroom printer prints blank pages. Impact: Whole staffroom, blocking morning handouts. Checks done: Confirmed toner seated, ran a test page (still blank), restarted the print queue (no change). Current state: Unresolved, likely drum/toner hardware. Next step: Escalate to hardware with model and error, or swap toner if a spare is on hand.',
+        commonMistakes: ['Leaving "tried stuff" vague', 'Not stating who is impacted', 'No clear next step'],
+        dcsContext: 'A clear note lets the next technician skip the checks you already did.',
+        reviewSchedule,
+        recommendedModuleId: 'ticket-notes-escalation-quality',
+        weakTopic: 'ticket-quality',
+        rubric: [
+          'States the symptom in concrete terms',
+          'Names who/what is impacted and urgency',
+          'Lists the specific checks already done and their results',
+          'Gives a clear current state and next step'
+        ],
+        keywordHints: ['symptom', 'impact', 'checks done', 'current state', 'next step']
+      }),
+      orderSteps({
+        id: 'tnq-q4',
+        prompt: 'Put these steps for a clean escalation in the best order.',
+        domain: 'Operations',
+        difficulty: 'stretch',
+        explanation: 'Confirm the picture, write it down, state the ask, then hand it to the right owner.',
+        modelAnswer: 'Confirm symptom and impact, record the checks already done, state the specific ask, then route to the correct owner.',
+        commonMistakes: ['Escalating before documenting', 'Routing without a clear ask'],
+        dcsContext: 'A vague escalation bounces back and wastes two people\'s time.',
+        reviewSchedule,
+        recommendedModuleId: 'ticket-notes-escalation-quality',
+        weakTopic: 'escalation-quality',
+        steps: [
+          { id: 's1', label: 'Confirm the symptom and who is impacted.' },
+          { id: 's2', label: 'Record the reversible checks already done and their results.' },
+          { id: 's3', label: 'State the specific question or action you need.' },
+          { id: 's4', label: 'Route to the correct owner with the structured note attached.' }
+        ],
+        correctOrder: ['s1', 's2', 's3', 's4'],
+        rubric: [
+          'Confirms the picture before escalating',
+          'Documents checks before handing off',
+          'Includes a specific ask',
+          'Routes to the right owner last with full context'
+        ]
+      }),
+      scenarioResponse({
+        id: 'tnq-q5',
+        prompt:
+          'A teacher reports they cannot log in 10 minutes before class. You suspect it needs an account reset only the identity team can do. Write the escalation.',
+        domain: 'Operations',
+        difficulty: 'challenge',
+        explanation: 'Escalate with confirmed facts, ruled-out causes, the exact ask, and the deadline.',
+        modelAnswer:
+          'Confirmed: Teacher cannot sign in on two devices; password typed correctly; account shows locked/needs reset. Ruled out: Not a device or network issue (other staff nearby are fine). Ask: Identity team to reset/unlock the staff account. Impact/deadline: Class starts in ~10 minutes, teacher blocked. No credentials included.',
+        commonMistakes: ['Omitting the deadline', 'Not stating what was ruled out', 'Including the attempted password'],
+        dcsContext: 'Time-sensitive classroom impact should be explicit so the owner can prioritise.',
+        reviewSchedule,
+        recommendedModuleId: 'ticket-notes-escalation-quality',
+        weakTopic: 'escalation-quality',
+        rubric: [
+          'States what is confirmed',
+          'States what has been ruled out',
+          'Makes a specific, correct ask to the right team',
+          'Includes impact/deadline and stays privacy-safe'
+        ]
+      })
+    ],
+    scenarioPrompts: buildScenarioPrompts('ticket-notes', [
+      {
+        title: 'The handoff test',
+        prompt:
+          'Take a ticket you would normally close in one line and rewrite the note so a colleague could fully understand it without talking to you.'
+      },
+      {
+        title: 'Boundary check',
+        prompt:
+          'Describe a recent job and identify the exact point where it crossed from "safe for me to do" into "should be escalated", and why.'
+      }
+    ]),
+    practicalOutputs: buildPracticalOutputs('ticket-notes', [
+      {
+        title: 'Personal note template',
+        description:
+          'Create a reusable five-line note template (Symptom / Impact / Checks done / Current state / Next step) you can paste into any ticket.'
+      },
+      {
+        title: 'Escalation checklist',
+        description:
+          'Write a short checklist for escalations: confirmed, ruled out, the ask, the owner, and impact/deadline — privacy-safe.'
+      }
+    ])
   })
 ];
