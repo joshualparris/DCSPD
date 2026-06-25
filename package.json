@@ -7,6 +7,8 @@
     "npm": ">=10"
   },
   "scripts": {
+    "postinstall": "node scripts/copy-pdf-worker.mjs",
+    "copy-pdf-worker": "node scripts/copy-pdf-worker.mjs",
     "dev": "next dev",
     "dev:3000": "cross-env PORT=3000 next dev",
     "build": "next build",

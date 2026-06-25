@@ -18,12 +18,16 @@ export default function EbooksPage() {
   const [error, setError] = useState<string | null>(null);
   const [localFileUrl, setLocalFileUrl] = useState<string | null>(null);
   const [localFileName, setLocalFileName] = useState<string>('');
+  const [libraryDir, setLibraryDir] = useState<string>('');
 
   useEffect(() => {
     async function loadEbookList() {
       try {
         const response = await fetch('/api/ebooks');
         const data = await response.json();
+        if (typeof data.directory === 'string') {
+          setLibraryDir(data.directory);
+        }
         if (response.ok) {
           setFiles(data.files || []);
           setError(null);
@@ -94,7 +98,7 @@ export default function EbooksPage() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Local library folder</p>
-                <p className="mt-2 text-sm text-slate-700">C:\dev\DCSPrepApp\IT PD Ebooks</p>
+                <p className="mt-2 break-all text-sm text-slate-700">{libraryDir || 'Not configured'}</p>
               </div>
               <button
                 type="button"

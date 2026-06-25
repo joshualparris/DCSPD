@@ -1,0 +1,3 @@
+*.pdf binary
+*.mjs.map binary
+public/pdf.worker.min.mjs binary
