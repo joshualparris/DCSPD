@@ -100,8 +100,9 @@ test.describe('every route renders without runtime errors', () => {
       expect(response, `no response for ${route}`).toBeTruthy();
       expect(response!.status(), `bad status for ${route}`).toBeLessThan(400);
 
-      // Wait for client hydration to surface any post-mount crashes.
-      await page.waitForTimeout(700);
+      // Brief settle for client hydration to surface any post-mount crashes.
+      // networkidle already waited for load; 250ms is enough for effect errors.
+      await page.waitForTimeout(250);
 
       const body = await page.locator('body').innerText();
       expect(body.length, `empty body on ${route}`).toBeGreaterThan(0);
@@ -124,7 +125,7 @@ test.describe('dynamic routes', () => {
 
   test('legacy-alias module id resolves', async ({ page }) => {
     await page.goto('/modules/ict-helpdesk-101', { waitUntil: 'networkidle' });
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     const body = await page.locator('body').innerText();
     expect(body).not.toContain('Module not found');
   });
@@ -132,7 +133,7 @@ test.describe('dynamic routes', () => {
   test('invalid module id shows a graceful not-found, not a crash', async ({ page }) => {
     const { pageErrors } = watchForErrors(page);
     await page.goto('/modules/this-module-does-not-exist', { waitUntil: 'networkidle' });
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     const body = await page.locator('body').innerText();
     expect(body).toContain('Module not found');
     expect(pageErrors).toEqual([]);
@@ -143,7 +144,7 @@ test.describe('dynamic routes', () => {
       const { pageErrors } = watchForErrors(page);
       const res = await page.goto(route, { waitUntil: 'networkidle' });
       expect(res!.status(), `status ${route}`).toBeLessThan(500);
-      await page.waitForTimeout(400);
+      await page.waitForTimeout(250);
       const body = await page.locator('body').innerText();
       expect(body, `crash on ${route}`).not.toContain('Application error');
       expect(pageErrors, `error on ${route}`).toEqual([]);
@@ -172,7 +173,7 @@ test.describe('resilience to corrupt localStorage', () => {
       }, corruptValues);
 
       await page.goto(route, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(700);
+      await page.waitForTimeout(300);
 
       const body = await page.locator('body').innerText();
       expect(body.length, `white screen on ${route}`).toBeGreaterThan(50);
@@ -188,7 +189,7 @@ test.describe('search edge cases', () => {
     test(`search query ${JSON.stringify(q).slice(0, 30)} does not crash`, async ({ page }) => {
       const { pageErrors } = watchForErrors(page);
       await page.goto(`/search?q=${encodeURIComponent(q)}`, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
       const body = await page.locator('body').innerText();
       expect(body, `crash for query ${q}`).not.toContain('Application error');
       expect(pageErrors, `error for query ${q}: ${pageErrors.join(' | ')}`).toEqual([]);

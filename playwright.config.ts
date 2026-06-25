@@ -7,7 +7,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // Run tests concurrently in CI. Each test uses its own isolated browser
+  // context, and the production server handles concurrent requests fine, so
+  // serial execution (the old `1`) just wasted wall-clock.
+  workers: process.env.CI ? '50%' : undefined,
   reporter: process.env.CI ? 'github' : 'list',
   timeout: 60_000,
   use: {
