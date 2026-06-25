@@ -38,8 +38,8 @@ export const learningPaths: LearningPath[] = [
     description: 'Deep dive into classroom displays, ViewBoards, and printing systems.',
     moduleIds: [
       'classroom-display-viewboard-troubleshooting',
-      'printer-photocopier-troubleshooting',
-      'wi-fi-dhcp-dns-gateway-basic-network-triage'
+      'printer-troubleshooting',
+      'dns-dhcp-gateway-ip-basics'
     ],
     certificationLabel: 'Classroom Technology Specialist',
     icon: 'monitor',
@@ -54,9 +54,9 @@ export const learningPaths: LearningPath[] = [
     title: 'Security Guard',
     description: 'Focus on cybersecurity, identity management, and incident response.',
     moduleIds: [
-      'login-password-lockout-mfa-account-basics',
-      'm365-entra-intune-concepts-safe-escalation',
-      'cyber-security-foundations'
+      'login-and-password-support',
+      'm365-identity-offboarding-basics',
+      'cybersecurity-basics'
     ],
     certificationLabel: 'DCS Security Advocate',
     icon: 'lock',
