@@ -105,7 +105,7 @@ export const recentUpdates: RecentUpdate[] = [
     impact: 'Expands coverage into critical domains for modern school IT environments.',
     links: [
       { label: 'Cybersecurity module', href: '/modules/cybersecurity-basics', kind: 'workflow' },
-      { label: 'Imaging module', href: '/modules/device-imaging-workflows', kind: 'workflow' }
+      { label: 'Imaging module', href: '/modules/device-imaging-deployment', kind: 'workflow' }
     ]
   },
   {

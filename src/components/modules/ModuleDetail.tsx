@@ -106,11 +106,11 @@ export default function ModuleDetail({ moduleData }: ModuleDetailProps) {
 
         if (moduleData.id === 'cybersecurity-basics') {
           nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.CYBER_GUARDIAN);
-        } else if (moduleData.id === 'device-imaging-workflows') {
+        } else if (moduleData.id === 'device-imaging-deployment') {
           nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.IMAGING_PRO);
-        } else if (moduleData.id === 'accessibility-inclusive-design') {
+        } else if (moduleData.id === 'accessibility-assistive-technology') {
           nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.INCLUSIVE_DESIGNER);
-        } else if (moduleData.id === 'communication-soft-skills') {
+        } else if (moduleData.id === 'soft-skills-dcs-support') {
           nextProgress = awardBadge(nextProgress, PREDEFINED_BADGES.SUPPORT_HEART);
         }
 
