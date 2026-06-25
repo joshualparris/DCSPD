@@ -14,7 +14,7 @@ export default function EbooksPage() {
   const [files, setFiles] = useState<EbookFile[]>([]);
   const [selectedFile, setSelectedFile] = useState<EbookFile | null>(null);
   const [query, setQuery] = useState('');
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [localFileUrl, setLocalFileUrl] = useState<string | null>(null);
   const [localFileName, setLocalFileName] = useState<string>('');
@@ -45,6 +45,12 @@ export default function EbooksPage() {
     loadEbookList();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (localFileUrl) URL.revokeObjectURL(localFileUrl);
+    };
+  }, [localFileUrl]);
+
   const filteredFiles = useMemo(() => {
     if (!query) return files;
     const term = query.toLowerCase();
@@ -63,7 +69,10 @@ export default function EbooksPage() {
     }
     setError(null);
     const url = URL.createObjectURL(file);
-    setLocalFileUrl(url);
+    setLocalFileUrl((currentUrl) => {
+      if (currentUrl) URL.revokeObjectURL(currentUrl);
+      return url;
+    });
     setLocalFileName(file.name);
     setSelectedFile(null);
   };

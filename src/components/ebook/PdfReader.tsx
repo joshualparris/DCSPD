@@ -54,35 +54,55 @@ export default function PdfReader({ pdfUrl, fileName, darkMode }: PdfReaderProps
   }, [pdfUrl]);
 
   useEffect(() => {
+    let cancelled = false;
+    let renderTask: { cancel: () => void; promise: Promise<void> } | null = null;
+
     async function renderPage() {
       if (!pdf || !canvasRef.current) return;
       setIsLoading(true);
+      setError(null);
       try {
         const page = await pdf.getPage(pageNumber);
-        const viewport = page.getViewport({ scale });
+        if (cancelled) return;
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         if (!context) throw new Error('Canvas context unavailable');
 
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        canvas.style.width = `${viewport.width}px`;
-        canvas.style.height = `${viewport.height}px`;
+        // Render the backing store at device-pixel-ratio for crisp text, but
+        // size the canvas in CSS at the logical width with height:auto so the
+        // page always keeps its true aspect ratio (no stretching) and scales
+        // down to fit the container.
+        const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+        const viewport = page.getViewport({ scale });
+        const renderViewport = page.getViewport({ scale: scale * dpr });
 
-        const renderContext = {
+        canvas.width = Math.floor(renderViewport.width);
+        canvas.height = Math.floor(renderViewport.height);
+        canvas.style.width = `${Math.floor(viewport.width)}px`;
+        canvas.style.height = 'auto';
+
+        const currentRenderTask = page.render({
           canvasContext: context,
-          viewport,
-        };
+          viewport: renderViewport,
+        });
+        renderTask = currentRenderTask;
 
-        await page.render(renderContext).promise;
-        setIsLoading(false);
+        await currentRenderTask.promise;
+        if (!cancelled) setIsLoading(false);
       } catch (err) {
-        setError('Unable to render this page.');
-        setIsLoading(false);
+        if (!cancelled && (err as { name?: string }).name !== 'RenderingCancelledException') {
+          setError('Unable to render this page.');
+          setIsLoading(false);
+        }
       }
     }
 
     renderPage();
+
+    return () => {
+      cancelled = true;
+      renderTask?.cancel();
+    };
   }, [pdf, pageNumber, scale]);
 
   const handlePageChange = (nextPage: number) => {
@@ -207,7 +227,7 @@ export default function PdfReader({ pdfUrl, fileName, darkMode }: PdfReaderProps
               <div className="relative overflow-hidden rounded-[1.5rem] bg-white p-3 shadow-inner">
                 <canvas
                   ref={canvasRef}
-                  className={`mx-auto block max-w-full ${darkMode ? 'invert-[.9] hue-rotate-180 brightness-[1.2]' : ''}`}
+                  className={`mx-auto block h-auto max-w-full ${darkMode ? 'invert hue-rotate-180 brightness-90 contrast-90' : ''}`}
                 />
               </div>
             </div>
