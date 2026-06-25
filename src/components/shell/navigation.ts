@@ -3,6 +3,7 @@ export const navigationGroups = [
     label: 'Today',
     items: [
       { href: '/', label: 'Dashboard' },
+      { href: '/resume-study', label: 'Resume Study' },
       { href: '/due-today', label: 'Due Today' },
       { href: '/focus', label: 'Focus' },
       { href: '/daily-challenge', label: 'Daily Challenge' },

@@ -161,6 +161,22 @@ export default function DashboardPage() {
         </div>
       </header>
 
+      <Link
+        href="/resume-study"
+        className="group mt-6 flex items-center justify-between rounded-[2rem] border border-blue-200 bg-blue-50 p-5 shadow-sm transition hover:border-blue-300 hover:bg-blue-100"
+      >
+        <div>
+          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">
+            Interrupt-safe PD
+          </div>
+          <div className="mt-2 text-2xl font-bold text-slate-950">Resume Study</div>
+          <p className="mt-1 text-sm text-slate-700">
+            Continue your 16-day IT support plan exactly where you left off.
+          </p>
+        </div>
+        <ArrowRight className="h-6 w-6 text-blue-700 transition group-hover:translate-x-1" />
+      </Link>
+
       {isOneDrive && (
         <section className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 shadow-sm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
