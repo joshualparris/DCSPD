@@ -1249,6 +1249,10 @@ export function useScheduler() {
 
   return {
     now,
+    // True once the client has mounted and loaded stored state. Consumers should
+    // render time-dependent UI only when hydrated, to avoid SSR/client hydration
+    // mismatches from the live clock (React error #418).
+    hydrated: hydratedDateKey !== null,
     dateKey,
     settings,
     sessionState,

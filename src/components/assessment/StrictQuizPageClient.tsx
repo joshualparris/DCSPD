@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { weakTopicLabels } from '../../data/skillDomains';
 import { strictQuestionBank, getQuestionsByWeakTopic } from '../../data/questions';
 import {
@@ -47,7 +47,14 @@ export default function StrictQuizPageClient({ weakTopic }: StrictQuizPageClient
     saveProgress(progress);
   }, [hasHydratedProgress, progress]);
 
-  const questions = useMemo(() => pickQuestions(weakTopic), [weakTopic]);
+  // Pick (shuffled) questions on the client only. Selecting them during render
+  // would run Math.random on the server and again on the client, producing
+  // different questions and a hydration mismatch (#418).
+  const [questions, setQuestions] = useState<ReturnType<typeof pickQuestions>>([]);
+  useEffect(() => {
+    setQuestions(pickQuestions(weakTopic));
+  }, [weakTopic]);
+
   const weakTopicLabel =
     weakTopic && weakTopic in weakTopicLabels
       ? weakTopicLabels[weakTopic as keyof typeof weakTopicLabels]
@@ -68,13 +75,20 @@ export default function StrictQuizPageClient({ weakTopic }: StrictQuizPageClient
         </div>
       </section>
 
-      <AssessmentSession
-        questions={questions}
-        source="strict-quiz"
-        title={weakTopicLabel ? `Structured assessment: ${weakTopicLabel}` : 'Structured 10-question assessment'}
-        description="Record a clear explanation. A difference between confidence and outcome should be treated as useful assessment data."
-        onRecordAttempt={(attempt) => setProgress((current) => recordAssessmentAttempt(current, attempt))}
-      />
+      {questions.length ? (
+        <AssessmentSession
+          questions={questions}
+          source="strict-quiz"
+          title={weakTopicLabel ? `Structured assessment: ${weakTopicLabel}` : 'Structured 10-question assessment'}
+          description="Record a clear explanation. A difference between confidence and outcome should be treated as useful assessment data."
+          onRecordAttempt={(attempt) => setProgress((current) => recordAssessmentAttempt(current, attempt))}
+        />
+      ) : (
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="h-6 w-48 animate-pulse rounded-lg bg-slate-100" />
+          <div className="mt-4 h-40 w-full animate-pulse rounded-lg bg-slate-100" />
+        </div>
+      )}
     </div>
   );
 }

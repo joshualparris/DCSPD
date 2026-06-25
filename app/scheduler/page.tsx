@@ -446,6 +446,20 @@ export default function SchedulerPage() {
     };
   }, [activeBlockLabel, currentSchedulerActivity]);
 
+  // Render a stable placeholder until the client has hydrated. The scheduler is
+  // entirely driven by the live clock, so server-rendering it would mismatch the
+  // client time and trigger a hydration error (#418).
+  if (!scheduler.hydrated) {
+    return (
+      <div className="space-y-6 pb-24">
+        <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="h-8 w-64 animate-pulse rounded-lg bg-slate-100" />
+          <div className="mt-4 h-32 w-full animate-pulse rounded-lg bg-slate-100" />
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 pb-24">
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">

@@ -20,7 +20,14 @@ function getCustomData<T>(key: string): T[] {
   const stored = localStorage.getItem(key);
   if (!stored) return [];
   try {
-    return JSON.parse(stored) as T[];
+    const parsed = JSON.parse(stored);
+    // Valid JSON that is not an array (e.g. {}, null, "x") would otherwise be
+    // returned and later crash consumers that spread/iterate it. Guard for it.
+    if (!Array.isArray(parsed)) {
+      console.error(`Custom data for ${key} is not an array; ignoring`);
+      return [];
+    }
+    return parsed as T[];
   } catch (e) {
     console.error(`Failed to parse custom data for ${key}`, e);
     return [];

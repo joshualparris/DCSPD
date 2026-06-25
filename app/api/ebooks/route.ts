@@ -24,6 +24,18 @@ export async function GET() {
       files: pdfFiles,
     });
   } catch (error) {
+    // A missing ebook folder is an expected, non-fatal state (the folder is
+    // optional local content that may not be deployed). Return an empty library
+    // with 200 instead of a 500 so the /ebooks page renders cleanly.
+    const code = (error as NodeJS.ErrnoException)?.code;
+    if (code === 'ENOENT') {
+      return NextResponse.json({
+        directory: EBOOKS_FOLDER,
+        files: [],
+        note: 'Ebook library folder not found. Set EBOOKS_DIR or add the folder to enable local ebooks.',
+      });
+    }
+
     return NextResponse.json(
       {
         error: 'Unable to read the ebook library folder. Ensure the folder exists and contains PDFs.',

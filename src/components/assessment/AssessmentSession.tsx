@@ -42,7 +42,10 @@ function buildInitialDraft(question: AssessmentQuestion): DraftResponse {
     confidence: 1,
     answerText: '',
     selectedOptionId: undefined,
-    orderedStepIds: question.type === 'order-steps' ? shuffle(question.steps.map((step) => step.id)) : [],
+    // Keep the original order during SSR and the first client render to avoid a
+    // hydration mismatch (Math.random differs between server and client). The
+    // steps are shuffled client-side after mount via an effect below.
+    orderedStepIds: question.type === 'order-steps' ? question.steps.map((step) => step.id) : [],
     categorizedItems:
       question.type === 'categorization'
         ? Object.fromEntries(question.items.map((item) => [item.id, '']))
@@ -117,6 +120,23 @@ export default function AssessmentSession({
     });
     setReviewMode(false);
   }, [currentIndex, question]);
+
+  // Shuffle order-steps client-side after mount. Doing this in an effect (rather
+  // than in the initial state) keeps the server and first client render identical,
+  // avoiding a hydration mismatch, while still randomising the order for the user.
+  useEffect(() => {
+    if (question?.type !== 'order-steps') {
+      return;
+    }
+
+    setDraft((prevDraft) =>
+      prevDraft && prevDraft.questionId === question.id
+        ? { ...prevDraft, orderedStepIds: shuffle(question.steps.map((step) => step.id)) }
+        : prevDraft
+    );
+    // Only re-shuffle when the question changes, not on every draft edit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question?.id]);
 
   if (!questions.length) {
     return (
