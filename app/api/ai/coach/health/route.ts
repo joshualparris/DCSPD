@@ -1,15 +1,24 @@
 import { NextResponse } from 'next/server';
 
-const FALLBACK_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'] as const;
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
+const FALLBACK_MODELS = [DEFAULT_MODEL, 'openai/gpt-oss-20b'] as const;
+const RETIRED_MODEL_REPLACEMENTS: Record<string, string> = {
+  'llama-3.3-70b-versatile': DEFAULT_MODEL,
+  'llama-3.1-8b-instant': 'openai/gpt-oss-20b'
+};
+
+function resolveModel(model: string) {
+  return RETIRED_MODEL_REPLACEMENTS[model] ?? model;
+}
 
 function pickModelSequence(configuredModel: string) {
-  const sequence = [configuredModel, ...FALLBACK_MODELS];
+  const sequence = [resolveModel(configuredModel), ...FALLBACK_MODELS];
   return Array.from(new Set(sequence));
 }
 
 export async function GET() {
   const apiKey = process.env.GROQ_API_KEY;
-  const configuredModel = process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile';
+  const configuredModel = process.env.GROQ_MODEL ?? DEFAULT_MODEL;
 
   if (!apiKey) {
     return NextResponse.json(
@@ -35,21 +44,24 @@ export async function GET() {
         body: JSON.stringify({
           model,
           temperature: 0,
-          max_tokens: 8,
+          max_tokens: 32,
           messages: [{ role: 'user', content: 'Reply with: ok' }]
         })
       });
 
       if (response.ok) {
-        const fallbackNote =
-          model !== configuredModel
-            ? `Configured model "${configuredModel}" is unavailable; using fallback "${model}".`
-            : 'Groq AI coaching is configured and reachable.';
+        const resolvedConfiguredModel = resolveModel(configuredModel);
+        const message =
+          configuredModel !== resolvedConfiguredModel
+            ? `Configured Groq model "${configuredModel}" has been retired; using "${resolvedConfiguredModel}".`
+            : model !== configuredModel
+              ? `Configured model "${configuredModel}" is unavailable; using fallback "${model}".`
+              : 'Groq AI coaching is configured and reachable.';
 
         return NextResponse.json({
           ok: true,
           status: 'configured',
-          message: fallbackNote,
+          message,
           model
         });
       }
@@ -64,10 +76,10 @@ export async function GET() {
       }
 
       lastError = { status: response.status, message: providerMessage || 'unknown error' };
-      const decommissioned = /decommissioned|no longer supported|model.*not found/i.test(
+      const unavailable = /decommissioned|no longer supported|does not exist|model.*not found|do not have access/i.test(
         providerMessage || ''
       );
-      if (!decommissioned) {
+      if (!unavailable) {
         break;
       }
     }
@@ -92,4 +104,3 @@ export async function GET() {
     );
   }
 }
-
