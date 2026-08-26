@@ -16,6 +16,13 @@ const CoachInputSchema = z.object({
   redactionSummary: z.string().optional()
 });
 
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
+const FALLBACK_MODELS = [DEFAULT_MODEL, 'openai/gpt-oss-20b'] as const;
+const RETIRED_MODEL_REPLACEMENTS: Record<string, string> = {
+  'llama-3.3-70b-versatile': DEFAULT_MODEL,
+  'llama-3.1-8b-instant': 'openai/gpt-oss-20b'
+};
+
 /**
  * Extracts the first JSON object from a string, handling triple backticks and filler text.
  */
@@ -56,10 +63,12 @@ function extractJson(text: string) {
   }
 }
 
+function resolveModel(model: string) {
+  return RETIRED_MODEL_REPLACEMENTS[model] ?? model;
+}
+
 function pickModelSequence(configuredModel: string) {
-  // Prefer the current best-performing Groq model
-  const bestModel = 'llama-3.3-70b-versatile';
-  const sequence = [configuredModel, bestModel, 'llama-3.1-8b-instant'];
+  const sequence = [resolveModel(configuredModel), ...FALLBACK_MODELS];
   return Array.from(new Set(sequence));
 }
 
@@ -102,7 +111,7 @@ async function callGroq(apiKey: string, model: string, userPayload: unknown, sys
 
 export async function POST(request: Request) {
   const apiKey = process.env.GROQ_API_KEY;
-  const configuredModel = process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile';
+  const configuredModel = process.env.GROQ_MODEL ?? DEFAULT_MODEL;
 
   if (!apiKey) {
     return NextResponse.json({ error: 'AI coaching is not configured.' }, { status: 503 });
@@ -170,7 +179,7 @@ export async function POST(request: Request) {
       try {
         const data = JSON.parse(attempt.rawText);
         text = data?.choices?.[0]?.message?.content ?? '{}';
-        
+
         devDebug('AI coach raw response length', String(text.length));
 
         const json = extractJson(text);
@@ -186,13 +195,13 @@ export async function POST(request: Request) {
     }
 
     lastError = { status: attempt.status, providerMessage: attempt.providerMessage };
-    const decommissioned = /decommissioned|no longer supported|model.*not found/i.test(
+    const unavailable = /decommissioned|no longer supported|does not exist|model.*not found|do not have access/i.test(
       attempt.providerMessage || ''
     );
-    if (!decommissioned) {
+    if (!unavailable) {
       break;
     }
-    // If decommissioned, try next fallback model.
+    // If unavailable, try the next current Groq fallback model.
   }
 
   const suffix = lastError?.providerMessage ? ` ${lastError.providerMessage}` : '';
