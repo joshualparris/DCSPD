@@ -23,10 +23,19 @@ const EvaluateSchema = z.object({
 
 const RequestSchema = z.union([GenerateSchema, EvaluateSchema]);
 
-const FALLBACK_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'] as const;
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
+const FALLBACK_MODELS = [DEFAULT_MODEL, 'openai/gpt-oss-20b'] as const;
+const RETIRED_MODEL_REPLACEMENTS: Record<string, string> = {
+  'llama-3.3-70b-versatile': DEFAULT_MODEL,
+  'llama-3.1-8b-instant': 'openai/gpt-oss-20b'
+};
+
+function resolveModel(model: string) {
+  return RETIRED_MODEL_REPLACEMENTS[model] ?? model;
+}
 
 function pickModelSequence(configuredModel: string) {
-  const sequence = [configuredModel, ...FALLBACK_MODELS];
+  const sequence = [resolveModel(configuredModel), ...FALLBACK_MODELS];
   return Array.from(new Set(sequence));
 }
 
@@ -40,6 +49,7 @@ async function callGroq(apiKey: string, model: string, messages: Array<{ role: s
     body: JSON.stringify({
       model,
       temperature: 0.2,
+      response_format: { type: 'json_object' },
       messages
     })
   });
@@ -63,7 +73,7 @@ async function callGroq(apiKey: string, model: string, messages: Array<{ role: s
 
 export async function POST(request: Request) {
   const apiKey = process.env.GROQ_API_KEY;
-  const configuredModel = process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile';
+  const configuredModel = process.env.GROQ_MODEL ?? DEFAULT_MODEL;
 
   if (!apiKey) {
     return NextResponse.json({ error: 'AI coaching is not configured.' }, { status: 503 });
@@ -119,10 +129,10 @@ export async function POST(request: Request) {
     }
 
     lastError = { status: attempt.status, message: attempt.providerMessage };
-    const decommissioned = /decommissioned|no longer supported|model.*not found/i.test(
+    const unavailable = /decommissioned|no longer supported|does not exist|model.*not found|do not have access/i.test(
       attempt.providerMessage || ''
     );
-    if (!decommissioned) break;
+    if (!unavailable) break;
   }
 
   return NextResponse.json(
@@ -130,4 +140,3 @@ export async function POST(request: Request) {
     { status: 502 }
   );
 }
-
