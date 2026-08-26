@@ -37,6 +37,7 @@ export const navigationGroups = [
   {
     label: 'Tools',
     items: [
+      { href: '/all-tools', label: 'All Tools' },
       { href: '/cheat-sheets', label: 'Cheat Sheets' },
       { href: '/ebooks', label: 'Ebook Reader' },
       { href: '/hardware', label: 'Hardware' },
@@ -81,6 +82,7 @@ export const mobileNavigationItems = [
   { href: '/scenarios', label: 'Scenario Lab' },
   { href: '/practice-exam', label: 'Practice Exam' },
   { href: '/ebooks', label: 'Ebook Reader' },
+  { href: '/all-tools', label: 'All Tools' },
   { href: '/settings', label: 'Settings' }
 ];
 
