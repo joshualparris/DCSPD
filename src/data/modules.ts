@@ -10,12 +10,14 @@ import { aplusModules } from './modules/aplus';
 import { accessibilityModules } from './modules/accessibility';
 import { mspModules } from './modules/msp';
 import { outdoorEducationModules } from './modules/outdoorEducation';
-import { personalCurriculumModules } from './modules/personalCurriculum';
 
 export const legacyModuleAliases: Record<string, string> = {
   foundations: 'dcs-it-support-foundations',
   'library-daily-routines': 'classroom-display-viewboard-troubleshooting',
   'ict-helpdesk-101': 'ticket-notes-escalation-quality',
+  // Renamed/dropped module ids still referenced by recommendations, scenarios,
+  // and skill domains. Map each to its closest existing module so links resolve
+  // instead of rendering "Module not found".
   'msp-support-foundations': 'msp-foundations',
   'networking-foundations': 'dns-dhcp-gateway-ip-basics',
   'networking-fundamentals': 'dns-dhcp-gateway-ip-basics',
@@ -23,6 +25,7 @@ export const legacyModuleAliases: Record<string, string> = {
   'hardware-classroom-support': 'classroom-display-viewboard-troubleshooting'
 };
 
+// We use a function to avoid static initialization order issues
 export function getAllBaseModules(): TrainingModule[] {
   return [
     ...foundationsModules,
@@ -34,8 +37,7 @@ export function getAllBaseModules(): TrainingModule[] {
     ...aplusModules,
     ...accessibilityModules,
     ...mspModules,
-    ...outdoorEducationModules,
-    ...personalCurriculumModules
+    ...outdoorEducationModules
   ];
 }
 
@@ -47,6 +49,7 @@ export function getModuleById(moduleId: string) {
   return getAllBaseModules().find((module) => module.id === resolvedId);
 }
 
+// Helper for SSR and fast lookup of basic module info
 export function getBaseModuleById(moduleId: string) {
   return getModuleById(moduleId);
 }
