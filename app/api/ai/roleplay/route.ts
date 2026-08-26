@@ -18,6 +18,8 @@ const RoleplayResponseSchema = z.object({
   sentiment: z.enum(['angry', 'neutral', 'satisfied']).optional(),
 });
 
+const GROQ_MODEL = 'openai/gpt-oss-120b';
+
 export async function POST(request: Request) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
@@ -65,7 +67,7 @@ You must return ONLY a JSON object with this shape:
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model: GROQ_MODEL,
       temperature: 0.7,
       response_format: { type: 'json_object' },
       messages
@@ -73,7 +75,11 @@ You must return ONLY a JSON object with this shape:
   });
 
   if (!response.ok) {
-    return NextResponse.json({ error: 'AI request failed.' }, { status: 502 });
+    const detail = await response.text().catch(() => '');
+    return NextResponse.json(
+      { error: `AI request failed (${response.status}).${detail ? ` ${detail}` : ''}`.trim() },
+      { status: 502 }
+    );
   }
 
   try {
