@@ -56,8 +56,7 @@ export const navigationGroups = [
       { href: '/error-log', label: 'Error Log' },
       { href: '/certificates', label: 'Certificates' },
       { href: '/evidence-pack', label: 'Evidence Pack' },
-      { href: '/usage-insights', label: 'Usage Insights' },
-      { href: '/badges', label: 'Badge Cabinet' }
+      { href: '/usage-insights', label: 'Usage Insights' }
     ]
   },
   {
