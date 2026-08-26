@@ -15,6 +15,8 @@ const NoteResponseSchema = z.object({
   explanation: z.string().optional(),
 });
 
+const GROQ_MODEL = 'openai/gpt-oss-120b';
+
 function extractJson(text: string) {
   try {
     return JSON.parse(text);
@@ -89,10 +91,14 @@ You must return ONLY a JSON object with this shape:
   "explanation": "Briefly explain why this is a good note (optional)"
 }`;
 
-  const response = await callGroq(apiKey, 'llama-3.3-70b-versatile', body, system);
+  const response = await callGroq(apiKey, GROQ_MODEL, body, system);
 
   if (!response.ok) {
-    return NextResponse.json({ error: 'AI request failed.' }, { status: 502 });
+    const detail = await response.text().catch(() => '');
+    return NextResponse.json(
+      { error: `AI request failed (${response.status}).${detail ? ` ${detail}` : ''}`.trim() },
+      { status: 502 }
+    );
   }
 
   try {
